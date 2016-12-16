@@ -1,313 +1,306 @@
-import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy } from '@angular/core'
+import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, 
+    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy } from '@angular/core';
 
-import { SplitAreaDirective } from './splitArea.directive'
+import { SplitAreaDirective } from './splitArea.directive';
 
 
 interface IAreaData {
-  component: SplitAreaDirective
-  sizeUser: number
-  size?: number
-  orderUser: number
-  order?: number
-  minPixel: number
+    component: SplitAreaDirective;
+    sizeUser: number;
+    size?: number;
+    orderUser: number;
+    order?: number;
+    minPixel: number;
 }
 
 interface Point {
-  x: number
-  y: number
+    x: number;
+    y: number;
 }
 
 
 @Component({
-  selector: 'split',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      background: red;
-    }
-    
-    /deep/ split-area {
-      flex-grow: 0;
-      flex-shrink: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
-      background: blue;
-      height: /*100px;*/100%;
-    }
-    
-    split-gutter {
-      flex-grow: 0;
-      flex-shrink: 0;
-      flex-basis: 10px;
-      height: /*100px;*/100%;
-      background-color: #eeeeee;
-      background-position: 50%;
-      background-repeat: no-repeat;
-    }
-  `],
-  template: `
-    <ng-content></ng-content>
-    <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-      <split-gutter *ngIf="last === false" 
-                    [order]="index*2+1"
-                    [direction]="direction"
-                    [size]="_gutterSize"
-                    [disabled]="_disabled"
-                    (mousedown)="startDragging($event, index*2+1)"
-                    (touchstart)="startDragging($event, index*2+1)"></split-gutter>
-    </template>
-  `,
-    // <div style="position: absolute; top: 120px; background: yellow;">
-    //   <div style="width: 150px; float: left;">
-    //     ORDER: <br>
-    //     SIZE %: <br>
-    //     SIZE PX: <br>
-    //   </div>
-    //   <div *ngFor="let l of areas" style="width: 150px; float: left;">
-    //     {{ l.order }}<br>
-    //     {{ l.size }}<br>
-    //     {{ l.component.elementRef.nativeElement.offsetWidth }}<br>
-    //   </div>
-    // </div>
+    selector: 'split',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styles: [`
+        :host {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            background: red;
+        }
+
+        /deep/ split-area {
+            flex-grow: 0;
+            flex-shrink: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: blue;
+            height: /*100px;*/100%;
+        }
+
+        split-gutter {
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 10px;
+            height: /*100px;*/100%;
+            background-color: #eeeeee;
+            background-position: 50%;
+            background-repeat: no-repeat;
+        }
+    `],
+    template: `
+        <ng-content></ng-content>
+        <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
+            <split-gutter *ngIf="last === false" 
+                        [order]="index*2+1"
+                        [direction]="direction"
+                        [size]="_gutterSize"
+                        [disabled]="_disabled"
+                        (mousedown)="startDragging($event, index*2+1)"
+                        (touchstart)="startDragging($event, index*2+1)"></split-gutter>
+        </template>`,
 })
 export class SplitComponent implements OnDestroy {
-  @Input() direction: string = 'horizontal'
-  @Input() width: number
-  @Input() height: number
+    @Input() direction: string = 'horizontal';
+    @Input() width: number;
+    @Input() height: number;
 
-  _gutterSize: number = 10
-  @Input() set gutterSize(v: number) {
-    this._gutterSize = v;
-    this.refresh();
-  }
-  
-  _disabled: boolean = false
-  @Input() set disabled(v: boolean) {
-    this._disabled = v;
-    this.refresh();
-  }
-  
-  @Output() dragStart = new EventEmitter<Array<number>>(false)
-  @Output() dragProgress = new EventEmitter<Array<number>>(false)
-  @Output() dragEnd = new EventEmitter<Array<number>>(false)
-  
-  @HostBinding('style.flex-direction') get styleFlexDirection() {
-    return this.direction === 'vertical' ? 'row' : 'column';
-  }
-  
-  @HostBinding('style.width') get styleWidth() {
-    return (this.width && !isNaN(this.width) && this.width > 0) ? this.width + 'px' : '100%';
-  }
-  
-  @HostBinding('style.height') get styleHeight() {
-    return (this.height && !isNaN(this.height) && this.height > 0) ? this.height + 'px' : '100%';
-  }
-  
-  private get nbGutters(): number {
-    return this.areas.length - 1;
-  }
-
-  minPercent: number = 5
-  areas: Array<IAreaData> = []
-  isDragging: boolean = false
-  sizes = {
-    container: null, 
-    areaPixelA: null,
-    areaPixelB: null
-  }
-  eventsDragFct: Array<Function> = []
-  
-  constructor(private cdRef: ChangeDetectorRef,
-              private elementRef: ElementRef,
-              private renderer: Renderer) {}
-  
-  public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
-    this.areas.push({
-      component, 
-      orderUser,
-      sizeUser,
-      minPixel
-    });
-
-    this.refresh();
-  }
-  
-  public updateArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
-    const item: IAreaData = this.areas.find(a => a.component === component);
-    
-    if(item) {
-      item.orderUser = orderUser;
-      item.sizeUser = sizeUser;
-      item.minPixel = minPixel;
-
-      this.refresh();
-    }
-  }
-  
-  public removeArea(area: SplitAreaDirective) {
-    const item: IAreaData = this.areas.find(a => a.component === area);
-    
-    if(item) {
-      const index = this.areas.indexOf(item);
-      this.areas.splice(index, 1);
-      this.areas.forEach((a, i) => a.order = i*2);
-      
-      this.refresh();
-    }
-  }
-  
-  private refresh() {
-    this.stopDragging();
-
-    // ORDERS
-
-    // soit toutes les areas ont une prop order et on les utilise, soit on utilise uniquement leur position
-    const nbCorrectOrder = this.areas.filter(a => !isNaN(a.orderUser)).length;
-    
-    if(nbCorrectOrder === this.areas.length) {
-      // on sort le tableau par rapport aux prop orderUser
-      this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
+    _gutterSize: number = 10;
+    @Input() set gutterSize(v: number) {
+        this._gutterSize = v;
+        this.refresh();
     }
 
-    this.areas.forEach((a, i) => {
-      a.order = i*2;
-      a.component.setStyle('order', a.order);
-    });
-    
-    // SIZES
-    const totalSize = this.areas.map(a => a.sizeUser).reduce((acc, s) => acc+s, 0);
-    const nbCorrectSize = this.areas.filter(a => !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
-
-    if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.areas.length) {
-      const size = Number((100 / this.areas.length).toFixed(3));
-      this.areas.forEach(a => a.size = size);
-    }
-    else {
-      this.areas.forEach(a => a.size = a.sizeUser);
+    _disabled: boolean = false;
+    @Input() set disabled(v: boolean) {
+        this._disabled = v;
+        this.refresh();
     }
 
-    this.refreshStyleSizes();
-    this.cdRef.markForCheck();
-  }
-  
-  private refreshStyleSizes() {
-    const f = this._gutterSize * this.nbGutters / this.areas.length;
-    this.areas.forEach(a => a.component.setStyle('flex-basis', `calc( ${ a.size }% - ${ f }px )`));
-  }
-  
-  private startDragging(startEvent: MouseEvent, gutterOrder: number) {
-    startEvent.preventDefault();
-    
-    if(this._disabled) return;
-    
-    const areaA = this.areas.find(a => a.order === gutterOrder - 1);
-    const areaB = this.areas.find(a => a.order === gutterOrder + 1);
-    if(!areaA || !areaB) return;
-    
-    const prop = (this.direction === 'vertical') ? 'offsetWidth' : 'offsetHeight';
-    this.sizes.container = this.elementRef.nativeElement[prop];
-    this.sizes.areaPixelA = this.sizes.container * areaA.size / 100;
-    this.sizes.areaPixelB = this.sizes.container * areaB.size / 100;
-    
-    const start: Point = {
-      x: startEvent.screenX,
-      y: startEvent.screenY
-    }
-    
-    this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mousemove', e => this.dragEvent(e, start, areaA, areaB)) );
-    this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchmove', e => this.dragEvent(e, start, areaA, areaB)) );
-    this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mouseup', e => this.stopDragging()) );
-    this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchend', e => this.stopDragging()) );
-    this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchcancel', e => this.stopDragging()) );
+    @Output() dragStart = new EventEmitter<Array<number>>(false);
+    @Output() dragProgress = new EventEmitter<Array<number>>(false);
+    @Output() dragEnd = new EventEmitter<Array<number>>(false);
 
-    areaA.component.lockEvents();
-    areaB.component.lockEvents();
-    
-    this.isDragging = true;
-    this.notify('start');
-  }
-  
-  private dragEvent(event: MouseEvent, start: Point, areaA: IAreaData, areaB: IAreaData) {
-      if(!this.isDragging) return;
-    
-      const end: Point = {
-        x: event.screenX,
-        y: event.screenY
-      }
-      this.drag(start, end, areaA, areaB);
-  }
-  
-  private drag(start: Point, end: Point, areaA: IAreaData, areaB: IAreaData) {
-    const offsetPixel = (this.direction === 'vertical') ? (start.x - end.x) : (start.y - end.y);
-    
-    const newSizePixelA = this.sizes.areaPixelA - offsetPixel;
-    const newSizePixelB = this.sizes.areaPixelB + offsetPixel;
-    
-    if(newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
-      console.log('HERE WE ARE !!')
-      return;
-    }
-    
-    let newSizePercentA = newSizePixelA / this.sizes.container * 100;
-    let newSizePercentB = newSizePixelB / this.sizes.container * 100;
-
-    if(newSizePercentA <= this.minPercent) {
-      newSizePercentA = this.minPercent;
-      newSizePercentB = areaA.size + areaB.size - this.minPercent;
-    }
-    else if(newSizePercentB <= this.minPercent) {
-      newSizePercentB = this.minPercent;
-      newSizePercentA = areaA.size + areaB.size - this.minPercent;
-    }
-    else {
-      newSizePercentA = Number(newSizePercentA.toFixed(3));
-      newSizePercentB = Number((areaA.size + areaB.size - newSizePercentA).toFixed(3));
+    @HostBinding('style.flex-direction') get styleFlexDirection() {
+        return this.direction === 'vertical' ? 'row' : 'column';
     }
 
-    areaA.size = newSizePercentA;
-    areaB.size = newSizePercentB;
-
-    this.refreshStyleSizes();
-    this.notify('progress');
-  }
-  
-  private stopDragging() {
-    if(!this.isDragging) return;
-    
-    this.areas.forEach(a => a.component.unlockEvents());
-    
-    while(this.eventsDragFct.length > 0) {
-      const fct = this.eventsDragFct.pop();
-      fct();
+    @HostBinding('style.width') get styleWidth() {
+        return (this.width && !isNaN(this.width) && this.width > 0) ? this.width + 'px' : '100%';
     }
-    
-    this.sizes.container = null;
-    this.sizes.areaPixelA = null;
-    this.sizes.areaPixelB = null;
-    
-    this.isDragging = false;
-    this.notify('end');
-  }
-  
-  private notify(type: string) {
-    const data = this.areas.map(a => a.size);
 
-    switch(type) {
-      case 'start':
-        return this.dragStart.emit(data);
-
-      case 'progress':
-        return this.dragProgress.emit(data);
-
-      case 'end':
-        return this.dragEnd.emit(data);
+    @HostBinding('style.height') get styleHeight() {
+        return (this.height && !isNaN(this.height) && this.height > 0) ? this.height + 'px' : '100%';
     }
-  }
-  
-  public ngOnDestroy() {
-    this.stopDragging();
-  }
+
+    private get nbGutters(): number {
+        return this.areas.length - 1;
+    }
+
+    minPercent: number = 5;
+    areas: Array<IAreaData> = [];
+    isDragging: boolean = false;
+    sizes = {
+        container: null, 
+        areaPixelA: null,
+        areaPixelB: null
+    };
+    eventsDragFct: Array<Function> = [];
+
+    constructor(private cdRef: ChangeDetectorRef,
+                private elementRef: ElementRef,
+                private renderer: Renderer) {}
+
+    public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
+        this.areas.push({
+            component, 
+            orderUser,
+            sizeUser,
+            minPixel
+        });
+
+        this.refresh();
+    }
+
+    public updateArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
+        const item: IAreaData = this.areas.find(a => a.component === component);
+
+        if(item) {
+            item.orderUser = orderUser;
+            item.sizeUser = sizeUser;
+            item.minPixel = minPixel;
+
+            this.refresh();
+        }
+    }
+
+    public removeArea(area: SplitAreaDirective) {
+        const item: IAreaData = this.areas.find(a => a.component === area);
+
+        if(item) {
+            const index = this.areas.indexOf(item);
+            this.areas.splice(index, 1);
+            this.areas.forEach((a, i) => a.order = i * 2);
+            
+            this.refresh();
+        }
+    }
+
+    private refresh() {
+        this.stopDragging();
+
+        // ORDERS
+
+        // soit toutes les areas ont une prop order et on les utilise, soit on utilise uniquement leur position
+        const nbCorrectOrder = this.areas.filter(a => !isNaN(a.orderUser)).length;
+
+        if(nbCorrectOrder === this.areas.length) {
+            // on sort le tableau par rapport aux prop orderUser
+            this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
+        }
+
+        this.areas.forEach((a, i) => {
+            a.order = i * 2;
+            a.component.setStyle('order', a.order);
+        });
+
+        // SIZES
+        const totalSize = this.areas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
+        const nbCorrectSize = this.areas.filter(a => !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
+
+        if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.areas.length) {
+            const size = Number((100 / this.areas.length).toFixed(3));
+            this.areas.forEach(a => a.size = size);
+        } else {
+            this.areas.forEach(a => a.size = a.sizeUser);
+        }
+
+        this.refreshStyleSizes();
+        this.cdRef.markForCheck();
+    }
+
+    private refreshStyleSizes() {
+        const f = this._gutterSize * this.nbGutters / this.areas.length;
+        this.areas.forEach(a => a.component.setStyle('flex-basis', `calc( ${ a.size }% - ${ f }px )`));
+    }
+
+    public startDragging(startEvent: MouseEvent, gutterOrder: number) {
+        startEvent.preventDefault();
+
+        if(this._disabled) {
+            return;
+        }
+
+        const areaA = this.areas.find(a => a.order === gutterOrder - 1);
+        const areaB = this.areas.find(a => a.order === gutterOrder + 1);
+        if(!areaA || !areaB) {
+            return;
+        }
+
+        const prop = (this.direction === 'vertical') ? 'offsetWidth' : 'offsetHeight';
+        this.sizes.container = this.elementRef.nativeElement[prop];
+        this.sizes.areaPixelA = this.sizes.container * areaA.size / 100;
+        this.sizes.areaPixelB = this.sizes.container * areaB.size / 100;
+
+        const start: Point = {
+            x: startEvent.screenX,
+            y: startEvent.screenY
+        };
+
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mousemove', e => this.dragEvent(e, start, areaA, areaB)) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchmove', e => this.dragEvent(e, start, areaA, areaB)) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mouseup', e => this.stopDragging()) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchend', e => this.stopDragging()) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchcancel', e => this.stopDragging()) );
+
+        areaA.component.lockEvents();
+        areaB.component.lockEvents();
+
+        this.isDragging = true;
+        this.notify('start');
+    }
+
+    private dragEvent(event: MouseEvent, start: Point, areaA: IAreaData, areaB: IAreaData) {
+        if(!this.isDragging) {
+            return;
+        }
+
+        const end: Point = {
+            x: event.screenX,
+            y: event.screenY
+        };
+
+        this.drag(start, end, areaA, areaB);
+    }
+
+    private drag(start: Point, end: Point, areaA: IAreaData, areaB: IAreaData) {
+        const offsetPixel = (this.direction === 'vertical') ? (start.x - end.x) : (start.y - end.y);
+
+        const newSizePixelA = this.sizes.areaPixelA - offsetPixel;
+        const newSizePixelB = this.sizes.areaPixelB + offsetPixel;
+
+        if(newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
+            return;
+        }
+
+        let newSizePercentA = newSizePixelA / this.sizes.container * 100;
+        let newSizePercentB = newSizePixelB / this.sizes.container * 100;
+
+        if(newSizePercentA <= this.minPercent) {
+            newSizePercentA = this.minPercent;
+            newSizePercentB = areaA.size + areaB.size - this.minPercent;
+        } else if(newSizePercentB <= this.minPercent) {
+            newSizePercentB = this.minPercent;
+            newSizePercentA = areaA.size + areaB.size - this.minPercent;
+        } else {
+            newSizePercentA = Number(newSizePercentA.toFixed(3));
+            newSizePercentB = Number((areaA.size + areaB.size - newSizePercentA).toFixed(3));
+        }
+
+        areaA.size = newSizePercentA;
+        areaB.size = newSizePercentB;
+
+        this.refreshStyleSizes();
+        this.notify('progress');
+    }
+
+    private stopDragging() {
+        if(!this.isDragging) {
+            return;
+        }
+
+        this.areas.forEach(a => a.component.unlockEvents());
+
+        while(this.eventsDragFct.length > 0) {
+            const fct = this.eventsDragFct.pop();
+            fct();
+        }
+
+        this.sizes.container = null;
+        this.sizes.areaPixelA = null;
+        this.sizes.areaPixelB = null;
+
+        this.isDragging = false;
+        this.notify('end');
+    }
+
+    private notify(type: string) {
+        const data = this.areas.map(a => a.size);
+
+        switch(type) {
+            case 'start':
+                return this.dragStart.emit(data);
+
+            case 'progress':
+                return this.dragProgress.emit(data);
+
+            case 'end':
+                return this.dragEnd.emit(data);
+        }
+    }
+
+    public ngOnDestroy() {
+        this.stopDragging();
+    }
 }
