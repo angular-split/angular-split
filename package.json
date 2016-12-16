@@ -4,7 +4,8 @@
   "description": "Angular (2+) UI library to split views.",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && ngc -p src/tsconfig.aot.json"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/bertrandg/angular-split/issues"
   },
-  "homepage": "https://github.com/bertrandg/angular-split#readme"
+  "homepage": "https://github.com/bertrandg/angular-split#readme",
+  "devDependencies": {
+    "typescript": "^2.0.10"
+  },
+  "dependencies": {
+    "@angular/common": "^2.1.2",
+    "@angular/core": "^2.1.2"
+  }
 }

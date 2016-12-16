@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es6",
+      "es2015",
+      "dom"
+    ],
+    "noImplicitAny": false,
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "mapRoot": "",
+    "outDir": "./../dist",
+    "skipLibCheck": true,
+    "baseUrl": ""
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "./vendor.ts",
+    "./polyfills.ts"
+  ],
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true,
+    "debug": true
+  }
+}
