@@ -1,0 +1,25 @@
+{
+  "name": "angular-split",
+  "version": "0.1.0",
+  "description": "Angular (2+) UI library to split views.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bertrandg/angular-split.git"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "split",
+    "flexbox"
+  ],
+  "author": "bertrandg <bertrandgaillard@hotmail.fr> (https://github.com/bertrandg)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bertrandg/angular-split/issues"
+  },
+  "homepage": "https://github.com/bertrandg/angular-split#readme"
+}
