@@ -1,6 +1,6 @@
 "use strict";
-var core_1 = require('@angular/core');
-var split_component_1 = require('./split.component');
+var core_1 = require("@angular/core");
+var split_component_1 = require("./split.component");
 var SplitAreaDirective = (function () {
     function SplitAreaDirective(elementRef, renderer, split) {
         this.elementRef = elementRef;
@@ -54,28 +54,30 @@ var SplitAreaDirective = (function () {
     SplitAreaDirective.prototype.ngOnDestroy = function () {
         this.split.removeArea(this);
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number), 
-        __metadata('design:paramtypes', [Number])
-    ], SplitAreaDirective.prototype, "order", null);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Object), 
-        __metadata('design:paramtypes', [Object])
-    ], SplitAreaDirective.prototype, "size", null);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number), 
-        __metadata('design:paramtypes', [Number])
-    ], SplitAreaDirective.prototype, "minSizePixel", null);
-    SplitAreaDirective = __decorate([
-        core_1.Directive({
-            selector: 'split-area'
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, split_component_1.SplitComponent])
-    ], SplitAreaDirective);
     return SplitAreaDirective;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], SplitAreaDirective.prototype, "order", null);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], SplitAreaDirective.prototype, "size", null);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], SplitAreaDirective.prototype, "minSizePixel", null);
+SplitAreaDirective = __decorate([
+    core_1.Directive({
+        selector: 'split-area'
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef,
+        core_1.Renderer,
+        split_component_1.SplitComponent])
+], SplitAreaDirective);
 exports.SplitAreaDirective = SplitAreaDirective;
 //# sourceMappingURL=splitArea.directive.js.map

@@ -6,6 +6,8 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "noEmitHelpers": true,
+    "outDir": "dist",
+    "rootDir": "src",
     "lib": [
       "es6",
       "es2015",
