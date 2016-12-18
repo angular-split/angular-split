@@ -48,9 +48,9 @@ var SplitGutterDirective = (function () {
         switch (state) {
             case 'disabled':
                 return 'default';
-            case 'horizontal':
-                return 'row-resize';
             case 'vertical':
+                return 'row-resize';
+            case 'horizontal':
                 return 'col-resize';
         }
     };
@@ -58,9 +58,9 @@ var SplitGutterDirective = (function () {
         switch (state) {
             case 'disabled':
                 return '';
-            case 'horizontal':
-                return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
             case 'vertical':
+                return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
+            case 'horizontal':
                 return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
         }
     };

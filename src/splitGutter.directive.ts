@@ -44,10 +44,10 @@ export class SplitGutterDirective {
             case 'disabled':
                 return 'default';
 
-            case 'horizontal':
+            case 'vertical':
                 return 'row-resize';
 
-            case 'vertical':
+            case 'horizontal':
                 return 'col-resize';
         }
     }
@@ -57,10 +57,10 @@ export class SplitGutterDirective {
             case 'disabled':
                 return '';
 
-            case 'horizontal':
+            case 'vertical':
                 return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
 
-            case 'vertical':
+            case 'horizontal':
                 return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
         }
     }

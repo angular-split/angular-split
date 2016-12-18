@@ -23,7 +23,7 @@ var SplitComponent = (function () {
     }
     Object.defineProperty(SplitComponent.prototype, "styleFlexDirection", {
         get: function () {
-            return this.direction === 'vertical' ? 'row' : 'column';
+            return this.direction === 'horizontal' ? 'row' : 'column';
         },
         enumerable: true,
         configurable: true
@@ -121,7 +121,7 @@ var SplitComponent = (function () {
         if (!areaA || !areaB) {
             return;
         }
-        var prop = (this.direction === 'vertical') ? 'offsetWidth' : 'offsetHeight';
+        var prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
         this.sizes.container = this.elementRef.nativeElement[prop];
         this.sizes.areaPixelA = this.sizes.container * areaA.size / 100;
         this.sizes.areaPixelB = this.sizes.container * areaB.size / 100;
@@ -150,7 +150,7 @@ var SplitComponent = (function () {
         this.drag(start, end, areaA, areaB);
     };
     SplitComponent.prototype.drag = function (start, end, areaA, areaB) {
-        var offsetPixel = (this.direction === 'vertical') ? (start.x - end.x) : (start.y - end.y);
+        var offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
         var newSizePixelA = this.sizes.areaPixelA - offsetPixel;
         var newSizePixelB = this.sizes.areaPixelB + offsetPixel;
         if (newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {

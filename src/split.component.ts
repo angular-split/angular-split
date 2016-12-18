@@ -63,7 +63,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Output() dragEnd = new EventEmitter<Array<number>>(false);
 
     @HostBinding('style.flex-direction') get styleFlexDirection() {
-        return this.direction === 'vertical' ? 'row' : 'column';
+        return this.direction === 'horizontal' ? 'row' : 'column';
     }
 
     @HostBinding('style.width') get styleWidth() {
@@ -180,7 +180,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
             return;
         }
 
-        const prop = (this.direction === 'vertical') ? 'offsetWidth' : 'offsetHeight';
+        const prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
         this.sizes.container = this.elementRef.nativeElement[prop];
         this.sizes.areaPixelA = this.sizes.container * areaA.size / 100;
         this.sizes.areaPixelB = this.sizes.container * areaB.size / 100;
@@ -217,7 +217,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private drag(start: Point, end: Point, areaA: IAreaData, areaB: IAreaData) {
-        const offsetPixel = (this.direction === 'vertical') ? (start.x - end.x) : (start.y - end.y);
+        const offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
 
         const newSizePixelA = this.sizes.areaPixelA - offsetPixel;
         const newSizePixelB = this.sizes.areaPixelB + offsetPixel;
