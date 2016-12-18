@@ -3,7 +3,14 @@ import { Directive, Input, ElementRef, Renderer, OnInit, OnDestroy } from '@angu
 import { SplitComponent } from './split.component';
 
 @Directive({
-    selector: 'split-area'
+    selector: 'split-area',
+    host: {
+        'flex-grow': '0',
+        'flex-shrink': '0',
+        'overflow-x': 'hidden',
+        'overflow-y': 'auto',
+        'height': '100%'
+    }
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
   

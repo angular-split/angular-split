@@ -1,5 +1,5 @@
-import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, 
-    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
+    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges } from '@angular/core';
 
 import { SplitAreaDirective } from './splitArea.directive';
 
@@ -27,23 +27,13 @@ interface Point {
             display: flex;
             flex-wrap: nowrap;
             justify-content: flex-start;
-            background: red;
-        }
-
-        /deep/ split-area {
-            flex-grow: 0;
-            flex-shrink: 0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            background: blue;
-            height: /*100px;*/100%;
         }
 
         split-gutter {
             flex-grow: 0;
             flex-shrink: 0;
             flex-basis: 10px;
-            height: /*100px;*/100%;
+            height: 100%;
             background-color: #eeeeee;
             background-position: 50%;
             background-repeat: no-repeat;
@@ -53,30 +43,20 @@ interface Point {
         <ng-content></ng-content>
         <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
             <split-gutter *ngIf="last === false" 
-                        [order]="index*2+1"
-                        [direction]="direction"
-                        [size]="_gutterSize"
-                        [disabled]="_disabled"
-                        (mousedown)="startDragging($event, index*2+1)"
-                        (touchstart)="startDragging($event, index*2+1)"></split-gutter>
+                          [order]="index*2+1"
+                          [direction]="direction"
+                          [size]="_gutterSize"
+                          [disabled]="_disabled"
+                          (mousedown)="startDragging($event, index*2+1)"
+                          (touchstart)="startDragging($event, index*2+1)"></split-gutter>
         </template>`,
 })
-export class SplitComponent implements OnDestroy {
+export class SplitComponent implements OnChanges, OnDestroy {
     @Input() direction: string = 'horizontal';
     @Input() width: number;
     @Input() height: number;
-
-    _gutterSize: number = 10;
-    @Input() set gutterSize(v: number) {
-        this._gutterSize = v;
-        this.refresh();
-    }
-
-    _disabled: boolean = false;
-    @Input() set disabled(v: boolean) {
-        this._disabled = v;
-        this.refresh();
-    }
+    @Input() gutterSize: number = 10;
+    @Input() disabled: boolean = false;
 
     @Output() dragStart = new EventEmitter<Array<number>>(false);
     @Output() dragProgress = new EventEmitter<Array<number>>(false);
@@ -111,6 +91,12 @@ export class SplitComponent implements OnDestroy {
     constructor(private cdRef: ChangeDetectorRef,
                 private elementRef: ElementRef,
                 private renderer: Renderer) {}
+
+    public ngOnChanges(changes: SimpleChanges) {
+        if(changes['gutterSize'] || changes['disabled']) {
+            this.refresh();
+        }
+    }
 
     public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
         this.areas.push({
@@ -150,13 +136,9 @@ export class SplitComponent implements OnDestroy {
     private refresh() {
         this.stopDragging();
 
-        // ORDERS
-
-        // soit toutes les areas ont une prop order et on les utilise, soit on utilise uniquement leur position
+        // ORDERS: set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => !isNaN(a.orderUser)).length;
-
         if(nbCorrectOrder === this.areas.length) {
-            // on sort le tableau par rapport aux prop orderUser
             this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
         }
 
@@ -165,7 +147,7 @@ export class SplitComponent implements OnDestroy {
             a.component.setStyle('order', a.order);
         });
 
-        // SIZES
+        // SIZES: set css 'flex-basis' property depending on user input or equal sizes
         const totalSize = this.areas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
         const nbCorrectSize = this.areas.filter(a => !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
 
@@ -181,14 +163,14 @@ export class SplitComponent implements OnDestroy {
     }
 
     private refreshStyleSizes() {
-        const f = this._gutterSize * this.nbGutters / this.areas.length;
+        const f = this.gutterSize * this.nbGutters / this.areas.length;
         this.areas.forEach(a => a.component.setStyle('flex-basis', `calc( ${ a.size }% - ${ f }px )`));
     }
 
     public startDragging(startEvent: MouseEvent, gutterOrder: number) {
         startEvent.preventDefault();
 
-        if(this._disabled) {
+        if(this.disabled) {
             return;
         }
 
