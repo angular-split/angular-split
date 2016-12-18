@@ -73,7 +73,14 @@ __decorate([
 ], SplitAreaDirective.prototype, "minSizePixel", null);
 SplitAreaDirective = __decorate([
     core_1.Directive({
-        selector: 'split-area'
+        selector: 'split-area',
+        host: {
+            'flex-grow': '0',
+            'flex-shrink': '0',
+            'overflow-x': 'hidden',
+            'overflow-y': 'auto',
+            'height': '100%'
+        }
     }),
     __metadata("design:paramtypes", [core_1.ElementRef,
         core_1.Renderer,

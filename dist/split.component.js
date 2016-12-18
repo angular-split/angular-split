@@ -6,8 +6,8 @@ var SplitComponent = (function () {
         this.elementRef = elementRef;
         this.renderer = renderer;
         this.direction = 'horizontal';
-        this._gutterSize = 10;
-        this._disabled = false;
+        this.gutterSize = 10;
+        this.disabled = false;
         this.dragStart = new core_1.EventEmitter(false);
         this.dragProgress = new core_1.EventEmitter(false);
         this.dragEnd = new core_1.EventEmitter(false);
@@ -21,22 +21,6 @@ var SplitComponent = (function () {
         };
         this.eventsDragFct = [];
     }
-    Object.defineProperty(SplitComponent.prototype, "gutterSize", {
-        set: function (v) {
-            this._gutterSize = v;
-            this.refresh();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SplitComponent.prototype, "disabled", {
-        set: function (v) {
-            this._disabled = v;
-            this.refresh();
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(SplitComponent.prototype, "styleFlexDirection", {
         get: function () {
             return this.direction === 'vertical' ? 'row' : 'column';
@@ -65,6 +49,11 @@ var SplitComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    SplitComponent.prototype.ngOnChanges = function (changes) {
+        if (changes['gutterSize'] || changes['disabled']) {
+            this.refresh();
+        }
+    };
     SplitComponent.prototype.addArea = function (component, orderUser, sizeUser, minPixel) {
         this.areas.push({
             component: component,
@@ -95,18 +84,16 @@ var SplitComponent = (function () {
     SplitComponent.prototype.refresh = function () {
         var _this = this;
         this.stopDragging();
-        // ORDERS
-        // soit toutes les areas ont une prop order et on les utilise, soit on utilise uniquement leur position
+        // ORDERS: set css 'order' property depending on user input or added order
         var nbCorrectOrder = this.areas.filter(function (a) { return !isNaN(a.orderUser); }).length;
         if (nbCorrectOrder === this.areas.length) {
-            // on sort le tableau par rapport aux prop orderUser
             this.areas.sort(function (a, b) { return +a.orderUser - +b.orderUser; });
         }
         this.areas.forEach(function (a, i) {
             a.order = i * 2;
             a.component.setStyle('order', a.order);
         });
-        // SIZES
+        // SIZES: set css 'flex-basis' property depending on user input or equal sizes
         var totalSize = this.areas.map(function (a) { return a.sizeUser; }).reduce(function (acc, s) { return acc + s; }, 0);
         var nbCorrectSize = this.areas.filter(function (a) { return !isNaN(a.sizeUser) && a.sizeUser >= _this.minPercent; }).length;
         if (totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.areas.length) {
@@ -120,13 +107,13 @@ var SplitComponent = (function () {
         this.cdRef.markForCheck();
     };
     SplitComponent.prototype.refreshStyleSizes = function () {
-        var f = this._gutterSize * this.nbGutters / this.areas.length;
+        var f = this.gutterSize * this.nbGutters / this.areas.length;
         this.areas.forEach(function (a) { return a.component.setStyle('flex-basis', "calc( " + a.size + "% - " + f + "px )"); });
     };
     SplitComponent.prototype.startDragging = function (startEvent, gutterOrder) {
         var _this = this;
         startEvent.preventDefault();
-        if (this._disabled) {
+        if (this.disabled) {
             return;
         }
         var areaA = this.areas.find(function (a) { return a.order === gutterOrder - 1; });
@@ -233,14 +220,12 @@ __decorate([
 ], SplitComponent.prototype, "height", void 0);
 __decorate([
     core_1.Input(),
-    __metadata("design:type", Number),
-    __metadata("design:paramtypes", [Number])
-], SplitComponent.prototype, "gutterSize", null);
+    __metadata("design:type", Number)
+], SplitComponent.prototype, "gutterSize", void 0);
 __decorate([
     core_1.Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], SplitComponent.prototype, "disabled", null);
+    __metadata("design:type", Boolean)
+], SplitComponent.prototype, "disabled", void 0);
 __decorate([
     core_1.Output(),
     __metadata("design:type", Object)
@@ -272,8 +257,8 @@ SplitComponent = __decorate([
     core_1.Component({
         selector: 'split',
         changeDetection: core_1.ChangeDetectionStrategy.OnPush,
-        styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            background: red;\n        }\n\n        /deep/ split-area {\n            flex-grow: 0;\n            flex-shrink: 0;\n            overflow-x: hidden;\n            overflow-y: auto;\n            background: blue;\n            height: /*100px;*/100%;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: /*100px;*/100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n    "],
-        template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                        [order]=\"index*2+1\"\n                        [direction]=\"direction\"\n                        [size]=\"_gutterSize\"\n                        [disabled]=\"_disabled\"\n                        (mousedown)=\"startDragging($event, index*2+1)\"\n                        (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
+        styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n    "],
+        template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"_gutterSize\"\n                          [disabled]=\"_disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
     }),
     __metadata("design:paramtypes", [core_1.ChangeDetectorRef,
         core_1.ElementRef,
