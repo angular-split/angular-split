@@ -5,11 +5,11 @@ import { SplitComponent } from './split.component';
 @Directive({
     selector: 'split-area',
     host: {
-        'flex-grow': '0',
-        'flex-shrink': '0',
-        'overflow-x': 'hidden',
-        'overflow-y': 'auto',
-        'height': '100%'
+        'style.flex-grow': '0',
+        'style.flex-shrink': '0',
+        'style.overflow-x': 'hidden',
+        'style.overflow-y': 'auto',
+        'style.height': '100%'
     }
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
