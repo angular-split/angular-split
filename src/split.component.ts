@@ -6,10 +6,10 @@ import { SplitAreaDirective } from './splitArea.directive';
 
 interface IAreaData {
     component: SplitAreaDirective;
-    sizeUser: number;
-    size?: number;
-    orderUser: number;
-    order?: number;
+    sizeUser: number | null;
+    size: number;
+    orderUser: number | null;
+    order: number;
     minPixel: number;
 }
 
@@ -78,15 +78,13 @@ export class SplitComponent implements OnChanges, OnDestroy {
         return this.areas.length - 1;
     }
 
-    minPercent: number = 5;
-    areas: Array<IAreaData> = [];
-    isDragging: boolean = false;
-    sizes = {
-        container: null, 
-        areaPixelA: null,
-        areaPixelB: null
-    };
-    eventsDragFct: Array<Function> = [];
+    private minPercent: number = 5;
+    private areas: Array<IAreaData> = [];
+    private isDragging: boolean = false;
+    private containerSize: number = 0;
+    private areaASize: number = 0;
+    private areaBSize: number = 0;
+    private eventsDragFct: Array<Function> = [];
 
     constructor(private cdRef: ChangeDetectorRef,
                 private elementRef: ElementRef,
@@ -102,7 +100,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.areas.push({
             component, 
             orderUser,
+            order: -1,
             sizeUser,
+            size: -1,
             minPixel
         });
 
@@ -110,7 +110,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     public updateArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
-        const item: IAreaData = this.areas.find(a => a.component === component);
+        const item = this.areas.find(a => a.component === component);
 
         if(item) {
             item.orderUser = orderUser;
@@ -122,7 +122,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     public removeArea(area: SplitAreaDirective) {
-        const item: IAreaData = this.areas.find(a => a.component === area);
+        const item = this.areas.find(a => a.component === area);
 
         if(item) {
             const index = this.areas.indexOf(item);
@@ -136,8 +136,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     private refresh() {
         this.stopDragging();
 
-        // ORDERS: set css 'order' property depending on user input or added order
-        const nbCorrectOrder = this.areas.filter(a => !isNaN(a.orderUser)).length;
+        // ORDERS: Set css 'order' property depending on user input or added order
+        const nbCorrectOrder = this.areas.filter(a => a.orderUser && !isNaN(a.orderUser)).length;
         if(nbCorrectOrder === this.areas.length) {
             this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
         }
@@ -147,15 +147,15 @@ export class SplitComponent implements OnChanges, OnDestroy {
             a.component.setStyle('order', a.order);
         });
 
-        // SIZES: set css 'flex-basis' property depending on user input or equal sizes
+        // SIZES: Set css 'flex-basis' property depending on user input or equal sizes
         const totalSize = this.areas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
-        const nbCorrectSize = this.areas.filter(a => !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
+        const nbCorrectSize = this.areas.filter(a => a.sizeUser && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
 
         if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.areas.length) {
             const size = Number((100 / this.areas.length).toFixed(3));
             this.areas.forEach(a => a.size = size);
         } else {
-            this.areas.forEach(a => a.size = a.sizeUser);
+            this.areas.forEach(a => a.size = Number(a.sizeUser));
         }
 
         this.refreshStyleSizes();
@@ -181,9 +181,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
         }
 
         const prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
-        this.sizes.container = this.elementRef.nativeElement[prop];
-        this.sizes.areaPixelA = this.sizes.container * areaA.size / 100;
-        this.sizes.areaPixelB = this.sizes.container * areaB.size / 100;
+        this.containerSize = this.elementRef.nativeElement[prop];
+        this.areaASize = this.containerSize * areaA.size / 100;
+        this.areaBSize = this.containerSize * areaB.size / 100;
 
         const start: Point = {
             x: startEvent.screenX,
@@ -219,15 +219,15 @@ export class SplitComponent implements OnChanges, OnDestroy {
     private drag(start: Point, end: Point, areaA: IAreaData, areaB: IAreaData) {
         const offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
 
-        const newSizePixelA = this.sizes.areaPixelA - offsetPixel;
-        const newSizePixelB = this.sizes.areaPixelB + offsetPixel;
+        const newSizePixelA = this.areaASize - offsetPixel;
+        const newSizePixelB = this.areaBSize + offsetPixel;
 
         if(newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
             return;
         }
 
-        let newSizePercentA = newSizePixelA / this.sizes.container * 100;
-        let newSizePercentB = newSizePixelB / this.sizes.container * 100;
+        let newSizePercentA = newSizePixelA / this.containerSize * 100;
+        let newSizePercentB = newSizePixelB / this.containerSize * 100;
 
         if(newSizePercentA <= this.minPercent) {
             newSizePercentA = this.minPercent;
@@ -256,19 +256,21 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
         while(this.eventsDragFct.length > 0) {
             const fct = this.eventsDragFct.pop();
-            fct();
+            if(fct) {
+                fct();
+            }
         }
 
-        this.sizes.container = null;
-        this.sizes.areaPixelA = null;
-        this.sizes.areaPixelB = null;
+        this.containerSize = 0;
+        this.areaASize = 0;
+        this.areaBSize = 0;
 
         this.isDragging = false;
         this.notify('end');
     }
 
     private notify(type: string) {
-        const data = this.areas.map(a => a.size);
+        const data: Array<number> = this.areas.map(a => a.size);
 
         switch(type) {
             case 'start':

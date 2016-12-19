@@ -51,7 +51,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     public unlockEvents() {
         while(this.eventsLockFct.length > 0) {
             const fct = this.eventsLockFct.pop();
-            fct();
+            if(fct) {
+                fct();
+            }
         }
     }
 

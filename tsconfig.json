@@ -5,7 +5,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "noEmitHelpers": true,
+    "noEmitHelpers": false,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "noEmitOnError": true,
     "outDir": "dist",
     "rootDir": "src",
     "lib": [
