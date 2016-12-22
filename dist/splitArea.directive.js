@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var split_component_1 = require('./split.component');
+var core_1 = require("@angular/core");
+var split_component_1 = require("./split.component");
 var SplitAreaDirective = (function () {
     function SplitAreaDirective(elementRef, renderer, split) {
         this.elementRef = elementRef;
@@ -65,35 +65,37 @@ var SplitAreaDirective = (function () {
     SplitAreaDirective.prototype.ngOnDestroy = function () {
         this.split.removeArea(this);
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number), 
-        __metadata('design:paramtypes', [Number])
-    ], SplitAreaDirective.prototype, "order", null);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Object), 
-        __metadata('design:paramtypes', [Object])
-    ], SplitAreaDirective.prototype, "size", null);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number), 
-        __metadata('design:paramtypes', [Number])
-    ], SplitAreaDirective.prototype, "minSizePixel", null);
-    SplitAreaDirective = __decorate([
-        core_1.Directive({
-            selector: 'split-area',
-            host: {
-                '[style.flex-grow]': '"0"',
-                '[style.flex-shrink]': '"0"',
-                '[style.overflow-x]': '"hidden"',
-                '[style.overflow-y]': '"auto"',
-                '[style.height]': '"100%"'
-            }
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, split_component_1.SplitComponent])
-    ], SplitAreaDirective);
     return SplitAreaDirective;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], SplitAreaDirective.prototype, "order", null);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], SplitAreaDirective.prototype, "size", null);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], SplitAreaDirective.prototype, "minSizePixel", null);
+SplitAreaDirective = __decorate([
+    core_1.Directive({
+        selector: 'split-area',
+        host: {
+            '[style.flex-grow]': '"0"',
+            '[style.flex-shrink]': '"0"',
+            '[style.overflow-x]': '"hidden"',
+            '[style.overflow-y]': '"auto"',
+            '[style.height]': '"100%"'
+        }
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef,
+        core_1.Renderer,
+        split_component_1.SplitComponent])
+], SplitAreaDirective);
 exports.SplitAreaDirective = SplitAreaDirective;
 //# sourceMappingURL=splitArea.directive.js.map

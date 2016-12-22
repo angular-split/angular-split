@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var SplitComponent = (function () {
     function SplitComponent(cdRef, elementRef, renderer) {
         this.cdRef = cdRef;
@@ -215,60 +215,65 @@ var SplitComponent = (function () {
     SplitComponent.prototype.ngOnDestroy = function () {
         this.stopDragging();
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], SplitComponent.prototype, "direction", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], SplitComponent.prototype, "width", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], SplitComponent.prototype, "height", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], SplitComponent.prototype, "gutterSize", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], SplitComponent.prototype, "disabled", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "dragStart", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "dragProgress", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "dragEnd", void 0);
-    __decorate([
-        core_1.HostBinding('style.flex-direction'), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "styleFlexDirection", null);
-    __decorate([
-        core_1.HostBinding('style.width'), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "styleWidth", null);
-    __decorate([
-        core_1.HostBinding('style.height'), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "styleHeight", null);
-    SplitComponent = __decorate([
-        core_1.Component({
-            selector: 'split',
-            changeDetection: core_1.ChangeDetectionStrategy.OnPush,
-            styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n    "],
-            template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"_gutterSize\"\n                          [disabled]=\"_disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
-        }), 
-        __metadata('design:paramtypes', [core_1.ChangeDetectorRef, core_1.ElementRef, core_1.Renderer])
-    ], SplitComponent);
     return SplitComponent;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], SplitComponent.prototype, "direction", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number)
+], SplitComponent.prototype, "width", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number)
+], SplitComponent.prototype, "height", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number)
+], SplitComponent.prototype, "gutterSize", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
+], SplitComponent.prototype, "disabled", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], SplitComponent.prototype, "dragStart", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], SplitComponent.prototype, "dragProgress", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], SplitComponent.prototype, "dragEnd", void 0);
+__decorate([
+    core_1.HostBinding('style.flex-direction'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [])
+], SplitComponent.prototype, "styleFlexDirection", null);
+__decorate([
+    core_1.HostBinding('style.width'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [])
+], SplitComponent.prototype, "styleWidth", null);
+__decorate([
+    core_1.HostBinding('style.height'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [])
+], SplitComponent.prototype, "styleHeight", null);
+SplitComponent = __decorate([
+    core_1.Component({
+        selector: 'split',
+        changeDetection: core_1.ChangeDetectionStrategy.OnPush,
+        styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n    "],
+        template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"_gutterSize\"\n                          [disabled]=\"_disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
+    }),
+    __metadata("design:paramtypes", [core_1.ChangeDetectorRef,
+        core_1.ElementRef,
+        core_1.Renderer])
+], SplitComponent);
 exports.SplitComponent = SplitComponent;
 //# sourceMappingURL=split.component.js.map
