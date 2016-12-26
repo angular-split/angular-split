@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,33 +7,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var split_component_1 = require("./split.component");
-var splitArea_directive_1 = require("./splitArea.directive");
-var splitGutter_directive_1 = require("./splitGutter.directive");
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SplitComponent } from './split.component';
+import { SplitAreaDirective } from './splitArea.directive';
+import { SplitGutterDirective } from './splitGutter.directive';
 var AngularSplitModule = (function () {
     function AngularSplitModule() {
     }
     return AngularSplitModule;
 }());
 AngularSplitModule = __decorate([
-    core_1.NgModule({
+    NgModule({
         imports: [
-            common_1.CommonModule
+            CommonModule
         ],
         declarations: [
-            split_component_1.SplitComponent,
-            splitArea_directive_1.SplitAreaDirective,
-            splitGutter_directive_1.SplitGutterDirective
+            SplitComponent,
+            SplitAreaDirective,
+            SplitGutterDirective
         ],
         exports: [
-            split_component_1.SplitComponent,
-            splitArea_directive_1.SplitAreaDirective,
-            splitGutter_directive_1.SplitGutterDirective
+            SplitComponent,
+            SplitAreaDirective,
+            SplitGutterDirective
         ]
     }),
     __metadata("design:paramtypes", [])
 ], AngularSplitModule);
-exports.AngularSplitModule = AngularSplitModule;
+export { AngularSplitModule };
 //# sourceMappingURL=angularSplit.module.js.map
