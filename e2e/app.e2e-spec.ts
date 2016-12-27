@@ -1,10 +1,10 @@
-import { AngularSplitPage } from './app.po';
+import { TempWebsitePage } from './app.po';
 
-describe('angular-split App', function() {
-  let page: AngularSplitPage;
+describe('temp-website App', function() {
+  let page: TempWebsitePage;
 
   beforeEach(() => {
-    page = new AngularSplitPage();
+    page = new TempWebsitePage();
   });
 
   it('should display message saying app works', () => {
