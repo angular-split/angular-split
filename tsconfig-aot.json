@@ -1,4 +1,8 @@
 {
+  "angularCompilerOptions": {
+    "genDir": "dist",
+    "skipMetadataEmit" : false
+  },
   "compilerOptions": {
     "target": "ES5",
     "module": "es2015",
@@ -27,9 +31,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "angularCompilerOptions": {
-      "genDir": "aot",
-      "skipMetadataEmit" : false
- }
+  ]
 }
