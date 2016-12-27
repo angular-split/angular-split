@@ -45,8 +45,8 @@ interface Point {
             <split-gutter *ngIf="last === false" 
                           [order]="index*2+1"
                           [direction]="direction"
-                          [size]="_gutterSize"
-                          [disabled]="_disabled"
+                          [size]="gutterSize"
+                          [disabled]="disabled"
                           (mousedown)="startDragging($event, index*2+1)"
                           (touchstart)="startDragging($event, index*2+1)"></split-gutter>
         </template>`,
@@ -137,7 +137,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.stopDragging();
 
         // ORDERS: Set css 'order' property depending on user input or added order
-        const nbCorrectOrder = this.areas.filter(a => a.orderUser && !isNaN(a.orderUser)).length;
+        const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
         if(nbCorrectOrder === this.areas.length) {
             this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
         }
@@ -149,7 +149,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
         // SIZES: Set css 'flex-basis' property depending on user input or equal sizes
         const totalSize = this.areas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
-        const nbCorrectSize = this.areas.filter(a => a.sizeUser && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
+        const nbCorrectSize = this.areas.filter(a => a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
 
         if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.areas.length) {
             const size = Number((100 / this.areas.length).toFixed(3));
