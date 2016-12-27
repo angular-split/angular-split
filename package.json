@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "^2.3.1",
     "@angular/router": "^3.3.1",
     "@types/lodash": "^4.14.44",
-    "angular-split": "^0.1.12",
+    "angular-split": "^0.1.14",
     "bootstrap": "^4.0.0-alpha.5",
     "core-js": "^2.4.1",
     "lodash": "^4.17.3",
