@@ -1,13 +1,13 @@
 {
   "name": "angular-split",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Angular (2+) UI library to split views.",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint --force \"src/**/*.ts\"",
-    "build": "rimraf dist && rimraf aot && \"./node_modules/.bin/ngc\" -p tsconfig-aot.json && tsc"
+    "build": "rimraf dist && \"./node_modules/.bin/ngc\" -p tsconfig-aot.json && tsc"
   },
   "repository": {
     "type": "git",

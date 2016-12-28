@@ -134,10 +134,22 @@ var SplitComponent = (function () {
         this.containerSize = this.elementRef.nativeElement[prop];
         this.areaASize = this.containerSize * areaA.size / 100;
         this.areaBSize = this.containerSize * areaB.size / 100;
-        var start = {
-            x: startEvent.screenX,
-            y: startEvent.screenY
-        };
+        var start;
+        if (startEvent instanceof MouseEvent) {
+            start = {
+                x: startEvent.screenX,
+                y: startEvent.screenY
+            };
+        }
+        else if (startEvent instanceof TouchEvent) {
+            start = {
+                x: startEvent.touches[0].screenX,
+                y: startEvent.touches[0].screenY
+            };
+        }
+        else {
+            return;
+        }
         this.eventsDragFct.push(this.renderer.listenGlobal('document', 'mousemove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
         this.eventsDragFct.push(this.renderer.listenGlobal('document', 'touchmove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
         this.eventsDragFct.push(this.renderer.listenGlobal('document', 'mouseup', function (e) { return _this.stopDragging(); }));
@@ -152,10 +164,22 @@ var SplitComponent = (function () {
         if (!this.isDragging) {
             return;
         }
-        var end = {
-            x: event.screenX,
-            y: event.screenY
-        };
+        var end;
+        if (event instanceof MouseEvent) {
+            end = {
+                x: event.screenX,
+                y: event.screenY
+            };
+        }
+        else if (event instanceof TouchEvent) {
+            end = {
+                x: event.touches[0].screenX,
+                y: event.touches[0].screenY
+            };
+        }
+        else {
+            return;
+        }
         this.drag(start, end, areaA, areaB);
     };
     SplitComponent.prototype.drag = function (start, end, areaA, areaB) {

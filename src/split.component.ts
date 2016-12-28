@@ -167,7 +167,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.areas.forEach(a => a.component.setStyle('flex-basis', `calc( ${ a.size }% - ${ f }px )`));
     }
 
-    public startDragging(startEvent: MouseEvent, gutterOrder: number) {
+    public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number) {
         startEvent.preventDefault();
 
         if(this.disabled) {
@@ -185,10 +185,22 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.areaASize = this.containerSize * areaA.size / 100;
         this.areaBSize = this.containerSize * areaB.size / 100;
 
-        const start: Point = {
-            x: startEvent.screenX,
-            y: startEvent.screenY
-        };
+        let start: Point;
+        if(startEvent instanceof MouseEvent) {
+            start = {
+                x: startEvent.screenX,
+                y: startEvent.screenY
+            };
+        }
+        else if(startEvent instanceof TouchEvent) {
+            start = {
+                x: startEvent.touches[0].screenX,
+                y: startEvent.touches[0].screenY
+            };
+        }
+        else {
+            return;
+        }
 
         this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mousemove', e => this.dragEvent(e, start, areaA, areaB)) );
         this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchmove', e => this.dragEvent(e, start, areaA, areaB)) );
@@ -203,15 +215,27 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.notify('start');
     }
 
-    private dragEvent(event: MouseEvent, start: Point, areaA: IAreaData, areaB: IAreaData) {
+    private dragEvent(event: MouseEvent | TouchEvent, start: Point, areaA: IAreaData, areaB: IAreaData) {
         if(!this.isDragging) {
             return;
         }
 
-        const end: Point = {
-            x: event.screenX,
-            y: event.screenY
-        };
+        let end: Point;
+        if(event instanceof MouseEvent) {
+            end = {
+                x: event.screenX,
+                y: event.screenY
+            };
+        }
+        else if(event instanceof TouchEvent) {
+            end = {
+                x: event.touches[0].screenX,
+                y: event.touches[0].screenY
+            };
+        }
+        else {
+            return;
+        }
 
         this.drag(start, end, areaA, areaB);
     }
