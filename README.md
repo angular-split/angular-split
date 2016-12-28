@@ -1,13 +1,7 @@
-#[WIP] angular-split
+# angular-split
+Angular (2+) UI library to split views.
 
-Allow you to split any views horizontally or vertically inside your Angular (**2+**) application using two simples components `<split>` and `<split-area>`
+[![npm version](https://badge.fury.io/js/angular-split.svg)](https://badge.fury.io/js/angular-split)
 
-
-**Note:**
-
-Previously, I coded an angular (**2+**) wrapper to Split.js library ([ng2-split](https://bertrandg.github.io/ng2-split)) but I decided to rewrite it purely in Angular for following reasons:
-
-- No more dependency except Angular.
-- AOT compilation compliant.
-- Use latest Flexbox CSS grid system.
-- Fun!
+View documentation and examples:
+[https://bertrandg.github.io/angular-split/](https://bertrandg.github.io/angular-split/)
