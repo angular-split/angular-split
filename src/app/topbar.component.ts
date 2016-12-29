@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { Router } from '@angular/router'
+import { Router, NavigationStart } from '@angular/router'
 
 @Component({
   selector: 'sp-topbar',
@@ -12,6 +12,16 @@ import { Router } from '@angular/router'
 
     .navbar-toggler {
       float: right;
+      margin-right: 120px;
+    }
+
+    @media (max-width: 992px) {
+      .container-fluid {
+        padding-left: 0;
+      }
+      a.navbar-brand {
+        margin-right: 0;
+      }
     }
   `],
   host: {
@@ -50,5 +60,9 @@ import { Router } from '@angular/router'
 export class TopbarComponent {
     isCollapsed: boolean = true
 
-    constructor(public router: Router) {}
+    constructor(private router: Router) {
+        this.router.events.filter(e => e instanceof NavigationStart).subscribe(event => {
+            this.isCollapsed = true;
+        });
+    }
 }

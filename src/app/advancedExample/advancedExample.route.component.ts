@@ -104,6 +104,8 @@ const defaultConfig: IConfig = {
                                                 class="btn btn-outline-warning">Disable splitters</button>
                                         <br><br>
 								        <button (click)="resetConfig()" class="btn btn-outline-warning">Reset localStorage</button>
+                                        <br><br>
+								        <a href="https://github.com/bertrandg/angular-split/blob/website-src/src/app/advancedExample/advancedExample.route.component.ts" class="btn btn-outline-warning">View sources</a>
                                     </p>
                                     <p *ngSwitchDefault class="panel">{{ row.type }}</p>
                                 </div>

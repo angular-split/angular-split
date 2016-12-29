@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule }   from '@angular/router';
+import { FormsModule }   from '@angular/forms';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-import { CollapseModule } from 'ng2-bootstrap'
+import { ButtonsModule, CollapseModule } from 'ng2-bootstrap'
+import { Ng2PageScrollModule } from 'ng2-page-scroll';
 import { AngularSplitModule } from 'angular-split'
 
 import { AppComponent } from './app.component';
@@ -32,7 +34,10 @@ const routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
+    FormsModule,
+    ButtonsModule,
     CollapseModule,
+    Ng2PageScrollModule.forRoot(),
     AngularSplitModule
   ],
   providers: [{
@@ -40,4 +45,4 @@ const routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
