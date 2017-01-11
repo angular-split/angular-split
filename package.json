@@ -1,5 +1,5 @@
 {
-  "name": "temp-website",
+  "name": "angular-split-demo-website",
   "version": "0.0.0",
   "license": "MIT",
   "angular-cli": {},
@@ -22,8 +22,8 @@
     "@angular/platform-browser-dynamic": "^2.3.1",
     "@angular/router": "^3.3.1",
     "@types/lodash": "^4.14.44",
-    "angular-split": "^0.1.15",
-    "bootstrap": "^4.0.0-alpha.5",
+    "angular-split": "0.1.16",
+    "bootstrap": "4.0.0-alpha.5",
     "core-js": "^2.4.1",
     "lodash": "^4.17.3",
     "ng2-bootstrap": "^1.1.16-9",

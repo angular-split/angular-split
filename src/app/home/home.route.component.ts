@@ -26,7 +26,6 @@ import { Component } from '@angular/core';
   `],
   template: `
     <div class="container">
-
         <div class="jumbotron">
             <h1>angular-split 
               <a href="https://badge.fury.io/js/angular-split"><img src="https://badge.fury.io/js/angular-split.svg" alt="npm version" height="18"></a>
@@ -37,6 +36,14 @@ import { Component } from '@angular/core';
             <br>
             <h4>Add angular module to your app module:</h4>
             <pre [innerText]="code2"></pre>
+            <p>If you are using <b>angular-cli</b> / <b>webpack</b>, that's it!</p>
+            <br>
+            <h4>Systemjs:</h4>
+            <p>Add this to your config:</p>
+            <pre [innerText]="code3"></pre>
+            <br>
+            <h4>Bug report:</h4>
+            <p>If you find a bug, open an issue with this <a href="https://plnkr.co/edit/tEjcXo?p=preview">plunker</a> showing it.</p>
             <br>
             <button class="btn btn-outline-warning" routerLink="/documentation">Documentation</button>
             <button class="btn btn-outline-warning" routerLink="/examples">Examples</button>
@@ -73,4 +80,12 @@ export class HomeComponent {
   bootstrap: [AppComponent]
 })
 export class AppModule {}`
+
+  code3: string = `System.config({
+  ...
+  map: {
+    ...
+    'angular-split': 'node_modules/angular-split/dist/index.js'
+  }
+});`
 }
