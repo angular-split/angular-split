@@ -9,11 +9,12 @@ import { SplitComponent } from './split.component';
         '[style.flex-shrink]': '"0"',
         '[style.overflow-x]': '"hidden"',
         '[style.overflow-y]': '"auto"',
-        '[style.height]': '"100%"'
+        '[style.height]': '"100%"',
+        '[style.display]': 'visibility'
     }
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
-  
+
     private _order: number | null = null;
     @Input() set order(v: number) {
         this._order = !isNaN(v) ? v : null;
@@ -32,11 +33,27 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.split.updateArea(this, this._order, this._size, this._minSizePixel);
     }
 
+    private _visible: boolean = true;
+    @Input() set visible(v: boolean) {
+        this.visibility = v ? "block" : "none";
+        this._visible = v;
+
+        if (this.visible) 
+            this.split.showArea(this);
+        else
+            this.split.hideArea(this);
+    }
+    get visible(): boolean {
+        return this._visible;
+    }
+
+    visibility: string = "block";
+
     eventsLockFct: Array<Function> = [];
 
     constructor(private elementRef: ElementRef,
-                private renderer: Renderer,
-                private split: SplitComponent) {}
+        private renderer: Renderer,
+        private split: SplitComponent) { }
 
     public ngOnInit() {
         this.split.addArea(this, this._order, this._size, this._minSizePixel);
@@ -44,14 +61,14 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
 
     public lockEvents() {
-        this.eventsLockFct.push( this.renderer.listen(this.elementRef.nativeElement, 'selectstart', e => false) );
-        this.eventsLockFct.push( this.renderer.listen(this.elementRef.nativeElement, 'dragstart', e => false) );
+        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'selectstart', e => false));
+        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'dragstart', e => false));
     }
 
     public unlockEvents() {
-        while(this.eventsLockFct.length > 0) {
+        while (this.eventsLockFct.length > 0) {
             const fct = this.eventsLockFct.pop();
-            if(fct) {
+            if (fct) {
                 fct();
             }
         }

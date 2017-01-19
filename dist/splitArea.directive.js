@@ -1,6 +1,16 @@
-import { Directive, Input, ElementRef, Renderer } from '@angular/core';
-import { SplitComponent } from './split.component';
-export var SplitAreaDirective = (function () {
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var core_1 = require('@angular/core');
+var split_component_1 = require('./split.component');
+var SplitAreaDirective = (function () {
     function SplitAreaDirective(elementRef, renderer, split) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -8,6 +18,8 @@ export var SplitAreaDirective = (function () {
         this._order = null;
         this._size = null;
         this._minSizePixel = 0;
+        this._visible = true;
+        this.visibility = "block";
         this.eventsLockFct = [];
     }
     Object.defineProperty(SplitAreaDirective.prototype, "order", {
@@ -34,6 +46,21 @@ export var SplitAreaDirective = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(SplitAreaDirective.prototype, "visible", {
+        get: function () {
+            return this._visible;
+        },
+        set: function (v) {
+            this.visibility = v ? "block" : "none";
+            this._visible = v;
+            if (this.visible)
+                this.split.showArea(this);
+            else
+                this.split.hideArea(this);
+        },
+        enumerable: true,
+        configurable: true
+    });
     SplitAreaDirective.prototype.ngOnInit = function () {
         this.split.addArea(this, this._order, this._size, this._minSizePixel);
     };
@@ -55,29 +82,41 @@ export var SplitAreaDirective = (function () {
     SplitAreaDirective.prototype.ngOnDestroy = function () {
         this.split.removeArea(this);
     };
-    SplitAreaDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: 'split-area',
-                    host: {
-                        '[style.flex-grow]': '"0"',
-                        '[style.flex-shrink]': '"0"',
-                        '[style.overflow-x]': '"hidden"',
-                        '[style.overflow-y]': '"auto"',
-                        '[style.height]': '"100%"'
-                    }
-                },] },
-    ];
-    /** @nocollapse */
-    SplitAreaDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer, },
-        { type: SplitComponent, },
-    ]; };
-    SplitAreaDirective.propDecorators = {
-        'order': [{ type: Input },],
-        'size': [{ type: Input },],
-        'minSizePixel': [{ type: Input },],
-    };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Number), 
+        __metadata('design:paramtypes', [Number])
+    ], SplitAreaDirective.prototype, "order", null);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object), 
+        __metadata('design:paramtypes', [Object])
+    ], SplitAreaDirective.prototype, "size", null);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Number), 
+        __metadata('design:paramtypes', [Number])
+    ], SplitAreaDirective.prototype, "minSizePixel", null);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean), 
+        __metadata('design:paramtypes', [Boolean])
+    ], SplitAreaDirective.prototype, "visible", null);
+    SplitAreaDirective = __decorate([
+        core_1.Directive({
+            selector: 'split-area',
+            host: {
+                '[style.flex-grow]': '"0"',
+                '[style.flex-shrink]': '"0"',
+                '[style.overflow-x]': '"hidden"',
+                '[style.overflow-y]': '"auto"',
+                '[style.height]': '"100%"',
+                '[style.display]': 'visibility'
+            }
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, split_component_1.SplitComponent])
+    ], SplitAreaDirective);
     return SplitAreaDirective;
 }());
-//# sourceMappingURL=/home/adebisi/Public/splitsplitsplit/splitArea.directive.js.map
+exports.SplitAreaDirective = SplitAreaDirective;
+//# sourceMappingURL=C:/dev/angular-split/splitArea.directive.js.map
