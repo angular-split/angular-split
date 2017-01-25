@@ -10,7 +10,7 @@ import { SplitComponent } from './split.component';
         '[style.overflow-x]': '"hidden"',
         '[style.overflow-y]': '"auto"',
         '[style.height]': '"100%"',
-        '[style.display]': 'visibility'
+        '[class.notshow]': '!visible'
     }
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
@@ -38,10 +38,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.visibility = v ? "block" : "none";
         this._visible = v;
 
-        if (this.visible) 
+        if (this.visible) {
             this.split.showArea(this);
-        else
+        } else {
             this.split.hideArea(this);
+        }
     }
     get visible(): boolean {
         return this._visible;
@@ -58,7 +59,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     public ngOnInit() {
         this.split.addArea(this, this._order, this._size, this._minSizePixel);
     }
-
 
     public lockEvents() {
         this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'selectstart', e => false));

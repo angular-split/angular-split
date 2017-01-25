@@ -29,6 +29,11 @@ interface Point {
             display: flex;
             flex-wrap: nowrap;
             justify-content: flex-start;
+            flex-direction: row;
+        }
+
+        :host.vertical {
+            flex-direction: column;
         }
 
         split-gutter {
@@ -39,6 +44,29 @@ interface Point {
             background-color: #eeeeee;
             background-position: 50%;
             background-repeat: no-repeat;
+        }
+
+        :host.vertical split-gutter {
+            width: 100%;
+        }
+
+        :host /deep/ split-area {
+            transition: flex-basis 0.3s;
+        }  
+
+        :host.notrans /deep/ split-area {
+            transition: none !important;
+        }      
+
+        :host /deep/ split-area.notshow {
+            flex-basis: 0 !important;
+            overflow: hidden !important;
+        }      
+
+        :host.vertical /deep/ split-area.notshow {
+            max-width: 0;
+            flex-basis: 0 !important;
+            overflow: hidden !important;
         }
     `],
     template: `
@@ -60,13 +88,19 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() height: number;
     @Input() gutterSize: number = 10;
     @Input() disabled: boolean = false;
+    @Input() animateAreaToggle: boolean = false;
 
     @Output() dragStart = new EventEmitter<Array<number>>(false);
     @Output() dragProgress = new EventEmitter<Array<number>>(false);
     @Output() dragEnd = new EventEmitter<Array<number>>(false);
 
-    @HostBinding('style.flex-direction') get styleFlexDirection() {
-        return this.direction === 'horizontal' ? 'row' : 'column';
+    @HostBinding('class.vertical') get styleFlexDirection() {
+        return this.direction === 'vertical';
+    }
+
+    @HostBinding('class.notrans') get dragging() {
+        // prevent animation of areas when animateAreaToggle is false, or resizing
+        return !this.animateAreaToggle || this.isDragging;
     }
 
     @HostBinding('style.width') get styleWidth() {
@@ -159,7 +193,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     private refresh() {
         this.stopDragging();
 
-        var visibleAreas = this.visibleAreas;
+        let visibleAreas = this.visibleAreas;
 
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
@@ -188,7 +222,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private refreshStyleSizes() {
-        var visibleAreas = this.visibleAreas;
+        let visibleAreas = this.visibleAreas;
 
         const f = this.gutterSize * this.nbGutters / visibleAreas.length;
         visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
@@ -218,14 +252,12 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 x: startEvent.screenX,
                 y: startEvent.screenY
             };
-        }
-        else if (startEvent instanceof TouchEvent) {
+        } else if (startEvent instanceof TouchEvent) {
             start = {
                 x: startEvent.touches[0].screenX,
                 y: startEvent.touches[0].screenY
             };
-        }
-        else {
+        } else {
             return;
         }
 
@@ -253,14 +285,12 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 x: event.screenX,
                 y: event.screenY
             };
-        }
-        else if (event instanceof TouchEvent) {
+        } else if (event instanceof TouchEvent) {
             end = {
                 x: event.touches[0].screenX,
                 y: event.touches[0].screenY
             };
-        }
-        else {
+        } else {
             return;
         }
 
