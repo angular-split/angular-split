@@ -1,7 +1,7 @@
 {
   "project": {
-    "version": "1.0.0-beta.24",
-    "name": "temp-website"
+    "version": "1.0.0-beta.26",
+    "name": "angular-split-demo-website"
   },
   "apps": [
     {
@@ -29,8 +29,6 @@
       }
     }
   ],
-  "addons": [],
-  "packages": [],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"
@@ -45,8 +43,8 @@
     "styleExt": "css",
     "prefixInterfaces": false,
     "inline": {
-      "style": false,
-      "template": false
+      "style": true,
+      "template": true
     },
     "spec": {
       "class": false,

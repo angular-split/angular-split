@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class TempWebsitePage {
+export class AngularSplitDemoWebsitePage {
   navigateTo() {
     return browser.get('/');
   }
