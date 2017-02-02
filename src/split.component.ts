@@ -2,7 +2,7 @@ import {
     Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
     ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges
 } from '@angular/core';
-
+import { Observable } from 'rxjs/Rx';
 import { SplitAreaDirective } from './splitArea.directive';
 
 
@@ -93,6 +93,12 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Output() dragStart = new EventEmitter<Array<number>>(false);
     @Output() dragProgress = new EventEmitter<Array<number>>(false);
     @Output() dragEnd = new EventEmitter<Array<number>>(false);
+
+    /**
+     * This event if fired when split area show/hide are done with animations completed.
+     * Make sure use debounceTime before subscription to prevent repeated hits in short time
+     */
+    @Output() layoutEnd = new EventEmitter<Array<number>>(false);
 
     @HostBinding('class.vertical') get styleFlexDirection() {
         return this.direction === 'vertical';
@@ -201,6 +207,21 @@ export class SplitComponent implements OnChanges, OnDestroy {
             this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
         }
 
+        if (this.areas.length > 1) {
+            var l = this.areas.length;
+            var c = 0;
+            var sub = this.areas[0].component.sizingEnd
+                .merge(this.areas
+                    .filter((a, i) => i > 0)
+                    .map(a => a.component.sizingEnd))
+                .debounceTime(500)
+                .distinctUntilChanged()
+                .subscribe(evt => {
+                    this.notify('sizingEnd');
+                    sub.unsubscribe();
+                });
+        }
+
         this.areas.forEach((a, i) => {
             a.order = i * 2;
             a.component.setStyle('order', a.order);
@@ -219,6 +240,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
+
+
     }
 
     private refreshStyleSizes() {
@@ -362,6 +385,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
             case 'end':
                 return this.dragEnd.emit(data);
+
+            case 'sizingEnd':
+                return this.layoutEnd.emit(data);
         }
     }
 

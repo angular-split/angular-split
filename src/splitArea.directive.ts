@@ -1,4 +1,5 @@
-import { Directive, Input, ElementRef, Renderer, OnInit, OnDestroy } from '@angular/core';
+import { Directive, Input, Output, ElementRef, Renderer, OnInit, OnDestroy,
+    EventEmitter } from '@angular/core';
 
 import { SplitComponent } from './split.component';
 
@@ -10,7 +11,8 @@ import { SplitComponent } from './split.component';
         '[style.overflow-x]': '"hidden"',
         '[style.overflow-y]': '"auto"',
         '[style.height]': '"100%"',
-        '[class.notshow]': '!visible'
+        '[class.notshow]': '!visible',
+        '(transitionend)': 'onSizingTransitionEnd($event)'
     }
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
@@ -52,6 +54,8 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     eventsLockFct: Array<Function> = [];
 
+    @Output() sizingEnd = new EventEmitter<SplitAreaDirective>();
+
     constructor(private elementRef: ElementRef,
         private renderer: Renderer,
         private split: SplitComponent) { }
@@ -80,5 +84,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     public ngOnDestroy() {
         this.split.removeArea(this);
+    }
+
+    onSizingTransitionEnd(evt: TransitionEvent) {
+        this.sizingEnd.emit(this);
     }
 }
