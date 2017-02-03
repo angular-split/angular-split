@@ -379,7 +379,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private notify(type: string) {
-        const data: Array<number> = this.areas.map(a => a.size);
+        const data: Array<number> = this.areas
+            .filter(a => a.component && a.component.visible)
+            .map(a => a.size);
 
         switch (type) {
             case 'start':
