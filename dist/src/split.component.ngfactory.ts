@@ -253,7 +253,7 @@ class View_SplitComponent1 extends import2.AppView<any> {
     return notFoundResult;
   }
   detectChangesInternal(throwOnChange:boolean):void {
-    const currVal_1_0_0:any = (this.context.last === false);
+    const currVal_1_0_0:any = (((this.context.last === false) && this.context.$implicit.component.visible) && !this.parentView.context.isLastVisibleArea(this.context.$implicit));
     this._NgIf_1_6.check_ngIf(currVal_1_0_0,throwOnChange,false);
     this._NgIf_1_6.ngDoCheck(this,this._anchor_1,throwOnChange);
     this._vc_1.detectChangesInNestedViews(throwOnChange);
@@ -306,7 +306,7 @@ export class View_SplitComponent0 extends import2.AppView<import0.SplitComponent
     return notFoundResult;
   }
   detectChangesInternal(throwOnChange:boolean):void {
-    const currVal_2_0_0:any = this.context.visibleAreas;
+    const currVal_2_0_0:any = this.context.areas;
     this._NgFor_2_6.check_ngForOf(currVal_2_0_0,throwOnChange,false);
     this._NgFor_2_6.ngDoCheck(this,this._anchor_2,throwOnChange);
     this._vc_2.detectChangesInNestedViews(throwOnChange);

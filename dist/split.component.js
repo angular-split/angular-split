@@ -58,6 +58,10 @@ export var SplitComponent = (function () {
             this.refresh();
         }
     };
+    SplitComponent.prototype.isLastVisibleArea = function (area) {
+        var visibleAreas = this.visibleAreas;
+        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
+    };
     SplitComponent.prototype.addArea = function (component, orderUser, sizeUser, minPixel) {
         this.areas.push({
             component: component,
@@ -255,7 +259,7 @@ export var SplitComponent = (function () {
                     selector: 'split',
                     changeDetection: ChangeDetectionStrategy.OnPush,
                     styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n    "],
-                    template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"visibleAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
+                    template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false && area.component.visible && !isLastVisibleArea(area)\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
                 },] },
     ];
     /** @nocollapse */

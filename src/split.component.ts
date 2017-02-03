@@ -4,7 +4,7 @@ import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, S
 import { SplitAreaDirective } from './splitArea.directive';
 
 
-interface IAreaData {
+export interface IAreaData {
     component: SplitAreaDirective;
     sizeUser: number | null;
     size: number;
@@ -41,8 +41,8 @@ interface Point {
     `],
     template: `
         <ng-content></ng-content>
-        <template ngFor let-area [ngForOf]="visibleAreas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false" 
+        <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
+            <split-gutter *ngIf="last === false && area.component.visible && !isLastVisibleArea(area)" 
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
@@ -98,6 +98,12 @@ export class SplitComponent implements OnChanges, OnDestroy {
         if(changes['gutterSize'] || changes['disabled']) {
             this.refresh();
         }
+    }
+
+    public isLastVisibleArea(area: IAreaData) {
+        var visibleAreas = this.visibleAreas;
+
+        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
     }
 
     public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {

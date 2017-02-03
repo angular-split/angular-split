@@ -1,5 +1,13 @@
 import { ChangeDetectorRef, ElementRef, SimpleChanges, EventEmitter, Renderer, OnDestroy, OnChanges } from '@angular/core';
 import { SplitAreaDirective } from './splitArea.directive';
+export interface IAreaData {
+    component: SplitAreaDirective;
+    sizeUser: number | null;
+    size: number;
+    orderUser: number | null;
+    order: number;
+    minPixel: number;
+}
 export declare class SplitComponent implements OnChanges, OnDestroy {
     private cdRef;
     private elementRef;
@@ -26,6 +34,7 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     private eventsDragFct;
     constructor(cdRef: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer);
     ngOnChanges(changes: SimpleChanges): void;
+    isLastVisibleArea(area: IAreaData): boolean;
     addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number): void;
     updateArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number): void;
     removeArea(area: SplitAreaDirective): void;
