@@ -123,7 +123,7 @@ export class ExamplesComponent {
     }
 
     codeT: string = `<div class="split-example">
-    <split (dragEnd)="log('dragEnd', $event)">
+    <split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
         <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="1">
             <p>A</p>
         </split-area>
@@ -148,7 +148,7 @@ export class ExamplesComponent {
     <button (click)="toggling.isPresentC = !toggling.isPresentC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentC">areaC</button>
 </div>
 <div>
-    <label>Events log: </label>
+    <label>DragEnd events log: </label>
     <textarea [value]="toggling.logs" disabled></textarea>
 </div>`
 

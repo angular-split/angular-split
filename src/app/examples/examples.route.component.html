@@ -102,8 +102,8 @@
     <hr>
     <h4 id="ex5">Show/hide area using `*ngIf` and `[visible]`</h4>
     <pre [innerText]="codeT"></pre>
-    <div class="split-example">
-        <split (dragEnd)="log('dragEnd', $event)">
+    <div class="split-example" style="height: 150px;">
+        <split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
             <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="1">
                 <p>A</p>
             </split-area>
@@ -128,7 +128,7 @@
         <button (click)="toggling.isPresentC = !toggling.isPresentC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentC">areaC</button>
     </div>
     <div>
-        <label>Events log: </label>
+        <label>DragEnd events log: </label>
         <textarea [value]="toggling.logs" disabled></textarea>
     </div>
     <hr>
