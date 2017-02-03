@@ -27,6 +27,11 @@ import { PageScrollConfig } from 'ng2-page-scroll';
         pre {
             font-size: 11px;
         }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
     `],
     templateUrl: `./examples.route.component.html`
 })
@@ -81,7 +86,7 @@ export class ExamplesComponent {
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nis.</p>
         </split-area>
         <split-area [size]="dynamic.areasIndex !== -1 ? dynamic.areasSizes[dynamic.areasIndex][1] : areasSizesCustom[1]">
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eodolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+            <p>Sed ut perspiciatis unde omnis iste natus error illum qui dolorem eum fugiat quo voluptas nulla pariatur...</p>
         </split-area>
     </split>
 </div>
@@ -115,6 +120,50 @@ export class ExamplesComponent {
         areasIndex: 0,
         areasSizes: [[25, 75], [60, 40], [85, 15]],
         areasSizesCustom: [50, 50]
+    }
+
+    codeT: string = `<div class="split-example">
+    <split (dragEnd)="log('dragEnd', $event)">
+        <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="1">
+            <p>A</p>
+        </split-area>
+        <split-area *ngIf="toggling.isPresentB" [visible]="toggling.isVisibleB" [order]="2">
+            <p>B</p>
+        </split-area>
+        <split-area *ngIf="toggling.isPresentC" [visible]="toggling.isVisibleC" [order]="3">
+            <p>C</p>
+        </split-area>
+    </split>
+</div>
+<div>
+    <label>Toggle with [visible]: </label>
+    <button (click)="toggling.isVisibleA = !toggling.isVisibleA" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleA">areaA</button>
+    <button (click)="toggling.isVisibleB = !toggling.isVisibleB" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleB">areaB</button>
+    <button (click)="toggling.isVisibleC = !toggling.isVisibleC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleC">areaC</button>
+</div>
+<div>
+    <label>Toggle with *ngIf: </label>
+    <button (click)="toggling.isPresentA = !toggling.isPresentA" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentA">areaA</button>
+    <button (click)="toggling.isPresentB = !toggling.isPresentB" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentB">areaB</button>
+    <button (click)="toggling.isPresentC = !toggling.isPresentC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentC">areaC</button>
+</div>
+<div>
+    <label>Events log: </label>
+    <textarea [value]="toggling.logs" disabled></textarea>
+</div>`
+
+    log(eventName, e) {
+        this.toggling.logs = `${ new Date() }: ${ eventName } > ${ e }\n${ this.toggling.logs }`;
+    }
+
+    toggling = {
+        isVisibleA: true,
+        isVisibleB: true,
+        isVisibleC: true,
+        isPresentA: true,
+        isPresentB: true,
+        isPresentC: true,
+        logs: ''
     }
 
     constructor() {

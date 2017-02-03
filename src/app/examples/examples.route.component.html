@@ -1,13 +1,14 @@
 <div class="container">
     <h3>Examples:</h3>
     <ul>
-        <li><a pageScroll href="#ex1">Horizontal split</a></li>
-        <li><a pageScroll href="#ex2">Vertical split</a></li>
-        <li><a pageScroll href="#ex3">Multiple split</a></li>
-        <li><a pageScroll href="#ex4">Dynamic split</a></li>
+        <li><a pageScroll href="#ex1">Simple horizontal split</a></li>
+        <li><a pageScroll href="#ex2">Simple vertical split</a></li>
+        <li><a pageScroll href="#ex3">Multiple nested splits</a></li>
+        <li><a pageScroll href="#ex4">Dynamically controlled split</a></li>
+        <li><a pageScroll href="#ex5">Show/hide areas using `*ngIf` and `[visible]`</a></li>
     </ul>
     <br>
-    <h4 id="ex1">Horizontal split</h4>
+    <h4 id="ex1">Simple horizontal split</h4>
     <pre [innerText]="codeH"></pre>
     <div class="split-example">
         <split direction="horizontal">
@@ -20,7 +21,7 @@
         </split>
     </div>
     <hr>
-    <h4 id="ex2">Vertical split</h4>
+    <h4 id="ex2">Simple vertical split</h4>
     <pre [innerText]="codeV"></pre>
     <div class="split-example">
         <split direction="vertical">
@@ -33,7 +34,7 @@
         </split>
     </div>
     <hr>
-    <h4 id="ex3">Multiple split</h4>
+    <h4 id="ex3">Multiple nested split</h4>
     <pre [innerText]="codeX"></pre>
     <div class="split-example" style="height: 600px;">
         <split direction="horizontal">
@@ -63,7 +64,7 @@
         </split>
     </div>
     <hr>
-    <h4 id="ex4">Dynamic split</h4>
+    <h4 id="ex4">Dynamically controlled split</h4>
     <pre [innerText]="codeD"></pre>
     <div class="split-example">
         <split [direction]="dynamic.dir" [gutterSize]="dynamic.gutterSize" (dragEnd)="areasSizesCustom = $event; dynamic.areasIndex = -1">
@@ -97,6 +98,38 @@
                     [(ngModel)]="dynamic.areasIndex" [btnRadio]="i" 
                     class="btn btn-secondary btn-sm">{{ s }}</label>
         </div>
+    </div>
+    <hr>
+    <h4 id="ex5">Show/hide area using `*ngIf` and `[visible]`</h4>
+    <pre [innerText]="codeT"></pre>
+    <div class="split-example">
+        <split (dragEnd)="log('dragEnd', $event)">
+            <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="1">
+                <p>A</p>
+            </split-area>
+            <split-area *ngIf="toggling.isPresentB" [visible]="toggling.isVisibleB" [order]="2">
+                <p>B</p>
+            </split-area>
+            <split-area *ngIf="toggling.isPresentC" [visible]="toggling.isVisibleC" [order]="3">
+                <p>C</p>
+            </split-area>
+        </split>
+    </div>
+    <div>
+        <label>Toggle with `[visible]`: </label>
+        <button (click)="toggling.isVisibleA = !toggling.isVisibleA" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleA">areaA</button>
+        <button (click)="toggling.isVisibleB = !toggling.isVisibleB" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleB">areaB</button>
+        <button (click)="toggling.isVisibleC = !toggling.isVisibleC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleC">areaC</button>
+    </div>
+    <div>
+        <label>Toggle with `*ngIf`: </label>
+        <button (click)="toggling.isPresentA = !toggling.isPresentA" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentA">areaA</button>
+        <button (click)="toggling.isPresentB = !toggling.isPresentB" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentB">areaB</button>
+        <button (click)="toggling.isPresentC = !toggling.isPresentC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentC">areaC</button>
+    </div>
+    <div>
+        <label>Events log: </label>
+        <textarea [value]="toggling.logs" disabled></textarea>
     </div>
     <hr>
     <br>
