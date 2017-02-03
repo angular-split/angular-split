@@ -6,7 +6,7 @@ import {
 import { SplitAreaDirective } from './splitArea.directive';
 
 
-interface IAreaData {
+export interface IAreaData {
     component: SplitAreaDirective;
     sizeUser: number | null;
     size: number;
@@ -48,7 +48,7 @@ interface Point {
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
-                          [visible]="area.component.visible"
+                          [visible]="area.component.visible && !isLastVisibleArea(area)"
                           [disabled]="disabled"
                           (mousedown)="startDragging($event, index*2+1)"
                           (touchstart)="startDragging($event, index*2+1)"></split-gutter>
@@ -154,6 +154,11 @@ export class SplitComponent implements OnChanges, OnDestroy {
         if (item) {
             this.refresh();
         }
+    }
+
+    public isLastVisibleArea(area: IAreaData) {
+        var visibleAreas = this.areas.filter(a => a.component.visible);
+        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
     }
 
     private refresh() {
