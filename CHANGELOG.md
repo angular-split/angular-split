@@ -1,4 +1,12 @@
 
+<a name="0.1.18"></a>
+# 0.1.18 (2017-02-04)
+
+### Bug fix
+
+* **visibility toggle:** fix a bug I introduced in 0.1.17 while merging [pr10](https://github.com/bertrandg/angular-split/pull/10).
+
+
 <a name="0.1.17"></a>
 # 0.1.17 (2017-02-03)
 
