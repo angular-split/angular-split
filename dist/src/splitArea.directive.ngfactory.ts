@@ -22,6 +22,8 @@ export class Wrapper_SplitAreaDirective {
   /*private*/ _expr_5:any;
   /*private*/ _expr_6:any;
   /*private*/ _expr_7:any;
+  /*private*/ _expr_8:any;
+  /*private*/ _expr_9:any;
   constructor(p0:any,p1:any,p2:any) {
     this._changed = false;
     this.context = new import0.SplitAreaDirective(p0,p1,p2);
@@ -33,6 +35,8 @@ export class Wrapper_SplitAreaDirective {
     this._expr_5 = import1.UNINITIALIZED;
     this._expr_6 = import1.UNINITIALIZED;
     this._expr_7 = import1.UNINITIALIZED;
+    this._expr_8 = import1.UNINITIALIZED;
+    this._expr_9 = import1.UNINITIALIZED;
   }
   ngOnDetach(view:import2.AppView<any>,componentView:import2.AppView<any>,el:any):void {
   }
@@ -60,6 +64,13 @@ export class Wrapper_SplitAreaDirective {
       this._expr_2 = currValue;
     }
   }
+  check_visible(currValue:any,throwOnChange:boolean,forceUpdate:boolean):void {
+    if ((forceUpdate || import3.checkBinding(throwOnChange,this._expr_3,currValue))) {
+      this._changed = true;
+      this.context.visible = currValue;
+      this._expr_3 = currValue;
+    }
+  }
   ngDoCheck(view:import2.AppView<any>,el:any,throwOnChange:boolean):boolean {
     var changed:any = this._changed;
     this._changed = false;
@@ -67,30 +78,35 @@ export class Wrapper_SplitAreaDirective {
     return changed;
   }
   checkHost(view:import2.AppView<any>,componentView:import2.AppView<any>,el:any,throwOnChange:boolean):void {
-    const currVal_3:any = '0';
-    if (import3.checkBinding(throwOnChange,this._expr_3,currVal_3)) {
-      view.renderer.setElementStyle(el,'flex-grow',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_3) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_3).toString()));
-      this._expr_3 = currVal_3;
-    }
     const currVal_4:any = '0';
     if (import3.checkBinding(throwOnChange,this._expr_4,currVal_4)) {
-      view.renderer.setElementStyle(el,'flex-shrink',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_4) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_4).toString()));
+      view.renderer.setElementStyle(el,'flex-grow',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_4) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_4).toString()));
       this._expr_4 = currVal_4;
     }
-    const currVal_5:any = 'hidden';
+    const currVal_5:any = '0';
     if (import3.checkBinding(throwOnChange,this._expr_5,currVal_5)) {
-      view.renderer.setElementStyle(el,'overflow-x',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_5) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_5).toString()));
+      view.renderer.setElementStyle(el,'flex-shrink',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_5) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_5).toString()));
       this._expr_5 = currVal_5;
     }
-    const currVal_6:any = 'auto';
+    const currVal_6:any = 'hidden';
     if (import3.checkBinding(throwOnChange,this._expr_6,currVal_6)) {
-      view.renderer.setElementStyle(el,'overflow-y',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_6) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_6).toString()));
+      view.renderer.setElementStyle(el,'overflow-x',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_6) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_6).toString()));
       this._expr_6 = currVal_6;
     }
-    const currVal_7:any = '100%';
+    const currVal_7:any = 'auto';
     if (import3.checkBinding(throwOnChange,this._expr_7,currVal_7)) {
-      view.renderer.setElementStyle(el,'height',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7).toString()));
+      view.renderer.setElementStyle(el,'overflow-y',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7).toString()));
       this._expr_7 = currVal_7;
+    }
+    const currVal_8:any = '100%';
+    if (import3.checkBinding(throwOnChange,this._expr_8,currVal_8)) {
+      view.renderer.setElementStyle(el,'height',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8).toString()));
+      this._expr_8 = currVal_8;
+    }
+    const currVal_9:any = this.context.visibility;
+    if (import3.checkBinding(throwOnChange,this._expr_9,currVal_9)) {
+      view.renderer.setElementStyle(el,'display',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9).toString()));
+      this._expr_9 = currVal_9;
     }
   }
   handleEvent(eventName:string,$event:any):boolean {

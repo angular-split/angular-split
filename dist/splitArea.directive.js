@@ -8,6 +8,8 @@ export var SplitAreaDirective = (function () {
         this._order = null;
         this._size = null;
         this._minSizePixel = 0;
+        this._visible = true;
+        this.visibility = "block";
         this.eventsLockFct = [];
     }
     Object.defineProperty(SplitAreaDirective.prototype, "order", {
@@ -30,6 +32,21 @@ export var SplitAreaDirective = (function () {
         set: function (v) {
             this._minSizePixel = (!isNaN(v) && v > 0) ? v : 0;
             this.split.updateArea(this, this._order, this._size, this._minSizePixel);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitAreaDirective.prototype, "visible", {
+        get: function () {
+            return this._visible;
+        },
+        set: function (v) {
+            this.visibility = v ? "block" : "none";
+            this._visible = v;
+            if (this.visible)
+                this.split.showArea(this);
+            else
+                this.split.hideArea(this);
         },
         enumerable: true,
         configurable: true
@@ -63,7 +80,8 @@ export var SplitAreaDirective = (function () {
                         '[style.flex-shrink]': '"0"',
                         '[style.overflow-x]': '"hidden"',
                         '[style.overflow-y]': '"auto"',
-                        '[style.height]': '"100%"'
+                        '[style.height]': '"100%"',
+                        '[style.display]': 'visibility'
                     }
                 },] },
     ];
@@ -77,7 +95,8 @@ export var SplitAreaDirective = (function () {
         'order': [{ type: Input },],
         'size': [{ type: Input },],
         'minSizePixel': [{ type: Input },],
+        'visible': [{ type: Input },],
     };
     return SplitAreaDirective;
 }());
-//# sourceMappingURL=/home/adebisi/Public/splitsplitsplit/splitArea.directive.js.map
+//# sourceMappingURL=/home/adebisi/Public/angular-split-master/splitArea.directive.js.map

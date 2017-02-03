@@ -81,4 +81,4 @@ export var SplitGutterDirective = (function () {
     };
     return SplitGutterDirective;
 }());
-//# sourceMappingURL=/home/adebisi/Public/splitsplitsplit/splitGutter.directive.js.map
+//# sourceMappingURL=/home/adebisi/Public/angular-split-master/splitGutter.directive.js.map

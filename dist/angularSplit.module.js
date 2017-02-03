@@ -27,4 +27,4 @@ export var AngularSplitModule = (function () {
     AngularSplitModule.ctorParameters = function () { return []; };
     return AngularSplitModule;
 }());
-//# sourceMappingURL=/home/adebisi/Public/splitsplitsplit/angularSplit.module.js.map
+//# sourceMappingURL=/home/adebisi/Public/angular-split-master/angularSplit.module.js.map

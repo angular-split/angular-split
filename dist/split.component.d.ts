@@ -15,6 +15,7 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     readonly styleFlexDirection: string;
     readonly styleWidth: string;
     readonly styleHeight: string;
+    private readonly visibleAreas;
     private readonly nbGutters;
     private minPercent;
     private areas;
@@ -28,6 +29,8 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number): void;
     updateArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number): void;
     removeArea(area: SplitAreaDirective): void;
+    hideArea(area: SplitAreaDirective): void;
+    showArea(area: SplitAreaDirective): void;
     private refresh();
     private refreshStyleSizes();
     startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number): void;

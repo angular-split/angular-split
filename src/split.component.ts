@@ -42,7 +42,7 @@ interface Point {
     template: `
         <ng-content></ng-content>
         <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false" 
+            <split-gutter *ngIf="last === false && areas[index+1].component.visible === true" 
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
@@ -74,8 +74,12 @@ export class SplitComponent implements OnChanges, OnDestroy {
         return (this.height && !isNaN(this.height) && this.height > 0) ? this.height + 'px' : '100%';
     }
 
+    private get visibleAreas(): IAreaData[] {
+        return this.areas.filter(a => a.component.visible);
+    }
+
     private get nbGutters(): number {
-        return this.areas.length - 1;
+        return this.visibleAreas.length - 1;
     }
 
     private minPercent: number = 5;
@@ -87,8 +91,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     private eventsDragFct: Array<Function> = [];
 
     constructor(private cdRef: ChangeDetectorRef,
-                private elementRef: ElementRef,
-                private renderer: Renderer) {}
+        private elementRef: ElementRef,
+        private renderer: Renderer) {}
 
     public ngOnChanges(changes: SimpleChanges) {
         if(changes['gutterSize'] || changes['disabled']) {
@@ -98,7 +102,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
     public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
         this.areas.push({
-            component, 
+            component,
             orderUser,
             order: -1,
             sizeUser,
@@ -128,13 +132,31 @@ export class SplitComponent implements OnChanges, OnDestroy {
             const index = this.areas.indexOf(item);
             this.areas.splice(index, 1);
             this.areas.forEach((a, i) => a.order = i * 2);
-            
+
+            this.refresh();
+        }
+    }
+
+    public hideArea(area: SplitAreaDirective) {
+        const item = this.areas.find(a => a.component === area);
+
+        if(item) {
+            this.refresh();
+        }
+    }
+
+    public showArea(area: SplitAreaDirective) {
+        const item = this.areas.find(a => a.component === area);
+
+        if(item) {
             this.refresh();
         }
     }
 
     private refresh() {
         this.stopDragging();
+
+        var visibleAreas = this.visibleAreas;
 
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
@@ -148,14 +170,14 @@ export class SplitComponent implements OnChanges, OnDestroy {
         });
 
         // SIZES: Set css 'flex-basis' property depending on user input or equal sizes
-        const totalSize = this.areas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
-        const nbCorrectSize = this.areas.filter(a => a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
+        const totalSize = visibleAreas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
+        const nbCorrectSize = visibleAreas.filter(a => a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
 
-        if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.areas.length) {
-            const size = Number((100 / this.areas.length).toFixed(3));
-            this.areas.forEach(a => a.size = size);
+        if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== visibleAreas.length) {
+            const size = Number((100 / visibleAreas.length).toFixed(3));
+            visibleAreas.forEach(a => a.size = size);
         } else {
-            this.areas.forEach(a => a.size = Number(a.sizeUser));
+            visibleAreas.forEach(a => a.size = Number(a.sizeUser));
         }
 
         this.refreshStyleSizes();
@@ -163,8 +185,10 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private refreshStyleSizes() {
-        const f = this.gutterSize * this.nbGutters / this.areas.length;
-        this.areas.forEach(a => a.component.setStyle('flex-basis', `calc( ${ a.size }% - ${ f }px )`));
+        var visibleAreas = this.visibleAreas;
+
+        const f = this.gutterSize * this.nbGutters / visibleAreas.length;
+        visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
     }
 
     public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number) {
@@ -294,7 +318,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private notify(type: string) {
-        const data: Array<number> = this.areas.map(a => a.size);
+        const data: Array<number> = this.visibleAreas.map(a => a.size);
 
         switch(type) {
             case 'start':

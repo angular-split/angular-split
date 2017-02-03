@@ -10,6 +10,9 @@ export declare class SplitAreaDirective implements OnInit, OnDestroy {
     size: any;
     private _minSizePixel;
     minSizePixel: number;
+    private _visible;
+    visible: boolean;
+    visibility: string;
     eventsLockFct: Array<Function>;
     constructor(elementRef: ElementRef, renderer: Renderer, split: SplitComponent);
     ngOnInit(): void;
