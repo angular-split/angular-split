@@ -42,7 +42,7 @@ interface Point {
     template: `
         <ng-content></ng-content>
         <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false && areas[index+1].component.visible === true" 
+            <split-gutter *ngIf="last === false && area.component.visible === true && areas[index+1].component.visible === true" 
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
