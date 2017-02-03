@@ -42,7 +42,7 @@ interface Point {
     template: `
         <ng-content></ng-content>
         <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false && area.component.visible && !isLastVisibleArea(area)" 
+            <split-gutter *ngIf="last === false && area.component.visible === true && !isLastVisibleArea(area)" 
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
@@ -100,12 +100,6 @@ export class SplitComponent implements OnChanges, OnDestroy {
         }
     }
 
-    public isLastVisibleArea(area: IAreaData) {
-        var visibleAreas = this.visibleAreas;
-
-        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
-    }
-
     public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
         this.areas.push({
             component,
@@ -159,10 +153,15 @@ export class SplitComponent implements OnChanges, OnDestroy {
         }
     }
 
+    public isLastVisibleArea(area: IAreaData) {
+        const visibleAreas = this.visibleAreas;
+        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
+    }
+
     private refresh() {
         this.stopDragging();
 
-        var visibleAreas = this.visibleAreas;
+        const visibleAreas = this.visibleAreas;
 
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
@@ -191,7 +190,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private refreshStyleSizes() {
-        var visibleAreas = this.visibleAreas;
+        const visibleAreas = this.visibleAreas;
 
         const f = this.gutterSize * this.nbGutters / visibleAreas.length;
         visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
