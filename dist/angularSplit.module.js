@@ -37,4 +37,4 @@ var AngularSplitModule = (function () {
     return AngularSplitModule;
 }());
 exports.AngularSplitModule = AngularSplitModule;
-//# sourceMappingURL=C:/dev/angular-split/angularSplit.module.js.map
+//# sourceMappingURL=D:/dev/split/angularSplit.module.js.map

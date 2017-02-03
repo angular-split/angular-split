@@ -114,4 +114,4 @@ var SplitGutterDirective = (function () {
     return SplitGutterDirective;
 }());
 exports.SplitGutterDirective = SplitGutterDirective;
-//# sourceMappingURL=C:/dev/angular-split/splitGutter.directive.js.map
+//# sourceMappingURL=D:/dev/split/splitGutter.directive.js.map
