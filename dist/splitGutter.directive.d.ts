@@ -8,7 +8,6 @@ export declare class SplitGutterDirective {
     size: any;
     private _disabled;
     disabled: boolean;
-    visible: boolean;
     constructor(elementRef: ElementRef, renderer: Renderer);
     private refreshStyle();
     private setStyle(key, value);

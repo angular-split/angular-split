@@ -1,5 +1,7 @@
-import { Directive, Input, Output, ElementRef, Renderer, OnInit, OnDestroy,
-    EventEmitter } from '@angular/core';
+import {
+    Directive, Input, Output, ElementRef, Renderer, OnInit, OnDestroy,
+    EventEmitter
+} from '@angular/core';
 
 import { SplitComponent } from './split.component';
 
@@ -40,7 +42,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.visibility = v ? "block" : "none";
         this._visible = v;
 
-        if (this.visible) {
+        if (this.visible) { 
             this.split.showArea(this);
         } else {
             this.split.hideArea(this);

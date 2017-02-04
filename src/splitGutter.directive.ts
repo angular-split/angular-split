@@ -25,10 +25,6 @@ export class SplitGutterDirective {
         this.refreshStyle();
     }
 
-    @Input() set visible(v: boolean) {
-        this.setStyle("display", v ? "block" : "none");
-    }
-
     constructor(private elementRef: ElementRef,
                 private renderer: Renderer) {}
 
