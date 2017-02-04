@@ -1,4 +1,7 @@
 import { ChangeDetectorRef, ElementRef, SimpleChanges, EventEmitter, Renderer, OnDestroy, OnChanges } from '@angular/core';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 import { SplitAreaDirective } from './splitArea.directive';
 export interface IAreaData {
     component: SplitAreaDirective;
@@ -27,6 +30,7 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
      */
     layoutEnd: EventEmitter<number[]>;
     readonly styleFlexDirection: boolean;
+    readonly styleFlexDirectionStyle: string;
     readonly dragging: boolean;
     readonly styleWidth: string;
     readonly styleHeight: string;

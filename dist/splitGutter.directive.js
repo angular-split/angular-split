@@ -45,13 +45,6 @@ var SplitGutterDirective = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitGutterDirective.prototype, "visible", {
-        set: function (v) {
-            this.setStyle("display", v ? "block" : "none");
-        },
-        enumerable: true,
-        configurable: true
-    });
     SplitGutterDirective.prototype.refreshStyle = function () {
         var state = this._disabled === true ? 'disabled' : this._direction;
         this.setStyle('cursor', this.getCursor(state));
@@ -100,11 +93,6 @@ var SplitGutterDirective = (function () {
         __metadata('design:type', Boolean), 
         __metadata('design:paramtypes', [Boolean])
     ], SplitGutterDirective.prototype, "disabled", null);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean), 
-        __metadata('design:paramtypes', [Boolean])
-    ], SplitGutterDirective.prototype, "visible", null);
     SplitGutterDirective = __decorate([
         core_1.Directive({
             selector: 'split-gutter'
@@ -114,4 +102,4 @@ var SplitGutterDirective = (function () {
     return SplitGutterDirective;
 }());
 exports.SplitGutterDirective = SplitGutterDirective;
-//# sourceMappingURL=D:/dev/split/splitGutter.directive.js.map
+//# sourceMappingURL=C:/dev/angular-split/splitGutter.directive.js.map

@@ -130,4 +130,4 @@ var SplitAreaDirective = (function () {
     return SplitAreaDirective;
 }());
 exports.SplitAreaDirective = SplitAreaDirective;
-//# sourceMappingURL=D:/dev/split/splitArea.directive.js.map
+//# sourceMappingURL=C:/dev/angular-split/splitArea.directive.js.map

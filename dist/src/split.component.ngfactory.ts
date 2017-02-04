@@ -38,9 +38,12 @@ export class Wrapper_SplitComponent {
   /*private*/ _expr_5:any;
   /*private*/ _expr_6:any;
   /*private*/ _expr_7:any;
+  /*private*/ _expr_8:any;
+  /*private*/ _expr_9:any;
   subscription0:any;
   subscription1:any;
   subscription2:any;
+  subscription3:any;
   constructor(p0:any,p1:any,p2:any) {
     this._changed = false;
     this._changes = {};
@@ -53,6 +56,8 @@ export class Wrapper_SplitComponent {
     this._expr_5 = import1.UNINITIALIZED;
     this._expr_6 = import1.UNINITIALIZED;
     this._expr_7 = import1.UNINITIALIZED;
+    this._expr_8 = import1.UNINITIALIZED;
+    this._expr_9 = import1.UNINITIALIZED;
   }
   ngOnDetach(view:import2.AppView<any>,componentView:import2.AppView<any>,el:any):void {
   }
@@ -61,6 +66,7 @@ export class Wrapper_SplitComponent {
     (this.subscription0 && this.subscription0.unsubscribe());
     (this.subscription1 && this.subscription1.unsubscribe());
     (this.subscription2 && this.subscription2.unsubscribe());
+    (this.subscription3 && this.subscription3.unsubscribe());
   }
   check_direction(currValue:any,throwOnChange:boolean,forceUpdate:boolean):void {
     if ((forceUpdate || import3.checkBinding(throwOnChange,this._expr_0,currValue))) {
@@ -102,6 +108,14 @@ export class Wrapper_SplitComponent {
       this._expr_4 = currValue;
     }
   }
+  check_animateAreaToggle(currValue:any,throwOnChange:boolean,forceUpdate:boolean):void {
+    if ((forceUpdate || import3.checkBinding(throwOnChange,this._expr_5,currValue))) {
+      this._changed = true;
+      this.context.animateAreaToggle = currValue;
+      this._changes['animateAreaToggle'] = new import1.SimpleChange(this._expr_5,currValue);
+      this._expr_5 = currValue;
+    }
+  }
   ngDoCheck(view:import2.AppView<any>,el:any,throwOnChange:boolean):boolean {
     var changed:any = this._changed;
     this._changed = false;
@@ -112,31 +126,37 @@ export class Wrapper_SplitComponent {
     return changed;
   }
   checkHost(view:import2.AppView<any>,componentView:import2.AppView<any>,el:any,throwOnChange:boolean):void {
-    const currVal_5:any = this.context.styleFlexDirection;
-    if (import3.checkBinding(throwOnChange,this._expr_5,currVal_5)) {
-      view.renderer.setElementStyle(el,'flex-direction',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_5) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_5).toString()));
-      this._expr_5 = currVal_5;
-    }
-    const currVal_6:any = this.context.styleWidth;
+    const currVal_6:any = this.context.styleFlexDirection;
     if (import3.checkBinding(throwOnChange,this._expr_6,currVal_6)) {
-      view.renderer.setElementStyle(el,'width',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_6) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_6).toString()));
+      view.renderer.setElementClass(el,'vertical',currVal_6);
       this._expr_6 = currVal_6;
     }
-    const currVal_7:any = this.context.styleHeight;
+    const currVal_7:any = this.context.dragging;
     if (import3.checkBinding(throwOnChange,this._expr_7,currVal_7)) {
-      view.renderer.setElementStyle(el,'height',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7).toString()));
+      view.renderer.setElementClass(el,'notrans',currVal_7);
       this._expr_7 = currVal_7;
+    }
+    const currVal_8:any = this.context.styleWidth;
+    if (import3.checkBinding(throwOnChange,this._expr_8,currVal_8)) {
+      view.renderer.setElementStyle(el,'width',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8).toString()));
+      this._expr_8 = currVal_8;
+    }
+    const currVal_9:any = this.context.styleHeight;
+    if (import3.checkBinding(throwOnChange,this._expr_9,currVal_9)) {
+      view.renderer.setElementStyle(el,'height',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9).toString()));
+      this._expr_9 = currVal_9;
     }
   }
   handleEvent(eventName:string,$event:any):boolean {
     var result:boolean = true;
     return result;
   }
-  subscribe(view:import2.AppView<any>,_eventHandler:any,emit0:boolean,emit1:boolean,emit2:boolean):void {
+  subscribe(view:import2.AppView<any>,_eventHandler:any,emit0:boolean,emit1:boolean,emit2:boolean,emit3:boolean):void {
     this._eventHandler = _eventHandler;
     if (emit0) { (this.subscription0 = this.context.dragStart.subscribe(_eventHandler.bind(view,'dragStart'))); }
     if (emit1) { (this.subscription1 = this.context.dragProgress.subscribe(_eventHandler.bind(view,'dragProgress'))); }
     if (emit2) { (this.subscription2 = this.context.dragEnd.subscribe(_eventHandler.bind(view,'dragEnd'))); }
+    if (emit3) { (this.subscription3 = this.context.layoutEnd.subscribe(_eventHandler.bind(view,'layoutEnd'))); }
   }
 }
 var renderType_SplitComponent_Host:import5.RenderComponentType = import3.createRenderComponentType('',0,import6.ViewEncapsulation.None,([] as any[]),{});
@@ -176,7 +196,7 @@ class View_SplitComponent_Host0 extends import2.AppView<any> {
   }
 }
 export const SplitComponentNgFactory:import9.ComponentFactory<import0.SplitComponent> = new import9.ComponentFactory<import0.SplitComponent>('split',View_SplitComponent_Host0,import0.SplitComponent);
-const styles_SplitComponent:any[] = ['[_nghost-%COMP%] {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n        }\n\n        split-gutter[_ngcontent-%COMP%] {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n\n        split-area[_ngcontent-%COMP%] {\n            transition: all 0.3s;\n        }\n\n        split-area[_ngcontent-%COMP%]   .hidden[_ngcontent-%COMP%] {\n            max-width: 0;\n            max-height: 0;\n        }'];
+const styles_SplitComponent:any[] = ['[_nghost-%COMP%] {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            flex-direction: row;\n        }\n\n        .vertical[_nghost-%COMP%] {\n            flex-direction: column;\n        }\n\n        split-gutter[_ngcontent-%COMP%] {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n\n        .vertical[_nghost-%COMP%]   split-gutter[_ngcontent-%COMP%] {\n            width: 100%;\n        }\n\n        [_nghost-%COMP%]     split-area {\n            transition: flex-basis 0.3s;\n        }  \n\n        .notrans[_nghost-%COMP%]     split-area {\n            transition: none !important;\n        }      \n\n        [_nghost-%COMP%]     split-area.notshow {\n            flex-basis: 0 !important;\n            overflow: hidden !important;\n        }      \n\n        .vertical[_nghost-%COMP%]     split-area.notshow {\n            max-width: 0;\n            flex-basis: 0 !important;\n            overflow: hidden !important;\n        }'];
 class View_SplitComponent2 extends import2.AppView<any> {
   _el_0:any;
   _SplitGutterDirective_0_3:import11.Wrapper_SplitGutterDirective;
@@ -203,8 +223,6 @@ class View_SplitComponent2 extends import2.AppView<any> {
     this._SplitGutterDirective_0_3.check_size(currVal_0_0_2,throwOnChange,false);
     const currVal_0_0_3:any = this.parentView.parentView.context.disabled;
     this._SplitGutterDirective_0_3.check_disabled(currVal_0_0_3,throwOnChange,false);
-    const currVal_0_0_4:any = this.parentView.context.$implicit.component.visible;
-    this._SplitGutterDirective_0_3.check_visible(currVal_0_0_4,throwOnChange,false);
     this._SplitGutterDirective_0_3.ngDoCheck(this,this._el_0,throwOnChange);
   }
   visitRootNodesInternal(cb:any,ctx:any):void {
@@ -255,7 +273,7 @@ class View_SplitComponent1 extends import2.AppView<any> {
     return notFoundResult;
   }
   detectChangesInternal(throwOnChange:boolean):void {
-    const currVal_1_0_0:any = (this.context.last === false);
+    const currVal_1_0_0:any = (((this.context.last === false) && (this.context.$implicit.component.visible === true)) && !this.parentView.context.isLastVisibleArea(this.context.$implicit));
     this._NgIf_1_6.check_ngIf(currVal_1_0_0,throwOnChange,false);
     this._NgIf_1_6.ngDoCheck(this,this._anchor_1,throwOnChange);
     this._vc_1.detectChangesInNestedViews(throwOnChange);

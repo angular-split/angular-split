@@ -1,7 +1,12 @@
 import {
     Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
-    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges
+    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges,
+    ViewEncapsulation
 } from '@angular/core';
+
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 import { SplitAreaDirective } from './splitArea.directive';
 
 export interface IAreaData {
@@ -99,6 +104,10 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
     @HostBinding('class.vertical') get styleFlexDirection() {
         return this.direction === 'vertical';
+    }
+
+    @HostBinding('style.flex-direction') get styleFlexDirectionStyle() {
+        return this.direction === 'horizontal' ? 'row' : 'column';
     }
 
     @HostBinding('class.notrans') get dragging() {
@@ -279,7 +288,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 y: startEvent.screenY
             };
         }
-        else if(startEvent instanceof TouchEvent) {
+        else if (startEvent instanceof TouchEvent) {
             start = {
                 x: startEvent.touches[0].screenX,
                 y: startEvent.touches[0].screenY
@@ -313,7 +322,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 y: event.screenY
             };
         }
-        else if(event instanceof TouchEvent) {
+        else if (event instanceof TouchEvent) {
             end = {
                 x: event.touches[0].screenX,
                 y: event.touches[0].screenY

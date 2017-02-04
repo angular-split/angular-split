@@ -17,7 +17,6 @@ export class Wrapper_SplitGutterDirective {
   /*private*/ _expr_1:any;
   /*private*/ _expr_2:any;
   /*private*/ _expr_3:any;
-  /*private*/ _expr_4:any;
   constructor(p0:any,p1:any) {
     this._changed = false;
     this.context = new import0.SplitGutterDirective(p0,p1);
@@ -25,7 +24,6 @@ export class Wrapper_SplitGutterDirective {
     this._expr_1 = import1.UNINITIALIZED;
     this._expr_2 = import1.UNINITIALIZED;
     this._expr_3 = import1.UNINITIALIZED;
-    this._expr_4 = import1.UNINITIALIZED;
   }
   ngOnDetach(view:import2.AppView<any>,componentView:import2.AppView<any>,el:any):void {
   }
@@ -57,13 +55,6 @@ export class Wrapper_SplitGutterDirective {
       this._changed = true;
       this.context.disabled = currValue;
       this._expr_3 = currValue;
-    }
-  }
-  check_visible(currValue:any,throwOnChange:boolean,forceUpdate:boolean):void {
-    if ((forceUpdate || import3.checkBinding(throwOnChange,this._expr_4,currValue))) {
-      this._changed = true;
-      this.context.visible = currValue;
-      this._expr_4 = currValue;
     }
   }
   ngDoCheck(view:import2.AppView<any>,el:any,throwOnChange:boolean):boolean {
