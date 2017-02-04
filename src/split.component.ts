@@ -2,9 +2,7 @@ import {
     Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
     ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges
 } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { SplitAreaDirective } from './splitArea.directive';
-
 
 export interface IAreaData {
     component: SplitAreaDirective;
@@ -72,11 +70,10 @@ interface Point {
     template: `
         <ng-content></ng-content>
         <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false" 
+            <split-gutter *ngIf="last === false && area.component.visible === true && !isLastVisibleArea(area)" 
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
-                          [visible]="area.component.visible && !isLastVisibleArea(area)"
                           [disabled]="disabled"
                           (mousedown)="startDragging($event, index*2+1)"
                           (touchstart)="startDragging($event, index*2+1)"></split-gutter>
@@ -197,14 +194,14 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     public isLastVisibleArea(area: IAreaData) {
-        var visibleAreas = this.areas.filter(a => a.component.visible);
+        const visibleAreas = this.visibleAreas;
         return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
     }
 
     private refresh() {
         this.stopDragging();
 
-        let visibleAreas = this.visibleAreas;
+        const visibleAreas = this.visibleAreas;
 
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
@@ -250,7 +247,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private refreshStyleSizes() {
-        let visibleAreas = this.visibleAreas;
+
+        const visibleAreas = this.visibleAreas;
 
         const f = this.gutterSize * this.nbGutters / visibleAreas.length;
         visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
@@ -280,7 +278,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 x: startEvent.screenX,
                 y: startEvent.screenY
             };
-        } else if (startEvent instanceof TouchEvent) {
+        }
+        else if(startEvent instanceof TouchEvent) {
             start = {
                 x: startEvent.touches[0].screenX,
                 y: startEvent.touches[0].screenY
@@ -313,7 +312,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 x: event.screenX,
                 y: event.screenY
             };
-        } else if (event instanceof TouchEvent) {
+        }
+        else if(event instanceof TouchEvent) {
             end = {
                 x: event.touches[0].screenX,
                 y: event.touches[0].screenY
@@ -379,9 +379,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private notify(type: string) {
-        const data: Array<number> = this.areas
-            .filter(a => a.component && a.component.visible)
-            .map(a => a.size);
+        const data: Array<number> = this.visibleAreas.map(a => a.size);
 
         switch (type) {
             case 'start':
