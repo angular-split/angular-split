@@ -1,8 +1,13 @@
-import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
-    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges } from '@angular/core';
+import {
+    Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
+    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges,
+    ViewEncapsulation
+} from '@angular/core';
 
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 import { SplitAreaDirective } from './splitArea.directive';
-
 
 export interface IAreaData {
     component: SplitAreaDirective;
@@ -27,6 +32,11 @@ interface Point {
             display: flex;
             flex-wrap: nowrap;
             justify-content: flex-start;
+            flex-direction: row;
+        }
+
+        :host.vertical {
+            flex-direction: column;
         }
 
         split-gutter {
@@ -37,6 +47,29 @@ interface Point {
             background-color: #eeeeee;
             background-position: 50%;
             background-repeat: no-repeat;
+        }
+
+        :host.vertical split-gutter {
+            width: 100%;
+        }
+
+        :host /deep/ split-area {
+            transition: flex-basis 0.3s;
+        }  
+
+        :host.notrans /deep/ split-area {
+            transition: none !important;
+        }      
+
+        :host /deep/ split-area.notshow {
+            flex-basis: 0 !important;
+            overflow: hidden !important;
+        }      
+
+        :host.vertical /deep/ split-area.notshow {
+            max-width: 0;
+            flex-basis: 0 !important;
+            overflow: hidden !important;
         }
     `],
     template: `
@@ -57,13 +90,29 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() height: number;
     @Input() gutterSize: number = 10;
     @Input() disabled: boolean = false;
+    @Input() animateAreaToggle: boolean = false;
 
     @Output() dragStart = new EventEmitter<Array<number>>(false);
     @Output() dragProgress = new EventEmitter<Array<number>>(false);
     @Output() dragEnd = new EventEmitter<Array<number>>(false);
 
-    @HostBinding('style.flex-direction') get styleFlexDirection() {
+    /**
+     * This event if fired when split area show/hide are done with animations completed.
+     * Make sure use debounceTime before subscription to prevent repeated hits in short time
+     */
+    @Output() layoutEnd = new EventEmitter<Array<number>>(false);
+
+    @HostBinding('class.vertical') get styleFlexDirection() {
+        return this.direction === 'vertical';
+    }
+
+    @HostBinding('style.flex-direction') get styleFlexDirectionStyle() {
         return this.direction === 'horizontal' ? 'row' : 'column';
+    }
+
+    @HostBinding('class.notrans') get dragging() {
+        // prevent animation of areas when animateAreaToggle is false, or resizing
+        return !this.animateAreaToggle || this.isDragging;
     }
 
     @HostBinding('style.width') get styleWidth() {
@@ -92,10 +141,10 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
     constructor(private cdRef: ChangeDetectorRef,
         private elementRef: ElementRef,
-        private renderer: Renderer) {}
+        private renderer: Renderer) { }
 
     public ngOnChanges(changes: SimpleChanges) {
-        if(changes['gutterSize'] || changes['disabled']) {
+        if (changes['gutterSize'] || changes['disabled']) {
             this.refresh();
         }
     }
@@ -116,7 +165,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     public updateArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
         const item = this.areas.find(a => a.component === component);
 
-        if(item) {
+        if (item) {
             item.orderUser = orderUser;
             item.sizeUser = sizeUser;
             item.minPixel = minPixel;
@@ -128,7 +177,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     public removeArea(area: SplitAreaDirective) {
         const item = this.areas.find(a => a.component === area);
 
-        if(item) {
+        if (item) {
             const index = this.areas.indexOf(item);
             this.areas.splice(index, 1);
             this.areas.forEach((a, i) => a.order = i * 2);
@@ -140,7 +189,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     public hideArea(area: SplitAreaDirective) {
         const item = this.areas.find(a => a.component === area);
 
-        if(item) {
+        if (item) {
             this.refresh();
         }
     }
@@ -148,7 +197,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     public showArea(area: SplitAreaDirective) {
         const item = this.areas.find(a => a.component === area);
 
-        if(item) {
+        if (item) {
             this.refresh();
         }
     }
@@ -165,8 +214,23 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
-        if(nbCorrectOrder === this.areas.length) {
+        if (nbCorrectOrder === this.areas.length) {
             this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
+        }
+
+        if (this.areas.length > 1) {
+            var l = this.areas.length;
+            var c = 0;
+            var sub = this.areas[0].component.sizingEnd
+                .merge(this.areas
+                    .filter((a, i) => i > 0)
+                    .map(a => a.component.sizingEnd))
+                .debounceTime(500)
+                .distinctUntilChanged()
+                .subscribe(evt => {
+                    this.notify('sizingEnd');
+                    sub.unsubscribe();
+                });
         }
 
         this.areas.forEach((a, i) => {
@@ -178,7 +242,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         const totalSize = visibleAreas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
         const nbCorrectSize = visibleAreas.filter(a => a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
 
-        if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== visibleAreas.length) {
+        if (totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== visibleAreas.length) {
             const size = Number((100 / visibleAreas.length).toFixed(3));
             visibleAreas.forEach(a => a.size = size);
         } else {
@@ -187,9 +251,12 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
+
+
     }
 
     private refreshStyleSizes() {
+
         const visibleAreas = this.visibleAreas;
 
         const f = this.gutterSize * this.nbGutters / visibleAreas.length;
@@ -199,13 +266,13 @@ export class SplitComponent implements OnChanges, OnDestroy {
     public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number) {
         startEvent.preventDefault();
 
-        if(this.disabled) {
+        if (this.disabled) {
             return;
         }
 
         const areaA = this.areas.find(a => a.order === gutterOrder - 1);
         const areaB = this.areas.find(a => a.order === gutterOrder + 1);
-        if(!areaA || !areaB) {
+        if (!areaA || !areaB) {
             return;
         }
 
@@ -215,27 +282,26 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.areaBSize = this.containerSize * areaB.size / 100;
 
         let start: Point;
-        if(startEvent instanceof MouseEvent) {
+        if (startEvent instanceof MouseEvent) {
             start = {
                 x: startEvent.screenX,
                 y: startEvent.screenY
             };
         }
-        else if(startEvent instanceof TouchEvent) {
+        else if (startEvent instanceof TouchEvent) {
             start = {
                 x: startEvent.touches[0].screenX,
                 y: startEvent.touches[0].screenY
             };
-        }
-        else {
+        } else {
             return;
         }
 
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mousemove', e => this.dragEvent(e, start, areaA, areaB)) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchmove', e => this.dragEvent(e, start, areaA, areaB)) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mouseup', e => this.stopDragging()) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchend', e => this.stopDragging()) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchcancel', e => this.stopDragging()) );
+        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'mousemove', e => this.dragEvent(e, start, areaA, areaB)));
+        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'touchmove', e => this.dragEvent(e, start, areaA, areaB)));
+        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'mouseup', e => this.stopDragging()));
+        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'touchend', e => this.stopDragging()));
+        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'touchcancel', e => this.stopDragging()));
 
         areaA.component.lockEvents();
         areaB.component.lockEvents();
@@ -245,24 +311,23 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private dragEvent(event: MouseEvent | TouchEvent, start: Point, areaA: IAreaData, areaB: IAreaData) {
-        if(!this.isDragging) {
+        if (!this.isDragging) {
             return;
         }
 
         let end: Point;
-        if(event instanceof MouseEvent) {
+        if (event instanceof MouseEvent) {
             end = {
                 x: event.screenX,
                 y: event.screenY
             };
         }
-        else if(event instanceof TouchEvent) {
+        else if (event instanceof TouchEvent) {
             end = {
                 x: event.touches[0].screenX,
                 y: event.touches[0].screenY
             };
-        }
-        else {
+        } else {
             return;
         }
 
@@ -275,17 +340,17 @@ export class SplitComponent implements OnChanges, OnDestroy {
         const newSizePixelA = this.areaASize - offsetPixel;
         const newSizePixelB = this.areaBSize + offsetPixel;
 
-        if(newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
+        if (newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
             return;
         }
 
         let newSizePercentA = newSizePixelA / this.containerSize * 100;
         let newSizePercentB = newSizePixelB / this.containerSize * 100;
 
-        if(newSizePercentA <= this.minPercent) {
+        if (newSizePercentA <= this.minPercent) {
             newSizePercentA = this.minPercent;
             newSizePercentB = areaA.size + areaB.size - this.minPercent;
-        } else if(newSizePercentB <= this.minPercent) {
+        } else if (newSizePercentB <= this.minPercent) {
             newSizePercentB = this.minPercent;
             newSizePercentA = areaA.size + areaB.size - this.minPercent;
         } else {
@@ -301,15 +366,15 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private stopDragging() {
-        if(!this.isDragging) {
+        if (!this.isDragging) {
             return;
         }
 
         this.areas.forEach(a => a.component.unlockEvents());
 
-        while(this.eventsDragFct.length > 0) {
+        while (this.eventsDragFct.length > 0) {
             const fct = this.eventsDragFct.pop();
-            if(fct) {
+            if (fct) {
                 fct();
             }
         }
@@ -325,7 +390,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     private notify(type: string) {
         const data: Array<number> = this.visibleAreas.map(a => a.size);
 
-        switch(type) {
+        switch (type) {
             case 'start':
                 return this.dragStart.emit(data);
 
@@ -334,6 +399,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
             case 'end':
                 return this.dragEnd.emit(data);
+
+            case 'sizingEnd':
+                return this.layoutEnd.emit(data);
         }
     }
 

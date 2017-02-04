@@ -1,4 +1,7 @@
-import { Directive, Input, ElementRef, Renderer, OnInit, OnDestroy } from '@angular/core';
+import {
+    Directive, Input, Output, ElementRef, Renderer, OnInit, OnDestroy,
+    EventEmitter
+} from '@angular/core';
 
 import { SplitComponent } from './split.component';
 
@@ -10,7 +13,8 @@ import { SplitComponent } from './split.component';
         '[style.overflow-x]': '"hidden"',
         '[style.overflow-y]': '"auto"',
         '[style.height]': '"100%"',
-        '[style.display]': 'visibility'
+        '[class.notshow]': '!visible',
+        '(transitionend)': 'onSizingTransitionEnd($event)'
     }
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
@@ -38,10 +42,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.visibility = v ? "block" : "none";
         this._visible = v;
 
-        if(this.visible) 
+        if (this.visible) { 
             this.split.showArea(this);
-        else
+        } else {
             this.split.hideArea(this);
+        }
     }
     get visible(): boolean {
         return this._visible;
@@ -51,24 +56,25 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     eventsLockFct: Array<Function> = [];
 
+    @Output() sizingEnd = new EventEmitter<SplitAreaDirective>();
+
     constructor(private elementRef: ElementRef,
         private renderer: Renderer,
-        private split: SplitComponent) {}
+        private split: SplitComponent) { }
 
     public ngOnInit() {
         this.split.addArea(this, this._order, this._size, this._minSizePixel);
     }
 
-
     public lockEvents() {
-        this.eventsLockFct.push( this.renderer.listen(this.elementRef.nativeElement, 'selectstart', e => false) );
-        this.eventsLockFct.push( this.renderer.listen(this.elementRef.nativeElement, 'dragstart', e => false) );
+        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'selectstart', e => false));
+        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'dragstart', e => false));
     }
 
     public unlockEvents() {
-        while(this.eventsLockFct.length > 0) {
+        while (this.eventsLockFct.length > 0) {
             const fct = this.eventsLockFct.pop();
-            if(fct) {
+            if (fct) {
                 fct();
             }
         }
@@ -80,5 +86,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     public ngOnDestroy() {
         this.split.removeArea(this);
+    }
+
+    onSizingTransitionEnd(evt: TransitionEvent) {
+        this.sizingEnd.emit(this);
     }
 }

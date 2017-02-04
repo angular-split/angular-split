@@ -1,4 +1,7 @@
 import { ChangeDetectorRef, ElementRef, SimpleChanges, EventEmitter, Renderer, OnDestroy, OnChanges } from '@angular/core';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 import { SplitAreaDirective } from './splitArea.directive';
 export interface IAreaData {
     component: SplitAreaDirective;
@@ -17,10 +20,18 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     height: number;
     gutterSize: number;
     disabled: boolean;
+    animateAreaToggle: boolean;
     dragStart: EventEmitter<number[]>;
     dragProgress: EventEmitter<number[]>;
     dragEnd: EventEmitter<number[]>;
-    readonly styleFlexDirection: string;
+    /**
+     * This event if fired when split area show/hide are done with animations completed.
+     * Make sure use debounceTime before subscription to prevent repeated hits in short time
+     */
+    layoutEnd: EventEmitter<number[]>;
+    readonly styleFlexDirection: boolean;
+    readonly styleFlexDirectionStyle: string;
+    readonly dragging: boolean;
     readonly styleWidth: string;
     readonly styleHeight: string;
     private readonly visibleAreas;
