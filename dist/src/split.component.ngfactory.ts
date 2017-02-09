@@ -176,7 +176,7 @@ class View_SplitComponent_Host0 extends import2.AppView<any> {
   }
 }
 export const SplitComponentNgFactory:import9.ComponentFactory<import0.SplitComponent> = new import9.ComponentFactory<import0.SplitComponent>('split',View_SplitComponent_Host0,import0.SplitComponent);
-const styles_SplitComponent:any[] = ['[_nghost-%COMP%] {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n        }\n\n        split-gutter[_ngcontent-%COMP%] {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }'];
+const styles_SplitComponent:any[] = ['[_nghost-%COMP%] {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n        }\n\n        split-gutter[_ngcontent-%COMP%] {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }'];
 class View_SplitComponent2 extends import2.AppView<any> {
   _el_0:any;
   _SplitGutterDirective_0_3:import11.Wrapper_SplitGutterDirective;

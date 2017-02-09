@@ -27,13 +27,13 @@ interface Point {
             display: flex;
             flex-wrap: nowrap;
             justify-content: flex-start;
+            align-items: stretch;
         }
 
         split-gutter {
             flex-grow: 0;
             flex-shrink: 0;
             flex-basis: 10px;
-            height: 100%;
             background-color: #eeeeee;
             background-position: 50%;
             background-repeat: no-repeat;
