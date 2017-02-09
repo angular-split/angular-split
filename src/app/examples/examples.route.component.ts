@@ -119,7 +119,8 @@ export class ExamplesComponent {
         gutterSize: 5,
         areasIndex: 0,
         areasSizes: [[25, 75], [60, 40], [85, 15]],
-        areasSizesCustom: [50, 50]
+        areasSizesCustom: [50, 50],
+        areasOrder: [1, 2]
     }
 
     codeT: string = `<div class="split-example">
