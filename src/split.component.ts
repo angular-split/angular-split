@@ -33,9 +33,8 @@ interface Point {
         split-gutter {
             flex-grow: 0;
             flex-shrink: 0;
-            flex-basis: 10px;
             background-color: #eeeeee;
-            background-position: 50%;
+            background-position: center center;
             background-repeat: no-repeat;
         }
     `],
