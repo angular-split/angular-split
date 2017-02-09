@@ -34,7 +34,7 @@ export class SplitGutterDirective {
         this.setStyle('flex-basis', `${ this._size }px`);
         
         // fix safari bug about gutter height when direction is horizontal
-        this.setStyle('height', (this._direction === 'horizontal') ? `${ this._size }px` : `100%`);
+        this.setStyle('height', (this._direction === 'vertical') ? `${ this._size }px` : `100%`);
 
         const state = (this._disabled === true) ? 'disabled' : this._direction;
         this.setStyle('cursor', this.getCursor(state));
