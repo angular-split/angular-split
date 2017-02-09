@@ -98,6 +98,10 @@ export class ExamplesComponent {
     </div>
 </div>
 <div>
+    <label>Order: </label>
+    <button class="btn btn-secondary btn-sm" (click)="dynamic.areasOrder=dynamic.areasOrder.reverse()">Switch</button>
+</div>
+<div>
     <label>Gutter size: </label>
     <div class="btn-group">
         <label class="btn btn-secondary btn-sm" [(ngModel)]="dynamic.gutterSize" [btnRadio]="5">5</label>
