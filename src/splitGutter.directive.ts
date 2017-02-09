@@ -15,8 +15,10 @@ export class SplitGutterDirective {
         this.refreshStyle();
     }
 
-    @Input() set size(v) {
-        this.setStyle('flex-basis', v + 'px');
+    private _size: number;
+    @Input() set size(v: number) {
+        this._size = v;
+        this.refreshStyle();
     }
 
     private _disabled: boolean = false;
@@ -29,8 +31,12 @@ export class SplitGutterDirective {
                 private renderer: Renderer) {}
 
     private refreshStyle() {
-        const state = this._disabled === true ? 'disabled' : this._direction;
+        this.setStyle('flex-basis', `${ this._size }px`);
+        
+        // fix safari bug about gutter height when direction is horizontal
+        this.setStyle('height', (this._direction === 'horizontal') ? `${ this._size }px` : `100%`);
 
+        const state = (this._disabled === true) ? 'disabled' : this._direction;
         this.setStyle('cursor', this.getCursor(state));
         this.setStyle('background-image', `url("${ this.getImage(state) }")`);
     }

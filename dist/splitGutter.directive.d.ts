@@ -5,7 +5,8 @@ export declare class SplitGutterDirective {
     order: number;
     private _direction;
     direction: string;
-    size: any;
+    private _size;
+    size: number;
     private _disabled;
     disabled: boolean;
     constructor(elementRef: ElementRef, renderer: Renderer);
