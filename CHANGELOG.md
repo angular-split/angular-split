@@ -1,4 +1,12 @@
 
+<a name="0.1.19"></a>
+# 0.1.19 (2017-02-09)
+
+### Bug fix
+
+* **gutter height on Safari:** fix a weird bug about anormal gutter height when direction is 'vertical' on Safari only [issue5](https://github.com/bertrandg/angular-split/issues/5).
+
+
 <a name="0.1.18"></a>
 # 0.1.18 (2017-02-04)
 
