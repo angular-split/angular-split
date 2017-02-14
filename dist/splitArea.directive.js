@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,9 +7,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var split_component_1 = require('./split.component');
-var SplitAreaDirective = (function () {
+import { Directive, Input, Output, ElementRef, Renderer, EventEmitter } from '@angular/core';
+import { SplitComponent } from './split.component';
+export var SplitAreaDirective = (function () {
     function SplitAreaDirective(elementRef, renderer, split) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -21,7 +20,7 @@ var SplitAreaDirective = (function () {
         this._visible = true;
         this.visibility = "block";
         this.eventsLockFct = [];
-        this.sizingEnd = new core_1.EventEmitter();
+        this.sizingEnd = new EventEmitter();
     }
     Object.defineProperty(SplitAreaDirective.prototype, "order", {
         set: function (v) {
@@ -86,34 +85,37 @@ var SplitAreaDirective = (function () {
         this.split.removeArea(this);
     };
     SplitAreaDirective.prototype.onSizingTransitionEnd = function (evt) {
-        this.sizingEnd.emit(this);
+        //note that all css property transition end could trigger transitionend events
+        //this limit only flex-basis transition to trigger the event
+        if (evt.propertyName == "flex-basis")
+            this.sizingEnd.emit(this);
     };
     __decorate([
-        core_1.Input(), 
+        Input(), 
         __metadata('design:type', Number), 
         __metadata('design:paramtypes', [Number])
     ], SplitAreaDirective.prototype, "order", null);
     __decorate([
-        core_1.Input(), 
+        Input(), 
         __metadata('design:type', Object), 
         __metadata('design:paramtypes', [Object])
     ], SplitAreaDirective.prototype, "size", null);
     __decorate([
-        core_1.Input(), 
+        Input(), 
         __metadata('design:type', Number), 
         __metadata('design:paramtypes', [Number])
     ], SplitAreaDirective.prototype, "minSizePixel", null);
     __decorate([
-        core_1.Input(), 
+        Input(), 
         __metadata('design:type', Boolean), 
         __metadata('design:paramtypes', [Boolean])
     ], SplitAreaDirective.prototype, "visible", null);
     __decorate([
-        core_1.Output(), 
+        Output(), 
         __metadata('design:type', Object)
     ], SplitAreaDirective.prototype, "sizingEnd", void 0);
     SplitAreaDirective = __decorate([
-        core_1.Directive({
+        Directive({
             selector: 'split-area',
             host: {
                 '[style.flex-grow]': '"0"',
@@ -125,9 +127,8 @@ var SplitAreaDirective = (function () {
                 '(transitionend)': 'onSizingTransitionEnd($event)'
             }
         }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, split_component_1.SplitComponent])
+        __metadata('design:paramtypes', [ElementRef, Renderer, SplitComponent])
     ], SplitAreaDirective);
     return SplitAreaDirective;
 }());
-exports.SplitAreaDirective = SplitAreaDirective;
-//# sourceMappingURL=C:/dev/angular-split/splitArea.directive.js.map
+//# sourceMappingURL=D:/dev/split/splitArea.directive.js.map
