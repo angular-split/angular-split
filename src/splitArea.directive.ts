@@ -1,5 +1,7 @@
-import { Directive, Input, Output, ElementRef, Renderer, OnInit, OnDestroy,
-    EventEmitter } from '@angular/core';
+import {
+    Directive, Input, Output, ElementRef, Renderer, OnInit, OnDestroy,
+    EventEmitter
+} from '@angular/core';
 
 import { SplitComponent } from './split.component';
 
@@ -87,6 +89,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     }
 
     onSizingTransitionEnd(evt: TransitionEvent) {
-        this.sizingEnd.emit(this);
+        //note that all css property transition end could trigger transitionend events
+        //this limit only flex-basis transition to trigger the event
+        if (evt.propertyName == "flex-basis")
+            this.sizingEnd.emit(this);
     }
 }
