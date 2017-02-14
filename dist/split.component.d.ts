@@ -51,15 +51,12 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     hideArea(area: SplitAreaDirective): void;
     showArea(area: SplitAreaDirective): void;
     isLastVisibleArea(area: IAreaData): boolean;
-    private _visibleTransitionEndTeardowns;
-    private _addAreaSubscription(area);
-    private _removeAreaSubscription(area);
     private refresh();
     private refreshStyleSizes();
     startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number): void;
     private dragEvent(event, start, areaA, areaB);
     private drag(start, end, areaA, areaB);
     private stopDragging();
-    private notify(type);
+    notify(type: string): void;
     ngOnDestroy(): void;
 }

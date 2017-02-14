@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Directive, Input, ElementRef, Renderer } from '@angular/core';
-export var SplitGutterDirective = (function () {
+var core_1 = require('@angular/core');
+var SplitGutterDirective = (function () {
     function SplitGutterDirective(elementRef, renderer) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -73,31 +74,32 @@ export var SplitGutterDirective = (function () {
         }
     };
     __decorate([
-        Input(), 
+        core_1.Input(), 
         __metadata('design:type', Number), 
         __metadata('design:paramtypes', [Number])
     ], SplitGutterDirective.prototype, "order", null);
     __decorate([
-        Input(), 
+        core_1.Input(), 
         __metadata('design:type', String), 
         __metadata('design:paramtypes', [String])
     ], SplitGutterDirective.prototype, "direction", null);
     __decorate([
-        Input(), 
+        core_1.Input(), 
         __metadata('design:type', Object), 
         __metadata('design:paramtypes', [Object])
     ], SplitGutterDirective.prototype, "size", null);
     __decorate([
-        Input(), 
+        core_1.Input(), 
         __metadata('design:type', Boolean), 
         __metadata('design:paramtypes', [Boolean])
     ], SplitGutterDirective.prototype, "disabled", null);
     SplitGutterDirective = __decorate([
-        Directive({
+        core_1.Directive({
             selector: 'split-gutter'
         }), 
-        __metadata('design:paramtypes', [ElementRef, Renderer])
+        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
     ], SplitGutterDirective);
     return SplitGutterDirective;
 }());
+exports.SplitGutterDirective = SplitGutterDirective;
 //# sourceMappingURL=D:/dev/split/splitGutter.directive.js.map

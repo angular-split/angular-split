@@ -56,8 +56,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     eventsLockFct: Array<Function> = [];
 
-    @Output() sizingEnd = new EventEmitter<SplitAreaDirective>();
-
     constructor(private elementRef: ElementRef,
         private renderer: Renderer,
         private split: SplitComponent) { }
@@ -92,6 +90,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         //note that all css property transition end could trigger transitionend events
         //this limit only flex-basis transition to trigger the event
         if (evt.propertyName == "flex-basis")
-            this.sizingEnd.emit(this);
+            this.split.notify("visibleTransitionEnd");
     }
 }

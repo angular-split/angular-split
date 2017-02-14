@@ -160,8 +160,6 @@ export class SplitComponent implements OnChanges, OnDestroy {
             minPixel
         });
 
-        this._addAreaSubscription(component);
-
         this.refresh();
     }
 
@@ -184,8 +182,6 @@ export class SplitComponent implements OnChanges, OnDestroy {
             const index = this.areas.indexOf(item);
             this.areas.splice(index, 1);
             this.areas.forEach((a, i) => a.order = i * 2);
-
-            this._removeAreaSubscription(area);
 
             this.refresh();
         }
@@ -210,24 +206,6 @@ export class SplitComponent implements OnChanges, OnDestroy {
     public isLastVisibleArea(area: IAreaData) {
         const visibleAreas = this.visibleAreas;
         return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
-    }
-
-    //Use map to track visibleTransitionEnd teardowns by split area.
-    private _visibleTransitionEndTeardowns: Map<SplitAreaDirective, Subscription> = new Map<SplitAreaDirective, Subscription>();
-
-    private _addAreaSubscription(area: SplitAreaDirective) {
-        this._visibleTransitionEndTeardowns.set(area, area.sizingEnd
-            .subscribe(t => {
-                this.notify('visibleTransitionEnd');
-            }));
-    }
-
-    private _removeAreaSubscription(area: SplitAreaDirective) {
-        var sub = this._visibleTransitionEndTeardowns.get(area);
-        if (sub) {
-            sub.unsubscribe();
-            this._visibleTransitionEndTeardowns.delete(area);
-        }
     }
 
     private refresh() {
@@ -394,7 +372,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.notify('end');
     }
 
-    private notify(type: string) {
+    notify(type: string) {
         const data: Array<number> = this.visibleAreas.map(a => a.size);
 
         switch (type) {
@@ -414,7 +392,5 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
     public ngOnDestroy() {
         this.stopDragging();
-        if (!!this._visibleTransitionEndTeardowns)
-            this._visibleTransitionEndTeardowns.forEach(t => t.unsubscribe());
     }
 }
