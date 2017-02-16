@@ -1,13 +1,10 @@
 import {
     Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
-    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges,
-    ViewEncapsulation
+    ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges
 } from '@angular/core';
-
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs/Rx';
 import { SplitAreaDirective } from './splitArea.directive';
+
 
 export interface IAreaData {
     component: SplitAreaDirective;
@@ -75,10 +72,11 @@ interface Point {
     template: `
         <ng-content></ng-content>
         <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false && area.component.visible === true && !isLastVisibleArea(area)" 
+            <split-gutter *ngIf="last === false" 
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
+                          [visible]="area.component.visible && !isLastVisibleArea(area)"
                           [disabled]="disabled"
                           (mousedown)="startDragging($event, index*2+1)"
                           (touchstart)="startDragging($event, index*2+1)"></split-gutter>
@@ -96,18 +94,17 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Output() dragProgress = new EventEmitter<Array<number>>(false);
     @Output() dragEnd = new EventEmitter<Array<number>>(false);
 
+
+    private _visibleTransitionEndSub: BehaviorSubject<Array<number>> = new BehaviorSubject<Array<number>>([]);
     /**
-     * This event if fired when split area show/hide are done with animations completed.
-     * Make sure use debounceTime before subscription to prevent repeated hits in short time
-     */
-    @Output() layoutEnd = new EventEmitter<Array<number>>(false);
+     * This event is fired when split area show/hide are done with animations completed.
+     * Make sure use debounceTime and distinctUntilChange before subscription,
+     * to handle the fact that adjacent split areas also triggering the event, during show/hide of single area.
+     */    
+    @Output() visibleTransitionEnd: Observable<Array<number>> = this._visibleTransitionEndSub.asObservable();
 
     @HostBinding('class.vertical') get styleFlexDirection() {
         return this.direction === 'vertical';
-    }
-
-    @HostBinding('style.flex-direction') get styleFlexDirectionStyle() {
-        return this.direction === 'horizontal' ? 'row' : 'column';
     }
 
     @HostBinding('class.notrans') get dragging() {
@@ -159,6 +156,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
             minPixel
         });
 
+        this._addAreaSubscription(component);
+
         this.refresh();
     }
 
@@ -182,6 +181,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
             this.areas.splice(index, 1);
             this.areas.forEach((a, i) => a.order = i * 2);
 
+            this._removeAreaSubscription(area);
+
             this.refresh();
         }
     }
@@ -203,34 +204,38 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     public isLastVisibleArea(area: IAreaData) {
-        const visibleAreas = this.visibleAreas;
+        var visibleAreas = this.areas.filter(a => a.component.visible);
         return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
     }
 
+    //Use map to track visibleTransitionEnd teardowns by split area.
+    private _visibleTransitionEndTeardowns: Map<SplitAreaDirective, Subscription> = new Map<SplitAreaDirective, Subscription>();
+
+    private _addAreaSubscription(area: SplitAreaDirective) {
+        this._visibleTransitionEndTeardowns.set(area, area.sizingEnd
+            .subscribe(t => {
+                this.notify('visibleTransitionEnd');
+            }));
+    }
+
+    private _removeAreaSubscription(area: SplitAreaDirective) {
+        var sub = this._visibleTransitionEndTeardowns.get(area);
+        if (sub) {
+            sub.unsubscribe();
+            this._visibleTransitionEndTeardowns.delete(area);
+        }
+    }
+
     private refresh() {
+
         this.stopDragging();
 
-        const visibleAreas = this.visibleAreas;
+        let visibleAreas = this.visibleAreas;
 
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
         if (nbCorrectOrder === this.areas.length) {
             this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
-        }
-
-        if (this.areas.length > 1) {
-            var l = this.areas.length;
-            var c = 0;
-            var sub = this.areas[0].component.sizingEnd
-                .merge(this.areas
-                    .filter((a, i) => i > 0)
-                    .map(a => a.component.sizingEnd))
-                .debounceTime(500)
-                .distinctUntilChanged()
-                .subscribe(evt => {
-                    this.notify('sizingEnd');
-                    sub.unsubscribe();
-                });
         }
 
         this.areas.forEach((a, i) => {
@@ -251,13 +256,10 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
-
-
     }
 
     private refreshStyleSizes() {
-
-        const visibleAreas = this.visibleAreas;
+        let visibleAreas = this.visibleAreas;
 
         const f = this.gutterSize * this.nbGutters / visibleAreas.length;
         visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
@@ -287,8 +289,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 x: startEvent.screenX,
                 y: startEvent.screenY
             };
-        }
-        else if (startEvent instanceof TouchEvent) {
+        } else if (startEvent instanceof TouchEvent) {
             start = {
                 x: startEvent.touches[0].screenX,
                 y: startEvent.touches[0].screenY
@@ -321,8 +322,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 x: event.screenX,
                 y: event.screenY
             };
-        }
-        else if (event instanceof TouchEvent) {
+        } else if (event instanceof TouchEvent) {
             end = {
                 x: event.touches[0].screenX,
                 y: event.touches[0].screenY
@@ -388,7 +388,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private notify(type: string) {
-        const data: Array<number> = this.visibleAreas.map(a => a.size);
+        const data: Array<number> = this.areas
+            .filter(a => a.component && a.component.visible)
+            .map(a => a.size);
 
         switch (type) {
             case 'start':
@@ -400,12 +402,14 @@ export class SplitComponent implements OnChanges, OnDestroy {
             case 'end':
                 return this.dragEnd.emit(data);
 
-            case 'sizingEnd':
-                return this.layoutEnd.emit(data);
+            case 'visibleTransitionEnd':
+                return this._visibleTransitionEndSub.next(data);
         }
     }
 
     public ngOnDestroy() {
         this.stopDragging();
+        if (!!this._visibleTransitionEndTeardowns)
+            this._visibleTransitionEndTeardowns.forEach(t => t.unsubscribe());
     }
 }

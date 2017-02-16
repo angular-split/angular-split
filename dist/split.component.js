@@ -9,9 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-require('rxjs/add/operator/merge');
-require('rxjs/add/operator/debounceTime');
-require('rxjs/add/operator/distinctUntilChanged');
+var Rx_1 = require('rxjs/Rx');
 var SplitComponent = (function () {
     function SplitComponent(cdRef, elementRef, renderer) {
         this.cdRef = cdRef;
@@ -28,7 +26,8 @@ var SplitComponent = (function () {
          * This event if fired when split area show/hide are done with animations completed.
          * Make sure use debounceTime before subscription to prevent repeated hits in short time
          */
-        this.layoutEnd = new core_1.EventEmitter(false);
+        this._visibleTransitionEndSub = new Rx_1.BehaviorSubject([]);
+        this.visibleTransitionEnd = this._visibleTransitionEndSub.asObservable();
         this.minPercent = 5;
         this.areas = [];
         this.isDragging = false;
@@ -36,17 +35,11 @@ var SplitComponent = (function () {
         this.areaASize = 0;
         this.areaBSize = 0;
         this.eventsDragFct = [];
+        this._visibleTransitionEndTeardowns = new Map();
     }
     Object.defineProperty(SplitComponent.prototype, "styleFlexDirection", {
         get: function () {
             return this.direction === 'vertical';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SplitComponent.prototype, "styleFlexDirectionStyle", {
-        get: function () {
-            return this.direction === 'horizontal' ? 'row' : 'column';
         },
         enumerable: true,
         configurable: true
@@ -101,6 +94,7 @@ var SplitComponent = (function () {
             size: -1,
             minPixel: minPixel
         });
+        this._addAreaSubscription(component);
         this.refresh();
     };
     SplitComponent.prototype.updateArea = function (component, orderUser, sizeUser, minPixel) {
@@ -118,6 +112,7 @@ var SplitComponent = (function () {
             var index = this.areas.indexOf(item);
             this.areas.splice(index, 1);
             this.areas.forEach(function (a, i) { return a.order = i * 2; });
+            this._removeAreaSubscription(area);
             this.refresh();
         }
     };
@@ -134,8 +129,22 @@ var SplitComponent = (function () {
         }
     };
     SplitComponent.prototype.isLastVisibleArea = function (area) {
-        var visibleAreas = this.visibleAreas;
+        var visibleAreas = this.areas.filter(function (a) { return a.component.visible; });
         return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
+    };
+    SplitComponent.prototype._addAreaSubscription = function (area) {
+        var _this = this;
+        this._visibleTransitionEndTeardowns.set(area, area.sizingEnd
+            .subscribe(function (t) {
+            _this.notify('visibleTransitionEnd');
+        }));
+    };
+    SplitComponent.prototype._removeAreaSubscription = function (area) {
+        var sub = this._visibleTransitionEndTeardowns.get(area);
+        if (sub) {
+            sub.unsubscribe();
+            this._visibleTransitionEndTeardowns.delete(area);
+        }
     };
     SplitComponent.prototype.refresh = function () {
         var _this = this;
@@ -145,20 +154,6 @@ var SplitComponent = (function () {
         var nbCorrectOrder = this.areas.filter(function (a) { return a.orderUser !== null && !isNaN(a.orderUser); }).length;
         if (nbCorrectOrder === this.areas.length) {
             this.areas.sort(function (a, b) { return +a.orderUser - +b.orderUser; });
-        }
-        if (this.areas.length > 1) {
-            var l = this.areas.length;
-            var c = 0;
-            var sub = this.areas[0].component.sizingEnd
-                .merge(this.areas
-                .filter(function (a, i) { return i > 0; })
-                .map(function (a) { return a.component.sizingEnd; }))
-                .debounceTime(500)
-                .distinctUntilChanged()
-                .subscribe(function (evt) {
-                _this.notify('sizingEnd');
-                sub.unsubscribe();
-            });
         }
         this.areas.forEach(function (a, i) {
             a.order = i * 2;
@@ -289,7 +284,9 @@ var SplitComponent = (function () {
         this.notify('end');
     };
     SplitComponent.prototype.notify = function (type) {
-        var data = this.visibleAreas.map(function (a) { return a.size; });
+        var data = this.areas
+            .filter(function (a) { return a.component && a.component.visible; })
+            .map(function (a) { return a.size; });
         switch (type) {
             case 'start':
                 return this.dragStart.emit(data);
@@ -297,12 +294,14 @@ var SplitComponent = (function () {
                 return this.dragProgress.emit(data);
             case 'end':
                 return this.dragEnd.emit(data);
-            case 'sizingEnd':
-                return this.layoutEnd.emit(data);
+            case 'visibleTransitionEnd':
+                return this._visibleTransitionEndSub.next(data);
         }
     };
     SplitComponent.prototype.ngOnDestroy = function () {
         this.stopDragging();
+        if (!!this._visibleTransitionEndTeardowns)
+            this._visibleTransitionEndTeardowns.forEach(function (t) { return t.unsubscribe(); });
     };
     __decorate([
         core_1.Input(), 
@@ -342,16 +341,12 @@ var SplitComponent = (function () {
     ], SplitComponent.prototype, "dragEnd", void 0);
     __decorate([
         core_1.Output(), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "layoutEnd", void 0);
+        __metadata('design:type', Rx_1.Observable)
+    ], SplitComponent.prototype, "visibleTransitionEnd", void 0);
     __decorate([
         core_1.HostBinding('class.vertical'), 
         __metadata('design:type', Object)
     ], SplitComponent.prototype, "styleFlexDirection", null);
-    __decorate([
-        core_1.HostBinding('style.flex-direction'), 
-        __metadata('design:type', Object)
-    ], SplitComponent.prototype, "styleFlexDirectionStyle", null);
     __decorate([
         core_1.HostBinding('class.notrans'), 
         __metadata('design:type', Object)
@@ -369,11 +364,11 @@ var SplitComponent = (function () {
             selector: 'split',
             changeDetection: core_1.ChangeDetectionStrategy.OnPush,
             styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            flex-direction: row;\n        }\n\n        :host.vertical {\n            flex-direction: column;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            flex-basis: 10px;\n            height: 100%;\n            background-color: #eeeeee;\n            background-position: 50%;\n            background-repeat: no-repeat;\n        }\n\n        :host.vertical split-gutter {\n            width: 100%;\n        }\n\n        :host /deep/ split-area {\n            transition: flex-basis 0.3s;\n        }  \n\n        :host.notrans /deep/ split-area {\n            transition: none !important;\n        }      \n\n        :host /deep/ split-area.notshow {\n            flex-basis: 0 !important;\n            overflow: hidden !important;\n        }      \n\n        :host.vertical /deep/ split-area.notshow {\n            max-width: 0;\n            flex-basis: 0 !important;\n            overflow: hidden !important;\n        }\n    "],
-            template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false && area.component.visible === true && !isLastVisibleArea(area)\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
+            template: "\n        <ng-content></ng-content>\n        <template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [visible]=\"area.component.visible && !isLastVisibleArea(area)\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </template>",
         }), 
         __metadata('design:paramtypes', [core_1.ChangeDetectorRef, core_1.ElementRef, core_1.Renderer])
     ], SplitComponent);
     return SplitComponent;
 }());
 exports.SplitComponent = SplitComponent;
-//# sourceMappingURL=C:/dev/angular-split/split.component.js.map
+//# sourceMappingURL=D:/dev/split/split.component.js.map
