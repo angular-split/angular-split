@@ -21,7 +21,6 @@ var SplitAreaDirective = (function () {
         this._visible = true;
         this.visibility = "block";
         this.eventsLockFct = [];
-        this.sizingEnd = new core_1.EventEmitter();
     }
     Object.defineProperty(SplitAreaDirective.prototype, "order", {
         set: function (v) {
@@ -89,7 +88,7 @@ var SplitAreaDirective = (function () {
         //note that all css property transition end could trigger transitionend events
         //this limit only flex-basis transition to trigger the event
         if (evt.propertyName == "flex-basis")
-            this.sizingEnd.emit(this);
+            this.split.notify("visibleTransitionEnd");
     };
     __decorate([
         core_1.Input(), 
@@ -111,10 +110,6 @@ var SplitAreaDirective = (function () {
         __metadata('design:type', Boolean), 
         __metadata('design:paramtypes', [Boolean])
     ], SplitAreaDirective.prototype, "visible", null);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], SplitAreaDirective.prototype, "sizingEnd", void 0);
     SplitAreaDirective = __decorate([
         core_1.Directive({
             selector: 'split-area',
@@ -133,4 +128,4 @@ var SplitAreaDirective = (function () {
     return SplitAreaDirective;
 }());
 exports.SplitAreaDirective = SplitAreaDirective;
-//# sourceMappingURL=C:/dev/angular-split/splitArea.directive.js.map
+//# sourceMappingURL=D:/dev/split/splitArea.directive.js.map

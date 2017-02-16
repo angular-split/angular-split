@@ -22,13 +22,15 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     dragStart: EventEmitter<number[]>;
     dragProgress: EventEmitter<number[]>;
     dragEnd: EventEmitter<number[]>;
-    /**
-     * This event if fired when split area show/hide are done with animations completed.
-     * Make sure use debounceTime before subscription to prevent repeated hits in short time
-     */
     private _visibleTransitionEndSub;
+    /**
+     * This event is fired when split area show/hide are done with animations completed.
+     * Make sure use debounceTime and distinctUntilChange before subscription,
+     * to handle the fact that adjacent split areas also triggering the event, during show/hide of single area.
+     */
     visibleTransitionEnd: Observable<Array<number>>;
     readonly styleFlexDirection: boolean;
+    readonly styleFlexDirectionStyle: string;
     readonly dragging: boolean;
     readonly styleWidth: string;
     readonly styleHeight: string;
@@ -49,15 +51,12 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     hideArea(area: SplitAreaDirective): void;
     showArea(area: SplitAreaDirective): void;
     isLastVisibleArea(area: IAreaData): boolean;
-    private _visibleTransitionEndTeardowns;
-    private _addAreaSubscription(area);
-    private _removeAreaSubscription(area);
     private refresh();
     private refreshStyleSizes();
     startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number): void;
     private dragEvent(event, start, areaA, areaB);
     private drag(start, end, areaA, areaB);
     private stopDragging();
-    private notify(type);
+    notify(type: string): void;
     ngOnDestroy(): void;
 }
