@@ -40,6 +40,7 @@ export class Wrapper_SplitComponent {
   /*private*/ _expr_7:any;
   /*private*/ _expr_8:any;
   /*private*/ _expr_9:any;
+  /*private*/ _expr_10:any;
   subscription0:any;
   subscription1:any;
   subscription2:any;
@@ -58,6 +59,7 @@ export class Wrapper_SplitComponent {
     this._expr_7 = import1.UNINITIALIZED;
     this._expr_8 = import1.UNINITIALIZED;
     this._expr_9 = import1.UNINITIALIZED;
+    this._expr_10 = import1.UNINITIALIZED;
   }
   ngOnDetach(view:import2.AppView<any>,componentView:import2.AppView<any>,el:any):void {
   }
@@ -131,20 +133,25 @@ export class Wrapper_SplitComponent {
       view.renderer.setElementClass(el,'vertical',currVal_6);
       this._expr_6 = currVal_6;
     }
-    const currVal_7:any = this.context.dragging;
+    const currVal_7:any = this.context.styleFlexDirectionStyle;
     if (import3.checkBinding(throwOnChange,this._expr_7,currVal_7)) {
-      view.renderer.setElementClass(el,'notrans',currVal_7);
+      view.renderer.setElementStyle(el,'flex-direction',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_7).toString()));
       this._expr_7 = currVal_7;
     }
-    const currVal_8:any = this.context.styleWidth;
+    const currVal_8:any = this.context.dragging;
     if (import3.checkBinding(throwOnChange,this._expr_8,currVal_8)) {
-      view.renderer.setElementStyle(el,'width',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8).toString()));
+      view.renderer.setElementClass(el,'notrans',currVal_8);
       this._expr_8 = currVal_8;
     }
-    const currVal_9:any = this.context.styleHeight;
+    const currVal_9:any = this.context.styleWidth;
     if (import3.checkBinding(throwOnChange,this._expr_9,currVal_9)) {
-      view.renderer.setElementStyle(el,'height',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9).toString()));
+      view.renderer.setElementStyle(el,'width',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9).toString()));
       this._expr_9 = currVal_9;
+    }
+    const currVal_10:any = this.context.styleHeight;
+    if (import3.checkBinding(throwOnChange,this._expr_10,currVal_10)) {
+      view.renderer.setElementStyle(el,'height',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_10) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_10).toString()));
+      this._expr_10 = currVal_10;
     }
   }
   handleEvent(eventName:string,$event:any):boolean {
@@ -156,7 +163,7 @@ export class Wrapper_SplitComponent {
     if (emit0) { (this.subscription0 = this.context.dragStart.subscribe(_eventHandler.bind(view,'dragStart'))); }
     if (emit1) { (this.subscription1 = this.context.dragProgress.subscribe(_eventHandler.bind(view,'dragProgress'))); }
     if (emit2) { (this.subscription2 = this.context.dragEnd.subscribe(_eventHandler.bind(view,'dragEnd'))); }
-    if (emit3) { (this.subscription3 = this.context.layoutEnd.subscribe(_eventHandler.bind(view,'layoutEnd'))); }
+    if (emit3) { (this.subscription3 = this.context.visibleTransitionEnd.subscribe(_eventHandler.bind(view,'visibleTransitionEnd'))); }
   }
 }
 var renderType_SplitComponent_Host:import5.RenderComponentType = import3.createRenderComponentType('',0,import6.ViewEncapsulation.None,([] as any[]),{});

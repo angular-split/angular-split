@@ -37,7 +37,7 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     private readonly visibleAreas;
     private readonly nbGutters;
     private minPercent;
-    private areas;
+    areas: Array<IAreaData>;
     private isDragging;
     private containerSize;
     private areaASize;
