@@ -24,7 +24,6 @@ export class Wrapper_SplitAreaDirective {
   /*private*/ _expr_7:any;
   /*private*/ _expr_8:any;
   /*private*/ _expr_9:any;
-  subscription0:any;
   constructor(p0:any,p1:any,p2:any) {
     this._changed = false;
     this.context = new import0.SplitAreaDirective(p0,p1,p2);
@@ -43,7 +42,6 @@ export class Wrapper_SplitAreaDirective {
   }
   ngOnDestroy():void {
     this.context.ngOnDestroy();
-    (this.subscription0 && this.subscription0.unsubscribe());
   }
   check_order(currValue:any,throwOnChange:boolean,forceUpdate:boolean):void {
     if ((forceUpdate || import3.checkBinding(throwOnChange,this._expr_0,currValue))) {
@@ -119,8 +117,7 @@ export class Wrapper_SplitAreaDirective {
     }
     return result;
   }
-  subscribe(view:import2.AppView<any>,_eventHandler:any,emit0:boolean):void {
+  subscribe(view:import2.AppView<any>,_eventHandler:any):void {
     this._eventHandler = _eventHandler;
-    if (emit0) { (this.subscription0 = this.context.sizingEnd.subscribe(_eventHandler.bind(view,'sizingEnd'))); }
   }
 }

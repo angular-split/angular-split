@@ -30,7 +30,6 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
      */
     visibleTransitionEnd: Observable<Array<number>>;
     readonly styleFlexDirection: boolean;
-    readonly styleFlexDirectionStyle: string;
     readonly dragging: boolean;
     readonly styleWidth: string;
     readonly styleHeight: string;
