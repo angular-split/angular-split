@@ -119,7 +119,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         return (this.height && !isNaN(this.height) && this.height > 0) ? this.height + 'px' : '100%';
     }
 
-    private get visibleAreas(): IAreaData[] {
+    private get visibleAreas(): IAreaData[] {   
         return this.areas.filter(a => a.component.visible);
     }
 
@@ -128,7 +128,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private minPercent: number = 5;
-    private areas: Array<IAreaData> = [];
+    areas: Array<IAreaData> = [];
     private isDragging: boolean = false;
     private containerSize: number = 0;
     private areaASize: number = 0;
