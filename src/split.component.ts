@@ -118,8 +118,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
         return this.visibleAreas.length - 1;
     }
 
+    public areas: Array<IAreaData> = [];
     private minPercent: number = 5;
-    private areas: Array<IAreaData> = [];
     private isDragging: boolean = false;
     private containerSize: number = 0;
     private areaASize: number = 0;

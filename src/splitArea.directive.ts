@@ -85,7 +85,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.split.removeArea(this);
     }
 
-    onTransitionEnd(evt: TransitionEvent) {
+    public onTransitionEnd(evt: TransitionEvent) {
         // Limit only flex-basis transition to trigger the event
         if(evt.propertyName === 'flex-basis')
             this.split.notify('visibleTransitionEnd');
