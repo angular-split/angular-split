@@ -43,10 +43,12 @@ export var SplitAreaDirective = (function () {
         set: function (v) {
             this.visibility = v ? "block" : "none";
             this._visible = v;
-            if (this.visible)
+            if (this.visible) {
                 this.split.showArea(this);
-            else
+            }
+            else {
                 this.split.hideArea(this);
+            }
         },
         enumerable: true,
         configurable: true
@@ -72,6 +74,11 @@ export var SplitAreaDirective = (function () {
     SplitAreaDirective.prototype.ngOnDestroy = function () {
         this.split.removeArea(this);
     };
+    SplitAreaDirective.prototype.onTransitionEnd = function (evt) {
+        // Limit only flex-basis transition to trigger the event
+        if (evt.propertyName === 'flex-basis')
+            this.split.notify('visibleTransitionEnd');
+    };
     SplitAreaDirective.decorators = [
         { type: Directive, args: [{
                     selector: 'split-area',
@@ -81,7 +88,8 @@ export var SplitAreaDirective = (function () {
                         '[style.overflow-x]': '"hidden"',
                         '[style.overflow-y]': '"auto"',
                         '[style.height]': '"100%"',
-                        '[style.display]': 'visibility'
+                        '[class.hided]': '!visible',
+                        '(transitionend)': 'onTransitionEnd($event)'
                     }
                 },] },
     ];

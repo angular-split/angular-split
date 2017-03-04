@@ -103,14 +103,18 @@ export class Wrapper_SplitAreaDirective {
       view.renderer.setElementStyle(el,'height',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_8).toString()));
       this._expr_8 = currVal_8;
     }
-    const currVal_9:any = this.context.visibility;
+    const currVal_9:boolean = !this.context.visible;
     if (import3.checkBinding(throwOnChange,this._expr_9,currVal_9)) {
-      view.renderer.setElementStyle(el,'display',((view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9) == null)? (null as any): view.viewUtils.sanitizer.sanitize(import4.SecurityContext.STYLE,currVal_9).toString()));
+      view.renderer.setElementClass(el,'hided',currVal_9);
       this._expr_9 = currVal_9;
     }
   }
   handleEvent(eventName:string,$event:any):boolean {
     var result:boolean = true;
+    if ((eventName == 'transitionend')) {
+      const pd_sub_0:any = ((<any>this.context.onTransitionEnd($event)) !== false);
+      result = (pd_sub_0 && result);
+    }
     return result;
   }
   subscribe(view:import2.AppView<any>,_eventHandler:any):void {

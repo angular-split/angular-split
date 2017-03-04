@@ -28,6 +28,11 @@ interface Point {
             flex-wrap: nowrap;
             justify-content: flex-start;
             align-items: stretch;
+            flex-direction: row;
+        }
+
+        :host.vertical {
+            flex-direction: column;
         }
 
         split-gutter {
@@ -36,6 +41,27 @@ interface Point {
             background-color: #eeeeee;
             background-position: center center;
             background-repeat: no-repeat;
+        }
+
+        :host.vertical split-gutter {
+            width: 100%;
+        }
+
+        :host /deep/ split-area {
+            transition: flex-basis 0.3s;
+        }  
+
+        :host.notransition /deep/ split-area {
+            transition: none !important;
+        }      
+
+        :host /deep/ split-area.hided {
+            flex-basis: 0 !important;
+            overflow: hidden !important;
+        }      
+
+        :host.vertical /deep/ split-area.hided {
+            max-width: 0;
         }
     `],
     template: `
@@ -56,13 +82,24 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() height: number;
     @Input() gutterSize: number = 10;
     @Input() disabled: boolean = false;
+    @Input() visibleTransition: boolean = false;
 
     @Output() dragStart = new EventEmitter<Array<number>>(false);
     @Output() dragProgress = new EventEmitter<Array<number>>(false);
     @Output() dragEnd = new EventEmitter<Array<number>>(false);
+    @Output() visibleTransitionEnd = new EventEmitter<Array<number>>(false);
 
-    @HostBinding('style.flex-direction') get styleFlexDirection() {
+    @HostBinding('class.vertical') get styleFlexDirection() {
+        return this.direction === 'vertical';
+    }
+
+    @HostBinding('style.flex-direction') get styleFlexDirectionStyle() {
         return this.direction === 'horizontal' ? 'row' : 'column';
+    }
+
+    @HostBinding('class.notransition') get dragging() {
+        // prevent animation of areas when visibleTransition is false, or resizing
+        return !this.visibleTransition || this.isDragging;
     }
 
     @HostBinding('style.width') get styleWidth() {
@@ -321,7 +358,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.notify('end');
     }
 
-    private notify(type: string) {
+    notify(type: string) {
         const data: Array<number> = this.visibleAreas.map(a => a.size);
 
         switch(type) {
@@ -333,6 +370,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
             case 'end':
                 return this.dragEnd.emit(data);
+
+            case 'visibleTransitionEnd':
+                return this.visibleTransitionEnd.emit(data);
         }
     }
 

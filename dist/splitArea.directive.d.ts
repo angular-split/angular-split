@@ -20,4 +20,5 @@ export declare class SplitAreaDirective implements OnInit, OnDestroy {
     unlockEvents(): void;
     setStyle(key: string, value: any): void;
     ngOnDestroy(): void;
+    onTransitionEnd(evt: TransitionEvent): void;
 }
