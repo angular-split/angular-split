@@ -23,6 +23,9 @@
         <tr>
             <td>gutterSize</td> <td>number</td> <td>10</td> <td>Set gutter (dragging element) width size.</td>
         </tr>
+        <tr>
+            <td>visibleTransition</td> <td>boolean</td> <td>false</td> <td>Add transition when toggling visibility using `[visible]`.</td>
+        </tr>
         </tbody>
     </table>
     <table class="table table-striped">
@@ -33,13 +36,16 @@
         </thead>
         <tbody>
         <tr>
-            <td>dragStart</td> <td>Areas size array (ex: [17, 43, 40])</td> <td>Emit when drag starts.</td>
+            <td>dragStart</td> <td>Visible areas size array (ex: [17, 43, 40])</td> <td>Emit when drag starts.</td>
         </tr>
         <tr>
-            <td>dragProgress</td> <td>Areas size array (ex: [17, 43, 40])</td> <td>Emit when dragging.</td>
+            <td>dragProgress</td> <td>Visible areas size array (ex: [17, 43, 40])</td> <td>Emit when dragging.</td>
         </tr>
         <tr>
-            <td>dragEnd</td> <td>Areas size array (ex: [17, 43, 40])</td> <td>Emit when drag ends.</td>
+            <td>dragEnd</td> <td>Visible areas size array (ex: [17, 43, 40])</td> <td>Emit when drag ends.</td>
+        </tr>
+        <tr>
+            <td>visibleTransitionEnd</td> <td>Visible areas size array (ex: [17, 43, 40])</td> <td>Emit when visibility transition ends.</td>
         </tr>
         </tbody>
     </table>

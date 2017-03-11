@@ -6,10 +6,12 @@
         <li><a pageScroll href="#ex3">Multiple nested splits</a></li>
         <li><a pageScroll href="#ex4">Dynamically controlled split</a></li>
         <li><a pageScroll href="#ex5">Show/hide areas using `*ngIf` and `[visible]`</a></li>
+        <li><a pageScroll href="#ex6">Toggle visibility using `[visible]` with transition</a></li>
     </ul>
     <br>
+
     <h4 id="ex1">Simple horizontal split</h4>
-    <pre [innerText]="codeH"></pre>
+    <pre [innerText]="code1"></pre>
     <div class="split-example">
         <split direction="horizontal">
             <split-area [size]="30">
@@ -21,8 +23,9 @@
         </split>
     </div>
     <hr>
+
     <h4 id="ex2">Simple vertical split</h4>
-    <pre [innerText]="codeV"></pre>
+    <pre [innerText]="code2"></pre>
     <div class="split-example">
         <split direction="vertical">
             <split-area [size]="34">
@@ -34,8 +37,9 @@
         </split>
     </div>
     <hr>
+
     <h4 id="ex3">Multiple nested split</h4>
-    <pre [innerText]="codeX"></pre>
+    <pre [innerText]="code3"></pre>
     <div class="split-example" style="height: 600px;">
         <split direction="horizontal">
             <split-area [size]="40">
@@ -64,78 +68,110 @@
         </split>
     </div>
     <hr>
+
     <h4 id="ex4">Dynamically controlled split</h4>
-    <pre [innerText]="codeD"></pre>
+    <pre [innerText]="code4"></pre>
     <div class="split-example">
-        <split [direction]="dynamic.dir" [gutterSize]="dynamic.gutterSize" (dragEnd)="areasSizesCustom = $event; dynamic.areasIndex = -1">
-            <split-area [order]="dynamic.areasOrder[0]" [size]="dynamic.areasIndex !== -1 ? dynamic.areasSizes[dynamic.areasIndex][0] : areasSizesCustom[0]">
+        <split [direction]="action4.dir" [gutterSize]="action4.gutterSize" (dragEnd)="areasSizesCustom = $event; action4.areasIndex = -1">
+            <split-area [order]="action4.areasOrder[0]" [size]="action4.areasIndex !== -1 ? action4.areasSizes[action4.areasIndex][0] : areasSizesCustom[action4.areasOrder[0]]">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nis.</p>
             </split-area>
-            <split-area [order]="dynamic.areasOrder[1]" [size]="dynamic.areasIndex !== -1 ? dynamic.areasSizes[dynamic.areasIndex][1] : areasSizesCustom[1]">
+            <split-area [order]="action4.areasOrder[1]" [size]="action4.areasIndex !== -1 ? action4.areasSizes[action4.areasIndex][1] : areasSizesCustom[action4.areasOrder[1]]">
                 <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eodolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
             </split-area>
         </split>
     </div>
     <div>
-        <label>Direction: </label>
-        <div class="btn-group">
-            <label class="btn btn-secondary btn-sm" [(ngModel)]="dynamic.dir" btnRadio="horizontal">horizontal</label>
-            <label class="btn btn-secondary btn-sm" [(ngModel)]="dynamic.dir" btnRadio="vertical">vertical</label>
+        <div>
+            <label>Direction: </label>
+            <div class="btn-group">
+                <label class="btn btn-secondary btn-sm" [(ngModel)]="action4.dir" btnRadio="horizontal">horizontal</label>
+                <label class="btn btn-secondary btn-sm" [(ngModel)]="action4.dir" btnRadio="vertical">vertical</label>
+            </div>
         </div>
-    </div>
-    <div>
-        <label>Order: </label>
-        <button class="btn btn-secondary btn-sm" (click)="dynamic.areasOrder=dynamic.areasOrder.reverse()">Switch</button>
-    </div>
-    <div>
-        <label>Gutter size: </label>
-        <div class="btn-group">
-            <label class="btn btn-secondary btn-sm" [(ngModel)]="dynamic.gutterSize" [btnRadio]="5">5</label>
-            <label class="btn btn-secondary btn-sm" [(ngModel)]="dynamic.gutterSize" [btnRadio]="10">10</label>
-            <label class="btn btn-secondary btn-sm" [(ngModel)]="dynamic.gutterSize" [btnRadio]="20">20</label>
+        <div>
+            <label>Order: </label>
+            <button class="btn btn-secondary btn-sm" (click)="action4.areasOrder = action4.areasOrder.reverse(); areasSizesCustom = areasSizesCustom.reverse()">Switch</button>
         </div>
-    </div>
-    <div>
-        <label>Areas size: </label>
-        <div class="btn-group">
-            <label *ngFor="let s of dynamic.areasSizes; let i = index"
-                    [(ngModel)]="dynamic.areasIndex" [btnRadio]="i" 
-                    class="btn btn-secondary btn-sm">{{ s }}</label>
+        <div>
+            <label>Gutter size: </label>
+            <div class="btn-group">
+                <label class="btn btn-secondary btn-sm" [(ngModel)]="action4.gutterSize" [btnRadio]="5">5</label>
+                <label class="btn btn-secondary btn-sm" [(ngModel)]="action4.gutterSize" [btnRadio]="10">10</label>
+                <label class="btn btn-secondary btn-sm" [(ngModel)]="action4.gutterSize" [btnRadio]="20">20</label>
+            </div>
+        </div>
+        <div>
+            <label>Areas size: </label>
+            <div class="btn-group">
+                <label *ngFor="let s of action4.areasSizes; let i = index"
+                        [(ngModel)]="action4.areasIndex" [btnRadio]="i" 
+                        class="btn btn-secondary btn-sm">{{ s }}</label>
+            </div>
         </div>
     </div>
     <hr>
+
     <h4 id="ex5">Show/hide area using `*ngIf` and `[visible]`</h4>
-    <pre [innerText]="codeT"></pre>
+    <pre [innerText]="code5"></pre>
     <div class="split-example" style="height: 150px;">
         <split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
-            <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="1">
+            <split-area *ngIf="action5.isPresentA" [visible]="action5.isVisibleA" [order]="1">
                 <p>A</p>
             </split-area>
-            <split-area *ngIf="toggling.isPresentB" [visible]="toggling.isVisibleB" [order]="2">
+            <split-area *ngIf="action5.isPresentB" [visible]="action5.isVisibleB" [order]="2">
                 <p>B</p>
             </split-area>
-            <split-area *ngIf="toggling.isPresentC" [visible]="toggling.isVisibleC" [order]="3">
+            <split-area *ngIf="action5.isPresentC" [visible]="action5.isVisibleC" [order]="3">
                 <p>C</p>
             </split-area>
         </split>
     </div>
     <div>
-        <label>Toggle with `[visible]`: </label>
-        <button (click)="toggling.isVisibleA = !toggling.isVisibleA" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleA">areaA</button>
-        <button (click)="toggling.isVisibleB = !toggling.isVisibleB" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleB">areaB</button>
-        <button (click)="toggling.isVisibleC = !toggling.isVisibleC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isVisibleC">areaC</button>
-    </div>
-    <div>
-        <label>Toggle with `*ngIf`: </label>
-        <button (click)="toggling.isPresentA = !toggling.isPresentA" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentA">areaA</button>
-        <button (click)="toggling.isPresentB = !toggling.isPresentB" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentB">areaB</button>
-        <button (click)="toggling.isPresentC = !toggling.isPresentC" class="btn btn-sm btn-success" [class.btn-danger]="!toggling.isPresentC">areaC</button>
-    </div>
-    <div>
-        <label>DragEnd events log: </label>
-        <textarea [value]="toggling.logs" disabled></textarea>
+        <div>
+            <label>Toggle with `[visible]`: </label>
+            <button (click)="action5.isVisibleA = !action5.isVisibleA" class="btn btn-sm btn-success" [class.btn-danger]="!action5.isVisibleA">areaA</button>
+            <button (click)="action5.isVisibleB = !action5.isVisibleB" class="btn btn-sm btn-success" [class.btn-danger]="!action5.isVisibleB">areaB</button>
+            <button (click)="action5.isVisibleC = !action5.isVisibleC" class="btn btn-sm btn-success" [class.btn-danger]="!action5.isVisibleC">areaC</button>
+        </div>
+        <div>
+            <label>Toggle with `*ngIf`: </label>
+            <button (click)="action5.isPresentA = !action5.isPresentA" class="btn btn-sm btn-success" [class.btn-danger]="!action5.isPresentA">areaA</button>
+            <button (click)="action5.isPresentB = !action5.isPresentB" class="btn btn-sm btn-success" [class.btn-danger]="!action5.isPresentB">areaB</button>
+            <button (click)="action5.isPresentC = !action5.isPresentC" class="btn btn-sm btn-success" [class.btn-danger]="!action5.isPresentC">areaC</button>
+        </div>
+        <div>
+            <label>DragEnd events log: </label>
+            <textarea [value]="action5.logs" disabled></textarea>
+        </div>
     </div>
     <hr>
+
+    <h4 id="ex6">Toggle visibility using `[visible]` with transition</h4>
+    <pre [innerText]="code6"></pre>
+    <div class="split-example" style="height: 150px;">
+        <split [gutterSize]="10" [visibleTransition]="true">
+            <split-area [visible]="action6.isVisibleA">
+                <p>A</p>
+            </split-area>
+            <split-area [visible]="action6.isVisibleB">
+                <p>B</p>
+            </split-area>
+            <split-area [visible]="action6.isVisibleC">
+                <p>C</p>
+            </split-area>
+        </split>
+    </div>
+    <div>
+        <div>
+            <label>Toggle with `[visible]`: </label>
+            <button (click)="action6.isVisibleA = !action6.isVisibleA" class="btn btn-sm btn-success" [class.btn-danger]="!action6.isVisibleA">areaA</button>
+            <button (click)="action6.isVisibleB = !action6.isVisibleB" class="btn btn-sm btn-success" [class.btn-danger]="!action6.isVisibleB">areaB</button>
+            <button (click)="action6.isVisibleC = !action6.isVisibleC" class="btn btn-sm btn-success" [class.btn-danger]="!action6.isVisibleC">areaC</button>
+        </div>
+    </div>
+    <hr>
+
     <br>
     <button class="btn btn-outline-warning" routerLink="/advanced-example">Advanced example</button>
 </div>

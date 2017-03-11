@@ -36,7 +36,7 @@ import { PageScrollConfig } from 'ng2-page-scroll';
     templateUrl: `./examples.route.component.html`
 })
 export class ExamplesComponent {
-    codeV: string = `<split direction="vertical">
+    code1: string = `<split direction="vertical">
     <split-area [size]="25">
         <p>Lorem ipsum dolor sit amet...</p>
     </split-area>
@@ -45,7 +45,7 @@ export class ExamplesComponent {
     </split-area>
 </split>`
 
-    codeH: string = `<split direction="horizontal">
+    code2: string = `<split direction="horizontal">
     <split-area [size]="30">
         <p>Lorem ipsum dolor sit amet...</p>
     </split-area>
@@ -54,7 +54,7 @@ export class ExamplesComponent {
     </split-area>
 </split>`
 
-    codeX: string = `<split direction="horizontal">
+    code3: string = `<split direction="horizontal">
     <split-area [size]="40">
         <split direction="vertical">
             <split-area>
@@ -80,7 +80,7 @@ export class ExamplesComponent {
     </split-area>
 </split>`
 
-    codeD: string = `<div class="split-example">
+    code4: string = `<div class="split-example">
     <split [direction]="dynamic.dir" [gutterSize]="dynamic.gutterSize" (dragEnd)="areasSizesCustom = $event; dynamic.areasIndex = -1">
         <split-area [size]="dynamic.areasIndex !== -1 ? dynamic.areasSizes[dynamic.areasIndex][0] : areasSizesCustom[0]">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nis.</p>
@@ -118,16 +118,16 @@ export class ExamplesComponent {
     </div>
 </div>`
 
-    dynamic = {
+    action4 = {
         dir: 'horizontal',
         gutterSize: 5,
         areasIndex: 0,
         areasSizes: [[25, 75], [60, 40], [85, 15]],
         areasSizesCustom: [50, 50],
-        areasOrder: [1, 2]
+        areasOrder: [0, 1]
     }
 
-    codeT: string = `<div class="split-example">
+    code5: string = `<div class="split-example">
     <split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
         <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="1">
             <p>A</p>
@@ -158,10 +158,10 @@ export class ExamplesComponent {
 </div>`
 
     log(eventName, e) {
-        this.toggling.logs = `${ new Date() }: ${ eventName } > ${ e }\n${ this.toggling.logs }`;
+        this.action5.logs = `${ new Date() }: ${ eventName } > ${ e }\n${ this.action5.logs }`;
     }
 
-    toggling = {
+    action5 = {
         isVisibleA: true,
         isVisibleB: true,
         isVisibleC: true,
@@ -169,6 +169,34 @@ export class ExamplesComponent {
         isPresentB: true,
         isPresentC: true,
         logs: ''
+    }
+    
+    code6 = `<div class="split-example">
+    <split [gutterSize]="10" [visibleTransition]="true">
+        <split-area [visible]="action6.isVisibleA">
+            <p>A</p>
+        </split-area>
+        <split-area [visible]="action6.isVisibleB">
+            <p>B</p>
+        </split-area>
+        <split-area [visible]="action6.isVisibleC">
+            <p>C</p>
+        </split-area>
+    </split>
+</div>
+<div>
+    <div>
+        <label>Toggle with [visible]: </label>
+        <button (click)="action6.isVisibleA = !action6.isVisibleA" class="btn btn-sm btn-success" [class.btn-danger]="!action6.isVisibleA">areaA</button>
+        <button (click)="action6.isVisibleB = !action6.isVisibleB" class="btn btn-sm btn-success" [class.btn-danger]="!action6.isVisibleB">areaB</button>
+        <button (click)="action6.isVisibleC = !action6.isVisibleC" class="btn btn-sm btn-success" [class.btn-danger]="!action6.isVisibleC">areaC</button>
+    </div>
+</div>`
+    
+    action6 = {
+        isVisibleA: true,
+        isVisibleB: true,
+        isVisibleC: true
     }
 
     constructor() {
