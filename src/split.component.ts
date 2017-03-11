@@ -1,5 +1,7 @@
 import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
     ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
 
 import { SplitAreaDirective } from './splitArea.directive';
 
@@ -87,7 +89,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Output() dragStart = new EventEmitter<Array<number>>(false);
     @Output() dragProgress = new EventEmitter<Array<number>>(false);
     @Output() dragEnd = new EventEmitter<Array<number>>(false);
-    @Output() visibleTransitionEnd = new EventEmitter<Array<number>>(false);
+    visibleTransitionEndInternal = new Subject<Array<number>>();
+    @Output() visibleTransitionEnd = this.visibleTransitionEndInternal.asObservable().debounceTime(20);
 
     @HostBinding('class.vertical') get styleFlexDirection() {
         return this.direction === 'vertical';
@@ -372,7 +375,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 return this.dragEnd.emit(data);
 
             case 'visibleTransitionEnd':
-                return this.visibleTransitionEnd.emit(data);
+                return this.visibleTransitionEndInternal.next(data);
         }
     }
 
