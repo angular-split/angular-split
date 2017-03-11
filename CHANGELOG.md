@@ -1,4 +1,14 @@
 
+<a name="0.1.20"></a>
+# 0.1.20 (2017-03-11)
+
+* **wording:** add mention about CSS flexbox layout use, so `angular-split` is not compatible on browser not supporting it (like ios8).
+
+### Feature
+
+* **visibility toggle transition:** add transition (optionnal: `<split [visibleTransition]="true">`) when toggling visibility and `visibleTransitionEnd` event ` [pr11](https://github.com/bertrandg/angular-split/pull/11).
+
+
 <a name="0.1.19"></a>
 # 0.1.19 (2017-02-09)
 
