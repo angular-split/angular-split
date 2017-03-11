@@ -1,5 +1,6 @@
 import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, SimpleChanges,
     ChangeDetectionStrategy, EventEmitter, Renderer, OnDestroy, OnChanges } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 
