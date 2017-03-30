@@ -1,5 +1,5 @@
 import { Directive, Input, ElementRef, Renderer } from '@angular/core';
-export var SplitGutterDirective = (function () {
+var SplitGutterDirective = (function () {
     function SplitGutterDirective(elementRef, renderer) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -67,22 +67,23 @@ export var SplitGutterDirective = (function () {
                 return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
         }
     };
-    SplitGutterDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: 'split-gutter'
-                },] },
-    ];
-    /** @nocollapse */
-    SplitGutterDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer, },
-    ]; };
-    SplitGutterDirective.propDecorators = {
-        'order': [{ type: Input },],
-        'direction': [{ type: Input },],
-        'size': [{ type: Input },],
-        'disabled': [{ type: Input },],
-    };
     return SplitGutterDirective;
 }());
-//# sourceMappingURL=/home/adebisi/Public/angular-split-master/splitGutter.directive.js.map
+export { SplitGutterDirective };
+SplitGutterDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'split-gutter'
+            },] },
+];
+/** @nocollapse */
+SplitGutterDirective.ctorParameters = function () { return [
+    { type: ElementRef, },
+    { type: Renderer, },
+]; };
+SplitGutterDirective.propDecorators = {
+    'order': [{ type: Input },],
+    'direction': [{ type: Input },],
+    'size': [{ type: Input },],
+    'disabled': [{ type: Input },],
+};
+//# sourceMappingURL=splitGutter.directive.js.map

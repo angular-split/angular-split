@@ -1,4 +1,10 @@
 
+<a name="0.2.0"></a>
+# 0.2.0 (2017-03-30)
+
+* **ng upgrade:** upgrade to angular `^4.0.0`, replace `<template>` by `<ng-template>` and rebuild dist folder.
+
+
 <a name="0.1.20"></a>
 # 0.1.20 (2017-03-11)
 

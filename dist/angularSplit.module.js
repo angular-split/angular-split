@@ -3,28 +3,29 @@ import { CommonModule } from '@angular/common';
 import { SplitComponent } from './split.component';
 import { SplitAreaDirective } from './splitArea.directive';
 import { SplitGutterDirective } from './splitGutter.directive';
-export var AngularSplitModule = (function () {
+var AngularSplitModule = (function () {
     function AngularSplitModule() {
     }
-    AngularSplitModule.decorators = [
-        { type: NgModule, args: [{
-                    imports: [
-                        CommonModule
-                    ],
-                    declarations: [
-                        SplitComponent,
-                        SplitAreaDirective,
-                        SplitGutterDirective
-                    ],
-                    exports: [
-                        SplitComponent,
-                        SplitAreaDirective,
-                        SplitGutterDirective
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    AngularSplitModule.ctorParameters = function () { return []; };
     return AngularSplitModule;
 }());
-//# sourceMappingURL=/home/adebisi/Public/angular-split-master/angularSplit.module.js.map
+export { AngularSplitModule };
+AngularSplitModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [
+                    CommonModule
+                ],
+                declarations: [
+                    SplitComponent,
+                    SplitAreaDirective,
+                    SplitGutterDirective
+                ],
+                exports: [
+                    SplitComponent,
+                    SplitAreaDirective,
+                    SplitGutterDirective
+                ]
+            },] },
+];
+/** @nocollapse */
+AngularSplitModule.ctorParameters = function () { return []; };
+//# sourceMappingURL=angularSplit.module.js.map

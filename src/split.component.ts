@@ -69,7 +69,7 @@ interface Point {
     `],
     template: `
         <ng-content></ng-content>
-        <template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
+        <ng-template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
             <split-gutter *ngIf="last === false && area.component.visible === true && !isLastVisibleArea(area)" 
                           [order]="index*2+1"
                           [direction]="direction"
@@ -77,7 +77,7 @@ interface Point {
                           [disabled]="disabled"
                           (mousedown)="startDragging($event, index*2+1)"
                           (touchstart)="startDragging($event, index*2+1)"></split-gutter>
-        </template>`,
+        </ng-template>`,
 })
 export class SplitComponent implements OnChanges, OnDestroy {
     @Input() direction: string = 'horizontal';

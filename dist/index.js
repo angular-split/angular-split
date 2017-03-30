@@ -2,4 +2,4 @@ export { AngularSplitModule } from './angularSplit.module';
 export { SplitComponent } from './split.component';
 export { SplitAreaDirective } from './splitArea.directive';
 export { SplitGutterDirective } from './splitGutter.directive';
-//# sourceMappingURL=/home/adebisi/Public/angular-split-master/index.js.map
+//# sourceMappingURL=index.js.map

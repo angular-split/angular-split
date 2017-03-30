@@ -1,6 +1,6 @@
 import { Directive, Input, ElementRef, Renderer } from '@angular/core';
 import { SplitComponent } from './split.component';
-export var SplitAreaDirective = (function () {
+var SplitAreaDirective = (function () {
     function SplitAreaDirective(elementRef, renderer, split) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -79,32 +79,33 @@ export var SplitAreaDirective = (function () {
         if (evt.propertyName === 'flex-basis')
             this.split.notify('visibleTransitionEnd');
     };
-    SplitAreaDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: 'split-area',
-                    host: {
-                        '[style.flex-grow]': '"0"',
-                        '[style.flex-shrink]': '"0"',
-                        '[style.overflow-x]': '"hidden"',
-                        '[style.overflow-y]': '"auto"',
-                        '[style.height]': '"100%"',
-                        '[class.hided]': '!visible',
-                        '(transitionend)': 'onTransitionEnd($event)'
-                    }
-                },] },
-    ];
-    /** @nocollapse */
-    SplitAreaDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
-        { type: Renderer, },
-        { type: SplitComponent, },
-    ]; };
-    SplitAreaDirective.propDecorators = {
-        'order': [{ type: Input },],
-        'size': [{ type: Input },],
-        'minSizePixel': [{ type: Input },],
-        'visible': [{ type: Input },],
-    };
     return SplitAreaDirective;
 }());
-//# sourceMappingURL=/home/adebisi/Public/angular-split-master/splitArea.directive.js.map
+export { SplitAreaDirective };
+SplitAreaDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'split-area',
+                host: {
+                    '[style.flex-grow]': '"0"',
+                    '[style.flex-shrink]': '"0"',
+                    '[style.overflow-x]': '"hidden"',
+                    '[style.overflow-y]': '"auto"',
+                    '[style.height]': '"100%"',
+                    '[class.hided]': '!visible',
+                    '(transitionend)': 'onTransitionEnd($event)'
+                }
+            },] },
+];
+/** @nocollapse */
+SplitAreaDirective.ctorParameters = function () { return [
+    { type: ElementRef, },
+    { type: Renderer, },
+    { type: SplitComponent, },
+]; };
+SplitAreaDirective.propDecorators = {
+    'order': [{ type: Input },],
+    'size': [{ type: Input },],
+    'minSizePixel': [{ type: Input },],
+    'visible': [{ type: Input },],
+};
+//# sourceMappingURL=splitArea.directive.js.map
