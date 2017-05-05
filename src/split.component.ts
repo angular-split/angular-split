@@ -14,6 +14,8 @@ export interface IAreaData {
     orderUser: number | null;
     order: number;
     minPixel: number;
+  pixelSize: number;
+  initialPixelSize: number;
 }
 
 interface Point {
@@ -118,6 +120,10 @@ export class SplitComponent implements OnChanges, OnDestroy {
         return this.areas.filter(a => a.component.visible);
     }
 
+  private get visibleAreasWithPixelSize(): IAreaData[] {
+    return this.visibleAreas.filter(a => a.pixelSize !== null && a.pixelSize > 0);
+  }
+
     private get nbGutters(): number {
         return this.visibleAreas.length - 1;
     }
@@ -140,14 +146,16 @@ export class SplitComponent implements OnChanges, OnDestroy {
         }
     }
 
-    public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number) {
+    public addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number, pixelSize: number = null, initialPixelSize: number = null) {
         this.areas.push({
             component,
             orderUser,
             order: -1,
             sizeUser,
             size: -1,
-            minPixel
+		    minPixel,
+      	    pixelSize,
+	        initialPixelSize
         });
 
         this.refresh();
@@ -202,6 +210,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.stopDragging();
 
         const visibleAreas = this.visibleAreas;
+        const visibleAreasWithPixelSize = this.visibleAreasWithPixelSize;
 
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
@@ -218,22 +227,37 @@ export class SplitComponent implements OnChanges, OnDestroy {
         const totalSize = visibleAreas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
         const nbCorrectSize = visibleAreas.filter(a => a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
 
-        if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== visibleAreas.length) {
-            const size = Number((100 / visibleAreas.length).toFixed(3));
-            visibleAreas.forEach(a => a.size = size);
-        } else {
-            visibleAreas.forEach(a => a.size = Number(a.sizeUser));
-        }
+      if (totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== visibleAreas.length) {
+        const size = Number((100 / (visibleAreas.length - visibleAreasWithPixelSize.length)).toFixed(3));
+        visibleAreas.forEach(a => a.size = size);
+      } else {
+        visibleAreas.forEach(a => a.size = Number(a.sizeUser));
+      }
+
 
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
     }
 
     private refreshStyleSizes() {
-        const visibleAreas = this.visibleAreas;
+	    const visibleAreas = this.visibleAreas;
+    	const visibleAreasWithPixelSize = this.visibleAreasWithPixelSize;
+	    const totalGutterSize = this.gutterSize * this.nbGutters;
+    	const f = totalGutterSize / visibleAreas.length;
 
-        const f = this.gutterSize * this.nbGutters / visibleAreas.length;
-        visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
+	    visibleAreas.forEach(function(a) {
+    	  let flexBasis = '';
+	      if (a.pixelSize !== null && a.pixelSize > 0) {
+    	    flexBasis = `${a.pixelSize}px`;
+	      } else {
+    	    flexBasis = `calc( ${a.size}% - ${f}px )`; // no areas with fixed pixels existing
+        	if (visibleAreasWithPixelSize.length > 0) {
+	          const fixedPixelSum = visibleAreasWithPixelSize.map(a => a.pixelSize).reduce((acc, s) => acc + s, 0);
+    	      flexBasis = `calc((100% - ${fixedPixelSum}px - ${totalGutterSize}px) * ${a.size} / 100)`;
+        	}
+	      }
+    	  a.component.setStyle('flex-basis', flexBasis);
+	    });
     }
 
     public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number) {
@@ -253,6 +277,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this.containerSize = this.elementRef.nativeElement[prop];
         this.areaASize = this.containerSize * areaA.size / 100;
         this.areaBSize = this.containerSize * areaB.size / 100;
+
+        areaA.initialPixelSize = areaA.pixelSize;
+        areaB.initialPixelSize = areaB.pixelSize;
 
         let start: Point;
         if(startEvent instanceof MouseEvent) {
@@ -313,28 +340,37 @@ export class SplitComponent implements OnChanges, OnDestroy {
         const offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
 
         const newSizePixelA = this.areaASize - offsetPixel;
-        const newSizePixelB = this.areaBSize + offsetPixel;
+    	const newSizePixelB = this.areaBSize + offsetPixel;
 
-        if(newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
-            return;
-        }
+	    if (newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
+    	  return;
+	    }
 
-        let newSizePercentA = newSizePixelA / this.containerSize * 100;
-        let newSizePercentB = newSizePixelB / this.containerSize * 100;
+    	let newSizePercentA = newSizePixelA / this.containerSize * 100;
+	    let newSizePercentB = newSizePixelB / this.containerSize * 100;
 
-        if(newSizePercentA <= this.minPercent) {
-            newSizePercentA = this.minPercent;
-            newSizePercentB = areaA.size + areaB.size - this.minPercent;
-        } else if(newSizePercentB <= this.minPercent) {
-            newSizePercentB = this.minPercent;
-            newSizePercentA = areaA.size + areaB.size - this.minPercent;
-        } else {
-            newSizePercentA = Number(newSizePercentA.toFixed(3));
-            newSizePercentB = Number((areaA.size + areaB.size - newSizePercentA).toFixed(3));
-        }
+    	if (newSizePercentA <= this.minPercent) {
+	      newSizePercentA = this.minPercent;
+	      newSizePercentB = areaA.size + areaB.size - this.minPercent;
+    	} else if (newSizePercentB <= this.minPercent) {
+	      newSizePercentB = this.minPercent;
+    	  newSizePercentA = areaA.size + areaB.size - this.minPercent;
+	    } else {
+    	  newSizePercentA = Number(newSizePercentA.toFixed(3));
+	      newSizePercentB = Number((areaA.size + areaB.size - newSizePercentA).toFixed(3));
+    	}
 
-        areaA.size = newSizePercentA;
-        areaB.size = newSizePercentB;
+	    if (areaA.pixelSize !== null && areaA.pixelSize > 0) {
+    	  areaA.pixelSize = areaA.initialPixelSize - offsetPixel;
+	    } else {
+    	  areaB.size = newSizePercentB;
+	    }
+
+    	if (areaB.pixelSize !== null && areaB.pixelSize > 0) {
+	      areaB.pixelSize = areaB.initialPixelSize + offsetPixel;
+    	} else {
+	      areaA.size = newSizePercentA;
+    	}
 
         this.refreshStyleSizes();
         this.notify('progress');
