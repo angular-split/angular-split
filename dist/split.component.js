@@ -221,7 +221,7 @@ var SplitComponent = (function () {
         var offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
         var newSizePixelA = this.areaASize - offsetPixel;
         var newSizePixelB = this.areaBSize + offsetPixel;
-        if (newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
+        if (newSizePixelA <= areaA.minPixel || newSizePixelB < areaB.minPixel) {
             return;
         }
         var newSizePercentA = newSizePixelA / this.containerSize * 100;

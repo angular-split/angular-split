@@ -52,16 +52,16 @@ interface Point {
 
         :host /deep/ split-area {
             transition: flex-basis 0.3s;
-        }  
+        }
 
         :host.notransition /deep/ split-area {
             transition: none !important;
-        }      
+        }
 
         :host /deep/ split-area.hided {
             flex-basis: 0 !important;
             overflow: hidden !important;
-        }      
+        }
 
         :host.vertical /deep/ split-area.hided {
             max-width: 0;
@@ -70,7 +70,7 @@ interface Point {
     template: `
         <ng-content></ng-content>
         <ng-template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false && area.component.visible === true && !isLastVisibleArea(area)" 
+            <split-gutter *ngIf="last === false && area.component.visible === true && !isLastVisibleArea(area)"
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
@@ -315,7 +315,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         const newSizePixelA = this.areaASize - offsetPixel;
         const newSizePixelB = this.areaBSize + offsetPixel;
 
-        if(newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
+        if(newSizePixelA <= areaA.minPixel || newSizePixelB < areaB.minPixel) {
             return;
         }
 
