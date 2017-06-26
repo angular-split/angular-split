@@ -10,6 +10,7 @@ export interface IAreaData {
     orderUser: number | null;
     order: number;
     minPixel: number;
+    minPercent: number;
 }
 export declare class SplitComponent implements OnChanges, OnDestroy {
     private cdRef;
@@ -42,7 +43,7 @@ export declare class SplitComponent implements OnChanges, OnDestroy {
     private eventsDragFct;
     constructor(cdRef: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer);
     ngOnChanges(changes: SimpleChanges): void;
-    addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number): void;
+    addArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number, minPercent: number): void;
     updateArea(component: SplitAreaDirective, orderUser: number | null, sizeUser: number | null, minPixel: number): void;
     removeArea(area: SplitAreaDirective): void;
     hideArea(area: SplitAreaDirective): void;

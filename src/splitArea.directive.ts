@@ -34,6 +34,12 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.split.updateArea(this, this._order, this._size, this._minSizePixel);
     }
 
+    private _minSizePercent: number = 0;
+    @Input() set minSizePercent(v: number) {
+        this._minSizePercent = (!isNaN(v) && v > 0) ? v : 0;
+        this.split.updateArea(this, this._order, this._size, this._minSizePercent);
+    }
+
     private _visible: boolean = true;
     @Input() set visible(v: boolean) {
         this.visibility = v ? "block" : "none";
@@ -60,7 +66,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         private split: SplitComponent) {}
 
     public ngOnInit() {
-        this.split.addArea(this, this._order, this._size, this._minSizePixel);
+        this.split.addArea(this, this._order, this._size, this._minSizePixel, this._minSizePercent);
     }
 
     public lockEvents() {

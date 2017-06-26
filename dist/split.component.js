@@ -78,14 +78,15 @@ var SplitComponent = (function () {
             this.refresh();
         }
     };
-    SplitComponent.prototype.addArea = function (component, orderUser, sizeUser, minPixel) {
+    SplitComponent.prototype.addArea = function (component, orderUser, sizeUser, minPixel, minPercent) {
         this.areas.push({
             component: component,
             orderUser: orderUser,
             order: -1,
             sizeUser: sizeUser,
             size: -1,
-            minPixel: minPixel
+            minPixel: minPixel,
+            minPercent: minPercent
         });
         this.refresh();
     };
@@ -221,18 +222,23 @@ var SplitComponent = (function () {
         var offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
         var newSizePixelA = this.areaASize - offsetPixel;
         var newSizePixelB = this.areaBSize + offsetPixel;
-        if (newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
-            return;
+        var minPercentA = areaA.minPercent > 0 ? areaA.minPercent : 0;
+        if (areaA.minPixel > 0) {
+            minPercentA = (areaA.minPixel + this.gutterSize / 2) / this.containerSize * 100;
+        }
+        var minPercentB = areaB.minPercent > 0 ? areaB.minPercent : 0;
+        if (areaB.minPixel > 0) {
+            minPercentB = (areaB.minPixel + this.gutterSize / 2) / this.containerSize * 100;
         }
         var newSizePercentA = newSizePixelA / this.containerSize * 100;
         var newSizePercentB = newSizePixelB / this.containerSize * 100;
-        if (newSizePercentA <= this.minPercent) {
-            newSizePercentA = this.minPercent;
-            newSizePercentB = areaA.size + areaB.size - this.minPercent;
+        if (newSizePercentA <= minPercentA) {
+            newSizePercentA = minPercentA;
+            newSizePercentB = areaA.size + areaB.size - minPercentA;
         }
-        else if (newSizePercentB <= this.minPercent) {
-            newSizePercentB = this.minPercent;
-            newSizePercentA = areaA.size + areaB.size - this.minPercent;
+        else if (newSizePercentB <= minPercentB) {
+            newSizePercentB = minPercentB;
+            newSizePercentA = areaA.size + areaB.size - minPercentB;
         }
         else {
             newSizePercentA = Number(newSizePercentA.toFixed(3));

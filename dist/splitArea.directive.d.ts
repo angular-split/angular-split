@@ -10,6 +10,8 @@ export declare class SplitAreaDirective implements OnInit, OnDestroy {
     size: any;
     private _minSizePixel;
     minSizePixel: number;
+    private _minSizePercent;
+    minSizePercent: number;
     private _visible;
     visible: boolean;
     visibility: string;
