@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "clean": "rimraf dist/",
+        "clean": "rm -r dist/",
         "build:aot": "ngc -p tsconfig.json",
         "build:jit": "tsc -p tsconfig.json",
         "build": "npm run clean && npm run build:aot",
