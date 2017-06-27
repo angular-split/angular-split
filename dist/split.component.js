@@ -222,13 +222,16 @@ var SplitComponent = (function () {
         var offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
         var newSizePixelA = this.areaASize - offsetPixel;
         var newSizePixelB = this.areaBSize + offsetPixel;
-        var minPercentA = areaA.minPercent > 0 ? areaA.minPercent : 0;
+        var minPercent = (this.gutterSize / 2) / this.containerSize * 100;
+        var minPercentA = areaA.minPercent > minPercent ? areaA.minPercent : minPercent;
         if (areaA.minPixel > 0) {
             minPercentA = (areaA.minPixel + this.gutterSize / 2) / this.containerSize * 100;
+            minPercentA = minPercentA > minPercent ? minPercentA : minPercent;
         }
-        var minPercentB = areaB.minPercent > 0 ? areaB.minPercent : 0;
+        var minPercentB = areaB.minPercent > minPercent ? areaB.minPercent : minPercent;
         if (areaB.minPixel > 0) {
             minPercentB = (areaB.minPixel + this.gutterSize / 2) / this.containerSize * 100;
+            minPercentB = minPercentB > minPercent ? minPercentB : minPercent;
         }
         var newSizePercentA = newSizePixelA / this.containerSize * 100;
         var newSizePercentB = newSizePixelB / this.containerSize * 100;

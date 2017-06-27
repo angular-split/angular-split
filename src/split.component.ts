@@ -316,17 +316,20 @@ export class SplitComponent implements OnChanges, OnDestroy {
 
         const newSizePixelA = this.areaASize - offsetPixel;
         const newSizePixelB = this.areaBSize + offsetPixel;
+        const minPercent = (this.gutterSize / 2) / this.containerSize * 100;
 
-        let minPercentA: number = areaA.minPercent > 0 ? areaA.minPercent : 0;
+        let minPercentA: number = areaA.minPercent > minPercent ? areaA.minPercent : minPercent;
 
         if (areaA.minPixel > 0) {
             minPercentA = (areaA.minPixel + this.gutterSize / 2) / this.containerSize * 100;
+            minPercentA = minPercentA > minPercent ? minPercentA : minPercent;
         }
 
-        let minPercentB: number = areaB.minPercent > 0 ? areaB.minPercent : 0;
+        let minPercentB: number = areaB.minPercent > minPercent ? areaB.minPercent : minPercent;
 
         if (areaB.minPixel > 0) {
             minPercentB = (areaB.minPixel + this.gutterSize / 2) / this.containerSize * 100;
+            minPercentB = minPercentB > minPercent ? minPercentB : minPercent;
         }
 
         let newSizePercentA = newSizePixelA / this.containerSize * 100;
