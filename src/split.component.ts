@@ -41,7 +41,6 @@ interface Point {
         split-gutter {
             flex-grow: 0;
             flex-shrink: 0;
-            background-color: #eeeeee;
             background-position: center center;
             background-repeat: no-repeat;
         }
@@ -74,6 +73,8 @@ interface Point {
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
+                          [style.background-color]="gutterColor"
+                          [image]="gutterImage"
                           [disabled]="disabled"
                           (mousedown)="startDragging($event, index*2+1)"
                           (touchstart)="startDragging($event, index*2+1)"></split-gutter>
@@ -86,6 +87,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() gutterSize: number = 10;
     @Input() disabled: boolean = false;
     @Input() visibleTransition: boolean = false;
+    @Input() gutterColor: string;
+    @Input() gutterImage: string;
 
     @Output() dragStart = new EventEmitter<Array<number>>(false);
     @Output() dragProgress = new EventEmitter<Array<number>>(false);

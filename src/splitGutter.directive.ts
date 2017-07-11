@@ -27,6 +27,12 @@ export class SplitGutterDirective {
         this.refreshStyle();
     }
 
+    private _image: string;
+    @Input() set image(v: string) {
+        this._image = v;
+        this.refreshStyle();
+    }
+
     constructor(private elementRef: ElementRef,
                 private renderer: Renderer) {}
 
@@ -38,7 +44,8 @@ export class SplitGutterDirective {
 
         const state = (this._disabled === true) ? 'disabled' : this._direction;
         this.setStyle('cursor', this.getCursor(state));
-        this.setStyle('background-image', `url("${ this.getImage(state) }")`);
+
+        this.setStyle('background-image', this._image || `url("${ this.getImage(state) }")`);
     }
 
     private setStyle(key: string, value: any) {
