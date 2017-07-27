@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs/Subject'), require('rxjs/add/operator/debounceTime')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', 'rxjs/Subject', 'rxjs/add/operator/debounceTime'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng.rsi = global.ng.rsi || {}),global.ng.core,global.ng.common,global.rxjs_Subject));
+	(factory((global['angular-split'] = global['angular-split'] || {}),global.ng.core,global.ng.common,global.Rx));
 }(this, (function (exports,_angular_core,_angular_common,rxjs_Subject) { 'use strict';
 
 var SplitComponent = (function () {
