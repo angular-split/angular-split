@@ -1,6 +1,9 @@
-import { Component, ChangeDetectorRef, Input, Output, HostBinding, ElementRef, ChangeDetectionStrategy, EventEmitter, Renderer } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs/Subject'), require('rxjs/add/operator/debounceTime')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', 'rxjs/Subject', 'rxjs/add/operator/debounceTime'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng.rsi = global.ng.rsi || {}),global.ng.core,global.ng.common,global.rxjs_Subject));
+}(this, (function (exports,_angular_core,_angular_common,rxjs_Subject) { 'use strict';
+
 var SplitComponent = (function () {
     function SplitComponent(cdRef, elementRef, renderer) {
         this.cdRef = cdRef;
@@ -10,10 +13,10 @@ var SplitComponent = (function () {
         this.gutterSize = 10;
         this.disabled = false;
         this.visibleTransition = false;
-        this.dragStart = new EventEmitter(false);
-        this.dragProgress = new EventEmitter(false);
-        this.dragEnd = new EventEmitter(false);
-        this.visibleTransitionEndInternal = new Subject();
+        this.dragStart = new _angular_core.EventEmitter(false);
+        this.dragProgress = new _angular_core.EventEmitter(false);
+        this.dragEnd = new _angular_core.EventEmitter(false);
+        this.visibleTransitionEndInternal = new rxjs_Subject.Subject();
         this.visibleTransitionEnd = this.visibleTransitionEndInternal.asObservable().debounceTime(20);
         this.areas = [];
         this.minPercent = 5;
@@ -278,36 +281,263 @@ var SplitComponent = (function () {
     };
     return SplitComponent;
 }());
-export { SplitComponent };
 SplitComponent.decorators = [
-    { type: Component, args: [{
+    { type: _angular_core.Component, args: [{
                 selector: 'split',
-                changeDetection: ChangeDetectionStrategy.OnPush,
+                changeDetection: _angular_core.ChangeDetectionStrategy.OnPush,
                 styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            flex-direction: row;\n        }\n\n        :host.vertical {\n            flex-direction: column;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n\n        :host.vertical split-gutter {\n            width: 100%;\n        }\n\n        :host /deep/ split-area {\n            transition: flex-basis 0.3s;\n        }  \n\n        :host.notransition /deep/ split-area {\n            transition: none !important;\n        }      \n\n        :host /deep/ split-area.hided {\n            flex-basis: 0 !important;\n            overflow: hidden !important;\n        }      \n\n        :host.vertical /deep/ split-area.hided {\n            max-width: 0;\n        }\n    "],
                 template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false && area.component.visible === true && !isLastVisibleArea(area)\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </ng-template>",
             },] },
 ];
 /** @nocollapse */
 SplitComponent.ctorParameters = function () { return [
-    { type: ChangeDetectorRef, },
-    { type: ElementRef, },
-    { type: Renderer, },
+    { type: _angular_core.ChangeDetectorRef, },
+    { type: _angular_core.ElementRef, },
+    { type: _angular_core.Renderer, },
 ]; };
 SplitComponent.propDecorators = {
-    'direction': [{ type: Input },],
-    'width': [{ type: Input },],
-    'height': [{ type: Input },],
-    'gutterSize': [{ type: Input },],
-    'disabled': [{ type: Input },],
-    'visibleTransition': [{ type: Input },],
-    'dragStart': [{ type: Output },],
-    'dragProgress': [{ type: Output },],
-    'dragEnd': [{ type: Output },],
-    'visibleTransitionEnd': [{ type: Output },],
-    'styleFlexDirection': [{ type: HostBinding, args: ['class.vertical',] },],
-    'styleFlexDirectionStyle': [{ type: HostBinding, args: ['style.flex-direction',] },],
-    'dragging': [{ type: HostBinding, args: ['class.notransition',] },],
-    'styleWidth': [{ type: HostBinding, args: ['style.width',] },],
-    'styleHeight': [{ type: HostBinding, args: ['style.height',] },],
+    'direction': [{ type: _angular_core.Input },],
+    'width': [{ type: _angular_core.Input },],
+    'height': [{ type: _angular_core.Input },],
+    'gutterSize': [{ type: _angular_core.Input },],
+    'disabled': [{ type: _angular_core.Input },],
+    'visibleTransition': [{ type: _angular_core.Input },],
+    'dragStart': [{ type: _angular_core.Output },],
+    'dragProgress': [{ type: _angular_core.Output },],
+    'dragEnd': [{ type: _angular_core.Output },],
+    'visibleTransitionEnd': [{ type: _angular_core.Output },],
+    'styleFlexDirection': [{ type: _angular_core.HostBinding, args: ['class.vertical',] },],
+    'styleFlexDirectionStyle': [{ type: _angular_core.HostBinding, args: ['style.flex-direction',] },],
+    'dragging': [{ type: _angular_core.HostBinding, args: ['class.notransition',] },],
+    'styleWidth': [{ type: _angular_core.HostBinding, args: ['style.width',] },],
+    'styleHeight': [{ type: _angular_core.HostBinding, args: ['style.height',] },],
 };
-//# sourceMappingURL=split.component.js.map
+
+var SplitAreaDirective = (function () {
+    function SplitAreaDirective(elementRef, renderer, split) {
+        this.elementRef = elementRef;
+        this.renderer = renderer;
+        this.split = split;
+        this._order = null;
+        this._size = null;
+        this._minSizePixel = 0;
+        this._visible = true;
+        this.visibility = "block";
+        this.eventsLockFct = [];
+    }
+    Object.defineProperty(SplitAreaDirective.prototype, "order", {
+        set: function (v) {
+            this._order = !isNaN(v) ? v : null;
+            this.split.updateArea(this, this._order, this._size, this._minSizePixel);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitAreaDirective.prototype, "size", {
+        set: function (v) {
+            this._size = !isNaN(v) ? v : null;
+            this.split.updateArea(this, this._order, this._size, this._minSizePixel);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitAreaDirective.prototype, "minSizePixel", {
+        set: function (v) {
+            this._minSizePixel = (!isNaN(v) && v > 0) ? v : 0;
+            this.split.updateArea(this, this._order, this._size, this._minSizePixel);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitAreaDirective.prototype, "visible", {
+        get: function () {
+            return this._visible;
+        },
+        set: function (v) {
+            this.visibility = v ? "block" : "none";
+            this._visible = v;
+            if (this.visible) {
+                this.split.showArea(this);
+            }
+            else {
+                this.split.hideArea(this);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SplitAreaDirective.prototype.ngOnInit = function () {
+        this.split.addArea(this, this._order, this._size, this._minSizePixel);
+    };
+    SplitAreaDirective.prototype.lockEvents = function () {
+        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'selectstart', function (e) { return false; }));
+        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'dragstart', function (e) { return false; }));
+    };
+    SplitAreaDirective.prototype.unlockEvents = function () {
+        while (this.eventsLockFct.length > 0) {
+            var fct = this.eventsLockFct.pop();
+            if (fct) {
+                fct();
+            }
+        }
+    };
+    SplitAreaDirective.prototype.setStyle = function (key, value) {
+        this.renderer.setElementStyle(this.elementRef.nativeElement, key, value);
+    };
+    SplitAreaDirective.prototype.ngOnDestroy = function () {
+        this.split.removeArea(this);
+    };
+    SplitAreaDirective.prototype.onTransitionEnd = function (evt) {
+        // Limit only flex-basis transition to trigger the event
+        if (evt.propertyName === 'flex-basis')
+            this.split.notify('visibleTransitionEnd');
+    };
+    return SplitAreaDirective;
+}());
+SplitAreaDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: 'split-area',
+                host: {
+                    '[style.flex-grow]': '"0"',
+                    '[style.flex-shrink]': '"0"',
+                    '[style.overflow-x]': '"hidden"',
+                    '[style.overflow-y]': '"auto"',
+                    '[style.height]': '"100%"',
+                    '[class.hided]': '!visible',
+                    '(transitionend)': 'onTransitionEnd($event)'
+                }
+            },] },
+];
+/** @nocollapse */
+SplitAreaDirective.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+    { type: _angular_core.Renderer, },
+    { type: SplitComponent, },
+]; };
+SplitAreaDirective.propDecorators = {
+    'order': [{ type: _angular_core.Input },],
+    'size': [{ type: _angular_core.Input },],
+    'minSizePixel': [{ type: _angular_core.Input },],
+    'visible': [{ type: _angular_core.Input },],
+};
+
+var SplitGutterDirective = (function () {
+    function SplitGutterDirective(elementRef, renderer) {
+        this.elementRef = elementRef;
+        this.renderer = renderer;
+        this._disabled = false;
+    }
+    Object.defineProperty(SplitGutterDirective.prototype, "order", {
+        set: function (v) {
+            this.setStyle('order', v);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitGutterDirective.prototype, "direction", {
+        set: function (v) {
+            this._direction = v;
+            this.refreshStyle();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitGutterDirective.prototype, "size", {
+        set: function (v) {
+            this._size = v;
+            this.refreshStyle();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitGutterDirective.prototype, "disabled", {
+        set: function (v) {
+            this._disabled = v;
+            this.refreshStyle();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SplitGutterDirective.prototype.refreshStyle = function () {
+        this.setStyle('flex-basis', this._size + "px");
+        // fix safari bug about gutter height when direction is horizontal
+        this.setStyle('height', (this._direction === 'vertical') ? this._size + "px" : "100%");
+        var state = (this._disabled === true) ? 'disabled' : this._direction;
+        this.setStyle('cursor', this.getCursor(state));
+        this.setStyle('background-image', "url(\"" + this.getImage(state) + "\")");
+    };
+    SplitGutterDirective.prototype.setStyle = function (key, value) {
+        this.renderer.setElementStyle(this.elementRef.nativeElement, key, value);
+    };
+    SplitGutterDirective.prototype.getCursor = function (state) {
+        switch (state) {
+            case 'disabled':
+                return 'default';
+            case 'vertical':
+                return 'row-resize';
+            case 'horizontal':
+                return 'col-resize';
+        }
+    };
+    SplitGutterDirective.prototype.getImage = function (state) {
+        switch (state) {
+            case 'disabled':
+                return '';
+            case 'vertical':
+                return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
+            case 'horizontal':
+                return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
+        }
+    };
+    return SplitGutterDirective;
+}());
+SplitGutterDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: 'split-gutter'
+            },] },
+];
+/** @nocollapse */
+SplitGutterDirective.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+    { type: _angular_core.Renderer, },
+]; };
+SplitGutterDirective.propDecorators = {
+    'order': [{ type: _angular_core.Input },],
+    'direction': [{ type: _angular_core.Input },],
+    'size': [{ type: _angular_core.Input },],
+    'disabled': [{ type: _angular_core.Input },],
+};
+
+var AngularSplitModule = (function () {
+    function AngularSplitModule() {
+    }
+    return AngularSplitModule;
+}());
+AngularSplitModule.decorators = [
+    { type: _angular_core.NgModule, args: [{
+                imports: [
+                    _angular_common.CommonModule
+                ],
+                declarations: [
+                    SplitComponent,
+                    SplitAreaDirective,
+                    SplitGutterDirective
+                ],
+                exports: [
+                    SplitComponent,
+                    SplitAreaDirective,
+                    SplitGutterDirective
+                ]
+            },] },
+];
+/** @nocollapse */
+AngularSplitModule.ctorParameters = function () { return []; };
+
+exports.AngularSplitModule = AngularSplitModule;
+exports.SplitComponent = SplitComponent;
+exports.SplitAreaDirective = SplitAreaDirective;
+exports.SplitGutterDirective = SplitGutterDirective;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
