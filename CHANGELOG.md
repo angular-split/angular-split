@@ -1,9 +1,16 @@
 
+<a name="0.2.2"></a>
+# 0.2.2 (2017-08-04)
+
+* **UMD bundle:** Add UMD bundle export thanks to [BenjaminDobler](https://github.com/BenjaminDobler).
+
+
 <a name="0.2.1"></a>
 # 0.2.1 (2017-07-18)
 
 * **license:** Add an Apache license.
 * **dependancies:** Update `rxjs` version inside `package.json`.
+
 
 <a name="0.2.0"></a>
 # 0.2.0 (2017-03-30)
