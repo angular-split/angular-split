@@ -8,8 +8,10 @@
         "clean": "rimraf dist/",
         "build:aot": "ngc -p tsconfig.json",
         "build:jit": "tsc -p tsconfig.json",
-        "build": "npm run clean && npm run build:aot",
-        "lint": "tslint --force \"src/**/*.ts\""
+        "build": "npm run clean && npm run build:aot && npm run package && npm run minify",
+        "lint": "tslint --force \"src/**/*.ts\"",
+        "minify": "uglifyjs dist/bundles/angular-split.umd.js --screw-ie8 --compress --mangle --comments --output dist/bundles/angular-split.umd.min.js",
+        "package": "rollup -c"
     },
 
     "repository": {
@@ -44,6 +46,8 @@
         "@angular/platform-server": "^4.0.0",
         "@types/jasmine": "2.2.30",
         "@types/node": "6.0.54",
-        "tslint": "^3.4.0"
+        "tslint": "^3.4.0",
+        "rollup": "^0.41.4",
+        "uglify-js": "^2.7.5"
     }
 }
