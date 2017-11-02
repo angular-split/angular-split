@@ -1,6 +1,6 @@
 {
     "name": "angular-split",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Angular (2+) UI library to split views using CSS flexbox layout.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

@@ -1,4 +1,10 @@
 
+<a name="0.2.3"></a>
+# 0.2.3 (2017-11-02)
+
+* **Update package.json:** Moves dependencies to peerDependencies to be compatible with  angular 5.x [pr59](https://github.com/bertrandg/angular-split/pull/59).
+
+
 <a name="0.2.2"></a>
 # 0.2.2 (2017-08-04)
 
