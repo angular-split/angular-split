@@ -1,6 +1,6 @@
 
-<a name="0.2.4"></a>
-# 0.2.4 (2017-11-06)
+<a name="0.2.5"></a>
+# 0.2.5 (2017-11-06)
 
 ### Angular 5.0.0 minimum in peerDependencies.
 
