@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule }   from '@angular/router';
 import { FormsModule }   from '@angular/forms';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-import { ButtonsModule, CollapseModule } from 'ng2-bootstrap'
-import { Ng2PageScrollModule } from 'ng2-page-scroll';
+import { ButtonsModule, CollapseModule } from 'ngx-bootstrap'
+import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { AngularSplitModule } from 'angular-split'
 
 import { AppComponent } from './app.component';
@@ -37,7 +37,7 @@ const routes = [
     FormsModule,
     ButtonsModule,
     CollapseModule,
-    Ng2PageScrollModule.forRoot(),
+    NgxPageScrollModule,
     AngularSplitModule
   ],
   providers: [{

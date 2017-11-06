@@ -73,14 +73,14 @@ const defaultConfig: IConfig = {
                direction="horizontal"
                [disabled]="config.disabled"
                (dragEnd)="onDragEnd(-1, $event)">
-            <template ngFor let-column [ngForOf]="config.columns" let-icol="index">
+            <ng-template ngFor let-column [ngForOf]="config.columns" let-icol="index">
                 <split-area *ngIf="column.visible"
                             [order]="icol" 
                             [size]="column.size">
                     <split direction="vertical"
                            [disabled]="config.disabled"
                            (dragEnd)="onDragEnd(icol, $event)">
-                        <template ngFor let-row [ngForOf]="column.rows" let-irow="index">
+                        <ng-template ngFor let-row [ngForOf]="column.rows" let-irow="index">
                             <split-area *ngIf="row.visible"
                                         [order]="irow" 
                                         [size]="row.size">
@@ -90,14 +90,14 @@ const defaultConfig: IConfig = {
                                         On component initialization, if present inside localStorage, it uses it.<br>
                                         You can drag any gutters or click following buttons to toggle areas visibility:
                                         <br>
-                                        <template ngFor let-c [ngForOf]="config.columns">
-                                            <template ngFor let-r [ngForOf]="c.rows">
+                                        <ng-template ngFor let-c [ngForOf]="config.columns">
+                                            <ng-template ngFor let-r [ngForOf]="c.rows">
                                                 <button *ngIf="r.type !== 'doc'" #btn
                                                         (click)="r.visible = !r.visible; refreshColumnVisibility(); btn.blur()" 
                                                         [class.active]="r.visible"
                                                         class="btn btn-outline-warning">{{ r.type }}</button>
-                                            </template>
-                                        </template>
+                                            </ng-template>
+                                        </ng-template>
                                         <br><br>
 								        <button (click)="toggleDisabled(); btn.blur()" #btn
                                                 [class.active]="config.disabled"
@@ -110,10 +110,10 @@ const defaultConfig: IConfig = {
                                     <p *ngSwitchDefault class="panel">{{ row.type }}</p>
                                 </div>
                             </split-area>
-                        </template>
+                        </ng-template>
                     </split>
                 </split-area>
-            </template>
+            </ng-template>
         </split>`
 })
 export class AdvancedExampleComponent implements OnInit {

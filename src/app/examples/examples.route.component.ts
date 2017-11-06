@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PageScrollConfig } from 'ng2-page-scroll';
+import { PageScrollConfig } from 'ngx-page-scroll';
 
 
 @Component({
@@ -33,7 +33,7 @@ import { PageScrollConfig } from 'ng2-page-scroll';
             height: 100px;
         }
     `],
-    templateUrl: `./examples.route.component.html`
+    templateUrl: './examples.route.component.html'
 })
 export class ExamplesComponent {
     code1: string = `<split direction="vertical">

@@ -17,6 +17,6 @@ import { Component } from '@angular/core';
       color: #ffc421;
     }
   `],
-  templateUrl: `./doc.route.component.html`
+  templateUrl: './doc.route.component.html'
 })
 export class DocComponent {}
