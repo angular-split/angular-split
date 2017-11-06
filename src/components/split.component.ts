@@ -194,19 +194,16 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     public isLastVisibleArea(area: IAreaData) {
-        const visibleAreas = this.visibleAreas;
-        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
+        return this.visibleAreas.length > 0 ? area === this.visibleAreas[this.visibleAreas.length - 1] : false;
     }
 
     private refresh() {
         this.stopDragging();
 
-        const visibleAreas = this.visibleAreas;
-
         // ORDERS: Set css 'order' property depending on user input or added order
         const nbCorrectOrder = this.areas.filter(a => a.orderUser !== null && !isNaN(a.orderUser)).length;
         if(nbCorrectOrder === this.areas.length) {
-            this.areas.sort((a, b) => +a.orderUser - +b.orderUser);
+            this.areas.sort((a, b) => Number(a.orderUser) - Number(b.orderUser));
         }
 
         this.areas.forEach((a, i) => {
@@ -215,14 +212,14 @@ export class SplitComponent implements OnChanges, OnDestroy {
         });
 
         // SIZES: Set css 'flex-basis' property depending on user input or equal sizes
-        const totalSize = visibleAreas.map(a => a.sizeUser).reduce((acc, s) => acc + s, 0);
-        const nbCorrectSize = visibleAreas.filter(a => a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
+        const totalSize = <number> this.visibleAreas.map(a => a.sizeUser).reduce((acc: number, s: number) => acc + s, 0);
+        const nbCorrectSize = this.visibleAreas.filter(a => a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= this.minPercent).length;
 
-        if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== visibleAreas.length) {
-            const size = Number((100 / visibleAreas.length).toFixed(3));
-            visibleAreas.forEach(a => a.size = size);
+        if(totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.visibleAreas.length) {
+            const size = Number((100 / this.visibleAreas.length).toFixed(3));
+            this.visibleAreas.forEach(a => a.size = size);
         } else {
-            visibleAreas.forEach(a => a.size = Number(a.sizeUser));
+            this.visibleAreas.forEach(a => a.size = Number(a.sizeUser));
         }
 
         this.refreshStyleSizes();
@@ -230,10 +227,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private refreshStyleSizes() {
-        const visibleAreas = this.visibleAreas;
-
-        const f = this.gutterSize * this.nbGutters / visibleAreas.length;
-        visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
+        const f = this.gutterSize * this.nbGutters / this.visibleAreas.length;
+        this.visibleAreas.forEach(a => a.component.setStyle('flex-basis', `calc( ${a.size}% - ${f}px )`));
     }
 
     public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number) {
@@ -271,11 +266,11 @@ export class SplitComponent implements OnChanges, OnDestroy {
             return;
         }
 
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mousemove', e => this.dragEvent(e, start, areaA, areaB)) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchmove', e => this.dragEvent(e, start, areaA, areaB)) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mouseup', e => this.stopDragging()) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchend', e => this.stopDragging()) );
-        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchcancel', e => this.stopDragging()) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, start, areaA, areaB)) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, start, areaA, areaB)) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
+        this.eventsDragFct.push( this.renderer.listenGlobal('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
 
         areaA.component.lockEvents();
         areaB.component.lockEvents();

@@ -1,34 +1,25 @@
 {
     "compilerOptions": {
-        "baseUrl": "",
-        "target": "es5",
-        "module": "es2015",
-        "moduleResolution": "node",
-        "declaration": true,
-        "noImplicitAny": false,
-        "sourceMap": true,
+        "baseUrl": ".",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "outDir": "./dist",
-        "rootDir": "./src",
+        "strict": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "rootDir": ".",
+        "sourceMap": true,
+        "inlineSources": true,
+        "target": "es5",
         "skipLibCheck": true,
-        "typeRoots": ["./node_modules/@types"],
-        "types": [
-            "node"
-        ],
         "lib": [
-            "dom",
-            "es2015"
+            "es2015",
+            "dom"
+        ],
+        "typeRoots": [
+            "./node_modules/@types/"
         ]
     },
     "exclude": [
-        "node_modules",
-        "dist",
-        "**/*.ngfactory.ts",
-        "**/*.shim.ts"
-    ],
-    "angularCompilerOptions": {
-        "genDir": "dist",
-        "entryModule": "src/angularSplit.module#AngularSplitModule"
-    }
+        "node_modules"
+    ]
 }

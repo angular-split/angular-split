@@ -1,4 +1,14 @@
 
+<a name="0.2.4"></a>
+# 0.2.4 (2017-11-06)
+
+### Angular 5.0.0 minimum in peerDependencies.
+
+* **New files organisation:** Complete reorganisation of the github repository and files published on npm forked from this [library starter](https://github.com/robisim74/angular-library-starter).
+* **New bundles generation:** Now you have umd bundles, flat ES module, and ES2015 flat ESM format.
+* **Add tests:** This is what motivated me to change organisation, I will add others one soon `npm test`.
+
+
 <a name="0.2.3"></a>
 # 0.2.3 (2017-11-02)
 
