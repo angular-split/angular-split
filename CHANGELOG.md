@@ -1,4 +1,10 @@
 
+<a name="0.2.6"></a>
+# 0.2.6 (2017-11-07)
+
+* **UMD module fix:** Rollup config file wasn't correct.
+
+
 <a name="0.2.5"></a>
 # 0.2.5 (2017-11-06)
 

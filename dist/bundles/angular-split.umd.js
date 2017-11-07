@@ -1,13 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs/Subject')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', 'rxjs/Subject'], factory) :
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs/Subject'), require('rxjs/add/operator/debounceTime')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', 'rxjs/Subject', 'rxjs/add/operator/debounceTime'], factory) :
 	(factory((global.ng = global.ng || {}, global.ng.angularSplit = {}),global.ng.core,global.ng.common,global.Rx));
 }(this, (function (exports,core,common,Subject) { 'use strict';
-
-"use strict";
-var Observable_1 = require('../../Observable');
-var debounceTime_1 = require('../../operator/debounceTime');
-Observable_1.Observable.prototype.debounceTime = debounceTime_1.debounceTime;
 
 /**
  * @fileoverview added by tsickle

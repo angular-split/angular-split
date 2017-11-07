@@ -7,7 +7,7 @@ const globals = {
     '@angular/common': 'ng.common',
     'rxjs/Observable': 'Rx',
     'rxjs/Subject': 'Rx',
-    'rxjs/Observer': 'Rx'
+    'rxjs/add/operator/debounceTime': 'Rx.Observable.prototype'
 };
 
 export default {
