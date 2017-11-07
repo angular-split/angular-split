@@ -72,11 +72,11 @@
     <h4 id="ex4">Dynamically controlled split</h4>
     <pre [innerText]="code4"></pre>
     <div class="split-example">
-        <split [direction]="action4.dir" [gutterSize]="action4.gutterSize" (dragEnd)="areasSizesCustom = $event; action4.areasIndex = -1">
-            <split-area [order]="action4.areasOrder[0]" [size]="action4.areasIndex !== -1 ? action4.areasSizes[action4.areasIndex][0] : areasSizesCustom[action4.areasOrder[0]]">
+        <split [direction]="action4.dir" [gutterSize]="action4.gutterSize" (dragEnd)="action4.areasSizesCustom = $event; action4.areasIndex = -1">
+            <split-area [order]="action4.areasOrder[0]" [size]="action4.areasIndex !== -1 ? action4.areasSizes[action4.areasIndex][0] : action4.areasSizesCustom[action4.areasOrder[0]]">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nis.</p>
             </split-area>
-            <split-area [order]="action4.areasOrder[1]" [size]="action4.areasIndex !== -1 ? action4.areasSizes[action4.areasIndex][1] : areasSizesCustom[action4.areasOrder[1]]">
+            <split-area [order]="action4.areasOrder[1]" [size]="action4.areasIndex !== -1 ? action4.areasSizes[action4.areasIndex][1] : action4.areasSizesCustom[action4.areasOrder[1]]">
                 <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eodolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
             </split-area>
         </split>
@@ -91,7 +91,7 @@
         </div>
         <div>
             <label>Order: </label>
-            <button class="btn btn-secondary btn-sm" (click)="action4.areasOrder = action4.areasOrder.reverse(); areasSizesCustom = areasSizesCustom.reverse()">Switch</button>
+            <button class="btn btn-secondary btn-sm" (click)="action4.areasOrder = action4.areasOrder.reverse(); action4.areasSizesCustom = action4.areasSizesCustom.reverse()">Switch</button>
         </div>
         <div>
             <label>Gutter size: </label>

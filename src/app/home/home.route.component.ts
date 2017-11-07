@@ -43,7 +43,7 @@ import { Component } from '@angular/core';
             <pre [innerText]="code3"></pre>
             <br>
             <h4>Bug report:</h4>
-            <p>If you find a bug, open an issue with this <a href="https://plnkr.co/edit/tEjcXo?p=preview">plunker</a> showing it.</p>
+            <p>If you find a bug, open an issue with a <a href="https://stackblitz.com/edit/angular-bz2ohj" target="_blank">stackblitz</a> / <a href="https://plnkr.co/edit/17IWKz?p=preview" target="_blank">plunker</a> demo showing it.</p>
             <br>
             <button class="btn btn-outline-warning" routerLink="/documentation">Documentation</button>
             <button class="btn btn-outline-warning" routerLink="/examples">Examples</button>
@@ -63,7 +63,7 @@ import { Component } from '@angular/core';
     </div>`
 })
 export class HomeComponent {
-  code1: string = `npm install angular-split --save`
+  code1: string = `npm install angular-split`
 
   code2: string = `import { AngularSplitModule } from 'angular-split';
   
@@ -85,14 +85,7 @@ export class AppModule {}`
   ...
   map: {
     ...
-    'angular-split': 'node_modules/angular-split/dist/index.js'
-  }
-  packages: {
-    ...
-    'angular-split': {
-      main: './index.js',
-      defaultExtension: 'js'
-    }
+    'angular-split': 'node_modules/angular-split/bundles/angular-split.umd.js'
   }
 });`
 }

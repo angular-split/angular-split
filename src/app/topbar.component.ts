@@ -57,7 +57,7 @@ import { Router, NavigationStart } from '@angular/router'
 export class TopbarComponent {
     isCollapsed: boolean = true
 
-    constructor(private router: Router) {
+    constructor(public router: Router) {
         this.router.events.filter(e => e instanceof NavigationStart).subscribe(event => {
             this.isCollapsed = true;
         });
