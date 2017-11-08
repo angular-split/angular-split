@@ -8,7 +8,7 @@
 <a name="0.2.5"></a>
 # 0.2.5 (2017-11-06)
 
-### Angular 5.0.0 minimum in peerDependencies.
+### Warning: Angular 5.0.0 minimum.
 
 * **New files organisation:** Complete reorganisation of the github repository and files published on npm forked from this [library starter](https://github.com/robisim74/angular-library-starter).
 * **New bundles generation:** Now you have umd bundles, flat ES module, and ES2015 flat ESM format.
