@@ -1,10 +1,10 @@
 
 <a name="1.0.0-beta.1"></a>
-# 1.0.0-beta.1 (2017-11-11)
+# 1.0.0-beta.1 (2017-11-10)
 
-### Complete refactor, more robust, will be used as new base to add frequently asked features like `<split-area [minSize]="X">` (pixel or percent) and custom style.
+### Complete refactor, more robust, will be used as new base to add frequently asked features like `[minSize]` (pixel or percent) and custom style.
 
-* **Allow area size init or drag to zero:** Refactor way to calcul area size `flex-basis: calc( X% - Ypx );` (seems easy at first sight but a bit painfull to implement). For example, you can have now have 4 areas (with `[visible]="true"`), so 3 gutters, with sizes [0,0,0,100]. This was impossible before (size couldn't go down to 5%).
+* **Allow area size init or drag to zero:** Refactor way to calcul area size `flex-basis: calc( X% - Ypx );` (seems easy at first sight but a bit painfull to implement). For example, you can now have 4 areas (with `[visible]="true"`), so 3 gutters, with sizes [0,0,0,100]. This was impossible before (size couldn't go down to 5%).
 * **No more css `/deep/` use:** Could have used `::ng-deep` but I prefer to avoid it too.
 * **Renderer2:** Use `Renderer2` instead of `Renderer` which is deprecated.
 
