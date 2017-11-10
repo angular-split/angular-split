@@ -9,98 +9,240 @@
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * @record
+ * angular-split
+ *
+ * Areas size are set in percentage of the split container & gutters size in pixels.
+ * We need to subtract gutters size (in pixels) from area size percentages.
+ * So we set css flex-basis like this: "calc( {area.size}% - {area.pxToSubtract}px );"
+ *
+ * When an area size is 0, pixel need to be recalculate.
+ *
+ * Examples:  gutterSize * nbGutters / nbAreasMoreThanZero = 10*2/3 = 6.667px
+ *
+ *                            10px                        10px
+ * |--------------------------[]--------------------------[]--------------------------|
+ *    calc(33.33% - 6.667px)      calc(33.33% - 6.667px)      calc(33.33% - 6.667px)
+ *
+ *
+ *  10px                                                  10px
+ * |[]----------------------------------------------------[]--------------------------|
+ * 0                  calc(66.66% - 13.333px)                  calc(33%% - 6.667px)
+ *
+ *
+ *  10px 10px
+ * |[][]------------------------------------------------------------------------------|
+ * 0 0                                calc(100% - 20px)
+ *
  */
-
 var SplitComponent = (function () {
-    function SplitComponent(cdRef, elementRef, renderer) {
+    function SplitComponent(elRef, cdRef, renderer) {
+        this.elRef = elRef;
         this.cdRef = cdRef;
-        this.elementRef = elementRef;
         this.renderer = renderer;
-        this.direction = 'horizontal';
-        this.gutterSize = 10;
-        this.disabled = false;
-        this.visibleTransition = false;
+        this._direction = 'horizontal';
+        this._visibleTransition = false;
+        this._width = null;
+        this._height = null;
+        this._gutterSize = 10;
+        this._disabled = false;
         this.dragStart = new core.EventEmitter(false);
         this.dragProgress = new core.EventEmitter(false);
         this.dragEnd = new core.EventEmitter(false);
         this.visibleTransitionEndInternal = new Subject.Subject();
-        this.visibleTransitionEnd = this.visibleTransitionEndInternal.asObservable().debounceTime(20);
+        this.visibleTransitionEnd = (/** @type {?} */ (this.visibleTransitionEndInternal.asObservable())).debounceTime(20);
+        this._isDragging = false;
         this.areas = [];
-        this.minPercent = 5;
-        this.isDragging = false;
-        this.containerSize = 0;
-        this.areaASize = 0;
-        this.areaBSize = 0;
-        this.eventsDragFct = [];
+        this.dragListeners = [];
+        this.dragStartValues = {
+            sizePixelContainer: 0,
+            sizePixelA: 0,
+            sizePixelB: 0,
+            sizePercentA: 0,
+            sizePercentB: 0,
+        };
     }
-    Object.defineProperty(SplitComponent.prototype, "styleFlexDirection", {
+    Object.defineProperty(SplitComponent.prototype, "direction", {
         get: /**
          * @return {?}
          */
         function () {
-            return this.direction === 'vertical';
+            return this._direction;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            var _this = this;
+            this._direction = (v === 'horizontal') ? v : 'vertical';
+            this.areas.forEach(function (area) {
+                area.comp.setStyleVisibleAndDir(area.comp.visible, _this._direction);
+            });
+            this.refresh();
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "styleFlexDirectionStyle", {
+    Object.defineProperty(SplitComponent.prototype, "visibleTransition", {
         get: /**
          * @return {?}
          */
         function () {
-            return this.direction === 'horizontal' ? 'row' : 'column';
+            return this._visibleTransition;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            var _this = this;
+            this._visibleTransition = Boolean(v);
+            this.areas.forEach(function (area) {
+                area.comp.setStyleTransition(_this._visibleTransition);
+            });
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "dragging", {
+    Object.defineProperty(SplitComponent.prototype, "width", {
         get: /**
          * @return {?}
          */
         function () {
-            // prevent animation of areas when visibleTransition is false, or resizing
-            return !this.visibleTransition || this.isDragging;
+            return this._width;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._width = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) > 0) ? v : null;
+            this.refresh();
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "styleWidth", {
+    Object.defineProperty(SplitComponent.prototype, "height", {
         get: /**
          * @return {?}
          */
         function () {
-            return (this.width && !isNaN(this.width) && this.width > 0) ? this.width + 'px' : '100%';
+            return this._height;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._height = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) > 0) ? v : null;
+            this.refresh();
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "styleHeight", {
+    Object.defineProperty(SplitComponent.prototype, "gutterSize", {
         get: /**
          * @return {?}
          */
         function () {
-            return (this.height && !isNaN(this.height) && this.height > 0) ? this.height + 'px' : '100%';
+            return this._gutterSize;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._gutterSize = !isNaN(v) && v > 0 ? v : 10;
+            this.refresh();
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "visibleAreas", {
+    Object.defineProperty(SplitComponent.prototype, "disabled", {
         get: /**
          * @return {?}
          */
         function () {
-            return this.areas.filter(function (a) { return a.component.visible; });
+            return this._disabled;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._disabled = Boolean(v);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "nbGutters", {
+    Object.defineProperty(SplitComponent.prototype, "cssFlexdirection", {
         get: /**
          * @return {?}
          */
         function () {
-            return this.visibleAreas.length - 1;
+            return (this.direction === 'horizontal') ? 'row' : 'column';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "cssWidth", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.width ? this.width + "px" : '100%';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "cssHeight", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.height ? this.height + "px" : '100%';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "cssMinwidth", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return (this.direction === 'horizontal') ? this.getNbGutters() * this.gutterSize + "px" : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "cssMinheight", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return (this.direction === 'vertical') ? this.getNbGutters() * this.gutterSize + "px" : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "isDragging", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._isDragging;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            var _this = this;
+            this._isDragging = v;
+            // Disable transition during dragging to avoid 'lag effect' (whatever it is active or not).
+            this.areas.forEach(function (area) {
+                area.comp.setStyleTransition(v ? false : _this.visibleTransition);
+            });
         },
         enumerable: true,
         configurable: true
@@ -114,85 +256,81 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (changes) {
-        if (changes['gutterSize'] || changes['disabled']) {
+        if (changes["gutterSize"] || changes["disabled"]) {
             this.refresh();
         }
     };
     /**
-     * @param {?} component
-     * @param {?} orderUser
-     * @param {?} sizeUser
-     * @param {?} minPixel
+     * @return {?}
+     */
+    SplitComponent.prototype.getVisibleAreas = /**
+     * @return {?}
+     */
+    function () {
+        return this.areas.filter(function (a) { return a.comp.visible === true; });
+    };
+    /**
+     * @return {?}
+     */
+    SplitComponent.prototype.getNbGutters = /**
+     * @return {?}
+     */
+    function () {
+        return this.getVisibleAreas().length - 1;
+    };
+    /**
+     * @param {?} comp
      * @return {?}
      */
     SplitComponent.prototype.addArea = /**
-     * @param {?} component
-     * @param {?} orderUser
-     * @param {?} sizeUser
-     * @param {?} minPixel
+     * @param {?} comp
      * @return {?}
      */
-    function (component, orderUser, sizeUser, minPixel) {
-        this.areas.push({
-            component: component,
-            orderUser: orderUser,
-            order: -1,
-            sizeUser: sizeUser,
-            size: -1,
-            minPixel: minPixel
-        });
+    function (comp) {
+        this.areas.push({ comp: comp, order: -1, size: -1, pxToSubtract: 0 });
+        comp.setStyleVisibleAndDir(comp.visible, this.direction);
+        comp.setStyleTransition(this.visibleTransition);
         this.refresh();
     };
     /**
-     * @param {?} component
-     * @param {?} orderUser
-     * @param {?} sizeUser
-     * @param {?} minPixel
+     * @param {?} comp
      * @return {?}
      */
     SplitComponent.prototype.updateArea = /**
-     * @param {?} component
-     * @param {?} orderUser
-     * @param {?} sizeUser
-     * @param {?} minPixel
+     * @param {?} comp
      * @return {?}
      */
-    function (component, orderUser, sizeUser, minPixel) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.component === component; });
+    function (comp) {
+        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === comp; });
         if (item) {
-            item.orderUser = orderUser;
-            item.sizeUser = sizeUser;
-            item.minPixel = minPixel;
             this.refresh();
         }
     };
     /**
-     * @param {?} area
+     * @param {?} comp
      * @return {?}
      */
     SplitComponent.prototype.removeArea = /**
-     * @param {?} area
+     * @param {?} comp
      * @return {?}
      */
-    function (area) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.component === area; });
+    function (comp) {
+        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === comp; });
         if (item) {
-            var /** @type {?} */ index = this.areas.indexOf(item);
-            this.areas.splice(index, 1);
-            this.areas.forEach(function (a, i) { return a.order = i * 2; });
+            this.areas.splice(this.areas.indexOf(item), 1);
             this.refresh();
         }
     };
     /**
-     * @param {?} area
+     * @param {?} comp
      * @return {?}
      */
     SplitComponent.prototype.hideArea = /**
-     * @param {?} area
+     * @param {?} comp
      * @return {?}
      */
-    function (area) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.component === area; });
+    function (comp) {
+        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === comp; });
         if (item) {
             this.refresh();
         }
@@ -206,7 +344,7 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (area) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.component === area; });
+        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === area; });
         if (item) {
             this.refresh();
         }
@@ -220,7 +358,8 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (area) {
-        return this.visibleAreas.length > 0 ? area === this.visibleAreas[this.visibleAreas.length - 1] : false;
+        var /** @type {?} */ visibleAreas = this.getVisibleAreas();
+        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
     };
     /**
      * @return {?}
@@ -231,25 +370,52 @@ var SplitComponent = (function () {
     function () {
         var _this = this;
         this.stopDragging();
-        // ORDERS: Set css 'order' property depending on user input or added order
-        var /** @type {?} */ nbCorrectOrder = this.areas.filter(function (a) { return a.orderUser !== null && !isNaN(a.orderUser); }).length;
-        if (nbCorrectOrder === this.areas.length) {
-            this.areas.sort(function (a, b) { return Number(a.orderUser) - Number(b.orderUser); });
+        // ¤ AREAS ORDER
+        // Based on user input if all provided or added order by default.
+        if (this.areas.some(function (a) { return a.comp.order === null; }) === false) {
+            this.areas.sort(function (a, b) { return Number(a.comp.order) - Number(b.comp.order); });
         }
         this.areas.forEach(function (a, i) {
             a.order = i * 2;
-            a.component.setStyle('order', a.order);
+            a.comp.setStyleOrder(a.order);
         });
-        // SIZES: Set css 'flex-basis' property depending on user input or equal sizes
-        var /** @type {?} */ totalSize = /** @type {?} */ (this.visibleAreas.map(function (a) { return a.sizeUser; }).reduce(function (acc, s) { return acc + s; }, 0));
-        var /** @type {?} */ nbCorrectSize = this.visibleAreas.filter(function (a) { return a.sizeUser !== null && !isNaN(a.sizeUser) && a.sizeUser >= _this.minPercent; }).length;
-        if (totalSize < 99.99 || totalSize > 100.01 || nbCorrectSize !== this.visibleAreas.length) {
-            var /** @type {?} */ size_1 = Number((100 / this.visibleAreas.length).toFixed(3));
-            this.visibleAreas.forEach(function (a) { return a.size = size_1; });
+        var /** @type {?} */ visibleAreas = this.getVisibleAreas();
+        // ¤ AREAS SIZE PERCENT
+        // Set css 'flex-basis' property depending on user input if all set & ~100% or equal sizes by default.
+        var /** @type {?} */ totalUserSize = /** @type {?} */ (visibleAreas.reduce(function (total, s) { return s.comp.size ? total + s.comp.size : total; }, 0));
+        if (this.areas.some(function (a) { return a.comp.size === null; }) || totalUserSize < .999 || totalUserSize > 1.001) {
+            var /** @type {?} */ size_1 = Number((1 / visibleAreas.length).toFixed(4));
+            visibleAreas.forEach(function (a) {
+                a.size = size_1;
+            });
         }
         else {
-            this.visibleAreas.forEach(function (a) { return a.size = Number(a.sizeUser); });
+            // If some provided % are less than gutterSize > set them to zero and dispatch % to others.
+            var /** @type {?} */ percentToShare_1 = 0;
+            var /** @type {?} */ prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
+            var /** @type {?} */ containerSizePixel_1 = this.elRef.nativeElement[prop];
+            visibleAreas.forEach(function (a) {
+                var /** @type {?} */ newSize = Number(a.comp.size);
+                if (newSize * containerSizePixel_1 < _this.gutterSize) {
+                    percentToShare_1 += newSize;
+                    newSize = 0;
+                }
+                a.size = newSize;
+            });
+            if (percentToShare_1 > 0) {
+                var /** @type {?} */ nbAreasNotZero = visibleAreas.filter(function (a) { return a.size !== 0; }).length;
+                var /** @type {?} */ percentToAdd_1 = percentToShare_1 / nbAreasNotZero;
+                visibleAreas.filter(function (a) { return a.size !== 0; }).forEach(function (a) {
+                    a.size += percentToAdd_1;
+                });
+            }
         }
+        // ¤ AREAS PX TO SUBTRACT
+        var /** @type {?} */ totalPxToSubtract = this.getNbGutters() * this.gutterSize;
+        var /** @type {?} */ areasSizeNotZero = visibleAreas.filter(function (a) { return a.size !== 0; });
+        areasSizeNotZero.forEach(function (a) {
+            a.pxToSubtract = totalPxToSubtract / areasSizeNotZero.length;
+        });
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
     };
@@ -260,8 +426,9 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function () {
-        var /** @type {?} */ f = this.gutterSize * this.nbGutters / this.visibleAreas.length;
-        this.visibleAreas.forEach(function (a) { return a.component.setStyle('flex-basis', "calc( " + a.size + "% - " + f + "px )"); });
+        this.getVisibleAreas().forEach(function (a) {
+            a.comp.setStyleFlexbasis("calc( " + a.size * 100 + "% - " + a.pxToSubtract + "px )");
+        });
     };
     /**
      * @param {?} startEvent
@@ -285,32 +452,34 @@ var SplitComponent = (function () {
             return;
         }
         var /** @type {?} */ prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
-        this.containerSize = this.elementRef.nativeElement[prop];
-        this.areaASize = this.containerSize * areaA.size / 100;
-        this.areaBSize = this.containerSize * areaB.size / 100;
+        this.dragStartValues.sizePixelContainer = this.elRef.nativeElement[prop];
+        this.dragStartValues.sizePixelA = areaA.comp.getSizePixel(prop);
+        this.dragStartValues.sizePixelB = areaB.comp.getSizePixel(prop);
+        this.dragStartValues.sizePercentA = areaA.size;
+        this.dragStartValues.sizePercentB = areaB.size;
         var /** @type {?} */ start;
         if (startEvent instanceof MouseEvent) {
             start = {
                 x: startEvent.screenX,
-                y: startEvent.screenY
+                y: startEvent.screenY,
             };
         }
         else if (startEvent instanceof TouchEvent) {
             start = {
                 x: startEvent.touches[0].screenX,
-                y: startEvent.touches[0].screenY
+                y: startEvent.touches[0].screenY,
             };
         }
         else {
             return;
         }
-        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'mousemove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
-        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'touchmove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
-        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'mouseup', function (e) { return _this.stopDragging(); }));
-        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'touchend', function (e) { return _this.stopDragging(); }));
-        this.eventsDragFct.push(this.renderer.listenGlobal('document', 'touchcancel', function (e) { return _this.stopDragging(); }));
-        areaA.component.lockEvents();
-        areaB.component.lockEvents();
+        this.dragListeners.push(this.renderer.listen('document', 'mousemove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
+        this.dragListeners.push(this.renderer.listen('document', 'touchmove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
+        this.dragListeners.push(this.renderer.listen('document', 'mouseup', function (e) { return _this.stopDragging(); }));
+        this.dragListeners.push(this.renderer.listen('document', 'touchend', function (e) { return _this.stopDragging(); }));
+        this.dragListeners.push(this.renderer.listen('document', 'touchcancel', function (e) { return _this.stopDragging(); }));
+        areaA.comp.lockEvents();
+        areaB.comp.lockEvents();
         this.isDragging = true;
         this.notify('start');
     };
@@ -336,13 +505,13 @@ var SplitComponent = (function () {
         if (event instanceof MouseEvent) {
             end = {
                 x: event.screenX,
-                y: event.screenY
+                y: event.screenY,
             };
         }
         else if (event instanceof TouchEvent) {
             end = {
                 x: event.touches[0].screenX,
-                y: event.touches[0].screenY
+                y: event.touches[0].screenY,
             };
         }
         else {
@@ -365,28 +534,68 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (start, end, areaA, areaB) {
+        // ¤ AREAS SIZE PIXEL
         var /** @type {?} */ offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
-        var /** @type {?} */ newSizePixelA = this.areaASize - offsetPixel;
-        var /** @type {?} */ newSizePixelB = this.areaBSize + offsetPixel;
-        if (newSizePixelA <= areaA.minPixel && newSizePixelB < areaB.minPixel) {
+        var /** @type {?} */ newSizePixelA = this.dragStartValues.sizePixelA - offsetPixel;
+        var /** @type {?} */ newSizePixelB = this.dragStartValues.sizePixelB + offsetPixel;
+        if (newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
+            // WTF.. get out of here!
             return;
         }
-        var /** @type {?} */ newSizePercentA = newSizePixelA / this.containerSize * 100;
-        var /** @type {?} */ newSizePercentB = newSizePixelB / this.containerSize * 100;
-        if (newSizePercentA <= this.minPercent) {
-            newSizePercentA = this.minPercent;
-            newSizePercentB = areaA.size + areaB.size - this.minPercent;
+        else if (newSizePixelA < this.gutterSize) {
+            newSizePixelB += newSizePixelA;
+            newSizePixelA = 0;
         }
-        else if (newSizePercentB <= this.minPercent) {
-            newSizePercentB = this.minPercent;
-            newSizePercentA = areaA.size + areaB.size - this.minPercent;
+        else if (newSizePixelB < this.gutterSize) {
+            newSizePixelA += newSizePixelB;
+            newSizePixelB = 0;
+        }
+        // ¤ AREAS SIZE PERCENT
+        var /** @type {?} */ debSizeA = areaA.size;
+        var /** @type {?} */ debSizeB = areaB.size;
+        if (newSizePixelA === 0) {
+            areaB.size += areaA.size;
+            areaA.size = 0;
+        }
+        else if (newSizePixelB === 0) {
+            areaA.size += areaB.size;
+            areaB.size = 0;
         }
         else {
-            newSizePercentA = Number(newSizePercentA.toFixed(3));
-            newSizePercentB = Number((areaA.size + areaB.size - newSizePercentA).toFixed(3));
+            // size = ( ( (total * percentStart - F) / pixelStart * pixelNew ) + F ) / total;
+            if (this.dragStartValues.sizePercentA === 0) {
+                areaB.size = (((this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB) + areaB.pxToSubtract) / this.dragStartValues.sizePixelContainer;
+                areaA.size = this.dragStartValues.sizePercentB - areaB.size;
+            }
+            else if (this.dragStartValues.sizePercentB === 0) {
+                areaA.size = (((this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentA - areaA.pxToSubtract) / this.dragStartValues.sizePixelA * newSizePixelA) + areaA.pxToSubtract) / this.dragStartValues.sizePixelContainer;
+                areaB.size = this.dragStartValues.sizePercentA - areaA.size;
+            }
+            else {
+                areaA.size = (((this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentA - areaA.pxToSubtract) / this.dragStartValues.sizePixelA * newSizePixelA) + areaA.pxToSubtract) / this.dragStartValues.sizePixelContainer;
+                areaB.size = (this.dragStartValues.sizePercentA + this.dragStartValues.sizePercentB) - areaA.size;
+                //areaB.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB ) + areaB.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
+            }
         }
-        areaA.size = newSizePercentA;
-        areaB.size = newSizePercentB;
+        var /** @type {?} */ debPxToSubtractA = areaA.pxToSubtract;
+        var /** @type {?} */ debPxToSubtractB = areaB.pxToSubtract;
+        if (areaA.size === 0) {
+            areaB.pxToSubtract += areaA.pxToSubtract;
+            areaA.pxToSubtract = 0;
+        }
+        else if (areaB.size === 0) {
+            areaA.pxToSubtract += areaB.pxToSubtract;
+            areaB.pxToSubtract = 0;
+        }
+        var /** @type {?} */ rd = function (val) { return Math.round(val * 100) / 100; };
+        console.table([{
+                //'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
+                //'offset': offsetPixel,
+                //'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
+                'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
+                'curr %-px': rd(debSizeA) * 100 + "% - " + rd(debPxToSubtractA) + " / " + rd(debSizeB) * 100 + "% - " + rd(debPxToSubtractB),
+                'new %-px': rd(areaA.size) * 100 + "% - " + rd(areaA.pxToSubtract) + " / " + rd(areaB.size) * 100 + "% - " + rd(areaB.pxToSubtract),
+            }]);
         this.refreshStyleSizes();
         this.notify('progress');
     };
@@ -400,16 +609,16 @@ var SplitComponent = (function () {
         if (!this.isDragging) {
             return;
         }
-        this.areas.forEach(function (a) { return a.component.unlockEvents(); });
-        while (this.eventsDragFct.length > 0) {
-            var /** @type {?} */ fct = this.eventsDragFct.pop();
+        this.areas.forEach(function (a) {
+            a.comp.unlockEvents();
+        });
+        console.log('>', this.getVisibleAreas().map(function (a) { return a.size; }).join('/'), '  ', this.getVisibleAreas().map(function (a) { return a.size; }).reduce(function (tot, s) { return tot + s; }, 0));
+        while (this.dragListeners.length > 0) {
+            var /** @type {?} */ fct = this.dragListeners.pop();
             if (fct) {
                 fct();
             }
         }
-        this.containerSize = 0;
-        this.areaASize = 0;
-        this.areaBSize = 0;
         this.isDragging = false;
         this.notify('end');
     };
@@ -422,16 +631,16 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (type) {
-        var /** @type {?} */ data = this.visibleAreas.map(function (a) { return a.size; });
+        var /** @type {?} */ areasSize = this.getVisibleAreas().map(function (a) { return a.size; });
         switch (type) {
             case 'start':
-                return this.dragStart.emit(data);
+                return this.dragStart.emit(areasSize);
             case 'progress':
-                return this.dragProgress.emit(data);
+                return this.dragProgress.emit(areasSize);
             case 'end':
-                return this.dragEnd.emit(data);
+                return this.dragEnd.emit(areasSize);
             case 'visibleTransitionEnd':
-                return this.visibleTransitionEndInternal.next(data);
+                return this.visibleTransitionEndInternal.next(areasSize);
         }
     };
     /**
@@ -447,32 +656,32 @@ var SplitComponent = (function () {
         { type: core.Component, args: [{
                     selector: 'split',
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            flex-direction: row;\n        }\n\n        :host.vertical {\n            flex-direction: column;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n\n        :host.vertical split-gutter {\n            width: 100%;\n        }\n\n        :host /deep/ split-area {\n            transition: flex-basis 0.3s;\n        }  \n\n        :host.notransition /deep/ split-area {\n            transition: none !important;\n        }      \n\n        :host /deep/ split-area.hided {\n            flex-basis: 0 !important;\n            overflow: hidden !important;\n        }      \n\n        :host.vertical /deep/ split-area.hided {\n            max-width: 0;\n        }\n    "],
-                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false && area.component.visible === true && !isLastVisibleArea(area)\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </ng-template>",
+                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n\n        :host.vertical split-gutter {\n            width: 100%;\n        }\n    "],
+                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false && area.comp.visible === true && !isLastVisibleArea(area)\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </ng-template>",
                 },] },
     ];
     /** @nocollapse */
     SplitComponent.ctorParameters = function () { return [
-        { type: core.ChangeDetectorRef, },
         { type: core.ElementRef, },
-        { type: core.Renderer, },
+        { type: core.ChangeDetectorRef, },
+        { type: core.Renderer2, },
     ]; };
     SplitComponent.propDecorators = {
         "direction": [{ type: core.Input },],
+        "visibleTransition": [{ type: core.Input },],
         "width": [{ type: core.Input },],
         "height": [{ type: core.Input },],
         "gutterSize": [{ type: core.Input },],
         "disabled": [{ type: core.Input },],
-        "visibleTransition": [{ type: core.Input },],
         "dragStart": [{ type: core.Output },],
         "dragProgress": [{ type: core.Output },],
         "dragEnd": [{ type: core.Output },],
         "visibleTransitionEnd": [{ type: core.Output },],
-        "styleFlexDirection": [{ type: core.HostBinding, args: ['class.vertical',] },],
-        "styleFlexDirectionStyle": [{ type: core.HostBinding, args: ['style.flex-direction',] },],
-        "dragging": [{ type: core.HostBinding, args: ['class.notransition',] },],
-        "styleWidth": [{ type: core.HostBinding, args: ['style.width',] },],
-        "styleHeight": [{ type: core.HostBinding, args: ['style.height',] },],
+        "cssFlexdirection": [{ type: core.HostBinding, args: ['style.flex-direction',] },],
+        "cssWidth": [{ type: core.HostBinding, args: ['style.width',] },],
+        "cssHeight": [{ type: core.HostBinding, args: ['style.height',] },],
+        "cssMinwidth": [{ type: core.HostBinding, args: ['style.min-width',] },],
+        "cssMinheight": [{ type: core.HostBinding, args: ['style.min-height',] },],
     };
     return SplitComponent;
 }());
@@ -482,49 +691,66 @@ var SplitComponent = (function () {
  * @suppress {checkTypes} checked by tsc
  */
 var SplitAreaDirective = (function () {
-    function SplitAreaDirective(elementRef, renderer, split) {
-        this.elementRef = elementRef;
+    function SplitAreaDirective(elRef, renderer, split) {
+        this.elRef = elRef;
         this.renderer = renderer;
         this.split = split;
         this._order = null;
         this._size = null;
-        this._minSizePixel = 0;
+        this._minSize = 0;
         this._visible = true;
-        this.visibility = "block";
-        this.eventsLockFct = [];
+        this.lockListeners = [];
     }
     Object.defineProperty(SplitAreaDirective.prototype, "order", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._order;
+        },
         set: /**
          * @param {?} v
          * @return {?}
          */
         function (v) {
-            this._order = !isNaN(v) ? v : null;
-            this.split.updateArea(this, this._order, this._size, this._minSizePixel);
+            this._order = !isNaN(/** @type {?} */ (v)) ? v : null;
+            this.split.updateArea(this);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(SplitAreaDirective.prototype, "size", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._size;
+        },
         set: /**
          * @param {?} v
          * @return {?}
          */
         function (v) {
-            this._size = !isNaN(v) ? v : null;
-            this.split.updateArea(this, this._order, this._size, this._minSizePixel);
+            this._size = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) >= 0 && /** @type {?} */ (v) <= 100) ? (/** @type {?} */ (v) / 100) : null;
+            this.split.updateArea(this);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitAreaDirective.prototype, "minSizePixel", {
+    Object.defineProperty(SplitAreaDirective.prototype, "minSize", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._minSize;
+        },
         set: /**
          * @param {?} v
          * @return {?}
          */
         function (v) {
-            this._minSizePixel = (!isNaN(v) && v > 0) ? v : 0;
-            this.split.updateArea(this, this._order, this._size, this._minSizePixel);
+            this._minSize = (!isNaN(v) && v > 0 && v < 100) ? v / 100 : 0;
+            this.split.updateArea(this);
         },
         enumerable: true,
         configurable: true
@@ -541,8 +767,8 @@ var SplitAreaDirective = (function () {
          * @return {?}
          */
         function (v) {
-            this.visibility = v ? "block" : "none";
             this._visible = v;
+            this.setStyleVisibleAndDir(v, this.split.direction);
             if (this.visible) {
                 this.split.showArea(this);
             }
@@ -560,7 +786,105 @@ var SplitAreaDirective = (function () {
      * @return {?}
      */
     function () {
-        this.split.addArea(this, this._order, this._size, this._minSizePixel);
+        var _this = this;
+        this.split.addArea(this);
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', '0');
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', '0');
+        this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', function (e) { return _this.onTransitionEnd(e); });
+    };
+    /**
+     * @param {?} prop
+     * @return {?}
+     */
+    SplitAreaDirective.prototype.getSizePixel = /**
+     * @param {?} prop
+     * @return {?}
+     */
+    function (prop) {
+        return this.elRef.nativeElement[prop];
+    };
+    /**
+     * @param {?} isVisible
+     * @param {?} direction
+     * @return {?}
+     */
+    SplitAreaDirective.prototype.setStyleVisibleAndDir = /**
+     * @param {?} isVisible
+     * @param {?} direction
+     * @return {?}
+     */
+    function (isVisible, direction) {
+        if (isVisible === false) {
+            this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', '0');
+            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-x', 'hidden');
+            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-y', 'hidden');
+            if (direction === 'vertical') {
+                this.renderer.setStyle(this.elRef.nativeElement, 'max-width', '0');
+            }
+        }
+        else {
+            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-x', 'hidden');
+            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-y', 'auto');
+            this.renderer.removeStyle(this.elRef.nativeElement, 'max-width');
+        }
+        if (direction === 'horizontal') {
+            this.renderer.setStyle(this.elRef.nativeElement, 'height', '100%');
+        }
+        else {
+            this.renderer.removeStyle(this.elRef.nativeElement, 'height');
+        }
+    };
+    /**
+     * @param {?} withTransition
+     * @return {?}
+     */
+    SplitAreaDirective.prototype.setStyleTransition = /**
+     * @param {?} withTransition
+     * @return {?}
+     */
+    function (withTransition) {
+        if (withTransition === true) {
+            this.renderer.setStyle(this.elRef.nativeElement, 'transition', "flex-basis 0.3s");
+        }
+        else {
+            this.renderer.setStyle(this.elRef.nativeElement, 'transition', null);
+        }
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    SplitAreaDirective.prototype.setStyleOrder = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        this.renderer.setStyle(this.elRef.nativeElement, 'order', value);
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    SplitAreaDirective.prototype.setStyleFlexbasis = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
+    };
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    SplitAreaDirective.prototype.onTransitionEnd = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        // Limit only flex-basis transition to trigger the event
+        if (event.propertyName === 'flex-basis') {
+            this.split.notify('visibleTransitionEnd');
+        }
     };
     /**
      * @return {?}
@@ -569,8 +893,8 @@ var SplitAreaDirective = (function () {
      * @return {?}
      */
     function () {
-        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'selectstart', function (e) { return false; }));
-        this.eventsLockFct.push(this.renderer.listen(this.elementRef.nativeElement, 'dragstart', function (e) { return false; }));
+        this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'selectstart', function (e) { return false; }));
+        this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'dragstart', function (e) { return false; }));
     };
     /**
      * @return {?}
@@ -579,25 +903,12 @@ var SplitAreaDirective = (function () {
      * @return {?}
      */
     function () {
-        while (this.eventsLockFct.length > 0) {
-            var /** @type {?} */ fct = this.eventsLockFct.pop();
+        while (this.lockListeners.length > 0) {
+            var /** @type {?} */ fct = this.lockListeners.pop();
             if (fct) {
                 fct();
             }
         }
-    };
-    /**
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
-    SplitAreaDirective.prototype.setStyle = /**
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
-    function (key, value) {
-        this.renderer.setElementStyle(this.elementRef.nativeElement, key, value);
     };
     /**
      * @return {?}
@@ -606,45 +917,27 @@ var SplitAreaDirective = (function () {
      * @return {?}
      */
     function () {
+        this.unlockEvents();
+        if (this.transitionListener) {
+            this.transitionListener();
+        }
         this.split.removeArea(this);
-    };
-    /**
-     * @param {?} evt
-     * @return {?}
-     */
-    SplitAreaDirective.prototype.onTransitionEnd = /**
-     * @param {?} evt
-     * @return {?}
-     */
-    function (evt) {
-        // Limit only flex-basis transition to trigger the event
-        if (evt.propertyName === 'flex-basis')
-            this.split.notify('visibleTransitionEnd');
     };
     SplitAreaDirective.decorators = [
         { type: core.Directive, args: [{
-                    selector: 'split-area',
-                    host: {
-                        '[style.flex-grow]': '"0"',
-                        '[style.flex-shrink]': '"0"',
-                        '[style.overflow-x]': '"hidden"',
-                        '[style.overflow-y]': '"auto"',
-                        '[style.height]': '"100%"',
-                        '[class.hided]': '!visible',
-                        '(transitionend)': 'onTransitionEnd($event)'
-                    }
+                    selector: 'split-area'
                 },] },
     ];
     /** @nocollapse */
     SplitAreaDirective.ctorParameters = function () { return [
         { type: core.ElementRef, },
-        { type: core.Renderer, },
+        { type: core.Renderer2, },
         { type: SplitComponent, },
     ]; };
     SplitAreaDirective.propDecorators = {
         "order": [{ type: core.Input },],
         "size": [{ type: core.Input },],
-        "minSizePixel": [{ type: core.Input },],
+        "minSize": [{ type: core.Input },],
         "visible": [{ type: core.Input },],
     };
     return SplitAreaDirective;
@@ -655,6 +948,7 @@ var SplitAreaDirective = (function () {
  * @suppress {checkTypes} checked by tsc
  */
 var SplitGutterDirective = (function () {
+    ////
     function SplitGutterDirective(elementRef, renderer) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -666,12 +960,18 @@ var SplitGutterDirective = (function () {
          * @return {?}
          */
         function (v) {
-            this.setStyle('order', v);
+            this.renderer.setStyle(this.elementRef.nativeElement, 'order', v);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(SplitGutterDirective.prototype, "direction", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._direction;
+        },
         set: /**
          * @param {?} v
          * @return {?}
@@ -684,6 +984,12 @@ var SplitGutterDirective = (function () {
         configurable: true
     });
     Object.defineProperty(SplitGutterDirective.prototype, "size", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._size;
+        },
         set: /**
          * @param {?} v
          * @return {?}
@@ -696,6 +1002,12 @@ var SplitGutterDirective = (function () {
         configurable: true
     });
     Object.defineProperty(SplitGutterDirective.prototype, "disabled", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._disabled;
+        },
         set: /**
          * @param {?} v
          * @return {?}
@@ -714,61 +1026,12 @@ var SplitGutterDirective = (function () {
      * @return {?}
      */
     function () {
-        this.setStyle('flex-basis', this._size + "px");
+        this.renderer.setStyle(this.elementRef.nativeElement, 'flex-basis', this.size + "px");
         // fix safari bug about gutter height when direction is horizontal
-        this.setStyle('height', (this._direction === 'vertical') ? this._size + "px" : "100%");
-        var /** @type {?} */ state = (this._disabled === true) ? 'disabled' : this._direction;
-        this.setStyle('cursor', this.getCursor(state));
-        this.setStyle('background-image', "url(\"" + this.getImage(state) + "\")");
-    };
-    /**
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
-    SplitGutterDirective.prototype.setStyle = /**
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
-    function (key, value) {
-        this.renderer.setElementStyle(this.elementRef.nativeElement, key, value);
-    };
-    /**
-     * @param {?} state
-     * @return {?}
-     */
-    SplitGutterDirective.prototype.getCursor = /**
-     * @param {?} state
-     * @return {?}
-     */
-    function (state) {
-        switch (state) {
-            case 'disabled':
-                return 'default';
-            case 'vertical':
-                return 'row-resize';
-            case 'horizontal':
-                return 'col-resize';
-        }
-    };
-    /**
-     * @param {?} state
-     * @return {?}
-     */
-    SplitGutterDirective.prototype.getImage = /**
-     * @param {?} state
-     * @return {?}
-     */
-    function (state) {
-        switch (state) {
-            case 'disabled':
-                return '';
-            case 'vertical':
-                return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
-            case 'horizontal':
-                return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
-        }
+        this.renderer.setStyle(this.elementRef.nativeElement, 'height', (this.direction === 'vertical') ? this.size + "px" : "100%");
+        var /** @type {?} */ state = (this.disabled === true) ? 'disabled' : this.direction;
+        this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', getCursor(state));
+        this.renderer.setStyle(this.elementRef.nativeElement, 'background-image', "url(\"" + getImage(state) + "\")");
     };
     SplitGutterDirective.decorators = [
         { type: core.Directive, args: [{
@@ -778,7 +1041,7 @@ var SplitGutterDirective = (function () {
     /** @nocollapse */
     SplitGutterDirective.ctorParameters = function () { return [
         { type: core.ElementRef, },
-        { type: core.Renderer, },
+        { type: core.Renderer2, },
     ]; };
     SplitGutterDirective.propDecorators = {
         "order": [{ type: core.Input },],
@@ -788,6 +1051,36 @@ var SplitGutterDirective = (function () {
     };
     return SplitGutterDirective;
 }());
+/**
+ * @param {?} state
+ * @return {?}
+ */
+function getCursor(state) {
+    switch (state) {
+        case 'disabled':
+            return 'default';
+        case 'vertical':
+            return 'row-resize';
+        case 'horizontal':
+            return 'col-resize';
+    }
+    return '';
+}
+/**
+ * @param {?} state
+ * @return {?}
+ */
+function getImage(state) {
+    switch (state) {
+        case 'vertical':
+            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
+        case 'horizontal':
+            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
+        case 'disabled':
+            return '';
+    }
+    return '';
+}
 
 /**
  * @fileoverview added by tsickle

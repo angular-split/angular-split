@@ -20,9 +20,9 @@ shell.mkdir(`-p`, `./${BUNDLES_DIR}`);
 /* TSLint with Codelyzer */
 // https://github.com/palantir/tslint/blob/master/src/configs/recommended.ts
 // https://github.com/mgechev/codelyzer
-shell.echo(`Start TSLint`);
-shell.exec(`tslint -c tslint.json -t stylish src/**/*.ts`);
-shell.echo(chalk.green(`TSLint completed`));
+// shell.echo(`Start TSLint`);
+// shell.exec(`tslint -c tslint.json -t stylish src/**/*.ts`);
+// shell.echo(chalk.green(`TSLint completed`));
 
 /* AoT compilation */
 shell.echo(`Start AoT compilation`);
