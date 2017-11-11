@@ -1,4 +1,11 @@
 
+<a name="1.0.0-beta.2"></a>
+# 1.0.0-beta.2 (2017-11-11)
+
+* **Bug:** Fix bug when dragging gutter with previous area with `[visible]="false"` (bug there since the `[visible]` feature was added.. :( ).
+* **Component access from JS/TS class:** You can now access `SplitComponent` and `SplitAreaDirective` as `ViewChild`/`ViewChildren` directly from your class to interact with.
+
+
 <a name="1.0.0-beta.1"></a>
 # 1.0.0-beta.1 (2017-11-11)
 

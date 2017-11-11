@@ -51,7 +51,8 @@ var SplitComponent = (function () {
         this.visibleTransitionEndInternal = new Subject.Subject();
         this.visibleTransitionEnd = (/** @type {?} */ (this.visibleTransitionEndInternal.asObservable())).debounceTime(20);
         this._isDragging = false;
-        this.areas = [];
+        this.displayedAreas = [];
+        this.hidedAreas = [];
         this.dragListeners = [];
         this.dragStartValues = {
             sizePixelContainer: 0,
@@ -75,10 +76,10 @@ var SplitComponent = (function () {
         function (v) {
             var _this = this;
             this._direction = (v === 'horizontal') ? v : 'vertical';
-            this.areas.forEach(function (area) {
+            this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
                 area.comp.setStyleVisibleAndDir(area.comp.visible, _this._direction);
             });
-            this.refresh();
+            this.build();
         },
         enumerable: true,
         configurable: true
@@ -97,7 +98,7 @@ var SplitComponent = (function () {
         function (v) {
             var _this = this;
             this._visibleTransition = Boolean(v);
-            this.areas.forEach(function (area) {
+            this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
                 area.comp.setStyleTransition(_this._visibleTransition);
             });
         },
@@ -117,7 +118,7 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._width = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) > 0) ? v : null;
-            this.refresh();
+            this.build();
         },
         enumerable: true,
         configurable: true
@@ -135,7 +136,7 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._height = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) > 0) ? v : null;
-            this.refresh();
+            this.build();
         },
         enumerable: true,
         configurable: true
@@ -153,7 +154,7 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._gutterSize = !isNaN(v) && v > 0 ? v : 10;
-            this.refresh();
+            this.build();
         },
         enumerable: true,
         configurable: true
@@ -171,6 +172,7 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._disabled = Boolean(v);
+            this.build();
         },
         enumerable: true,
         configurable: true
@@ -240,7 +242,7 @@ var SplitComponent = (function () {
             var _this = this;
             this._isDragging = v;
             // Disable transition during dragging to avoid 'lag effect' (whatever it is active or not).
-            this.areas.forEach(function (area) {
+            this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
                 area.comp.setStyleTransition(v ? false : _this.visibleTransition);
             });
         },
@@ -248,35 +250,13 @@ var SplitComponent = (function () {
         configurable: true
     });
     /**
-     * @param {?} changes
-     * @return {?}
-     */
-    SplitComponent.prototype.ngOnChanges = /**
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes["gutterSize"] || changes["disabled"]) {
-            this.refresh();
-        }
-    };
-    /**
-     * @return {?}
-     */
-    SplitComponent.prototype.getVisibleAreas = /**
-     * @return {?}
-     */
-    function () {
-        return this.areas.filter(function (a) { return a.comp.visible === true; });
-    };
-    /**
      * @return {?}
      */
     SplitComponent.prototype.getNbGutters = /**
      * @return {?}
      */
     function () {
-        return this.getVisibleAreas().length - 1;
+        return this.displayedAreas.length - 1;
     };
     /**
      * @param {?} comp
@@ -287,10 +267,21 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (comp) {
-        this.areas.push({ comp: comp, order: -1, size: -1, pxToSubtract: 0 });
+        var /** @type {?} */ newArea = {
+            comp: comp,
+            order: -1,
+            size: -1,
+            pxToSubtract: 0
+        };
+        if (comp.visible === true) {
+            this.displayedAreas.push(newArea);
+        }
+        else {
+            this.hidedAreas.push(newArea);
+        }
         comp.setStyleVisibleAndDir(comp.visible, this.direction);
         comp.setStyleTransition(this.visibleTransition);
-        this.refresh();
+        this.build();
     };
     /**
      * @param {?} comp
@@ -301,9 +292,10 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (comp) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === comp; });
+        // Only refresh if area is displayed (no need to check inside 'hidedAreas')
+        var /** @type {?} */ item = this.displayedAreas.find(function (a) { return a.comp === comp; });
         if (item) {
-            this.refresh();
+            this.build();
         }
     };
     /**
@@ -315,10 +307,14 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (comp) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === comp; });
-        if (item) {
-            this.areas.splice(this.areas.indexOf(item), 1);
-            this.refresh();
+        if (this.displayedAreas.some(function (a) { return a.comp === comp; })) {
+            var /** @type {?} */ area = /** @type {?} */ (this.displayedAreas.find(function (a) { return a.comp === comp; }));
+            this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
+            this.build();
+        }
+        else if (this.hidedAreas.some(function (a) { return a.comp === comp; })) {
+            var /** @type {?} */ area = /** @type {?} */ (this.hidedAreas.find(function (a) { return a.comp === comp; }));
+            this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
         }
     };
     /**
@@ -330,41 +326,35 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (comp) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === comp; });
-        if (item) {
-            this.refresh();
+        var /** @type {?} */ area = /** @type {?} */ (this.displayedAreas.find(function (a) { return a.comp === comp; }));
+        if (area) {
+            var /** @type {?} */ areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
+            (_a = this.hidedAreas).push.apply(_a, areas);
+            this.build();
         }
+        var _a;
     };
     /**
-     * @param {?} area
+     * @param {?} comp
      * @return {?}
      */
     SplitComponent.prototype.showArea = /**
-     * @param {?} area
+     * @param {?} comp
      * @return {?}
      */
-    function (area) {
-        var /** @type {?} */ item = this.areas.find(function (a) { return a.comp === area; });
-        if (item) {
-            this.refresh();
+    function (comp) {
+        var /** @type {?} */ area = /** @type {?} */ (this.hidedAreas.find(function (a) { return a.comp === comp; }));
+        if (area) {
+            var /** @type {?} */ areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
+            (_a = this.displayedAreas).push.apply(_a, areas);
+            this.build();
         }
-    };
-    /**
-     * @param {?} area
-     * @return {?}
-     */
-    SplitComponent.prototype.isLastVisibleArea = /**
-     * @param {?} area
-     * @return {?}
-     */
-    function (area) {
-        var /** @type {?} */ visibleAreas = this.getVisibleAreas();
-        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
+        var _a;
     };
     /**
      * @return {?}
      */
-    SplitComponent.prototype.refresh = /**
+    SplitComponent.prototype.build = /**
      * @return {?}
      */
     function () {
@@ -372,21 +362,20 @@ var SplitComponent = (function () {
         this.stopDragging();
         // ¤ AREAS ORDER
         // Based on user input if all provided or added order by default.
-        if (this.areas.some(function (a) { return a.comp.order === null; }) === false) {
-            this.areas.sort(function (a, b) { return Number(a.comp.order) - Number(b.comp.order); });
+        if (this.displayedAreas.every(function (a) { return a.comp.order !== null; })) {
+            this.displayedAreas.sort(function (a, b) { return (/** @type {?} */ (a.comp.order)) - (/** @type {?} */ (b.comp.order)); });
         }
-        this.areas.forEach(function (a, i) {
-            a.order = i * 2;
-            a.comp.setStyleOrder(a.order);
+        this.displayedAreas.forEach(function (area, i) {
+            area.order = i * 2;
+            area.comp.setStyleOrder(area.order);
         });
-        var /** @type {?} */ visibleAreas = this.getVisibleAreas();
         // ¤ AREAS SIZE PERCENT
         // Set css 'flex-basis' property depending on user input if all set & ~100% or equal sizes by default.
-        var /** @type {?} */ totalUserSize = /** @type {?} */ (visibleAreas.reduce(function (total, s) { return s.comp.size ? total + s.comp.size : total; }, 0));
-        if (this.areas.some(function (a) { return a.comp.size === null; }) || totalUserSize < .999 || totalUserSize > 1.001) {
-            var /** @type {?} */ size_1 = Number((1 / visibleAreas.length).toFixed(4));
-            visibleAreas.forEach(function (a) {
-                a.size = size_1;
+        var /** @type {?} */ totalUserSize = /** @type {?} */ (this.displayedAreas.reduce(function (total, s) { return s.comp.size ? total + s.comp.size : total; }, 0));
+        if (this.displayedAreas.some(function (a) { return a.comp.size === null; }) || totalUserSize < .999 || totalUserSize > 1.001) {
+            var /** @type {?} */ size_1 = Number((1 / this.displayedAreas.length).toFixed(4));
+            this.displayedAreas.forEach(function (area) {
+                area.size = size_1;
             });
         }
         else {
@@ -394,27 +383,27 @@ var SplitComponent = (function () {
             var /** @type {?} */ percentToShare_1 = 0;
             var /** @type {?} */ prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
             var /** @type {?} */ containerSizePixel_1 = this.elRef.nativeElement[prop];
-            visibleAreas.forEach(function (a) {
-                var /** @type {?} */ newSize = Number(a.comp.size);
+            this.displayedAreas.forEach(function (area) {
+                var /** @type {?} */ newSize = Number(area.comp.size);
                 if (newSize * containerSizePixel_1 < _this.gutterSize) {
                     percentToShare_1 += newSize;
                     newSize = 0;
                 }
-                a.size = newSize;
+                area.size = newSize;
             });
             if (percentToShare_1 > 0) {
-                var /** @type {?} */ nbAreasNotZero = visibleAreas.filter(function (a) { return a.size !== 0; }).length;
+                var /** @type {?} */ nbAreasNotZero = this.displayedAreas.filter(function (a) { return a.size !== 0; }).length;
                 var /** @type {?} */ percentToAdd_1 = percentToShare_1 / nbAreasNotZero;
-                visibleAreas.filter(function (a) { return a.size !== 0; }).forEach(function (a) {
-                    a.size += percentToAdd_1;
+                this.displayedAreas.filter(function (a) { return a.size !== 0; }).forEach(function (area) {
+                    area.size += percentToAdd_1;
                 });
             }
         }
         // ¤ AREAS PX TO SUBTRACT
         var /** @type {?} */ totalPxToSubtract = this.getNbGutters() * this.gutterSize;
-        var /** @type {?} */ areasSizeNotZero = visibleAreas.filter(function (a) { return a.size !== 0; });
-        areasSizeNotZero.forEach(function (a) {
-            a.pxToSubtract = totalPxToSubtract / areasSizeNotZero.length;
+        var /** @type {?} */ areasSizeNotZero = this.displayedAreas.filter(function (a) { return a.size !== 0; });
+        areasSizeNotZero.forEach(function (area) {
+            area.pxToSubtract = totalPxToSubtract / areasSizeNotZero.length;
         });
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
@@ -426,8 +415,8 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function () {
-        this.getVisibleAreas().forEach(function (a) {
-            a.comp.setStyleFlexbasis("calc( " + a.size * 100 + "% - " + a.pxToSubtract + "px )");
+        this.displayedAreas.forEach(function (area) {
+            area.comp.setStyleFlexbasis("calc( " + area.size * 100 + "% - " + area.pxToSubtract + "px )");
         });
     };
     /**
@@ -446,8 +435,8 @@ var SplitComponent = (function () {
         if (this.disabled) {
             return;
         }
-        var /** @type {?} */ areaA = this.areas.find(function (a) { return a.order === gutterOrder - 1; });
-        var /** @type {?} */ areaB = this.areas.find(function (a) { return a.order === gutterOrder + 1; });
+        var /** @type {?} */ areaA = this.displayedAreas.find(function (a) { return a.order === gutterOrder - 1; });
+        var /** @type {?} */ areaB = this.displayedAreas.find(function (a) { return a.order === gutterOrder + 1; });
         if (!areaA || !areaB) {
             return;
         }
@@ -551,8 +540,6 @@ var SplitComponent = (function () {
             newSizePixelB = 0;
         }
         // ¤ AREAS SIZE PERCENT
-        var /** @type {?} */ debSizeA = areaA.size;
-        var /** @type {?} */ debSizeB = areaB.size;
         if (newSizePixelA === 0) {
             areaB.size += areaA.size;
             areaA.size = 0;
@@ -577,8 +564,6 @@ var SplitComponent = (function () {
                 //areaB.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB ) + areaB.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
             }
         }
-        var /** @type {?} */ debPxToSubtractA = areaA.pxToSubtract;
-        var /** @type {?} */ debPxToSubtractB = areaB.pxToSubtract;
         if (areaA.size === 0) {
             areaB.pxToSubtract += areaA.pxToSubtract;
             areaA.pxToSubtract = 0;
@@ -587,15 +572,15 @@ var SplitComponent = (function () {
             areaA.pxToSubtract += areaB.pxToSubtract;
             areaB.pxToSubtract = 0;
         }
-        var /** @type {?} */ rd = function (val) { return Math.round(val * 100) / 100; };
+        /*const rd = (val: number) => Math.round(val*100)/100;
         console.table([{
-                //'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
-                //'offset': offsetPixel,
-                //'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
-                'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
-                'curr %-px': rd(debSizeA) * 100 + "% - " + rd(debPxToSubtractA) + " / " + rd(debSizeB) * 100 + "% - " + rd(debPxToSubtractB),
-                'new %-px': rd(areaA.size) * 100 + "% - " + rd(areaA.pxToSubtract) + " / " + rd(areaB.size) * 100 + "% - " + rd(areaB.pxToSubtract),
-            }]);
+            //'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
+            //'offset': offsetPixel,
+            //'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
+            'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
+            'curr %-px': `${ rd(debSizeA)*100 }% - ${ rd(debPxToSubtractA) } / ${ rd(debSizeB)*100 }% - ${ rd(debPxToSubtractB) }`,
+            'new %-px': `${ rd(areaA.size)*100 }% - ${ rd(areaA.pxToSubtract) } / ${ rd(areaB.size)*100 }% - ${ rd(areaB.pxToSubtract) }`,
+        }]);*/
         this.refreshStyleSizes();
         this.notify('progress');
     };
@@ -609,10 +594,10 @@ var SplitComponent = (function () {
         if (!this.isDragging) {
             return;
         }
-        this.areas.forEach(function (a) {
-            a.comp.unlockEvents();
+        this.displayedAreas.forEach(function (area) {
+            area.comp.unlockEvents();
         });
-        console.log('>', this.getVisibleAreas().map(function (a) { return a.size; }).join('/'), '  ', this.getVisibleAreas().map(function (a) { return a.size; }).reduce(function (tot, s) { return tot + s; }, 0));
+        console.log('>', this.displayedAreas.map(function (a) { return a.size; }).join('/'), '  ', this.displayedAreas.map(function (a) { return a.size; }).reduce(function (tot, s) { return tot + s; }, 0));
         while (this.dragListeners.length > 0) {
             var /** @type {?} */ fct = this.dragListeners.pop();
             if (fct) {
@@ -631,7 +616,7 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (type) {
-        var /** @type {?} */ areasSize = this.getVisibleAreas().map(function (a) { return a.size; });
+        var /** @type {?} */ areasSize = this.displayedAreas.map(function (a) { return a.size * 100; });
         switch (type) {
             case 'start':
                 return this.dragStart.emit(areasSize);
@@ -657,7 +642,7 @@ var SplitComponent = (function () {
                     selector: 'split',
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n\n        :host.vertical split-gutter {\n            width: 100%;\n        }\n    "],
-                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"areas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false && area.comp.visible === true && !isLastVisibleArea(area)\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </ng-template>",
+                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </ng-template>",
                 },] },
     ];
     /** @nocollapse */
@@ -1135,9 +1120,9 @@ var AngularSplitModule = (function () {
 }());
 
 exports.AngularSplitModule = AngularSplitModule;
-exports.ɵa = SplitComponent;
-exports.ɵb = SplitAreaDirective;
-exports.ɵc = SplitGutterDirective;
+exports.SplitComponent = SplitComponent;
+exports.SplitAreaDirective = SplitAreaDirective;
+exports.ɵa = SplitGutterDirective;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

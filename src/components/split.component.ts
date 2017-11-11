@@ -1,5 +1,5 @@
-import { Component, ChangeDetectorRef, Input, Output, HostBinding, SimpleChanges,
-    ChangeDetectionStrategy, EventEmitter, Renderer2, OnDestroy, OnChanges, ElementRef } from '@angular/core';
+import { Component, ChangeDetectorRef, Input, Output, HostBinding, ChangeDetectionStrategy, 
+    EventEmitter, Renderer2, OnDestroy, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
@@ -61,8 +61,8 @@ import { SplitAreaDirective } from './splitArea.directive';
     `],
     template: `
         <ng-content></ng-content>
-        <ng-template ngFor let-area [ngForOf]="areas" let-index="index" let-last="last">
-            <split-gutter *ngIf="last === false && area.comp.visible === true && !isLastVisibleArea(area)" 
+        <ng-template ngFor let-area [ngForOf]="displayedAreas" let-index="index" let-last="last">
+            <split-gutter *ngIf="last === false" 
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
@@ -71,18 +71,18 @@ import { SplitAreaDirective } from './splitArea.directive';
                           (touchstart)="startDragging($event, index*2+1)"></split-gutter>
         </ng-template>`,
 })
-export class SplitComponent implements OnChanges, OnDestroy {
+export class SplitComponent implements OnDestroy {
 
     private _direction: 'horizontal' | 'vertical' = 'horizontal';
 
     @Input() set direction(v: 'horizontal' | 'vertical') {
         this._direction = (v === 'horizontal') ? v : 'vertical';
         
-        this.areas.forEach(area => {
+        [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
             area.comp.setStyleVisibleAndDir(area.comp.visible, this._direction);
         });
         
-        this.refresh();
+        this.build();
     }
     
     get direction(): 'horizontal' | 'vertical' {
@@ -96,7 +96,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() set visibleTransition(v: boolean) {
         this._visibleTransition = Boolean(v);
 
-        this.areas.forEach(area => {
+        [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
             area.comp.setStyleTransition(this._visibleTransition);
         });
     }
@@ -112,7 +112,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() set width(v: number | null) {
         this._width = (!isNaN(<number> v) && <number> v > 0) ? v : null;
         
-        this.refresh();
+        this.build();
     }
     
     get width(): number | null {
@@ -126,7 +126,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() set height(v: number | null) {
         this._height = (!isNaN(<number> v) && <number> v > 0) ? v : null;
         
-        this.refresh();
+        this.build();
     }
     
     get height(): number | null {
@@ -140,7 +140,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
     @Input() set gutterSize(v: number) {
         this._gutterSize = !isNaN(v) && v > 0 ? v : 10;
 
-        this.refresh();
+        this.build();
     }
     
     get gutterSize(): number {
@@ -153,6 +153,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     
     @Input() set disabled(v: boolean) {
         this._disabled = Boolean(v);
+        
+        this.build();
     }
     
     get disabled(): boolean {
@@ -194,7 +196,7 @@ export class SplitComponent implements OnChanges, OnDestroy {
         this._isDragging = v;
 
         // Disable transition during dragging to avoid 'lag effect' (whatever it is active or not).
-        this.areas.forEach(area => {
+        [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
             area.comp.setStyleTransition(v ? false : this.visibleTransition);
         });
     }
@@ -203,7 +205,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
         return this._isDragging;
     }
     
-    public readonly areas: Array<IArea> = [];
+    public readonly displayedAreas: Array<IArea> = [];
+    public readonly hidedAreas: Array<IArea> = [];
+    
     private readonly dragListeners: Array<Function> = [];
     private readonly dragStartValues = {
         sizePixelContainer: 0,
@@ -217,96 +221,100 @@ export class SplitComponent implements OnChanges, OnDestroy {
                 private cdRef: ChangeDetectorRef,
                 private renderer: Renderer2) {}
 
-    public ngOnChanges(changes: SimpleChanges) {
-        if(changes.gutterSize || changes.disabled) {
-            this.refresh();
-        }
-    }
-    
-    private getVisibleAreas(): IArea[] {
-        return this.areas.filter(a => a.comp.visible === true);
-    }
-    
     private getNbGutters(): number {
-        return this.getVisibleAreas().length - 1;
+        return this.displayedAreas.length - 1;
     }
 
     public addArea(comp: SplitAreaDirective) {
-        this.areas.push({comp, order: -1, size: -1, pxToSubtract: 0});
+        const newArea = {
+            comp, 
+            order: -1, 
+            size: -1, 
+            pxToSubtract: 0
+        };
+
+        if(comp.visible === true) {
+            this.displayedAreas.push(newArea);
+        }
+        else {
+            this.hidedAreas.push(newArea);
+        }
 
         comp.setStyleVisibleAndDir(comp.visible, this.direction);
         comp.setStyleTransition(this.visibleTransition);
 
-        this.refresh();
+        this.build();
     }
 
     public updateArea(comp: SplitAreaDirective) {
-        const item = this.areas.find(a => a.comp === comp);
+        // Only refresh if area is displayed (no need to check inside 'hidedAreas')
+        const item = this.displayedAreas.find(a => a.comp === comp);
 
         if(item) {
-            this.refresh();
+            this.build();
         }
     }
 
     public removeArea(comp: SplitAreaDirective) {
-        const item = this.areas.find(a => a.comp === comp);
+        if(this.displayedAreas.some(a => a.comp === comp)) {
+            const area = <IArea> this.displayedAreas.find(a => a.comp === comp)
+            this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
 
-        if(item) {
-            this.areas.splice(this.areas.indexOf(item), 1);
-
-            this.refresh();
+            this.build();
+        }
+        else if(this.hidedAreas.some(a => a.comp === comp)) {
+            const area = <IArea> this.hidedAreas.find(a => a.comp === comp)
+            this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
         }
     }
 
     public hideArea(comp: SplitAreaDirective) {
-        const item = this.areas.find(a => a.comp === comp);
+        const area = <IArea> this.displayedAreas.find(a => a.comp === comp)
 
-        if(item) {
-            this.refresh();
+        if(area) {
+            const areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
+            this.hidedAreas.push(...areas);
+
+            this.build();
         }
     }
 
-    public showArea(area: SplitAreaDirective) {
-        const item = this.areas.find(a => a.comp === area);
+    public showArea(comp: SplitAreaDirective) {
+        const area = <IArea> this.hidedAreas.find(a => a.comp === comp);
 
-        if(item) {
-            this.refresh();
+        if(area) {
+            const areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
+            this.displayedAreas.push(...areas);
+
+            this.build();
         }
     }
 
-    public isLastVisibleArea(area: IArea): boolean {
-        const visibleAreas = this.getVisibleAreas();
-
-        return visibleAreas.length > 0 ? area === visibleAreas[visibleAreas.length - 1] : false;
-    }
-
-    private refresh() {
+    private build() {
         this.stopDragging();
 
         // ¤ AREAS ORDER
         
         // Based on user input if all provided or added order by default.
-        if(this.areas.some(a => a.comp.order === null) === false) {
-            this.areas.sort((a, b) => Number(a.comp.order) - Number(b.comp.order));
+        if(this.displayedAreas.every(a => a.comp.order !== null)) {
+            this.displayedAreas.sort((a, b) => (<number> a.comp.order) - (<number> b.comp.order));
         }
 
-        this.areas.forEach((a, i) => {
-            a.order = i * 2;
-            a.comp.setStyleOrder(a.order);
+        this.displayedAreas.forEach((area, i) => {
+            area.order = i * 2;
+            area.comp.setStyleOrder(area.order);
         });
-        
-        const visibleAreas = this.getVisibleAreas();
 
         // ¤ AREAS SIZE PERCENT
         
         // Set css 'flex-basis' property depending on user input if all set & ~100% or equal sizes by default.
-        const totalUserSize = <number> visibleAreas.reduce((total: number, s: IArea) => s.comp.size ? total + s.comp.size : total, 0);
+        const totalUserSize = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.comp.size ? total + s.comp.size : total, 0);
         
-        if(this.areas.some(a => a.comp.size === null) || totalUserSize < .999 || totalUserSize > 1.001 ) {
-            const size = Number((1 / visibleAreas.length).toFixed(4));
+        if(this.displayedAreas.some(a => a.comp.size === null) || totalUserSize < .999 || totalUserSize > 1.001 ) {
+            const size = Number((1 / this.displayedAreas.length).toFixed(4));
             
-            visibleAreas.forEach(a => {
-                a.size = size;
+            this.displayedAreas.forEach(area => {
+                area.size = size;
             });
         } 
         else {
@@ -316,23 +324,23 @@ export class SplitComponent implements OnChanges, OnDestroy {
             const prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
             const containerSizePixel = this.elRef.nativeElement[prop];
 
-            visibleAreas.forEach(a => {
-                let newSize = Number(a.comp.size);
+            this.displayedAreas.forEach(area => {
+                let newSize = Number(area.comp.size);
 
                 if(newSize * containerSizePixel < this.gutterSize) {
                     percentToShare += newSize;
                     newSize = 0;
                 }
 
-                a.size = newSize;
+                area.size = newSize;
             });
             
             if(percentToShare > 0) {
-                const nbAreasNotZero = visibleAreas.filter(a => a.size !== 0).length;
+                const nbAreasNotZero = this.displayedAreas.filter(a => a.size !== 0).length;
                 const percentToAdd = percentToShare / nbAreasNotZero;
 
-                visibleAreas.filter(a => a.size !== 0).forEach(a => {
-                    a.size += percentToAdd;
+                this.displayedAreas.filter(a => a.size !== 0).forEach(area => {
+                    area.size += percentToAdd;
                 });
             }    
         }
@@ -340,10 +348,10 @@ export class SplitComponent implements OnChanges, OnDestroy {
         // ¤ AREAS PX TO SUBTRACT
 
         const totalPxToSubtract = this.getNbGutters() * this.gutterSize;
-        const areasSizeNotZero = visibleAreas.filter(a => a.size !== 0);
+        const areasSizeNotZero = this.displayedAreas.filter(a => a.size !== 0);
 
-        areasSizeNotZero.forEach(a => {
-            a.pxToSubtract = totalPxToSubtract / areasSizeNotZero.length;
+        areasSizeNotZero.forEach(area => {
+            area.pxToSubtract = totalPxToSubtract / areasSizeNotZero.length;
         });
 
         this.refreshStyleSizes();
@@ -351,8 +359,8 @@ export class SplitComponent implements OnChanges, OnDestroy {
     }
 
     private refreshStyleSizes() {
-        this.getVisibleAreas().forEach(a => {
-            a.comp.setStyleFlexbasis(`calc( ${ a.size * 100 }% - ${ a.pxToSubtract }px )`);
+        this.displayedAreas.forEach(area => {
+            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.pxToSubtract }px )`);
         });
     }
 
@@ -363,8 +371,9 @@ export class SplitComponent implements OnChanges, OnDestroy {
             return;
         }
 
-        const areaA = this.areas.find(a => a.order === gutterOrder - 1);
-        const areaB = this.areas.find(a => a.order === gutterOrder + 1);
+        const areaA = this.displayedAreas.find(a => a.order === gutterOrder - 1);
+        const areaB = this.displayedAreas.find(a => a.order === gutterOrder + 1);
+        
         if(!areaA || !areaB) {
             return;
         }
@@ -500,7 +509,7 @@ const debPxToSubtractB = areaB.pxToSubtract;
             areaB.pxToSubtract = 0;
         }
 
-const rd = (val: number) => Math.round(val*100)/100;
+/*const rd = (val: number) => Math.round(val*100)/100;
 console.table([{
     //'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
     //'offset': offsetPixel,
@@ -508,7 +517,7 @@ console.table([{
     'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
     'curr %-px': `${ rd(debSizeA)*100 }% - ${ rd(debPxToSubtractA) } / ${ rd(debSizeB)*100 }% - ${ rd(debPxToSubtractB) }`, 
     'new %-px': `${ rd(areaA.size)*100 }% - ${ rd(areaA.pxToSubtract) } / ${ rd(areaB.size)*100 }% - ${ rd(areaB.pxToSubtract) }`, 
-}]);
+}]);*/
 
         this.refreshStyleSizes();
         this.notify('progress');
@@ -519,10 +528,10 @@ console.table([{
             return;
         }
 
-        this.areas.forEach(a => {
-            a.comp.unlockEvents();
+        this.displayedAreas.forEach(area => {
+            area.comp.unlockEvents();
         });
-console.log('>', this.getVisibleAreas().map(a => a.size).join('/'), '  ', this.getVisibleAreas().map(a => a.size).reduce((tot, s) => tot+s, 0));
+console.log('>', this.displayedAreas.map(a => a.size).join('/'), '  ', this.displayedAreas.map(a => a.size).reduce((tot, s) => tot+s, 0));
 
         while(this.dragListeners.length > 0) {
             const fct = this.dragListeners.pop();
@@ -536,7 +545,7 @@ console.log('>', this.getVisibleAreas().map(a => a.size).join('/'), '  ', this.g
     }
 
     public notify(type: string) {
-        const areasSize: Array<number> = this.getVisibleAreas().map(a => a.size);
+        const areasSize: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
         switch(type) {
             case 'start':
