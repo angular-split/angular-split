@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'sp-app-root',
@@ -20,4 +21,11 @@ import { Component } from '@angular/core';
       <router-outlet></router-outlet>
     </div>`
 })
-export class AppComponent {}
+export class AppComponent {
+    
+    constructor(public router: Router) {
+        this.router.events.filter(e => e instanceof NavigationEnd).subscribe(event => {
+            window.scrollTo(0, 0);
+        });
+    }
+}
