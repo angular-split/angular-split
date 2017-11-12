@@ -10,7 +10,8 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private _order: number | null = null;
 
     @Input() set order(v: number | null) {
-        this._order = !isNaN(<number> v) ? v : null;
+        v = Number(v);
+        this._order = !isNaN(v) ? v : null;
 
         this.split.updateArea(this);
     }
@@ -24,7 +25,8 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private _size: number | null = null;
 
     @Input() set size(v: number | null) {
-        this._size = (!isNaN(<number> v) && <number> v >= 0 && <number> v <= 100) ? (<number> v/100) : null;
+        v = Number(v);
+        this._size = (!isNaN(v) && v >= 0 && v <= 100) ? (v/100) : null;
 
         this.split.updateArea(this);
     }
@@ -38,6 +40,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private _minSize: number = 0;
 
     @Input() set minSize(v: number) {
+        v = Number(v);
         this._minSize = (!isNaN(v) && v > 0 && v < 100) ? v/100 : 0;
 
         this.split.updateArea(this);
@@ -52,6 +55,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private _visible: boolean = true;
 
     @Input() set visible(v: boolean) {
+        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
         this._visible = v;
         this.setStyleVisibleAndDir(v, this.split.direction);
 

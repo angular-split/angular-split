@@ -1,4 +1,10 @@
 
+<a name="1.0.0-beta.3"></a>
+# 1.0.0-beta.3 (2017-11-12)
+
+* **Feature:** Accept number & boolean params as string to allow template syntax like `<split gutterSize="12" disabled="true">...</split>` or `<split-area order="4" size="40" visible="true">...</split-area>`.
+* **Feature:** Add a `gutterClick` event for usecases like toggling area between 0% & X%. Now all drag events and gutterSize return `{gutterNum: number, sizes: Array<number>}`. 
+
 <a name="1.0.0-beta.2"></a>
 # 1.0.0-beta.2 (2017-11-11)
 

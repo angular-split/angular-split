@@ -67,8 +67,8 @@ import { SplitAreaDirective } from './splitArea.directive';
                           [direction]="direction"
                           [size]="gutterSize"
                           [disabled]="disabled"
-                          (mousedown)="startDragging($event, index*2+1)"
-                          (touchstart)="startDragging($event, index*2+1)"></split-gutter>
+                          (mousedown)="startDragging($event, index*2+1, index+1)"
+                          (touchstart)="startDragging($event, index*2+1, index+1)"></split-gutter>
         </ng-template>`,
 })
 export class SplitComponent implements OnDestroy {
@@ -76,7 +76,8 @@ export class SplitComponent implements OnDestroy {
     private _direction: 'horizontal' | 'vertical' = 'horizontal';
 
     @Input() set direction(v: 'horizontal' | 'vertical') {
-        this._direction = (v === 'horizontal') ? v : 'vertical';
+        v = (v === 'vertical') ? 'vertical' : 'horizontal';
+        this._direction = v;
         
         [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
             area.comp.setStyleVisibleAndDir(area.comp.visible, this._direction);
@@ -94,7 +95,8 @@ export class SplitComponent implements OnDestroy {
     private _visibleTransition: boolean = false;
 
     @Input() set visibleTransition(v: boolean) {
-        this._visibleTransition = Boolean(v);
+        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
+        this._visibleTransition = v;
 
         [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
             area.comp.setStyleTransition(this._visibleTransition);
@@ -110,7 +112,8 @@ export class SplitComponent implements OnDestroy {
     private _width: number | null = null;
 
     @Input() set width(v: number | null) {
-        this._width = (!isNaN(<number> v) && <number> v > 0) ? v : null;
+        v = Number(v);
+        this._width = (!isNaN(v) && v > 0) ? v : null;
         
         this.build();
     }
@@ -124,7 +127,8 @@ export class SplitComponent implements OnDestroy {
     private _height: number | null = null;
 
     @Input() set height(v: number | null) {
-        this._height = (!isNaN(<number> v) && <number> v > 0) ? v : null;
+        v = Number(v);
+        this._height = (!isNaN(v) && v > 0) ? v : null;
         
         this.build();
     }
@@ -138,6 +142,7 @@ export class SplitComponent implements OnDestroy {
     private _gutterSize: number = 10;
 
     @Input() set gutterSize(v: number) {
+        v = Number(v);
         this._gutterSize = !isNaN(v) && v > 0 ? v : 10;
 
         this.build();
@@ -152,7 +157,8 @@ export class SplitComponent implements OnDestroy {
     private _disabled: boolean = false;
     
     @Input() set disabled(v: boolean) {
-        this._disabled = Boolean(v);
+        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
+        this._disabled = v;
         
         this.build();
     }
@@ -163,11 +169,12 @@ export class SplitComponent implements OnDestroy {
 
     ////
 
-    @Output() dragStart = new EventEmitter<Array<number>>(false);
-    @Output() dragProgress = new EventEmitter<Array<number>>(false);
-    @Output() dragEnd = new EventEmitter<Array<number>>(false);
+    @Output() dragStart = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
+    @Output() dragProgress = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
+    @Output() dragEnd = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
+    @Output() gutterClick = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
 
-    visibleTransitionEndInternal = new Subject<Array<number>>();
+    private visibleTransitionEndInternal = new Subject<Array<number>>();
     @Output() visibleTransitionEnd = (<Observable<Array<number>>> this.visibleTransitionEndInternal.asObservable()).debounceTime(20);
 
     @HostBinding('style.flex-direction') get cssFlexdirection() {
@@ -205,6 +212,9 @@ export class SplitComponent implements OnDestroy {
         return this._isDragging;
     }
     
+    private draggingWithoutMove: boolean = false;
+    private currentGutterNum: number = 0;
+
     public readonly displayedAreas: Array<IArea> = [];
     public readonly hidedAreas: Array<IArea> = [];
     
@@ -364,7 +374,7 @@ export class SplitComponent implements OnDestroy {
         });
     }
 
-    public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number) {
+    public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number) {
         startEvent.preventDefault();
 
         if(this.disabled) {
@@ -412,6 +422,9 @@ export class SplitComponent implements OnDestroy {
         areaB.comp.lockEvents();
 
         this.isDragging = true;
+        this.draggingWithoutMove = true;
+        this.currentGutterNum = gutterNum;
+
         this.notify('start');
     }
 
@@ -436,7 +449,8 @@ export class SplitComponent implements OnDestroy {
         else {
             return;
         }
-
+        
+        this.draggingWithoutMove = false;
         this.drag(start, end, areaA, areaB);
     }
 
@@ -449,8 +463,8 @@ export class SplitComponent implements OnDestroy {
         let newSizePixelA = this.dragStartValues.sizePixelA - offsetPixel;
         let newSizePixelB = this.dragStartValues.sizePixelB + offsetPixel;
 
-const debSizePxA = newSizePixelA;
-const debSizePxB = newSizePixelB;
+//const debSizePxA = newSizePixelA;
+//const debSizePxB = newSizePixelB;
         
         if(newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
             // WTF.. get out of here!
@@ -467,8 +481,8 @@ const debSizePxB = newSizePixelB;
 
         // ¤ AREAS SIZE PERCENT
 
-const debSizeA = areaA.size;
-const debSizeB = areaB.size;
+//const debSizeA = areaA.size;
+//const debSizeB = areaB.size;
         
         if(newSizePixelA === 0) {
             areaB.size += areaA.size;
@@ -497,8 +511,8 @@ const debSizeB = areaB.size;
         }
 
 
-const debPxToSubtractA = areaA.pxToSubtract;
-const debPxToSubtractB = areaB.pxToSubtract;
+//const debPxToSubtractA = areaA.pxToSubtract;
+//const debPxToSubtractB = areaB.pxToSubtract;
 
         if(areaA.size === 0) {
             areaB.pxToSubtract += areaA.pxToSubtract;
@@ -541,21 +555,31 @@ console.log('>', this.displayedAreas.map(a => a.size).join('/'), '  ', this.disp
         }
 
         this.isDragging = false;
-        this.notify('end');
+        
+        if(this.draggingWithoutMove === true) {
+            this.notify('click');
+        }
+        else {
+            this.notify('end');
+        }
     }
+
 
     public notify(type: string) {
         const areasSize: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
         switch(type) {
             case 'start':
-                return this.dragStart.emit(areasSize);
+                return this.dragStart.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
 
             case 'progress':
-                return this.dragProgress.emit(areasSize);
+                return this.dragProgress.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
 
             case 'end':
-                return this.dragEnd.emit(areasSize);
+                return this.dragEnd.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
+                
+            case 'click':
+                return this.gutterClick.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
 
             case 'visibleTransitionEnd':
                 return this.visibleTransitionEndInternal.next(areasSize);

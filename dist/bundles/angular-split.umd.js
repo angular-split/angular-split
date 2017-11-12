@@ -48,9 +48,12 @@ var SplitComponent = (function () {
         this.dragStart = new core.EventEmitter(false);
         this.dragProgress = new core.EventEmitter(false);
         this.dragEnd = new core.EventEmitter(false);
+        this.gutterClick = new core.EventEmitter(false);
         this.visibleTransitionEndInternal = new Subject.Subject();
         this.visibleTransitionEnd = (/** @type {?} */ (this.visibleTransitionEndInternal.asObservable())).debounceTime(20);
         this._isDragging = false;
+        this.draggingWithoutMove = false;
+        this.currentGutterNum = 0;
         this.displayedAreas = [];
         this.hidedAreas = [];
         this.dragListeners = [];
@@ -75,7 +78,8 @@ var SplitComponent = (function () {
          */
         function (v) {
             var _this = this;
-            this._direction = (v === 'horizontal') ? v : 'vertical';
+            v = (v === 'vertical') ? 'vertical' : 'horizontal';
+            this._direction = v;
             this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
                 area.comp.setStyleVisibleAndDir(area.comp.visible, _this._direction);
             });
@@ -97,7 +101,8 @@ var SplitComponent = (function () {
          */
         function (v) {
             var _this = this;
-            this._visibleTransition = Boolean(v);
+            v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
+            this._visibleTransition = v;
             this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
                 area.comp.setStyleTransition(_this._visibleTransition);
             });
@@ -117,7 +122,8 @@ var SplitComponent = (function () {
          * @return {?}
          */
         function (v) {
-            this._width = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) > 0) ? v : null;
+            v = Number(v);
+            this._width = (!isNaN(v) && v > 0) ? v : null;
             this.build();
         },
         enumerable: true,
@@ -135,7 +141,8 @@ var SplitComponent = (function () {
          * @return {?}
          */
         function (v) {
-            this._height = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) > 0) ? v : null;
+            v = Number(v);
+            this._height = (!isNaN(v) && v > 0) ? v : null;
             this.build();
         },
         enumerable: true,
@@ -153,6 +160,7 @@ var SplitComponent = (function () {
          * @return {?}
          */
         function (v) {
+            v = Number(v);
             this._gutterSize = !isNaN(v) && v > 0 ? v : 10;
             this.build();
         },
@@ -171,7 +179,8 @@ var SplitComponent = (function () {
          * @return {?}
          */
         function (v) {
-            this._disabled = Boolean(v);
+            v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
+            this._disabled = v;
             this.build();
         },
         enumerable: true,
@@ -422,14 +431,16 @@ var SplitComponent = (function () {
     /**
      * @param {?} startEvent
      * @param {?} gutterOrder
+     * @param {?} gutterNum
      * @return {?}
      */
     SplitComponent.prototype.startDragging = /**
      * @param {?} startEvent
      * @param {?} gutterOrder
+     * @param {?} gutterNum
      * @return {?}
      */
-    function (startEvent, gutterOrder) {
+    function (startEvent, gutterOrder, gutterNum) {
         var _this = this;
         startEvent.preventDefault();
         if (this.disabled) {
@@ -470,6 +481,8 @@ var SplitComponent = (function () {
         areaA.comp.lockEvents();
         areaB.comp.lockEvents();
         this.isDragging = true;
+        this.draggingWithoutMove = true;
+        this.currentGutterNum = gutterNum;
         this.notify('start');
     };
     /**
@@ -506,6 +519,7 @@ var SplitComponent = (function () {
         else {
             return;
         }
+        this.draggingWithoutMove = false;
         this.drag(start, end, areaA, areaB);
     };
     /**
@@ -527,6 +541,8 @@ var SplitComponent = (function () {
         var /** @type {?} */ offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
         var /** @type {?} */ newSizePixelA = this.dragStartValues.sizePixelA - offsetPixel;
         var /** @type {?} */ newSizePixelB = this.dragStartValues.sizePixelB + offsetPixel;
+        //const debSizePxA = newSizePixelA;
+        //const debSizePxB = newSizePixelB;
         if (newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
             // WTF.. get out of here!
             return;
@@ -540,6 +556,8 @@ var SplitComponent = (function () {
             newSizePixelB = 0;
         }
         // ¤ AREAS SIZE PERCENT
+        //const debSizeA = areaA.size;
+        //const debSizeB = areaB.size;
         if (newSizePixelA === 0) {
             areaB.size += areaA.size;
             areaA.size = 0;
@@ -564,6 +582,8 @@ var SplitComponent = (function () {
                 //areaB.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB ) + areaB.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
             }
         }
+        //const debPxToSubtractA = areaA.pxToSubtract;
+        //const debPxToSubtractB = areaB.pxToSubtract;
         if (areaA.size === 0) {
             areaB.pxToSubtract += areaA.pxToSubtract;
             areaA.pxToSubtract = 0;
@@ -605,7 +625,12 @@ var SplitComponent = (function () {
             }
         }
         this.isDragging = false;
-        this.notify('end');
+        if (this.draggingWithoutMove === true) {
+            this.notify('click');
+        }
+        else {
+            this.notify('end');
+        }
     };
     /**
      * @param {?} type
@@ -619,11 +644,13 @@ var SplitComponent = (function () {
         var /** @type {?} */ areasSize = this.displayedAreas.map(function (a) { return a.size * 100; });
         switch (type) {
             case 'start':
-                return this.dragStart.emit(areasSize);
+                return this.dragStart.emit({ gutterNum: this.currentGutterNum, sizes: areasSize });
             case 'progress':
-                return this.dragProgress.emit(areasSize);
+                return this.dragProgress.emit({ gutterNum: this.currentGutterNum, sizes: areasSize });
             case 'end':
-                return this.dragEnd.emit(areasSize);
+                return this.dragEnd.emit({ gutterNum: this.currentGutterNum, sizes: areasSize });
+            case 'click':
+                return this.gutterClick.emit({ gutterNum: this.currentGutterNum, sizes: areasSize });
             case 'visibleTransitionEnd':
                 return this.visibleTransitionEndInternal.next(areasSize);
         }
@@ -642,7 +669,7 @@ var SplitComponent = (function () {
                     selector: 'split',
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n\n        :host.vertical split-gutter {\n            width: 100%;\n        }\n    "],
-                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1)\"></split-gutter>\n        </ng-template>",
+                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1, index+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1, index+1)\"></split-gutter>\n        </ng-template>",
                 },] },
     ];
     /** @nocollapse */
@@ -661,6 +688,7 @@ var SplitComponent = (function () {
         "dragStart": [{ type: core.Output },],
         "dragProgress": [{ type: core.Output },],
         "dragEnd": [{ type: core.Output },],
+        "gutterClick": [{ type: core.Output },],
         "visibleTransitionEnd": [{ type: core.Output },],
         "cssFlexdirection": [{ type: core.HostBinding, args: ['style.flex-direction',] },],
         "cssWidth": [{ type: core.HostBinding, args: ['style.width',] },],
@@ -698,7 +726,8 @@ var SplitAreaDirective = (function () {
          * @return {?}
          */
         function (v) {
-            this._order = !isNaN(/** @type {?} */ (v)) ? v : null;
+            v = Number(v);
+            this._order = !isNaN(v) ? v : null;
             this.split.updateArea(this);
         },
         enumerable: true,
@@ -716,7 +745,8 @@ var SplitAreaDirective = (function () {
          * @return {?}
          */
         function (v) {
-            this._size = (!isNaN(/** @type {?} */ (v)) && /** @type {?} */ (v) >= 0 && /** @type {?} */ (v) <= 100) ? (/** @type {?} */ (v) / 100) : null;
+            v = Number(v);
+            this._size = (!isNaN(v) && v >= 0 && v <= 100) ? (v / 100) : null;
             this.split.updateArea(this);
         },
         enumerable: true,
@@ -734,6 +764,7 @@ var SplitAreaDirective = (function () {
          * @return {?}
          */
         function (v) {
+            v = Number(v);
             this._minSize = (!isNaN(v) && v > 0 && v < 100) ? v / 100 : 0;
             this.split.updateArea(this);
         },
@@ -752,6 +783,7 @@ var SplitAreaDirective = (function () {
          * @return {?}
          */
         function (v) {
+            v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
             this._visible = v;
             this.setStyleVisibleAndDir(v, this.split.direction);
             if (this.visible) {
