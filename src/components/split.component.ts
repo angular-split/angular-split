@@ -11,27 +11,32 @@ import { SplitAreaDirective } from './splitArea.directive';
 /**
  * angular-split
  * 
- * Areas size are set in percentage of the split container & gutters size in pixels.
- * We need to subtract gutters size (in pixels) from area size percentages.
- * So we set css flex-basis like this: "calc( {area.size}% - {area.pxToSubtract}px );"
+ * Areas size are set in percentage of the split container.
+ * Gutters size are set in pixels.
  * 
- * When an area size is 0, pixel need to be recalculate.
+ * So we set css 'flex-basis' property like this (where 0 <= area.size <= 1): 
+ *  calc( { area.size * 100 }% - { area.size * nbGutter * gutterSize }px );
  * 
- * Examples:  gutterSize * nbGutters / nbAreasMoreThanZero = 10*2/3 = 6.667px
+ * Examples with 3 visible areas and 2 gutters: 
  * 
- *                            10px                        10px
+ * |                     10px                   10px                                  |
+ * |---------------------[]---------------------[]------------------------------------|
+ * |  calc(20% - 4px)          calc(20% - 4px)              calc(60% - 12px)          |
+ * 
+ * 
+ * |                          10px                        10px                        |
  * |--------------------------[]--------------------------[]--------------------------|
- *    calc(33.33% - 6.667px)      calc(33.33% - 6.667px)      calc(33.33% - 6.667px)
+ * |  calc(33.33% - 6.667px)      calc(33.33% - 6.667px)      calc(33.33% - 6.667px)  |
  * 
  * 
- *  10px                                                  10px
+ * |10px                                                  10px                        |
  * |[]----------------------------------------------------[]--------------------------|
- * 0                  calc(66.66% - 13.333px)                  calc(33%% - 6.667px)
+ * |0                 calc(66.66% - 13.333px)                  calc(33%% - 6.667px)   |
  * 
  * 
- *  10px 10px
+ *  10px 10px                                                                         |
  * |[][]------------------------------------------------------------------------------|
- * 0 0                                calc(100% - 20px)
+ * |0 0                               calc(100% - 20px)                               |
  * 
  */
 
@@ -236,11 +241,10 @@ export class SplitComponent implements OnDestroy {
     }
 
     public addArea(comp: SplitAreaDirective) {
-        const newArea = {
+        const newArea: IArea = {
             comp, 
             order: -1, 
-            size: -1, 
-            pxToSubtract: 0
+            size: -1,
         };
 
         if(comp.visible === true) {
@@ -354,23 +358,16 @@ export class SplitComponent implements OnDestroy {
                 });
             }    
         }
-        
-        // ¤ AREAS PX TO SUBTRACT
-
-        const totalPxToSubtract = this.getNbGutters() * this.gutterSize;
-        const areasSizeNotZero = this.displayedAreas.filter(a => a.size !== 0);
-
-        areasSizeNotZero.forEach(area => {
-            area.pxToSubtract = totalPxToSubtract / areasSizeNotZero.length;
-        });
 
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
     }
 
     private refreshStyleSizes() {
+        const allGutterWidth = this.getNbGutters() * this.gutterSize;
+
         this.displayedAreas.forEach(area => {
-            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.pxToSubtract }px )`);
+            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * allGutterWidth }px )`);
         });
     }
 
@@ -463,8 +460,8 @@ export class SplitComponent implements OnDestroy {
         let newSizePixelA = this.dragStartValues.sizePixelA - offsetPixel;
         let newSizePixelB = this.dragStartValues.sizePixelB + offsetPixel;
 
-//const debSizePxA = newSizePixelA;
-//const debSizePxB = newSizePixelB;
+// const debSizePxA = newSizePixelA;
+// const debSizePxB = newSizePixelB;
         
         if(newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
             // WTF.. get out of here!
@@ -481,8 +478,8 @@ export class SplitComponent implements OnDestroy {
 
         // ¤ AREAS SIZE PERCENT
 
-//const debSizeA = areaA.size;
-//const debSizeB = areaB.size;
+// const debSizeA = areaA.size;
+// const debSizeB = areaB.size;
         
         if(newSizePixelA === 0) {
             areaB.size += areaA.size;
@@ -493,45 +490,30 @@ export class SplitComponent implements OnDestroy {
             areaB.size = 0;
         }
         else {
-            // size = ( ( (total * percentStart - F) / pixelStart * pixelNew ) + F ) / total;
+            // NEW_PERCENT = START_PERCENT / START_PIXEL * NEW_PIXEL;
             if(this.dragStartValues.sizePercentA === 0) {
-                areaB.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB ) + areaB.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
+                areaB.size = this.dragStartValues.sizePercentB / this.dragStartValues.sizePixelB * newSizePixelB;
                 areaA.size = this.dragStartValues.sizePercentB - areaB.size;
             }
             else if(this.dragStartValues.sizePercentB === 0) {
-                areaA.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentA - areaA.pxToSubtract) / this.dragStartValues.sizePixelA * newSizePixelA ) + areaA.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
+                areaA.size = this.dragStartValues.sizePercentA / this.dragStartValues.sizePixelA * newSizePixelA;
                 areaB.size = this.dragStartValues.sizePercentA - areaA.size;
             }
             else {
-                areaA.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentA - areaA.pxToSubtract) / this.dragStartValues.sizePixelA * newSizePixelA ) + areaA.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
+                areaA.size = this.dragStartValues.sizePercentA / this.dragStartValues.sizePixelA * newSizePixelA;
                 areaB.size = (this.dragStartValues.sizePercentA + this.dragStartValues.sizePercentB) - areaA.size;
-                //areaB.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB ) + areaB.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
             }
-
         }
 
-
-//const debPxToSubtractA = areaA.pxToSubtract;
-//const debPxToSubtractB = areaB.pxToSubtract;
-
-        if(areaA.size === 0) {
-            areaB.pxToSubtract += areaA.pxToSubtract;
-            areaA.pxToSubtract = 0;
-        }
-        else if(areaB.size === 0) {
-            areaA.pxToSubtract += areaB.pxToSubtract;
-            areaB.pxToSubtract = 0;
-        }
-
-/*const rd = (val: number) => Math.round(val*100)/100;
-console.table([{
-    //'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
-    //'offset': offsetPixel,
-    //'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
-    'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
-    'curr %-px': `${ rd(debSizeA)*100 }% - ${ rd(debPxToSubtractA) } / ${ rd(debSizeB)*100 }% - ${ rd(debPxToSubtractB) }`, 
-    'new %-px': `${ rd(areaA.size)*100 }% - ${ rd(areaA.pxToSubtract) } / ${ rd(areaB.size)*100 }% - ${ rd(areaB.pxToSubtract) }`, 
-}]);*/
+// const rd = (val: number) => Math.round(val*100)/100;
+// console.table([{
+//     'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
+//     'offset': offsetPixel,
+//     'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
+//     'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
+//     'curr %-px': `${ rd(debSizeA)*100 }% / ${ rd(debSizeB)*100 }%`, 
+//     'new %-px': `${ rd(areaA.size)*100 }% / ${ rd(areaB.size)*100 }%`, 
+// }]);
 
         this.refreshStyleSizes();
         this.notify('progress');
@@ -545,7 +527,7 @@ console.table([{
         this.displayedAreas.forEach(area => {
             area.comp.unlockEvents();
         });
-console.log('>', this.displayedAreas.map(a => a.size).join('/'), '  ', this.displayedAreas.map(a => a.size).reduce((tot, s) => tot+s, 0));
+// console.log('>', this.displayedAreas.map(a => a.size).join('/'), '  ', this.displayedAreas.map(a => a.size).reduce((tot, s) => tot+s, 0));
 
         while(this.dragListeners.length > 0) {
             const fct = this.dragListeners.pop();

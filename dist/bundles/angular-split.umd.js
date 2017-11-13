@@ -11,27 +11,32 @@
 /**
  * angular-split
  *
- * Areas size are set in percentage of the split container & gutters size in pixels.
- * We need to subtract gutters size (in pixels) from area size percentages.
- * So we set css flex-basis like this: "calc( {area.size}% - {area.pxToSubtract}px );"
+ * Areas size are set in percentage of the split container.
+ * Gutters size are set in pixels.
  *
- * When an area size is 0, pixel need to be recalculate.
+ * So we set css 'flex-basis' property like this (where 0 <= area.size <= 1):
+ *  calc( { area.size * 100 }% - { area.size * nbGutter * gutterSize }px );
  *
- * Examples:  gutterSize * nbGutters / nbAreasMoreThanZero = 10*2/3 = 6.667px
+ * Examples with 3 visible areas and 2 gutters:
  *
- *                            10px                        10px
+ * |                     10px                   10px                                  |
+ * |---------------------[]---------------------[]------------------------------------|
+ * |  calc(20% - 4px)          calc(20% - 4px)              calc(60% - 12px)          |
+ *
+ *
+ * |                          10px                        10px                        |
  * |--------------------------[]--------------------------[]--------------------------|
- *    calc(33.33% - 6.667px)      calc(33.33% - 6.667px)      calc(33.33% - 6.667px)
+ * |  calc(33.33% - 6.667px)      calc(33.33% - 6.667px)      calc(33.33% - 6.667px)  |
  *
  *
- *  10px                                                  10px
+ * |10px                                                  10px                        |
  * |[]----------------------------------------------------[]--------------------------|
- * 0                  calc(66.66% - 13.333px)                  calc(33%% - 6.667px)
+ * |0                 calc(66.66% - 13.333px)                  calc(33%% - 6.667px)   |
  *
  *
- *  10px 10px
+ *  10px 10px                                                                         |
  * |[][]------------------------------------------------------------------------------|
- * 0 0                                calc(100% - 20px)
+ * |0 0                               calc(100% - 20px)                               |
  *
  */
 var SplitComponent = (function () {
@@ -280,7 +285,6 @@ var SplitComponent = (function () {
             comp: comp,
             order: -1,
             size: -1,
-            pxToSubtract: 0
         };
         if (comp.visible === true) {
             this.displayedAreas.push(newArea);
@@ -408,12 +412,6 @@ var SplitComponent = (function () {
                 });
             }
         }
-        // ¤ AREAS PX TO SUBTRACT
-        var /** @type {?} */ totalPxToSubtract = this.getNbGutters() * this.gutterSize;
-        var /** @type {?} */ areasSizeNotZero = this.displayedAreas.filter(function (a) { return a.size !== 0; });
-        areasSizeNotZero.forEach(function (area) {
-            area.pxToSubtract = totalPxToSubtract / areasSizeNotZero.length;
-        });
         this.refreshStyleSizes();
         this.cdRef.markForCheck();
     };
@@ -424,8 +422,9 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function () {
+        var /** @type {?} */ allGutterWidth = this.getNbGutters() * this.gutterSize;
         this.displayedAreas.forEach(function (area) {
-            area.comp.setStyleFlexbasis("calc( " + area.size * 100 + "% - " + area.pxToSubtract + "px )");
+            area.comp.setStyleFlexbasis("calc( " + area.size * 100 + "% - " + area.size * allGutterWidth + "px )");
         });
     };
     /**
@@ -541,8 +540,8 @@ var SplitComponent = (function () {
         var /** @type {?} */ offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
         var /** @type {?} */ newSizePixelA = this.dragStartValues.sizePixelA - offsetPixel;
         var /** @type {?} */ newSizePixelB = this.dragStartValues.sizePixelB + offsetPixel;
-        //const debSizePxA = newSizePixelA;
-        //const debSizePxB = newSizePixelB;
+        // const debSizePxA = newSizePixelA;
+        // const debSizePxB = newSizePixelB;
         if (newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
             // WTF.. get out of here!
             return;
@@ -556,8 +555,8 @@ var SplitComponent = (function () {
             newSizePixelB = 0;
         }
         // ¤ AREAS SIZE PERCENT
-        //const debSizeA = areaA.size;
-        //const debSizeB = areaB.size;
+        // const debSizeA = areaA.size;
+        // const debSizeB = areaB.size;
         if (newSizePixelA === 0) {
             areaB.size += areaA.size;
             areaA.size = 0;
@@ -567,40 +566,29 @@ var SplitComponent = (function () {
             areaB.size = 0;
         }
         else {
-            // size = ( ( (total * percentStart - F) / pixelStart * pixelNew ) + F ) / total;
+            // NEW_PERCENT = START_PERCENT / START_PIXEL * NEW_PIXEL;
             if (this.dragStartValues.sizePercentA === 0) {
-                areaB.size = (((this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB) + areaB.pxToSubtract) / this.dragStartValues.sizePixelContainer;
+                areaB.size = this.dragStartValues.sizePercentB / this.dragStartValues.sizePixelB * newSizePixelB;
                 areaA.size = this.dragStartValues.sizePercentB - areaB.size;
             }
             else if (this.dragStartValues.sizePercentB === 0) {
-                areaA.size = (((this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentA - areaA.pxToSubtract) / this.dragStartValues.sizePixelA * newSizePixelA) + areaA.pxToSubtract) / this.dragStartValues.sizePixelContainer;
+                areaA.size = this.dragStartValues.sizePercentA / this.dragStartValues.sizePixelA * newSizePixelA;
                 areaB.size = this.dragStartValues.sizePercentA - areaA.size;
             }
             else {
-                areaA.size = (((this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentA - areaA.pxToSubtract) / this.dragStartValues.sizePixelA * newSizePixelA) + areaA.pxToSubtract) / this.dragStartValues.sizePixelContainer;
+                areaA.size = this.dragStartValues.sizePercentA / this.dragStartValues.sizePixelA * newSizePixelA;
                 areaB.size = (this.dragStartValues.sizePercentA + this.dragStartValues.sizePercentB) - areaA.size;
-                //areaB.size = ( ( (this.dragStartValues.sizePixelContainer * this.dragStartValues.sizePercentB - areaB.pxToSubtract) / this.dragStartValues.sizePixelB * newSizePixelB ) + areaB.pxToSubtract ) / this.dragStartValues.sizePixelContainer;
             }
         }
-        //const debPxToSubtractA = areaA.pxToSubtract;
-        //const debPxToSubtractB = areaB.pxToSubtract;
-        if (areaA.size === 0) {
-            areaB.pxToSubtract += areaA.pxToSubtract;
-            areaA.pxToSubtract = 0;
-        }
-        else if (areaB.size === 0) {
-            areaA.pxToSubtract += areaB.pxToSubtract;
-            areaB.pxToSubtract = 0;
-        }
-        /*const rd = (val: number) => Math.round(val*100)/100;
-        console.table([{
-            //'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
-            //'offset': offsetPixel,
-            //'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
-            'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
-            'curr %-px': `${ rd(debSizeA)*100 }% - ${ rd(debPxToSubtractA) } / ${ rd(debSizeB)*100 }% - ${ rd(debPxToSubtractB) }`,
-            'new %-px': `${ rd(areaA.size)*100 }% - ${ rd(areaA.pxToSubtract) } / ${ rd(areaB.size)*100 }% - ${ rd(areaB.pxToSubtract) }`,
-        }]);*/
+        // const rd = (val: number) => Math.round(val*100)/100;
+        // console.table([{
+        //     'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
+        //     'offset': offsetPixel,
+        //     'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
+        //     'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
+        //     'curr %-px': `${ rd(debSizeA)*100 }% / ${ rd(debSizeB)*100 }%`,
+        //     'new %-px': `${ rd(areaA.size)*100 }% / ${ rd(areaB.size)*100 }%`,
+        // }]);
         this.refreshStyleSizes();
         this.notify('progress');
     };
@@ -617,7 +605,7 @@ var SplitComponent = (function () {
         this.displayedAreas.forEach(function (area) {
             area.comp.unlockEvents();
         });
-        console.log('>', this.displayedAreas.map(function (a) { return a.size; }).join('/'), '  ', this.displayedAreas.map(function (a) { return a.size; }).reduce(function (tot, s) { return tot + s; }, 0));
+        // console.log('>', this.displayedAreas.map(a => a.size).join('/'), '  ', this.displayedAreas.map(a => a.size).reduce((tot, s) => tot+s, 0));
         while (this.dragListeners.length > 0) {
             var /** @type {?} */ fct = this.dragListeners.pop();
             if (fct) {
