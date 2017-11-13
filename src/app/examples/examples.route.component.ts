@@ -36,7 +36,7 @@ import { PageScrollConfig } from 'ngx-page-scroll';
     templateUrl: './examples.route.component.html'
 })
 export class ExamplesComponent {
-    code1: string = `<split direction="vertical">
+    code1: string = `<split direction="horizontal">
     <split-area [size]="25">
         <p>Lorem ipsum dolor sit amet...</p>
     </split-area>
@@ -45,7 +45,7 @@ export class ExamplesComponent {
     </split-area>
 </split>`
 
-    code2: string = `<split direction="horizontal">
+    code2: string = `<split direction="vertical">
     <split-area [size]="30">
         <p>Lorem ipsum dolor sit amet...</p>
     </split-area>
