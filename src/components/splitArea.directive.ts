@@ -57,7 +57,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     @Input() set visible(v: boolean) {
         v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
         this._visible = v;
-        this.setStyleVisibleAndDir(v, this.split.direction);
+        this.setStyleVisibleAndDir(v, true, this.split.direction);
 
         if(this.visible) { 
             this.split.showArea(this);
@@ -93,9 +93,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         return this.elRef.nativeElement[prop];
     }
 
-    public setStyleVisibleAndDir(isVisible: boolean, direction: 'horizontal' | 'vertical') {
+    public setStyleVisibleAndDir(isVisible: boolean, isTogglingVisibility: boolean, direction: 'horizontal' | 'vertical') {
         if(isVisible === false) {
-            this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', '0');
+            this.setStyleFlexbasis('0', isTogglingVisibility, this.split.isDragging);
             this.renderer.setStyle(this.elRef.nativeElement, 'overflow-x', 'hidden');
             this.renderer.setStyle(this.elRef.nativeElement, 'overflow-y', 'hidden');
             
@@ -117,26 +117,37 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         }
     }
 
-    public setStyleTransition(withTransition: boolean) {
-        if(withTransition === true) {
-            this.renderer.setStyle(this.elRef.nativeElement, 'transition', `flex-basis 0.3s`);
-        }
-        else {
-            this.renderer.setStyle(this.elRef.nativeElement, 'transition', null);
-        }
-    }
-
     public setStyleOrder(value: number) {
         this.renderer.setStyle(this.elRef.nativeElement, 'order', value);
     }
-    public setStyleFlexbasis(value: string) {
+    
+    public setStyleFlexbasis(value: string, isTogglingVisibility: boolean, isDragging: boolean) {
+        // Need to know if transition needed, 3 possible cases:
+
+        // 1. 'visible' property has been toggled -> Use 'visibleTransition' to know if transition.
+        if(isTogglingVisibility === true) {
+            this.setStyleTransition(this.split.visibleTransition === true);
+        }
+        // 2. 'size' property has been progamatically setted -> Use 'sizeTransition' to know if transition.
+        else if(isDragging === false) {
+            this.setStyleTransition(this.split.sizeTransition === true);
+        }
+        // 3. Gutter being dragged -> disable transition
+        else {
+            this.setStyleTransition(false);
+        }
+
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
+    }
+    
+    private setStyleTransition(withTransition: boolean) {
+        this.renderer.setStyle(this.elRef.nativeElement, 'transition', withTransition ? `flex-basis 0.3s` : null);
     }
     
     private onTransitionEnd(event: TransitionEvent) {
         // Limit only flex-basis transition to trigger the event
         if(event.propertyName === 'flex-basis') {
-            this.split.notify('visibleTransitionEnd');
+            this.split.notify('transitionEnd');
         }
     }
     

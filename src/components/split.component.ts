@@ -59,10 +59,6 @@ import { SplitAreaDirective } from './splitArea.directive';
             background-position: center center;
             background-repeat: no-repeat;
         }
-
-        :host.vertical split-gutter {
-            width: 100%;
-        }
     `],
     template: `
         <ng-content></ng-content>
@@ -85,7 +81,7 @@ export class SplitComponent implements OnDestroy {
         this._direction = v;
         
         [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-            area.comp.setStyleVisibleAndDir(area.comp.visible, this._direction);
+            area.comp.setStyleVisibleAndDir(area.comp.visible, false, this._direction);
         });
         
         this.build();
@@ -103,13 +99,45 @@ export class SplitComponent implements OnDestroy {
         v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
         this._visibleTransition = v;
 
-        [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-            area.comp.setStyleTransition(this._visibleTransition);
-        });
+        // [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
+        //     area.comp.setStyleTransition(this._visibleTransition);
+        // });
     }
     
     get visibleTransition(): boolean {
         return this._visibleTransition;
+    }
+    
+    ////
+
+    private _sizeTransition: boolean = false;
+
+    @Input() set sizeTransition(v: boolean) {
+        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
+        this._sizeTransition = v;
+
+        // [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
+        //     area.comp.setStyleTransition(this._sizeTransition);
+        // });
+    }
+    
+    get sizeTransition(): boolean {
+        return this._visibleTransition;
+    }
+    
+    ////
+
+    private _disabled: boolean = false;
+    
+    @Input() set disabled(v: boolean) {
+        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
+        this._disabled = v;
+        
+        this.build();
+    }
+    
+    get disabled(): boolean {
+        return this._disabled;
     }
     
     ////
@@ -156,21 +184,6 @@ export class SplitComponent implements OnDestroy {
     get gutterSize(): number {
         return this._gutterSize;
     }
-    
-    ////
-
-    private _disabled: boolean = false;
-    
-    @Input() set disabled(v: boolean) {
-        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
-        this._disabled = v;
-        
-        this.build();
-    }
-    
-    get disabled(): boolean {
-        return this._disabled;
-    }
 
     ////
 
@@ -179,8 +192,8 @@ export class SplitComponent implements OnDestroy {
     @Output() dragEnd = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
     @Output() gutterClick = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
 
-    private visibleTransitionEndInternal = new Subject<Array<number>>();
-    @Output() visibleTransitionEnd = (<Observable<Array<number>>> this.visibleTransitionEndInternal.asObservable()).debounceTime(20);
+    private transitionEndInternal = new Subject<Array<number>>();
+    @Output() transitionEnd = (<Observable<Array<number>>> this.transitionEndInternal.asObservable()).debounceTime(20);
 
     @HostBinding('style.flex-direction') get cssFlexdirection() {
         return (this.direction === 'horizontal') ? 'row' : 'column';
@@ -208,9 +221,9 @@ export class SplitComponent implements OnDestroy {
         this._isDragging = v;
 
         // Disable transition during dragging to avoid 'lag effect' (whatever it is active or not).
-        [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-            area.comp.setStyleTransition(v ? false : this.visibleTransition);
-        });
+        // [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
+        //     area.comp.setStyleTransition(v ? false : this.visibleTransition);
+        // });
     }
 
     get isDragging(): boolean {
@@ -221,7 +234,7 @@ export class SplitComponent implements OnDestroy {
     private currentGutterNum: number = 0;
 
     public readonly displayedAreas: Array<IArea> = [];
-    public readonly hidedAreas: Array<IArea> = [];
+    private readonly hidedAreas: Array<IArea> = [];
     
     private readonly dragListeners: Array<Function> = [];
     private readonly dragStartValues = {
@@ -254,8 +267,8 @@ export class SplitComponent implements OnDestroy {
             this.hidedAreas.push(newArea);
         }
 
-        comp.setStyleVisibleAndDir(comp.visible, this.direction);
-        comp.setStyleTransition(this.visibleTransition);
+        comp.setStyleVisibleAndDir(comp.visible, false, this.direction);
+        // comp.setStyleTransition(this.visibleTransition);
 
         this.build();
     }
@@ -325,7 +338,7 @@ export class SplitComponent implements OnDestroy {
         const totalUserSize = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.comp.size ? total + s.comp.size : total, 0);
         
         if(this.displayedAreas.some(a => a.comp.size === null) || totalUserSize < .999 || totalUserSize > 1.001 ) {
-            const size = Number((1 / this.displayedAreas.length).toFixed(4));
+            const size = 1 / this.displayedAreas.length;
             
             this.displayedAreas.forEach(area => {
                 area.size = size;
@@ -367,7 +380,7 @@ export class SplitComponent implements OnDestroy {
         const allGutterWidth = this.getNbGutters() * this.gutterSize;
 
         this.displayedAreas.forEach(area => {
-            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * allGutterWidth }px )`);
+            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * allGutterWidth }px )`, false, this.isDragging);
         });
     }
 
@@ -547,7 +560,7 @@ export class SplitComponent implements OnDestroy {
     }
 
 
-    public notify(type: string) {
+    public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd') {
         const areasSize: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
         switch(type) {
@@ -563,8 +576,8 @@ export class SplitComponent implements OnDestroy {
             case 'click':
                 return this.gutterClick.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
 
-            case 'visibleTransitionEnd':
-                return this.visibleTransitionEndInternal.next(areasSize);
+            case 'transitionEnd':
+                return this.transitionEndInternal.next(areasSize);
         }
     }
 
