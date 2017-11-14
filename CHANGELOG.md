@@ -67,7 +67,7 @@
 # 0.2.1 (2017-07-18)
 
 * **license:** Add an Apache license.
-* **dependancies:** Update `rxjs` version inside `package.json`.
+* **dependencies:** Update `rxjs` version inside `package.json`.
 
 
 <a name="0.2.0"></a>
