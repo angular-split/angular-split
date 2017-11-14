@@ -1,7 +1,7 @@
 <a name="0.2.7"></a>
 # 0.2.7 (2017-11-14)
 
-* **SemVer compatibility:** Copy of `0.2.3` to avoid breaking semantic versionning (I screwed up with `0.2.5` & `0.2.6` which needed angular5). Apps having `"angular-split": "^0.2.2"` inside their `package.json` shoudn't break anymore.
+* **SemVer compatibility:** Copy of `0.2.3` to avoid breaking semantic versionning (I screwed up with `0.2.5` & `0.2.6` which needed angular >=5). Apps using angular 4.x having `"angular-split": "^0.2.2"` inside their `package.json` shoudn't break anymore.
 
 
 <a name="1.0.0-beta.4"></a>
