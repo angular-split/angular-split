@@ -9,9 +9,9 @@ import { Router, NavigationStart } from '@angular/router'
       font-weight: bold;
       color: #ffc421;
     }
-
-    .navbar-header {
-      /*width: 100%;*/
+    
+    li > a {
+      cursor: pointer;
     }
 
     .navbar-toggler {
@@ -42,15 +42,42 @@ import { Router, NavigationStart } from '@angular/router'
             <li class="nav-item" [class.active]="router.isActive('/', true)">
                 <a class="nav-link" routerLink="/">Home</a>
             </li>
+            <li class="nav-item" [class.active]="router.isActive('/changelog', true)">
+                <a class="nav-link" routerLink="/changelog">Changelog</a>
+            </li>
             <li class="nav-item" [class.active]="router.isActive('/documentation', true)">
                 <a class="nav-link" routerLink="/documentation">Documentation</a>
             </li>
-            <li class="nav-item" [class.active]="router.isActive('/examples', true)">
-                <a class="nav-link" routerLink="/examples">Examples</a>
+            <li class="nav-item dropdown" dropdown>
+                <a class="nav-link dropdown-toggle" dropdownToggle>Examples <span class="caret"></span></a>
+                <ul *dropdownMenu class="dropdown-menu" role="menu">
+                    <li [class.active]="router.isActive('/examples/horizontal-split', true)">
+                        <a class="dropdown-item" routerLink="/examples/horizontal-split">Horizontal split</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/vertical-split', true)">
+                        <a class="dropdown-item" routerLink="/examples/vertical-split">Vertical split</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/nested-split', true)">
+                        <a class="dropdown-item" routerLink="/examples/nested-split">Nested split</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/toggling-dom-and-visibility', true)">
+                        <a class="dropdown-item" routerLink="/examples/toggling-dom-and-visibility">Toggling areas using *ngIf and [visible]</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/gutter-click-roll-unroll', true)">
+                        <a class="dropdown-item" routerLink="/examples/gutter-click-roll-unroll">Roll/unroll area on gutter click</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/access-from-class', true)">
+                        <a class="dropdown-item" routerLink="/examples/access-from-class">Interact from TS class</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/geek-demo', true)">
+                        <a class="dropdown-item" routerLink="/examples/geek-demo">Geek demo (100% dynamic)</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/workspace-localstorage', true)">
+                        <a class="dropdown-item" routerLink="/examples/workspace-localstorage">Fullscreen workspace</a>
+                    </li>
+                </ul>
             </li>
-            <li class="nav-item" [class.active]="router.isActive('/advanced-example', true)">
-                <a class="nav-link" routerLink="/advanced-example">Advanced example</a>
-            </li>
+
         </ul>
       </div>`
 })

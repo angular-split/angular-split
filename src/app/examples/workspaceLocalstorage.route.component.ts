@@ -49,7 +49,7 @@ const defaultConfig: IConfig = {
 
 
 @Component({
-  selector: 'sp-advanced-example',
+  selector: 'sp-ex-workspace-localstorage',
   styles: [`
     :host {
         display: block;
@@ -116,7 +116,7 @@ const defaultConfig: IConfig = {
             </ng-template>
         </split>`
 })
-export class AdvancedExampleComponent implements OnInit {
+export class WorkspaceLocalstorageComponent implements OnInit {
     localStorageName = 'angular-split'
     config: IConfig = null
 
