@@ -13,7 +13,7 @@ import { Router, NavigationStart } from '@angular/router'
     li > a {
       cursor: pointer;
     }
-    li.active > a {
+    ul.dropdown-menu > li.active > a {
       background-color: #eeeeee;
       cursor: default;
     }
