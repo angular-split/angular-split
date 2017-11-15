@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import { Component, OnInit } from '@angular/core'
+import * as _ from 'lodash'
 
 
 interface IConfig {

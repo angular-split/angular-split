@@ -1,6 +1,7 @@
-import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { SplitComponent, SplitAreaDirective } from 'angular-split';
+import { Component, OnInit } from '@angular/core'
+import { Observable } from 'rxjs/Observable'
 
+import { ChangelogService } from '../changelog.service'
 
 @Component({
   selector: 'sp-ex-changelog',
@@ -13,9 +14,15 @@ import { SplitComponent, SplitAreaDirective } from 'angular-split';
   `],
   template: `
     <div class="container">
-        <div>ChangelogComponent</div>
+        <div [innerHTML]="changelogHtml$ | async"></div>
     </div>`
 })
-export class ChangelogComponent {
+export class ChangelogComponent implements OnInit {
+    changelogHtml$: Observable<string>
 
+    constructor(private changelogService: ChangelogService) {}
+
+    ngOnInit() {
+        this.changelogHtml$ = this.changelogService.getHtml();
+    }
 }

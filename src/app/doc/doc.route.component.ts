@@ -16,18 +16,21 @@ import { Component } from '@angular/core';
       font-weight: bold;
       color: #ffc421;
     }
+    tr > td:first-child {
+      font-weight: bold;
+    }
   `],
   templateUrl: './doc.route.component.html'
 })
 export class DocComponent {
 
-  readonly splitComp = {
+  readonly splitDoc = {
     inputs: [
-      {name: 'direction',           type: 'string',   default: '"horizontal"',  details: 'Specify "horizontal" or "vertical".'},
-      {name: 'width',               type: 'number',   default: 'null',          details: 'Specify a value in pixels or it takes all space available.'},
-      {name: 'height',              type: 'number',   default: 'null',          details: 'Specify a value in pixels or it takes all space available.'},
-      {name: 'gutterSize',          type: 'number',   default: '10',            details: 'Set gutter (dragging element) width size in pixels.'},
-      {name: 'disabled',            type: 'boolean',  default: 'false',         details: 'Disable the dragging feature and remove cursor/image.'},
+      {name: 'direction',           type: 'string',   default: '"horizontal"',  details: 'Select split direction: "horizontal" or "vertical".'},
+      {name: 'width',               type: 'number',   default: 'null',          details: 'Container width value in pixels (if not provided width set to 100%).'},
+      {name: 'height',              type: 'number',   default: 'null',          details: 'Container height in pixels (if not provided height set to 100%).'},
+      {name: 'gutterSize',          type: 'number',   default: '10',            details: 'Size of the gutter (dragging element) in pixels.'},
+      {name: 'disabled',            type: 'boolean',  default: 'false',         details: 'Disable the dragging feature (remove cursor/image on gutters).'},
       {name: 'visibleTransition',   type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using `[visible]`.'},
       {name: 'sizeTransition',      type: 'boolean',  default: 'false',         details: 'Add transition when updating size using `[size]`.'},
     ],
@@ -36,15 +39,15 @@ export class DocComponent {
       {name: 'dragProgress',      value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when dragging.'},
       {name: 'dragEnd',           value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag ends.'},
       {name: 'gutterClick',       value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when user clicks on a gutter.'},
-      {name: 'transitionEnd',     value: 'Array<number>', details: 'Emit when transition ends (could be triggered from [visible] or [size]).'},
+      {name: 'transitionEnd',     value: 'Array<number>', details: 'Emit when transition ends (could be triggered from `[visible]` or `[size]`).'},
     ],
   };
 
-  readonly splitAreaDir = {
+  readonly splitAreaDoc = {
     inputs: [
-      {name: 'size',      type: 'number',   default: '100/nb_visible_areas',  details: 'Percentage size of the area. If null or if all areas sizes not equal to 100, all areas will have the same size.'},
-      {name: 'order',     type: 'number',   default: 'null',                  details: 'Order of the area. Useful if you show/hide areas using NgIf/NgFor and wants to keep the same order. If specified for all, areas displayed from order min to max.'},
-      {name: 'visible',   type: 'boolean',  default: 'true',                  details: 'Allow to toggle area visibility without removing it from the DOM. Useful for specific case like routing.'},
+      {name: 'size',      type: 'number',   default: '100/nb_visible_areas',  details: 'Size of the area in percent (so 0 >= value >= 100). If null or if all areas sizes not equal to 100, all areas will have the same size.'},
+      {name: 'order',     type: 'number',   default: 'null',                  details: 'Order of the area. If provided for all, areas displayed from order min to max. Useful to keep the same order if you show/hide areas.'},
+      {name: 'visible',   type: 'boolean',  default: 'true',                  details: 'Allow to toggle area visibility without removing it from the DOM. Differs from `[size]="0"` because no gutter showed for areas with `[visible]="false"`.'},
     ]
   }
 

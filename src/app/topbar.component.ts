@@ -13,6 +13,10 @@ import { Router, NavigationStart } from '@angular/router'
     li > a {
       cursor: pointer;
     }
+    li.active > a {
+      background-color: #eeeeee;
+      cursor: default;
+    }
 
     .navbar-toggler {
       float: right;

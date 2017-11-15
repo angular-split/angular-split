@@ -14,3 +14,29 @@ pre {
     padding: 10px 30px;
     background: rgba(249, 214, 118, .3);
 }
+
+
+sp-ex-changelog h1 {
+  font-size: 24px;
+  border-bottom: 1px solid #ddd;
+  color: #777777;
+  padding-bottom: 15px;
+  margin-top: 35px;
+}
+sp-ex-changelog h3 {
+  font-size: 20px;
+}
+sp-ex-changelog p {
+  font-size: 16px;
+}
+
+
+.split-example {
+  height: 300px;
+  outline: 5px dashed #f9d676;
+  margin: 20px;
+}
+
+split-area > p {
+  padding: 15px;
+}

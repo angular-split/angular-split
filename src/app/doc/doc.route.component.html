@@ -1,5 +1,4 @@
 <div class="container">
-    <h3>Documentation</h3>
     <h4>Component <span class="directive">&#60;split&#62;</span></h4>
     <table class="table table-striped">
         <thead>
@@ -11,10 +10,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let prop of splitComp.inputs">
+            <tr *ngFor="let prop of splitDoc.inputs">
                 <td>{{ prop.name }}</td>
                 <td>{{ prop.type }}</td>
-                <td>{{ prop.default }}</td>
+                <td><code>{{ prop.default }}</code></td>
                 <td>{{ prop.details }}</td>
             </tr>
         </tbody>
@@ -28,9 +27,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let event of splitComp.outputs">
+            <tr *ngFor="let event of splitDoc.outputs">
                 <td>{{ event.name }}</td>
-                <td>{{ event.value }}</td>
+                <td><code>{{ event.value }}</code></td>
                 <td>{{ event.details }}</td>
             </tr>
         </tbody>
@@ -47,10 +46,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let prop of splitAreaDir.inputs">
+            <tr *ngFor="let prop of splitAreaDoc.inputs">
                 <td>{{ prop.name }}</td>
                 <td>{{ prop.type }}</td>
-                <td>{{ prop.default }}</td>
+                <td><code>{{ prop.default }}</code></td>
                 <td>{{ prop.details }}</td>
             </tr>
         </tbody>
