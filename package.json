@@ -21,7 +21,7 @@
     "@angular/platform-browser": "5.0.0",
     "@angular/platform-browser-dynamic": "5.0.0",
     "@angular/router": "5.0.0",
-    "angular-split": "1.0.0-beta.4",
+    "angular-split": "file:../angular-split-WIP/angular-split-1.0.0-beta.5.tgz",
     "bootstrap": "4.0.0-beta.2",
     "core-js": "2.4.1",
     "marked": "0.3.6",

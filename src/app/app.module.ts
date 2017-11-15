@@ -21,6 +21,7 @@ import { ExamplesComponent } from './examples/examples.route.component'
 import { HorizontalComponent } from './examples/horizontal.route.component'
 import { VerticalComponent } from './examples/vertical.route.component'
 import { NestedComponent } from './examples/nested.route.component'
+import { TransitionsComponent } from './examples/transitions.route.component'
 import { TogglingDomAndVisibleComponent } from './examples/togglingDomAndVisible.route.component'
 import { GutterClickComponent } from './examples/gutterClick.route.component'
 import { ClassAccessComponent } from './examples/classAccess.route.component'
@@ -35,6 +36,7 @@ const routes = [
   { path: 'examples', component: ExamplesComponent },
   { path: 'examples/horizontal-split', component: HorizontalComponent },
   { path: 'examples/vertical-split', component: VerticalComponent },
+  { path: 'examples/split-transitons', component: TransitionsComponent },
   { path: 'examples/nested-split', component: NestedComponent },
   { path: 'examples/toggling-dom-and-visibility', component: TogglingDomAndVisibleComponent },
   { path: 'examples/gutter-click-roll-unroll', component: GutterClickComponent },
@@ -54,6 +56,7 @@ const routes = [
     HorizontalComponent,
     VerticalComponent,
     NestedComponent,
+    TransitionsComponent,
     TogglingDomAndVisibleComponent,
     GutterClickComponent,
     ClassAccessComponent,

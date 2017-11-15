@@ -64,6 +64,9 @@ import { Router, NavigationStart } from '@angular/router'
                     <li [class.active]="router.isActive('/examples/nested-split', true)">
                         <a class="dropdown-item" routerLink="/examples/nested-split">Nested split</a>
                     </li>
+                    <li [class.active]="router.isActive('/examples/split-transitons', true)">
+                        <a class="dropdown-item" routerLink="/examples/split-transitons">Split transitions</a>
+                    </li>
                     <li [class.active]="router.isActive('/examples/toggling-dom-and-visibility', true)">
                         <a class="dropdown-item" routerLink="/examples/toggling-dom-and-visibility">Toggling areas using *ngIf and [visible]</a>
                     </li>
