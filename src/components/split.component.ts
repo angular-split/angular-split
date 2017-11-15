@@ -81,7 +81,7 @@ export class SplitComponent implements OnDestroy {
         this._direction = v;
         
         [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-            area.comp.setStyleVisibleAndDir(area.comp.visible, false, this._direction);
+            area.comp.setStyleVisibleAndDir(area.comp.visible, this.isDragging, this.direction);
         });
         
         this.build();
@@ -93,36 +93,15 @@ export class SplitComponent implements OnDestroy {
     
     ////
 
-    private _visibleTransition: boolean = false;
+    private _useTransition: boolean = false;
 
-    @Input() set visibleTransition(v: boolean) {
+    @Input() set useTransition(v: boolean) {
         v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
-        this._visibleTransition = v;
-
-        // [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-        //     area.comp.setStyleTransition(this._visibleTransition);
-        // });
+        this._useTransition = v;
     }
     
-    get visibleTransition(): boolean {
-        return this._visibleTransition;
-    }
-    
-    ////
-
-    private _sizeTransition: boolean = false;
-
-    @Input() set sizeTransition(v: boolean) {
-        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
-        this._sizeTransition = v;
-
-        // [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-        //     area.comp.setStyleTransition(this._sizeTransition);
-        // });
-    }
-    
-    get sizeTransition(): boolean {
-        return this._visibleTransition;
+    get useTransition(): boolean {
+        return this._useTransition;
     }
     
     ////
@@ -215,21 +194,7 @@ export class SplitComponent implements OnDestroy {
         return (this.direction === 'vertical') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
     }
 
-    private _isDragging: boolean = false;
-
-    set isDragging(v: boolean) {
-        this._isDragging = v;
-
-        // Disable transition during dragging to avoid 'lag effect' (whatever it is active or not).
-        // [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-        //     area.comp.setStyleTransition(v ? false : this.visibleTransition);
-        // });
-    }
-
-    get isDragging(): boolean {
-        return this._isDragging;
-    }
-    
+    private isDragging: boolean = false;
     private draggingWithoutMove: boolean = false;
     private currentGutterNum: number = 0;
 
@@ -267,8 +232,7 @@ export class SplitComponent implements OnDestroy {
             this.hidedAreas.push(newArea);
         }
 
-        comp.setStyleVisibleAndDir(comp.visible, false, this.direction);
-        // comp.setStyleTransition(this.visibleTransition);
+        comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
 
         this.build();
     }
@@ -299,6 +263,8 @@ export class SplitComponent implements OnDestroy {
         const area = <IArea> this.displayedAreas.find(a => a.comp === comp)
 
         if(area) {
+            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
+
             const areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
             this.hidedAreas.push(...areas);
 
@@ -310,6 +276,8 @@ export class SplitComponent implements OnDestroy {
         const area = <IArea> this.hidedAreas.find(a => a.comp === comp);
 
         if(area) {
+            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
+
             const areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
             this.displayedAreas.push(...areas);
 
@@ -380,7 +348,7 @@ export class SplitComponent implements OnDestroy {
         const allGutterWidth = this.getNbGutters() * this.gutterSize;
 
         this.displayedAreas.forEach(area => {
-            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * allGutterWidth }px )`, false, this.isDragging);
+            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * allGutterWidth }px )`, this.isDragging);
         });
     }
 

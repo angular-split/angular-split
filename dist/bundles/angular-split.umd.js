@@ -45,18 +45,18 @@ var SplitComponent = (function () {
         this.cdRef = cdRef;
         this.renderer = renderer;
         this._direction = 'horizontal';
-        this._visibleTransition = false;
+        this._useTransition = false;
+        this._disabled = false;
         this._width = null;
         this._height = null;
         this._gutterSize = 10;
-        this._disabled = false;
         this.dragStart = new core.EventEmitter(false);
         this.dragProgress = new core.EventEmitter(false);
         this.dragEnd = new core.EventEmitter(false);
         this.gutterClick = new core.EventEmitter(false);
-        this.visibleTransitionEndInternal = new Subject.Subject();
-        this.visibleTransitionEnd = (/** @type {?} */ (this.visibleTransitionEndInternal.asObservable())).debounceTime(20);
-        this._isDragging = false;
+        this.transitionEndInternal = new Subject.Subject();
+        this.transitionEnd = (/** @type {?} */ (this.transitionEndInternal.asObservable())).debounceTime(20);
+        this.isDragging = false;
         this.draggingWithoutMove = false;
         this.currentGutterNum = 0;
         this.displayedAreas = [];
@@ -86,31 +86,46 @@ var SplitComponent = (function () {
             v = (v === 'vertical') ? 'vertical' : 'horizontal';
             this._direction = v;
             this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
-                area.comp.setStyleVisibleAndDir(area.comp.visible, _this._direction);
+                area.comp.setStyleVisibleAndDir(area.comp.visible, _this.isDragging, _this.direction);
             });
             this.build();
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "visibleTransition", {
+    Object.defineProperty(SplitComponent.prototype, "useTransition", {
         get: /**
          * @return {?}
          */
         function () {
-            return this._visibleTransition;
+            return this._useTransition;
         },
         set: /**
          * @param {?} v
          * @return {?}
          */
         function (v) {
-            var _this = this;
             v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
-            this._visibleTransition = v;
-            this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
-                area.comp.setStyleTransition(_this._visibleTransition);
-            });
+            this._useTransition = v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "disabled", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._disabled;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
+            this._disabled = v;
+            this.build();
         },
         enumerable: true,
         configurable: true
@@ -172,25 +187,6 @@ var SplitComponent = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "disabled", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._disabled;
-        },
-        set: /**
-         * @param {?} v
-         * @return {?}
-         */
-        function (v) {
-            v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
-            this._disabled = v;
-            this.build();
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(SplitComponent.prototype, "cssFlexdirection", {
         get: /**
          * @return {?}
@@ -241,28 +237,6 @@ var SplitComponent = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(SplitComponent.prototype, "isDragging", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._isDragging;
-        },
-        set: /**
-         * @param {?} v
-         * @return {?}
-         */
-        function (v) {
-            var _this = this;
-            this._isDragging = v;
-            // Disable transition during dragging to avoid 'lag effect' (whatever it is active or not).
-            this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
-                area.comp.setStyleTransition(v ? false : _this.visibleTransition);
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
     /**
      * @return {?}
      */
@@ -292,8 +266,7 @@ var SplitComponent = (function () {
         else {
             this.hidedAreas.push(newArea);
         }
-        comp.setStyleVisibleAndDir(comp.visible, this.direction);
-        comp.setStyleTransition(this.visibleTransition);
+        comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
         this.build();
     };
     /**
@@ -341,6 +314,7 @@ var SplitComponent = (function () {
     function (comp) {
         var /** @type {?} */ area = /** @type {?} */ (this.displayedAreas.find(function (a) { return a.comp === comp; }));
         if (area) {
+            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
             var /** @type {?} */ areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
             (_a = this.hidedAreas).push.apply(_a, areas);
             this.build();
@@ -358,6 +332,7 @@ var SplitComponent = (function () {
     function (comp) {
         var /** @type {?} */ area = /** @type {?} */ (this.hidedAreas.find(function (a) { return a.comp === comp; }));
         if (area) {
+            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
             var /** @type {?} */ areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
             (_a = this.displayedAreas).push.apply(_a, areas);
             this.build();
@@ -386,7 +361,7 @@ var SplitComponent = (function () {
         // Set css 'flex-basis' property depending on user input if all set & ~100% or equal sizes by default.
         var /** @type {?} */ totalUserSize = /** @type {?} */ (this.displayedAreas.reduce(function (total, s) { return s.comp.size ? total + s.comp.size : total; }, 0));
         if (this.displayedAreas.some(function (a) { return a.comp.size === null; }) || totalUserSize < .999 || totalUserSize > 1.001) {
-            var /** @type {?} */ size_1 = Number((1 / this.displayedAreas.length).toFixed(4));
+            var /** @type {?} */ size_1 = 1 / this.displayedAreas.length;
             this.displayedAreas.forEach(function (area) {
                 area.size = size_1;
             });
@@ -422,9 +397,10 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function () {
+        var _this = this;
         var /** @type {?} */ allGutterWidth = this.getNbGutters() * this.gutterSize;
         this.displayedAreas.forEach(function (area) {
-            area.comp.setStyleFlexbasis("calc( " + area.size * 100 + "% - " + area.size * allGutterWidth + "px )");
+            area.comp.setStyleFlexbasis("calc( " + area.size * 100 + "% - " + area.size * allGutterWidth + "px )", _this.isDragging);
         });
     };
     /**
@@ -639,8 +615,8 @@ var SplitComponent = (function () {
                 return this.dragEnd.emit({ gutterNum: this.currentGutterNum, sizes: areasSize });
             case 'click':
                 return this.gutterClick.emit({ gutterNum: this.currentGutterNum, sizes: areasSize });
-            case 'visibleTransitionEnd':
-                return this.visibleTransitionEndInternal.next(areasSize);
+            case 'transitionEnd':
+                return this.transitionEndInternal.next(areasSize);
         }
     };
     /**
@@ -656,7 +632,7 @@ var SplitComponent = (function () {
         { type: core.Component, args: [{
                     selector: 'split',
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n\n        :host.vertical split-gutter {\n            width: 100%;\n        }\n    "],
+                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n    "],
                     template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1, index+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1, index+1)\"></split-gutter>\n        </ng-template>",
                 },] },
     ];
@@ -668,16 +644,16 @@ var SplitComponent = (function () {
     ]; };
     SplitComponent.propDecorators = {
         "direction": [{ type: core.Input },],
-        "visibleTransition": [{ type: core.Input },],
+        "useTransition": [{ type: core.Input },],
+        "disabled": [{ type: core.Input },],
         "width": [{ type: core.Input },],
         "height": [{ type: core.Input },],
         "gutterSize": [{ type: core.Input },],
-        "disabled": [{ type: core.Input },],
         "dragStart": [{ type: core.Output },],
         "dragProgress": [{ type: core.Output },],
         "dragEnd": [{ type: core.Output },],
         "gutterClick": [{ type: core.Output },],
-        "visibleTransitionEnd": [{ type: core.Output },],
+        "transitionEnd": [{ type: core.Output },],
         "cssFlexdirection": [{ type: core.HostBinding, args: ['style.flex-direction',] },],
         "cssWidth": [{ type: core.HostBinding, args: ['style.width',] },],
         "cssHeight": [{ type: core.HostBinding, args: ['style.height',] },],
@@ -773,7 +749,6 @@ var SplitAreaDirective = (function () {
         function (v) {
             v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
             this._visible = v;
-            this.setStyleVisibleAndDir(v, this.split.direction);
             if (this.visible) {
                 this.split.showArea(this);
             }
@@ -810,17 +785,19 @@ var SplitAreaDirective = (function () {
     };
     /**
      * @param {?} isVisible
+     * @param {?} isDragging
      * @param {?} direction
      * @return {?}
      */
     SplitAreaDirective.prototype.setStyleVisibleAndDir = /**
      * @param {?} isVisible
+     * @param {?} isDragging
      * @param {?} direction
      * @return {?}
      */
-    function (isVisible, direction) {
+    function (isVisible, isDragging, direction) {
         if (isVisible === false) {
-            this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', '0');
+            this.setStyleFlexbasis('0', isDragging);
             this.renderer.setStyle(this.elRef.nativeElement, 'overflow-x', 'hidden');
             this.renderer.setStyle(this.elRef.nativeElement, 'overflow-y', 'hidden');
             if (direction === 'vertical') {
@@ -840,22 +817,6 @@ var SplitAreaDirective = (function () {
         }
     };
     /**
-     * @param {?} withTransition
-     * @return {?}
-     */
-    SplitAreaDirective.prototype.setStyleTransition = /**
-     * @param {?} withTransition
-     * @return {?}
-     */
-    function (withTransition) {
-        if (withTransition === true) {
-            this.renderer.setStyle(this.elRef.nativeElement, 'transition', "flex-basis 0.3s");
-        }
-        else {
-            this.renderer.setStyle(this.elRef.nativeElement, 'transition', null);
-        }
-    };
-    /**
      * @param {?} value
      * @return {?}
      */
@@ -868,14 +829,39 @@ var SplitAreaDirective = (function () {
     };
     /**
      * @param {?} value
+     * @param {?} isDragging
      * @return {?}
      */
     SplitAreaDirective.prototype.setStyleFlexbasis = /**
      * @param {?} value
+     * @param {?} isDragging
      * @return {?}
      */
-    function (value) {
+    function (value, isDragging) {
+        // If gutter being dragged, disable transition
+        if (isDragging === true) {
+            this.setStyleTransition(false);
+        }
+        else {
+            this.setStyleTransition(this.split.useTransition === true);
+        }
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
+    };
+    /**
+     * @param {?} useTransition
+     * @return {?}
+     */
+    SplitAreaDirective.prototype.setStyleTransition = /**
+     * @param {?} useTransition
+     * @return {?}
+     */
+    function (useTransition) {
+        if (useTransition) {
+            this.renderer.setStyle(this.elRef.nativeElement, 'transition', "flex-basis 0.3s");
+        }
+        else {
+            this.renderer.removeStyle(this.elRef.nativeElement, 'transition');
+        }
     };
     /**
      * @param {?} event
@@ -888,7 +874,7 @@ var SplitAreaDirective = (function () {
     function (event) {
         // Limit only flex-basis transition to trigger the event
         if (event.propertyName === 'flex-basis') {
-            this.split.notify('visibleTransitionEnd');
+            this.split.notify('transitionEnd');
         }
     };
     /**
