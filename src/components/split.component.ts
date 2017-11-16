@@ -50,6 +50,14 @@ import { SplitAreaDirective } from './splitArea.directive';
             justify-content: flex-start;
             align-items: stretch;
             overflow: hidden;
+            /* 
+                Important to keep following rules even if overrided later by 'HostBinding' 
+                because if [width] & [height] not provided, when build() is executed,
+                'HostBinding' hasn't been applied yet so code:
+                this.elRef.nativeElement["offsetHeight"] give wrong value!  
+             */
+            width: 100%;
+            height: 100%;   
         }
 
         split-gutter {
@@ -218,7 +226,7 @@ export class SplitComponent implements OnDestroy {
         return this.displayedAreas.length - 1;
     }
 
-    public addArea(comp: SplitAreaDirective) {
+    public addArea(comp: SplitAreaDirective): void {
         const newArea: IArea = {
             comp, 
             order: -1, 
@@ -237,7 +245,7 @@ export class SplitComponent implements OnDestroy {
         this.build();
     }
 
-    public updateArea(comp: SplitAreaDirective) {
+    public updateArea(comp: SplitAreaDirective): void {
         // Only refresh if area is displayed (no need to check inside 'hidedAreas')
         const item = this.displayedAreas.find(a => a.comp === comp);
 
@@ -246,7 +254,7 @@ export class SplitComponent implements OnDestroy {
         }
     }
 
-    public removeArea(comp: SplitAreaDirective) {
+    public removeArea(comp: SplitAreaDirective): void {
         if(this.displayedAreas.some(a => a.comp === comp)) {
             const area = <IArea> this.displayedAreas.find(a => a.comp === comp)
             this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
@@ -259,7 +267,7 @@ export class SplitComponent implements OnDestroy {
         }
     }
 
-    public hideArea(comp: SplitAreaDirective) {
+    public hideArea(comp: SplitAreaDirective): void {
         const area = <IArea> this.displayedAreas.find(a => a.comp === comp)
 
         if(area) {
@@ -272,7 +280,7 @@ export class SplitComponent implements OnDestroy {
         }
     }
 
-    public showArea(comp: SplitAreaDirective) {
+    public showArea(comp: SplitAreaDirective): void {
         const area = <IArea> this.hidedAreas.find(a => a.comp === comp);
 
         if(area) {
@@ -285,7 +293,7 @@ export class SplitComponent implements OnDestroy {
         }
     }
 
-    private build() {
+    private build(): void {
         this.stopDragging();
 
         // ¤ AREAS ORDER
@@ -316,8 +324,14 @@ export class SplitComponent implements OnDestroy {
             // If some provided % are less than gutterSize > set them to zero and dispatch % to others.
             let percentToShare = 0;
             
-            const prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
-            const containerSizePixel = this.elRef.nativeElement[prop];
+            // Get container pixel size
+            let containerSizePixel = this.getNbGutters() * this.gutterSize;
+            if(this.direction === 'horizontal') {
+                containerSizePixel = this.width ? this.width : this.elRef.nativeElement['offsetWidth'];
+            }
+            else {
+                containerSizePixel = this.height ? this.height : this.elRef.nativeElement['offsetHeight'];
+            }
 
             this.displayedAreas.forEach(area => {
                 let newSize = Number(area.comp.size);
@@ -344,7 +358,7 @@ export class SplitComponent implements OnDestroy {
         this.cdRef.markForCheck();
     }
 
-    private refreshStyleSizes() {
+    private refreshStyleSizes(): void {
         const allGutterWidth = this.getNbGutters() * this.gutterSize;
 
         this.displayedAreas.forEach(area => {
@@ -352,7 +366,7 @@ export class SplitComponent implements OnDestroy {
         });
     }
 
-    public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number) {
+    public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
         startEvent.preventDefault();
 
         if(this.disabled) {
@@ -406,7 +420,7 @@ export class SplitComponent implements OnDestroy {
         this.notify('start');
     }
 
-    private dragEvent(event: MouseEvent | TouchEvent, start: IPoint, areaA: IArea, areaB: IArea) {
+    private dragEvent(event: MouseEvent | TouchEvent, start: IPoint, areaA: IArea, areaB: IArea): void {
         if(!this.isDragging) {
             return;
         }
@@ -432,7 +446,7 @@ export class SplitComponent implements OnDestroy {
         this.drag(start, end, areaA, areaB);
     }
 
-    private drag(start: IPoint, end: IPoint, areaA: IArea, areaB: IArea) {
+    private drag(start: IPoint, end: IPoint, areaA: IArea, areaB: IArea): void {
 
         // ¤ AREAS SIZE PIXEL
 
@@ -500,7 +514,7 @@ export class SplitComponent implements OnDestroy {
         this.notify('progress');
     }
 
-    private stopDragging() {
+    private stopDragging(): void {
         if(!this.isDragging) {
             return;
         }
@@ -528,7 +542,7 @@ export class SplitComponent implements OnDestroy {
     }
 
 
-    public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd') {
+    public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd'): void {
         const areasSize: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
         switch(type) {
@@ -549,7 +563,7 @@ export class SplitComponent implements OnDestroy {
         }
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         this.stopDragging();
     }
 }

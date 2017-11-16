@@ -1,3 +1,9 @@
+<a name="1.0.0-beta.6"></a>
+# 1.0.0-beta.6 (2017-11-16)
+
+* **Bug:** Fix bug occuring on split with `direction="vertical"` initialization, container height was wrong because `HostBinding` wasn't applied yet.
+
+
 <a name="1.0.0-beta.5"></a>
 # 1.0.0-beta.5 (2017-11-15)
 

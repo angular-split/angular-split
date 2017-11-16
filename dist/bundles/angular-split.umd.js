@@ -369,8 +369,14 @@ var SplitComponent = (function () {
         else {
             // If some provided % are less than gutterSize > set them to zero and dispatch % to others.
             var /** @type {?} */ percentToShare_1 = 0;
-            var /** @type {?} */ prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
-            var /** @type {?} */ containerSizePixel_1 = this.elRef.nativeElement[prop];
+            // Get container pixel size
+            var /** @type {?} */ containerSizePixel_1 = this.getNbGutters() * this.gutterSize;
+            if (this.direction === 'horizontal') {
+                containerSizePixel_1 = this.width ? this.width : this.elRef.nativeElement['offsetWidth'];
+            }
+            else {
+                containerSizePixel_1 = this.height ? this.height : this.elRef.nativeElement['offsetHeight'];
+            }
             this.displayedAreas.forEach(function (area) {
                 var /** @type {?} */ newSize = Number(area.comp.size);
                 if (newSize * containerSizePixel_1 < _this.gutterSize) {
@@ -632,7 +638,7 @@ var SplitComponent = (function () {
         { type: core.Component, args: [{
                     selector: 'split',
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n    "],
+                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n            /* \n                Important to keep following rules even if overrided later by 'HostBinding' \n                because if [width] & [height] not provided, when build() is executed,\n                'HostBinding' hasn't been applied yet so code:\n                this.elRef.nativeElement[\"offsetHeight\"] give wrong value!  \n             */\n            width: 100%;\n            height: 100%;   \n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n    "],
                     template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1, index+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1, index+1)\"></split-gutter>\n        </ng-template>",
                 },] },
     ];
@@ -811,8 +817,10 @@ var SplitAreaDirective = (function () {
         }
         if (direction === 'horizontal') {
             this.renderer.setStyle(this.elRef.nativeElement, 'height', '100%');
+            this.renderer.removeStyle(this.elRef.nativeElement, 'width');
         }
         else {
+            this.renderer.setStyle(this.elRef.nativeElement, 'width', '100%');
             this.renderer.removeStyle(this.elRef.nativeElement, 'height');
         }
     };

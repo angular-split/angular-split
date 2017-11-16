@@ -79,7 +79,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
                 private renderer: Renderer2,
                 private split: SplitComponent) {}
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.split.addArea(this);
 
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', '0');
@@ -92,7 +92,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         return this.elRef.nativeElement[prop];
     }
 
-    public setStyleVisibleAndDir(isVisible: boolean, isDragging: boolean, direction: 'horizontal' | 'vertical') {
+    public setStyleVisibleAndDir(isVisible: boolean, isDragging: boolean, direction: 'horizontal' | 'vertical'): void {
         if(isVisible === false) {
             this.setStyleFlexbasis('0', isDragging);
             this.renderer.setStyle(this.elRef.nativeElement, 'overflow-x', 'hidden');
@@ -110,17 +110,19 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
         if(direction === 'horizontal') {
             this.renderer.setStyle(this.elRef.nativeElement, 'height', '100%');
+            this.renderer.removeStyle(this.elRef.nativeElement, 'width');
         }
         else {
+            this.renderer.setStyle(this.elRef.nativeElement, 'width', '100%');
             this.renderer.removeStyle(this.elRef.nativeElement, 'height');
         }
     }
 
-    public setStyleOrder(value: number) {
+    public setStyleOrder(value: number): void {
         this.renderer.setStyle(this.elRef.nativeElement, 'order', value);
     }
     
-    public setStyleFlexbasis(value: string, isDragging: boolean) {
+    public setStyleFlexbasis(value: string, isDragging: boolean): void {
         // If gutter being dragged, disable transition
         if(isDragging === true) {
             this.setStyleTransition(false);
@@ -133,7 +135,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
     }
     
-    private setStyleTransition(useTransition: boolean) {
+    private setStyleTransition(useTransition: boolean): void {
         if(useTransition) {
             this.renderer.setStyle(this.elRef.nativeElement, 'transition', `flex-basis 0.3s`);
         }
@@ -142,19 +144,19 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         }
     }
     
-    private onTransitionEnd(event: TransitionEvent) {
+    private onTransitionEnd(event: TransitionEvent): void {
         // Limit only flex-basis transition to trigger the event
         if(event.propertyName === 'flex-basis') {
             this.split.notify('transitionEnd');
         }
     }
     
-    public lockEvents() {
+    public lockEvents(): void {
         this.lockListeners.push( this.renderer.listen(this.elRef.nativeElement, 'selectstart', (e: Event) => false) );
         this.lockListeners.push( this.renderer.listen(this.elRef.nativeElement, 'dragstart', (e: Event) => false) );
     }
 
-    public unlockEvents() {
+    public unlockEvents(): void {
         while(this.lockListeners.length > 0) {
             const fct = this.lockListeners.pop();
             if(fct) {
@@ -163,7 +165,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         }
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         this.unlockEvents();
 
         if(this.transitionListener) {
