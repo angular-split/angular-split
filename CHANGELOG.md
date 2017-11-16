@@ -1,6 +1,7 @@
 <a name="1.0.0-beta.6"></a>
 # 1.0.0-beta.6 (2017-11-16)
 
+* **Feature:** Emit `(gutterClick)` event even if `[disabled]="true"` to specific usecase.
 * **Bug:** Fix bug occuring on split with `direction="vertical"` initialization, container height was wrong because `HostBinding` wasn't applied yet.
 
 
@@ -28,7 +29,7 @@
 # 1.0.0-beta.3 (2017-11-12)
 
 * **Feature:** Accept number & boolean params as string to allow template syntax like `<split gutterSize="12" disabled="true">...</split>` or `<split-area order="4" size="40" visible="true">...</split-area>`.
-* **Feature:** Add a `gutterClick` event for usecases like toggling area between 0% & X%. Now all drag events and gutterSize return `{gutterNum: number, sizes: Array<number>}`. 
+* **Feature:** Add a `(gutterClick)` event for usecases like toggling area between 0% & X%. Now all drag events and gutterSize return `{gutterNum: number, sizes: Array<number>}`. 
 
 
 <a name="1.0.0-beta.2"></a>

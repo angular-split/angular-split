@@ -278,7 +278,7 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (comp) {
-        // Only refresh if area is displayed (no need to check inside 'hidedAreas')
+        // Only refresh if area is displayed (No need to check inside 'hidedAreas')
         var /** @type {?} */ item = this.displayedAreas.find(function (a) { return a.comp === comp; });
         if (item) {
             this.build();
@@ -404,9 +404,9 @@ var SplitComponent = (function () {
      */
     function () {
         var _this = this;
-        var /** @type {?} */ allGutterWidth = this.getNbGutters() * this.gutterSize;
+        var /** @type {?} */ sumGutterSize = this.getNbGutters() * this.gutterSize;
         this.displayedAreas.forEach(function (area) {
-            area.comp.setStyleFlexbasis("calc( " + area.size * 100 + "% - " + area.size * allGutterWidth + "px )", _this.isDragging);
+            area.comp.setStyleFlexbasis("calc( " + area.size * 100 + "% - " + area.size * sumGutterSize + "px )", _this.isDragging);
         });
     };
     /**
@@ -424,6 +424,12 @@ var SplitComponent = (function () {
     function (startEvent, gutterOrder, gutterNum) {
         var _this = this;
         startEvent.preventDefault();
+        // Place code here to allow '(gutterClick)' event even if '[disabled]="true"'.
+        this.currentGutterNum = gutterNum;
+        this.draggingWithoutMove = true;
+        this.dragListeners.push(this.renderer.listen('document', 'mouseup', function (e) { return _this.stopDragging(); }));
+        this.dragListeners.push(this.renderer.listen('document', 'touchend', function (e) { return _this.stopDragging(); }));
+        this.dragListeners.push(this.renderer.listen('document', 'touchcancel', function (e) { return _this.stopDragging(); }));
         if (this.disabled) {
             return;
         }
@@ -456,14 +462,9 @@ var SplitComponent = (function () {
         }
         this.dragListeners.push(this.renderer.listen('document', 'mousemove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
         this.dragListeners.push(this.renderer.listen('document', 'touchmove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
-        this.dragListeners.push(this.renderer.listen('document', 'mouseup', function (e) { return _this.stopDragging(); }));
-        this.dragListeners.push(this.renderer.listen('document', 'touchend', function (e) { return _this.stopDragging(); }));
-        this.dragListeners.push(this.renderer.listen('document', 'touchcancel', function (e) { return _this.stopDragging(); }));
         areaA.comp.lockEvents();
         areaB.comp.lockEvents();
         this.isDragging = true;
-        this.draggingWithoutMove = true;
-        this.currentGutterNum = gutterNum;
         this.notify('start');
     };
     /**
@@ -581,7 +582,7 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function () {
-        if (!this.isDragging) {
+        if (this.isDragging === false && this.draggingWithoutMove === false) {
             return;
         }
         this.displayedAreas.forEach(function (area) {
@@ -594,13 +595,14 @@ var SplitComponent = (function () {
                 fct();
             }
         }
-        this.isDragging = false;
         if (this.draggingWithoutMove === true) {
             this.notify('click');
         }
         else {
             this.notify('end');
         }
+        this.isDragging = false;
+        this.draggingWithoutMove = false;
     };
     /**
      * @param {?} type

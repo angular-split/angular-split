@@ -246,7 +246,7 @@ export class SplitComponent implements OnDestroy {
     }
 
     public updateArea(comp: SplitAreaDirective): void {
-        // Only refresh if area is displayed (no need to check inside 'hidedAreas')
+        // Only refresh if area is displayed (No need to check inside 'hidedAreas')
         const item = this.displayedAreas.find(a => a.comp === comp);
 
         if(item) {
@@ -359,15 +359,22 @@ export class SplitComponent implements OnDestroy {
     }
 
     private refreshStyleSizes(): void {
-        const allGutterWidth = this.getNbGutters() * this.gutterSize;
+        const sumGutterSize = this.getNbGutters() * this.gutterSize;
 
         this.displayedAreas.forEach(area => {
-            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * allGutterWidth }px )`, this.isDragging);
+            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * sumGutterSize }px )`, this.isDragging);
         });
     }
 
     public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
         startEvent.preventDefault();
+
+        // Place code here to allow '(gutterClick)' event even if '[disabled]="true"'.
+        this.currentGutterNum = gutterNum;
+        this.draggingWithoutMove = true;
+        this.dragListeners.push( this.renderer.listen('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
+        this.dragListeners.push( this.renderer.listen('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
+        this.dragListeners.push( this.renderer.listen('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
 
         if(this.disabled) {
             return;
@@ -406,16 +413,11 @@ export class SplitComponent implements OnDestroy {
 
         this.dragListeners.push( this.renderer.listen('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, start, areaA, areaB)) );
         this.dragListeners.push( this.renderer.listen('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, start, areaA, areaB)) );
-        this.dragListeners.push( this.renderer.listen('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
-        this.dragListeners.push( this.renderer.listen('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
-        this.dragListeners.push( this.renderer.listen('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
 
         areaA.comp.lockEvents();
         areaB.comp.lockEvents();
 
         this.isDragging = true;
-        this.draggingWithoutMove = true;
-        this.currentGutterNum = gutterNum;
 
         this.notify('start');
     }
@@ -515,7 +517,7 @@ export class SplitComponent implements OnDestroy {
     }
 
     private stopDragging(): void {
-        if(!this.isDragging) {
+        if(this.isDragging === false && this.draggingWithoutMove === false) {
             return;
         }
 
@@ -530,8 +532,6 @@ export class SplitComponent implements OnDestroy {
                 fct();
             }
         }
-
-        this.isDragging = false;
         
         if(this.draggingWithoutMove === true) {
             this.notify('click');
@@ -539,6 +539,9 @@ export class SplitComponent implements OnDestroy {
         else {
             this.notify('end');
         }
+
+        this.isDragging = false;
+        this.draggingWithoutMove = false;
     }
 
 
