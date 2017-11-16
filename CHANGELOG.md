@@ -2,7 +2,7 @@
 # 1.0.0-beta.5 (2017-11-15)
 
 * **Renaming:** `[visibleTransition]` property renamed to `[useTransition]` and work with `[visible]` & `[size]`.
-* **Renaming:** `visibleTransitionEnd` event renamed to `transitionEnd` and now triggered from `[visible]` & `[size]` property.
+* **Renaming:** `(visibleTransitionEnd)` event renamed to `(transitionEnd)` and now triggered from `[visible]` & `[size]` property.
 
 
 <a name="0.2.7"></a>
