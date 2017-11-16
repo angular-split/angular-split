@@ -22,6 +22,7 @@ import { HorizontalComponent } from './examples/horizontal.route.component'
 import { VerticalComponent } from './examples/vertical.route.component'
 import { NestedComponent } from './examples/nested.route.component'
 import { TransitionsComponent } from './examples/transitions.route.component'
+import { CustomGutterStyleComponent } from './examples/customGutterStyle.route.component'
 import { TogglingDomAndVisibleComponent } from './examples/togglingDomAndVisible.route.component'
 import { GutterClickComponent } from './examples/gutterClick.route.component'
 import { ClassAccessComponent } from './examples/classAccess.route.component'
@@ -36,8 +37,9 @@ const routes = [
   { path: 'examples', component: ExamplesComponent },
   { path: 'examples/horizontal-split', component: HorizontalComponent },
   { path: 'examples/vertical-split', component: VerticalComponent },
-  { path: 'examples/split-transitons', component: TransitionsComponent },
   { path: 'examples/nested-split', component: NestedComponent },
+  { path: 'examples/split-transitons', component: TransitionsComponent },
+  { path: 'examples/custom-gutter-style', component: CustomGutterStyleComponent },
   { path: 'examples/toggling-dom-and-visibility', component: TogglingDomAndVisibleComponent },
   { path: 'examples/gutter-click-roll-unroll', component: GutterClickComponent },
   { path: 'examples/access-from-class', component: ClassAccessComponent },
@@ -57,6 +59,7 @@ const routes = [
     VerticalComponent,
     NestedComponent,
     TransitionsComponent,
+    CustomGutterStyleComponent,
     TogglingDomAndVisibleComponent,
     GutterClickComponent,
     ClassAccessComponent,

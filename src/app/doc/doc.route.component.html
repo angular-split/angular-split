@@ -14,7 +14,7 @@
                 <td>{{ prop.name }}</td>
                 <td>{{ prop.type }}</td>
                 <td><code>{{ prop.default }}</code></td>
-                <td>{{ prop.details }}</td>
+                <td [innerHTML]="prop.details"></td>
             </tr>
         </tbody>
     </table>
@@ -30,7 +30,7 @@
             <tr *ngFor="let event of splitDoc.outputs">
                 <td>{{ event.name }}</td>
                 <td><code>{{ event.value }}</code></td>
-                <td>{{ event.details }}</td>
+                <td [innerHTML]="event.details"></td>
             </tr>
         </tbody>
     </table>
@@ -50,7 +50,7 @@
                 <td>{{ prop.name }}</td>
                 <td>{{ prop.type }}</td>
                 <td><code>{{ prop.default }}</code></td>
-                <td>{{ prop.details }}</td>
+                <td [innerHTML]="prop.details"></td>
             </tr>
         </tbody>
     </table>

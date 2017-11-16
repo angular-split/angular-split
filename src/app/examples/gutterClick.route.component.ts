@@ -15,9 +15,10 @@ import { Component } from '@angular/core'
         <div>GutterClickComponent</div>
         <hr>
         <button class="btn" (click)="useTransition = !useTransition">{{ 'useTransition: ' + useTransition }}</button>
+        <button class="btn" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
         <br>
         <div style="height:300px; border: 10px solid blue;">
-            <split gutterSize="10" direction="horizontal" [useTransition]="useTransition" (dragEnd)="dragEnd($event)" (gutterClick)="gutterClick($event)">
+            <split [disabled]="isDisabled" gutterSize="10" direction="horizontal" [useTransition]="useTransition" (dragEnd)="dragEnd($event)" (gutterClick)="gutterClick($event)">
                 <split-area *ngFor="let a of areas" [size]="a.size" [order]="a.order">
                     <p>{{ a.content }}</p>
                 </split-area>
@@ -26,6 +27,7 @@ import { Component } from '@angular/core'
     </div>`
 })
 export class GutterClickComponent {
+    isDisabled: boolean = false
     useTransition: boolean = false
     areas = [
         {size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg'},

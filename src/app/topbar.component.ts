@@ -13,9 +13,12 @@ import { Router, NavigationStart } from '@angular/router'
     li > a {
       cursor: pointer;
     }
+
+    ul.dropdown-menu > li > a:active,
     ul.dropdown-menu > li.active > a {
       background-color: #eeeeee;
       cursor: default;
+      color: #000000;
     }
 
     .navbar-toggler {
@@ -66,6 +69,9 @@ import { Router, NavigationStart } from '@angular/router'
                     </li>
                     <li [class.active]="router.isActive('/examples/split-transitons', true)">
                         <a class="dropdown-item" routerLink="/examples/split-transitons">Split transitions</a>
+                    </li>
+                    <li [class.active]="router.isActive('/examples/custom-gutter-style', true)">
+                        <a class="dropdown-item" routerLink="/examples/custom-gutter-style">Custom gutter style</a>
                     </li>
                     <li [class.active]="router.isActive('/examples/toggling-dom-and-visibility', true)">
                         <a class="dropdown-item" routerLink="/examples/toggling-dom-and-visibility">Toggling areas using *ngIf and [visible]</a>

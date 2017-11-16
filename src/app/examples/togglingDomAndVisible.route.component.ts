@@ -16,13 +16,13 @@ import { Component } from '@angular/core'
         
         <div class="split-example" style="height: 150px;">
             <split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
-                <split-area *ngIf="action.isPresentA" [visible]="action.isVisibleA" [order]="1">
+                <split-area *ngIf="action.isPresentA" [visible]="action.isVisibleA" [order]="0">
                     <p>A</p>
                 </split-area>
-                <split-area *ngIf="action.isPresentB" [visible]="action.isVisibleB" [order]="2">
+                <split-area *ngIf="action.isPresentB" [visible]="action.isVisibleB" [order]="1">
                     <p>B</p>
                 </split-area>
-                <split-area *ngIf="action.isPresentC" [visible]="action.isVisibleC" [order]="3">
+                <split-area *ngIf="action.isPresentC" [visible]="action.isVisibleC" [order]="2">
                     <p>C</p>
                 </split-area>
             </split>
@@ -52,13 +52,13 @@ import { Component } from '@angular/core'
 export class TogglingDomAndVisibleComponent {
     code: string = `<div class="split-example">
     <split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
-        <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="1">
+        <split-area *ngIf="toggling.isPresentA" [visible]="toggling.isVisibleA" [order]="0">
             <p>A</p>
         </split-area>
-        <split-area *ngIf="toggling.isPresentB" [visible]="toggling.isVisibleB" [order]="2">
+        <split-area *ngIf="toggling.isPresentB" [visible]="toggling.isVisibleB" [order]="1">
             <p>B</p>
         </split-area>
-        <split-area *ngIf="toggling.isPresentC" [visible]="toggling.isVisibleC" [order]="3">
+        <split-area *ngIf="toggling.isPresentC" [visible]="toggling.isVisibleC" [order]="2">
             <p>C</p>
         </split-area>
     </split>
