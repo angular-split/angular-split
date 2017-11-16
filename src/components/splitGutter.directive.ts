@@ -11,14 +11,14 @@ export class SplitGutterDirective {
     
     ////
 
-    private _direction: string;
+    private _direction: 'vertical' | 'horizontal';
     
-    @Input() set direction(v: string) {
+    @Input() set direction(v: 'vertical' | 'horizontal') {
         this._direction = v;
         this.refreshStyle();
     }
     
-    get direction(): string {
+    get direction(): 'vertical' | 'horizontal' {
         return this._direction;
     }
     
@@ -33,6 +33,45 @@ export class SplitGutterDirective {
     
     get size(): number {
         return this._size;
+    }
+    
+    ////
+
+    private _color: string;
+
+    @Input() set color(v: string) {
+        this._color = v;
+        this.refreshStyle();
+    }
+    
+    get color(): string {
+        return this._color;
+    }
+    
+    ////
+
+    private _imageH: string;
+
+    @Input() set imageH(v: string) {
+        this._imageH = v;
+        this.refreshStyle();
+    }
+    
+    get imageH(): string {
+        return this._imageH;
+    }
+    
+    ////
+
+    private _imageV: string;
+
+    @Input() set imageV(v: string) {
+        this._imageV = v;
+        this.refreshStyle();
+    }
+    
+    get imageV(): string {
+        return this._imageV;
     }
     
     ////
@@ -59,38 +98,40 @@ export class SplitGutterDirective {
         // fix safari bug about gutter height when direction is horizontal
         this.renderer.setStyle(this.elementRef.nativeElement, 'height', (this.direction === 'vertical') ? `${ this.size }px` : `100%`);
 
-        const state = (this.disabled === true) ? 'disabled' : this.direction;
-        this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', getCursor(state));
-        this.renderer.setStyle(this.elementRef.nativeElement, 'background-image', `url("${ getImage(state) }")`);
+        this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', (this.color !== '') ? this.color : `#eeeeee`);
+
+        const state: 'disabled' | 'vertical' | 'horizontal' = (this.disabled === true) ? 'disabled' : this.direction;
+        this.renderer.setStyle(this.elementRef.nativeElement, 'background-image', this.getImage(state));
+        this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', this.getCursor(state));
+    }
+    
+    private getCursor(state: 'disabled' | 'vertical' | 'horizontal'): string {
+        switch(state) {
+            case 'horizontal':
+                return 'col-resize';
+            
+            case 'vertical':
+                return 'row-resize';
+            
+            case 'disabled':
+                return 'default';
+        }
+    }
+    
+    private getImage(state: 'disabled' | 'vertical' | 'horizontal'): string {
+        switch(state) {
+            case 'horizontal':
+                return (this.imageH !== '') ? this.imageH : defaultImageH; 
+
+            case 'vertical':
+                return (this.imageV !== '') ? this.imageV : defaultImageV;
+            
+            case 'disabled':
+                return '';
+        }
     }
 }
 
 
-
-function getCursor(state: string): string {
-    switch(state) {
-        case 'disabled':
-            return 'default';
-
-        case 'vertical':
-            return 'row-resize';
-
-        case 'horizontal':
-            return 'col-resize';
-    }
-    return '';
-}
-
-function getImage(state: string): string {
-    switch(state) {
-        case 'vertical':
-            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
-        
-        case 'horizontal':
-            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
-        
-        case 'disabled':
-            return '';
-    }
-    return '';
-}
+const defaultImageH = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==")';
+const defaultImageV = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC")';

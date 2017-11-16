@@ -49,7 +49,10 @@ var SplitComponent = (function () {
         this._disabled = false;
         this._width = null;
         this._height = null;
-        this._gutterSize = 10;
+        this._gutterSize = 11;
+        this._gutterColor = '';
+        this._gutterImageH = '';
+        this._gutterImageV = '';
         this.dragStart = new core.EventEmitter(false);
         this.dragProgress = new core.EventEmitter(false);
         this.dragEnd = new core.EventEmitter(false);
@@ -181,8 +184,59 @@ var SplitComponent = (function () {
          */
         function (v) {
             v = Number(v);
-            this._gutterSize = !isNaN(v) && v > 0 ? v : 10;
+            this._gutterSize = (!isNaN(v) && v > 0) ? v : 11;
             this.build();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "gutterColor", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._gutterColor;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._gutterColor = (typeof v === 'string' && v !== '') ? v : '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "gutterImageH", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._gutterImageH;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._gutterImageH = (typeof v === 'string' && v !== '') ? v : '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "gutterImageV", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._gutterImageV;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._gutterImageV = (typeof v === 'string' && v !== '') ? v : '';
         },
         enumerable: true,
         configurable: true
@@ -640,8 +694,8 @@ var SplitComponent = (function () {
         { type: core.Component, args: [{
                     selector: 'split',
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n            /* \n                Important to keep following rules even if overrided later by 'HostBinding' \n                because if [width] & [height] not provided, when build() is executed,\n                'HostBinding' hasn't been applied yet so code:\n                this.elRef.nativeElement[\"offsetHeight\"] give wrong value!  \n             */\n            width: 100%;\n            height: 100%;   \n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-color: #eeeeee;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n    "],
-                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1, index+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1, index+1)\"></split-gutter>\n        </ng-template>",
+                    styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n            /* \n                Important to keep following rules even if overrided later by 'HostBinding' \n                because if [width] & [height] not provided, when build() is executed,\n                'HostBinding' hasn't been applied yet so code:\n                this.elRef.nativeElement[\"offsetHeight\"] gives wrong value!  \n             */\n            width: 100%;\n            height: 100%;   \n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n    "],
+                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [color]=\"gutterColor\"\n                          [imageH]=\"gutterImageH\"\n                          [imageV]=\"gutterImageV\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1, index+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1, index+1)\"></split-gutter>\n        </ng-template>",
                 },] },
     ];
     /** @nocollapse */
@@ -657,6 +711,9 @@ var SplitComponent = (function () {
         "width": [{ type: core.Input },],
         "height": [{ type: core.Input },],
         "gutterSize": [{ type: core.Input },],
+        "gutterColor": [{ type: core.Input },],
+        "gutterImageH": [{ type: core.Input },],
+        "gutterImageV": [{ type: core.Input },],
         "dragStart": [{ type: core.Output },],
         "dragProgress": [{ type: core.Output },],
         "dragEnd": [{ type: core.Output },],
@@ -1002,6 +1059,60 @@ var SplitGutterDirective = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(SplitGutterDirective.prototype, "color", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._color;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._color = v;
+            this.refreshStyle();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitGutterDirective.prototype, "imageH", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._imageH;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._imageH = v;
+            this.refreshStyle();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitGutterDirective.prototype, "imageV", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._imageV;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            this._imageV = v;
+            this.refreshStyle();
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(SplitGutterDirective.prototype, "disabled", {
         get: /**
          * @return {?}
@@ -1030,9 +1141,46 @@ var SplitGutterDirective = (function () {
         this.renderer.setStyle(this.elementRef.nativeElement, 'flex-basis', this.size + "px");
         // fix safari bug about gutter height when direction is horizontal
         this.renderer.setStyle(this.elementRef.nativeElement, 'height', (this.direction === 'vertical') ? this.size + "px" : "100%");
+        this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', (this.color !== '') ? this.color : "#eeeeee");
         var /** @type {?} */ state = (this.disabled === true) ? 'disabled' : this.direction;
-        this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', getCursor(state));
-        this.renderer.setStyle(this.elementRef.nativeElement, 'background-image', "url(\"" + getImage(state) + "\")");
+        this.renderer.setStyle(this.elementRef.nativeElement, 'background-image', this.getImage(state));
+        this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', this.getCursor(state));
+    };
+    /**
+     * @param {?} state
+     * @return {?}
+     */
+    SplitGutterDirective.prototype.getCursor = /**
+     * @param {?} state
+     * @return {?}
+     */
+    function (state) {
+        switch (state) {
+            case 'horizontal':
+                return 'col-resize';
+            case 'vertical':
+                return 'row-resize';
+            case 'disabled':
+                return 'default';
+        }
+    };
+    /**
+     * @param {?} state
+     * @return {?}
+     */
+    SplitGutterDirective.prototype.getImage = /**
+     * @param {?} state
+     * @return {?}
+     */
+    function (state) {
+        switch (state) {
+            case 'horizontal':
+                return (this.imageH !== '') ? this.imageH : defaultImageH;
+            case 'vertical':
+                return (this.imageV !== '') ? this.imageV : defaultImageV;
+            case 'disabled':
+                return '';
+        }
     };
     SplitGutterDirective.decorators = [
         { type: core.Directive, args: [{
@@ -1048,40 +1196,15 @@ var SplitGutterDirective = (function () {
         "order": [{ type: core.Input },],
         "direction": [{ type: core.Input },],
         "size": [{ type: core.Input },],
+        "color": [{ type: core.Input },],
+        "imageH": [{ type: core.Input },],
+        "imageV": [{ type: core.Input },],
         "disabled": [{ type: core.Input },],
     };
     return SplitGutterDirective;
 }());
-/**
- * @param {?} state
- * @return {?}
- */
-function getCursor(state) {
-    switch (state) {
-        case 'disabled':
-            return 'default';
-        case 'vertical':
-            return 'row-resize';
-        case 'horizontal':
-            return 'col-resize';
-    }
-    return '';
-}
-/**
- * @param {?} state
- * @return {?}
- */
-function getImage(state) {
-    switch (state) {
-        case 'vertical':
-            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC';
-        case 'horizontal':
-            return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
-        case 'disabled':
-            return '';
-    }
-    return '';
-}
+var defaultImageH = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==")';
+var defaultImageV = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC")';
 
 /**
  * @fileoverview added by tsickle

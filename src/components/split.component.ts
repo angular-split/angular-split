@@ -63,7 +63,6 @@ import { SplitAreaDirective } from './splitArea.directive';
         split-gutter {
             flex-grow: 0;
             flex-shrink: 0;
-            background-color: #eeeeee;
             background-position: center center;
             background-repeat: no-repeat;
         }
@@ -75,6 +74,9 @@ import { SplitAreaDirective } from './splitArea.directive';
                           [order]="index*2+1"
                           [direction]="direction"
                           [size]="gutterSize"
+                          [color]="gutterColor"
+                          [imageH]="gutterImageH"
+                          [imageV]="gutterImageV"
                           [disabled]="disabled"
                           (mousedown)="startDragging($event, index*2+1, index+1)"
                           (touchstart)="startDragging($event, index*2+1, index+1)"></split-gutter>
@@ -163,13 +165,49 @@ export class SplitComponent implements OnDestroy {
 
     @Input() set gutterSize(v: number) {
         v = Number(v);
-        this._gutterSize = !isNaN(v) && v > 0 ? v : 11;
+        this._gutterSize = (!isNaN(v) && v > 0) ? v : 11;
 
         this.build();
     }
     
     get gutterSize(): number {
         return this._gutterSize;
+    }
+    
+    ////
+
+    private _gutterColor: string = '';
+
+    @Input() set gutterColor(v: string) {
+        this._gutterColor = (typeof v === 'string' && v !== '') ? v : '';
+    }
+    
+    get gutterColor(): string {
+        return this._gutterColor;
+    }
+    
+    ////
+
+    private _gutterImageH: string = '';
+
+    @Input() set gutterImageH(v: string) {
+        this._gutterImageH = (typeof v === 'string' && v !== '') ? v : '';
+    }
+    
+    get gutterImageH(): string {
+        return this._gutterImageH;
+    }
+    
+    ////
+
+    private _gutterImageV: string = '';
+
+    @Input() set gutterImageV(v: string) {
+        this._gutterImageV = (typeof v === 'string' && v !== '') ? v : '';
+    }
+    
+    get gutterImageV(): string {
+        return this._gutterImageV;
     }
 
     ////
