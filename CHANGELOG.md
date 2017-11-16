@@ -1,3 +1,9 @@
+<a name="1.0.0-beta.7"></a>
+# 1.0.0-beta.7 (2017-11-XX)
+
+* **gutterSize:** Default value from `10` to `11` because of a small discrepancy in the shown dots position pointed [there](https://github.com/bertrandg/angular-split/issues/46).
+
+
 <a name="1.0.0-beta.6"></a>
 # 1.0.0-beta.6 (2017-11-16)
 

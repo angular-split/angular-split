@@ -54,7 +54,7 @@ import { SplitAreaDirective } from './splitArea.directive';
                 Important to keep following rules even if overrided later by 'HostBinding' 
                 because if [width] & [height] not provided, when build() is executed,
                 'HostBinding' hasn't been applied yet so code:
-                this.elRef.nativeElement["offsetHeight"] give wrong value!  
+                this.elRef.nativeElement["offsetHeight"] gives wrong value!  
              */
             width: 100%;
             height: 100%;   
@@ -159,11 +159,11 @@ export class SplitComponent implements OnDestroy {
     
     ////
 
-    private _gutterSize: number = 10;
+    private _gutterSize: number = 11;
 
     @Input() set gutterSize(v: number) {
         v = Number(v);
-        this._gutterSize = !isNaN(v) && v > 0 ? v : 10;
+        this._gutterSize = !isNaN(v) && v > 0 ? v : 11;
 
         this.build();
     }
