@@ -18,8 +18,7 @@ import { DocComponent } from './doc/doc.route.component'
 import { ChangelogService } from './changelog.service'
 
 import { ExamplesComponent } from './examples/examples.route.component'
-import { HorizontalComponent } from './examples/horizontal.route.component'
-import { VerticalComponent } from './examples/vertical.route.component'
+import { SimpleComponent } from './examples/simple.route.component'
 import { NestedComponent } from './examples/nested.route.component'
 import { TransitionsComponent } from './examples/transitions.route.component'
 import { CustomGutterStyleComponent } from './examples/customGutterStyle.route.component'
@@ -35,8 +34,7 @@ const routes = [
   { path: 'changelog', component: ChangelogComponent },
   { path: 'documentation', component: DocComponent },
   { path: 'examples', component: ExamplesComponent },
-  { path: 'examples/horizontal-split', component: HorizontalComponent },
-  { path: 'examples/vertical-split', component: VerticalComponent },
+  { path: 'examples/simple-split', component: SimpleComponent },
   { path: 'examples/nested-split', component: NestedComponent },
   { path: 'examples/split-transitons', component: TransitionsComponent },
   { path: 'examples/custom-gutter-style', component: CustomGutterStyleComponent },
@@ -55,8 +53,7 @@ const routes = [
     ChangelogComponent,
     DocComponent,
     ExamplesComponent,
-    HorizontalComponent,
-    VerticalComponent,
+    SimpleComponent,
     NestedComponent,
     TransitionsComponent,
     CustomGutterStyleComponent,

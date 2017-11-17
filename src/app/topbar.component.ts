@@ -58,14 +58,11 @@ import { Router, NavigationStart } from '@angular/router'
             <li class="nav-item dropdown" dropdown>
                 <a class="nav-link dropdown-toggle" dropdownToggle>Examples <span class="caret"></span></a>
                 <ul *dropdownMenu class="dropdown-menu" role="menu">
-                    <li [class.active]="router.isActive('/examples/horizontal-split', true)">
-                        <a class="dropdown-item" routerLink="/examples/horizontal-split">Horizontal split</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/vertical-split', true)">
-                        <a class="dropdown-item" routerLink="/examples/vertical-split">Vertical split</a>
+                    <li [class.active]="router.isActive('/examples/simple-split', true)">
+                        <a class="dropdown-item" routerLink="/examples/simple-split">Simple split</a>
                     </li>
                     <li [class.active]="router.isActive('/examples/nested-split', true)">
-                        <a class="dropdown-item" routerLink="/examples/nested-split">Nested split</a>
+                        <a class="dropdown-item" routerLink="/examples/nested-split">Nested splits</a>
                     </li>
                     <li [class.active]="router.isActive('/examples/split-transitons', true)">
                         <a class="dropdown-item" routerLink="/examples/split-transitons">Split transitions</a>
