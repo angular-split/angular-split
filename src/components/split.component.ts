@@ -94,7 +94,7 @@ export class SplitComponent implements OnDestroy {
             area.comp.setStyleVisibleAndDir(area.comp.visible, this.isDragging, this.direction);
         });
         
-        this.build();
+        this.build(false, false);
     }
     
     get direction(): 'horizontal' | 'vertical' {
@@ -121,8 +121,6 @@ export class SplitComponent implements OnDestroy {
     @Input() set disabled(v: boolean) {
         v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
         this._disabled = v;
-        
-        this.build();
     }
     
     get disabled(): boolean {
@@ -137,7 +135,7 @@ export class SplitComponent implements OnDestroy {
         v = Number(v);
         this._width = (!isNaN(v) && v > 0) ? v : null;
         
-        this.build();
+        this.build(false, false);
     }
     
     get width(): number | null {
@@ -152,7 +150,7 @@ export class SplitComponent implements OnDestroy {
         v = Number(v);
         this._height = (!isNaN(v) && v > 0) ? v : null;
         
-        this.build();
+        this.build(false, false);
     }
     
     get height(): number | null {
@@ -167,7 +165,7 @@ export class SplitComponent implements OnDestroy {
         v = Number(v);
         this._gutterSize = (!isNaN(v) && v > 0) ? v : 11;
 
-        this.build();
+        this.build(false, false);
     }
     
     get gutterSize(): number {
@@ -267,8 +265,8 @@ export class SplitComponent implements OnDestroy {
     public addArea(comp: SplitAreaDirective): void {
         const newArea: IArea = {
             comp, 
-            order: -1, 
-            size: -1,
+            order: 0, 
+            size: 0,
         };
 
         if(comp.visible === true) {
@@ -280,16 +278,7 @@ export class SplitComponent implements OnDestroy {
 
         comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
 
-        this.build();
-    }
-
-    public updateArea(comp: SplitAreaDirective): void {
-        // Only refresh if area is displayed (No need to check inside 'hidedAreas')
-        const item = this.displayedAreas.find(a => a.comp === comp);
-
-        if(item) {
-            this.build();
-        }
+        this.build(true, true);
     }
 
     public removeArea(comp: SplitAreaDirective): void {
@@ -297,7 +286,7 @@ export class SplitComponent implements OnDestroy {
             const area = <IArea> this.displayedAreas.find(a => a.comp === comp)
             this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
 
-            this.build();
+            this.build(true, true);
         }
         else if(this.hidedAreas.some(a => a.comp === comp)) {
             const area = <IArea> this.hidedAreas.find(a => a.comp === comp)
@@ -305,21 +294,17 @@ export class SplitComponent implements OnDestroy {
         }
     }
 
-    public hideArea(comp: SplitAreaDirective): void {
-        const area = <IArea> this.displayedAreas.find(a => a.comp === comp)
+    public updateArea(comp: SplitAreaDirective, resetOrders: boolean, resetSizes: boolean): void {
+        // Only refresh if area is displayed (No need to check inside 'hidedAreas')
+        const item = this.displayedAreas.find(a => a.comp === comp);
 
-        if(area) {
-            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
-
-            const areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
-            this.hidedAreas.push(...areas);
-
-            this.build();
+        if(item) {
+            this.build(resetOrders, resetSizes);
         }
     }
 
     public showArea(comp: SplitAreaDirective): void {
-        const area = <IArea> this.hidedAreas.find(a => a.comp === comp);
+        const area = this.hidedAreas.find(a => a.comp === comp);
 
         if(area) {
             comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
@@ -327,70 +312,109 @@ export class SplitComponent implements OnDestroy {
             const areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
             this.displayedAreas.push(...areas);
 
-            this.build();
+            this.build(true, true);
         }
     }
 
-    private build(): void {
+    public hideArea(comp: SplitAreaDirective): void {
+        const area = this.displayedAreas.find(a => a.comp === comp);
+
+        if(area) {
+            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
+
+            const areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
+            areas.forEach(area => {
+                area.order = 0;
+                area.size = 0;
+            })
+            this.hidedAreas.push(...areas);
+
+            this.build(true, true);
+        }
+    }
+
+    private build(resetOrders: boolean, resetSizes: boolean): void {
         this.stopDragging();
 
         // ¤ AREAS ORDER
         
-        // Based on user input if all provided or added order by default.
-        if(this.displayedAreas.every(a => a.comp.order !== null)) {
-            this.displayedAreas.sort((a, b) => (<number> a.comp.order) - (<number> b.comp.order));
-        }
+        if(resetOrders === true) {    
 
-        this.displayedAreas.forEach((area, i) => {
-            area.order = i * 2;
-            area.comp.setStyleOrder(area.order);
-        });
+            // If user provided 'order' for each area, use it to sort them.
+            if(this.displayedAreas.every(a => a.comp.order !== null)) {
+                this.displayedAreas.sort((a, b) => (<number> a.comp.order) - (<number> b.comp.order));
+            }
+    
+            // Then set real order with multiples of 2, numbers between will be used by gutters.
+            this.displayedAreas.forEach((area, i) => {
+                area.order = i * 2;
+                area.comp.setStyleOrder(area.order);
+            });
+
+        }
 
         // ¤ AREAS SIZE PERCENT
         
-        // Set css 'flex-basis' property depending on user input if all set & ~100% or equal sizes by default.
-        const totalUserSize = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.comp.size ? total + s.comp.size : total, 0);
-        
-        if(this.displayedAreas.some(a => a.comp.size === null) || totalUserSize < .999 || totalUserSize > 1.001 ) {
-            const size = 1 / this.displayedAreas.length;
+        if(resetSizes === true) {
+
+            const totalUserSize = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.comp.size ? total + s.comp.size : total, 0);
             
-            this.displayedAreas.forEach(area => {
-                area.size = size;
-            });
-        } 
-        else {
-            // If some provided % are less than gutterSize > set them to zero and dispatch % to others.
-            let percentToShare = 0;
-            
-            // Get container pixel size
-            let containerSizePixel = this.getNbGutters() * this.gutterSize;
-            if(this.direction === 'horizontal') {
-                containerSizePixel = this.width ? this.width : this.elRef.nativeElement['offsetWidth'];
+            // If user provided 'size' for each area and total == 1, use it.
+            if(this.displayedAreas.every(a => a.comp.size !== null) && totalUserSize > .999 && totalUserSize < 1.001 ) {
+
+                this.displayedAreas.forEach(area => {
+                    area.size = <number> area.comp.size;
+                });
             }
+            // Else set equal sizes for all areas.
             else {
-                containerSizePixel = this.height ? this.height : this.elRef.nativeElement['offsetHeight'];
+                const size = 1 / this.displayedAreas.length;
+                
+                this.displayedAreas.forEach(area => {
+                    area.size = size;
+                });
             }
+        }
+        
+        // ¤ 
+        // If some real area sizes are less than gutterSize, 
+        // set them to zero and dispatch size to others.
 
-            this.displayedAreas.forEach(area => {
-                let newSize = Number(area.comp.size);
+        let percentToDispatch = 0;
+        
+        // Get container pixel size
+        let containerSizePixel = this.getNbGutters() * this.gutterSize;
+        if(this.direction === 'horizontal') {
+            containerSizePixel = this.width ? this.width : this.elRef.nativeElement['offsetWidth'];
+        }
+        else {
+            containerSizePixel = this.height ? this.height : this.elRef.nativeElement['offsetHeight'];
+        }
 
-                if(newSize * containerSizePixel < this.gutterSize) {
-                    percentToShare += newSize;
-                    newSize = 0;
-                }
+        this.displayedAreas.forEach(area => {
+            if(area.size * containerSizePixel < this.gutterSize) {
+                percentToDispatch += area.size;
+                area.size = 0;
+            }
+        });
+        
+        if(percentToDispatch > 0 && this.displayedAreas.length > 0) {
+            const nbAreasNotZero = this.displayedAreas.filter(a => a.size !== 0).length;
 
-                area.size = newSize;
-            });
-            
-            if(percentToShare > 0) {
-                const nbAreasNotZero = this.displayedAreas.filter(a => a.size !== 0).length;
-                const percentToAdd = percentToShare / nbAreasNotZero;
-
+            if(nbAreasNotZero > 0) {
+                const percentToAdd = percentToDispatch / nbAreasNotZero;
+    
                 this.displayedAreas.filter(a => a.size !== 0).forEach(area => {
                     area.size += percentToAdd;
                 });
-            }    
+            }
+            // All area sizes (container percentage) are less than guterSize,
+            // It means containerSize < ngGutters * gutterSize
+            else {
+                this.displayedAreas[0].size = 1;
+            }
         }
+
 
         this.refreshStyleSizes();
         this.cdRef.markForCheck();

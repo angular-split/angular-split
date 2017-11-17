@@ -91,7 +91,7 @@ var SplitComponent = (function () {
             this.displayedAreas.concat(this.hidedAreas).forEach(function (area) {
                 area.comp.setStyleVisibleAndDir(area.comp.visible, _this.isDragging, _this.direction);
             });
-            this.build();
+            this.build(false, false);
         },
         enumerable: true,
         configurable: true
@@ -128,7 +128,7 @@ var SplitComponent = (function () {
         function (v) {
             v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
             this._disabled = v;
-            this.build();
+            //this.build(false, false);
         },
         enumerable: true,
         configurable: true
@@ -147,7 +147,7 @@ var SplitComponent = (function () {
         function (v) {
             v = Number(v);
             this._width = (!isNaN(v) && v > 0) ? v : null;
-            this.build();
+            this.build(false, false);
         },
         enumerable: true,
         configurable: true
@@ -166,7 +166,7 @@ var SplitComponent = (function () {
         function (v) {
             v = Number(v);
             this._height = (!isNaN(v) && v > 0) ? v : null;
-            this.build();
+            this.build(false, false);
         },
         enumerable: true,
         configurable: true
@@ -185,7 +185,7 @@ var SplitComponent = (function () {
         function (v) {
             v = Number(v);
             this._gutterSize = (!isNaN(v) && v > 0) ? v : 11;
-            this.build();
+            this.build(false, false);
         },
         enumerable: true,
         configurable: true
@@ -311,8 +311,8 @@ var SplitComponent = (function () {
     function (comp) {
         var /** @type {?} */ newArea = {
             comp: comp,
-            order: -1,
-            size: -1,
+            order: 0,
+            size: 0,
         };
         if (comp.visible === true) {
             this.displayedAreas.push(newArea);
@@ -321,22 +321,7 @@ var SplitComponent = (function () {
             this.hidedAreas.push(newArea);
         }
         comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
-        this.build();
-    };
-    /**
-     * @param {?} comp
-     * @return {?}
-     */
-    SplitComponent.prototype.updateArea = /**
-     * @param {?} comp
-     * @return {?}
-     */
-    function (comp) {
-        // Only refresh if area is displayed (No need to check inside 'hidedAreas')
-        var /** @type {?} */ item = this.displayedAreas.find(function (a) { return a.comp === comp; });
-        if (item) {
-            this.build();
-        }
+        this.build(true, true);
     };
     /**
      * @param {?} comp
@@ -350,7 +335,7 @@ var SplitComponent = (function () {
         if (this.displayedAreas.some(function (a) { return a.comp === comp; })) {
             var /** @type {?} */ area = /** @type {?} */ (this.displayedAreas.find(function (a) { return a.comp === comp; }));
             this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
-            this.build();
+            this.build(true, true);
         }
         else if (this.hidedAreas.some(function (a) { return a.comp === comp; })) {
             var /** @type {?} */ area = /** @type {?} */ (this.hidedAreas.find(function (a) { return a.comp === comp; }));
@@ -359,21 +344,22 @@ var SplitComponent = (function () {
     };
     /**
      * @param {?} comp
+     * @param {?} resetOrders
+     * @param {?} resetSizes
      * @return {?}
      */
-    SplitComponent.prototype.hideArea = /**
+    SplitComponent.prototype.updateArea = /**
      * @param {?} comp
+     * @param {?} resetOrders
+     * @param {?} resetSizes
      * @return {?}
      */
-    function (comp) {
-        var /** @type {?} */ area = /** @type {?} */ (this.displayedAreas.find(function (a) { return a.comp === comp; }));
-        if (area) {
-            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
-            var /** @type {?} */ areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
-            (_a = this.hidedAreas).push.apply(_a, areas);
-            this.build();
+    function (comp, resetOrders, resetSizes) {
+        // Only refresh if area is displayed (No need to check inside 'hidedAreas')
+        var /** @type {?} */ item = this.displayedAreas.find(function (a) { return a.comp === comp; });
+        if (item) {
+            this.build(resetOrders, resetSizes);
         }
-        var _a;
     };
     /**
      * @param {?} comp
@@ -384,67 +370,106 @@ var SplitComponent = (function () {
      * @return {?}
      */
     function (comp) {
-        var /** @type {?} */ area = /** @type {?} */ (this.hidedAreas.find(function (a) { return a.comp === comp; }));
+        var /** @type {?} */ area = this.hidedAreas.find(function (a) { return a.comp === comp; });
         if (area) {
             comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
             var /** @type {?} */ areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
             (_a = this.displayedAreas).push.apply(_a, areas);
-            this.build();
+            this.build(true, true);
         }
         var _a;
     };
     /**
+     * @param {?} comp
+     * @return {?}
+     */
+    SplitComponent.prototype.hideArea = /**
+     * @param {?} comp
+     * @return {?}
+     */
+    function (comp) {
+        var /** @type {?} */ area = this.displayedAreas.find(function (a) { return a.comp === comp; });
+        if (area) {
+            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
+            var /** @type {?} */ areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
+            areas.forEach(function (area) {
+                area.order = 0;
+                area.size = 0;
+            });
+            (_a = this.hidedAreas).push.apply(_a, areas);
+            this.build(true, true);
+        }
+        var _a;
+    };
+    /**
+     * @param {?} resetOrders
+     * @param {?} resetSizes
      * @return {?}
      */
     SplitComponent.prototype.build = /**
+     * @param {?} resetOrders
+     * @param {?} resetSizes
      * @return {?}
      */
-    function () {
+    function (resetOrders, resetSizes) {
         var _this = this;
         this.stopDragging();
         // ¤ AREAS ORDER
-        // Based on user input if all provided or added order by default.
-        if (this.displayedAreas.every(function (a) { return a.comp.order !== null; })) {
-            this.displayedAreas.sort(function (a, b) { return (/** @type {?} */ (a.comp.order)) - (/** @type {?} */ (b.comp.order)); });
-        }
-        this.displayedAreas.forEach(function (area, i) {
-            area.order = i * 2;
-            area.comp.setStyleOrder(area.order);
-        });
-        // ¤ AREAS SIZE PERCENT
-        // Set css 'flex-basis' property depending on user input if all set & ~100% or equal sizes by default.
-        var /** @type {?} */ totalUserSize = /** @type {?} */ (this.displayedAreas.reduce(function (total, s) { return s.comp.size ? total + s.comp.size : total; }, 0));
-        if (this.displayedAreas.some(function (a) { return a.comp.size === null; }) || totalUserSize < .999 || totalUserSize > 1.001) {
-            var /** @type {?} */ size_1 = 1 / this.displayedAreas.length;
-            this.displayedAreas.forEach(function (area) {
-                area.size = size_1;
+        if (resetOrders === true) {
+            // If user provided 'order' for each area, use it to sort them.
+            if (this.displayedAreas.every(function (a) { return a.comp.order !== null; })) {
+                this.displayedAreas.sort(function (a, b) { return (/** @type {?} */ (a.comp.order)) - (/** @type {?} */ (b.comp.order)); });
+            }
+            // Then set real order with multiples of 2, numbers between will be used by gutters.
+            this.displayedAreas.forEach(function (area, i) {
+                area.order = i * 2;
+                area.comp.setStyleOrder(area.order);
             });
         }
-        else {
-            // If some provided % are less than gutterSize > set them to zero and dispatch % to others.
-            var /** @type {?} */ percentToShare_1 = 0;
-            // Get container pixel size
-            var /** @type {?} */ containerSizePixel_1 = this.getNbGutters() * this.gutterSize;
-            if (this.direction === 'horizontal') {
-                containerSizePixel_1 = this.width ? this.width : this.elRef.nativeElement['offsetWidth'];
+        // ¤ AREAS SIZE PERCENT
+        //const totalRealSizes = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.size ? total + s.size : total, 0);
+        if (resetSizes === true /*|| totalRealSizes < .999 || totalRealSizes > 1.001*/) {
+            var /** @type {?} */ totalUserSize = /** @type {?} */ (this.displayedAreas.reduce(function (total, s) { return s.comp.size ? total + s.comp.size : total; }, 0));
+            // If user provided 'size' for each area and total == 1, use it.
+            if (this.displayedAreas.every(function (a) { return a.comp.size !== null; }) && totalUserSize > .999 && totalUserSize < 1.001) {
+                this.displayedAreas.forEach(function (area) {
+                    area.size = /** @type {?} */ (area.comp.size);
+                });
             }
             else {
-                containerSizePixel_1 = this.height ? this.height : this.elRef.nativeElement['offsetHeight'];
+                var /** @type {?} */ size_1 = 1 / this.displayedAreas.length;
+                this.displayedAreas.forEach(function (area) {
+                    area.size = size_1;
+                });
             }
-            this.displayedAreas.forEach(function (area) {
-                var /** @type {?} */ newSize = Number(area.comp.size);
-                if (newSize * containerSizePixel_1 < _this.gutterSize) {
-                    percentToShare_1 += newSize;
-                    newSize = 0;
-                }
-                area.size = newSize;
-            });
-            if (percentToShare_1 > 0) {
-                var /** @type {?} */ nbAreasNotZero = this.displayedAreas.filter(function (a) { return a.size !== 0; }).length;
-                var /** @type {?} */ percentToAdd_1 = percentToShare_1 / nbAreasNotZero;
+        }
+        // ¤
+        // If some area sizes are less than gutterSize,
+        // set them to zero and dispatch size to others.
+        var /** @type {?} */ percentToDispatch = 0;
+        // Get container pixel size
+        var /** @type {?} */ containerSizePixel = this.getNbGutters() * this.gutterSize;
+        if (this.direction === 'horizontal') {
+            containerSizePixel = this.width ? this.width : this.elRef.nativeElement['offsetWidth'];
+        }
+        else {
+            containerSizePixel = this.height ? this.height : this.elRef.nativeElement['offsetHeight'];
+        }
+        this.displayedAreas.forEach(function (area) {
+            if (area.size * containerSizePixel < _this.gutterSize) {
+                percentToDispatch += area.size;
+                area.size = 0;
+            }
+        });
+        if (percentToDispatch > 0) {
+            var /** @type {?} */ nbAreasNotZero = this.displayedAreas.filter(function (a) { return a.size !== 0; }).length;
+            if (nbAreasNotZero > 0) {
+                var /** @type {?} */ percentToAdd_1 = percentToDispatch / nbAreasNotZero;
                 this.displayedAreas.filter(function (a) { return a.size !== 0; }).forEach(function (area) {
                     area.size += percentToAdd_1;
                 });
+            }
+            else {
             }
         }
         this.refreshStyleSizes();
@@ -757,7 +782,7 @@ var SplitAreaDirective = (function () {
         function (v) {
             v = Number(v);
             this._order = !isNaN(v) ? v : null;
-            this.split.updateArea(this);
+            this.split.updateArea(this, true, false);
         },
         enumerable: true,
         configurable: true
@@ -776,7 +801,7 @@ var SplitAreaDirective = (function () {
         function (v) {
             v = Number(v);
             this._size = (!isNaN(v) && v >= 0 && v <= 100) ? (v / 100) : null;
-            this.split.updateArea(this);
+            this.split.updateArea(this, false, true);
         },
         enumerable: true,
         configurable: true
@@ -795,7 +820,7 @@ var SplitAreaDirective = (function () {
         function (v) {
             v = Number(v);
             this._minSize = (!isNaN(v) && v > 0 && v < 100) ? v / 100 : 0;
-            this.split.updateArea(this);
+            this.split.updateArea(this, false, true);
         },
         enumerable: true,
         configurable: true

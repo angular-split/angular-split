@@ -13,7 +13,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         v = Number(v);
         this._order = !isNaN(v) ? v : null;
 
-        this.split.updateArea(this);
+        this.split.updateArea(this, true, false);
     }
     
     get order(): number | null {
@@ -28,7 +28,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         v = Number(v);
         this._size = (!isNaN(v) && v >= 0 && v <= 100) ? (v/100) : null;
 
-        this.split.updateArea(this);
+        this.split.updateArea(this, false, true);
     }
     
     get size(): number | null {
@@ -43,7 +43,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         v = Number(v);
         this._minSize = (!isNaN(v) && v > 0 && v < 100) ? v/100 : 0;
 
-        this.split.updateArea(this);
+        this.split.updateArea(this, false, true);
     }
     
     get minSize(): number {
