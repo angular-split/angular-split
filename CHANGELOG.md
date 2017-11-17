@@ -2,7 +2,7 @@
 <a name="1.0.0-beta.8"></a>
 # 1.0.0-beta.8 (2017-11-17)
 
-* **Bug:** When updating `[disabled]`, `[direction]`, `[width]`, `[height]`,.. keep values got after gutter being dragged instead of reset to user provided values.
+* **Bug:** When updating `[disabled]`, `[direction]`, `[width]`, `[height]`,.. keep size values got after gutter being dragged instead of reset to user provided values.
 * **Bug:** When `[useTransition]="true"`, no more transition at component initialisation.
 
 
