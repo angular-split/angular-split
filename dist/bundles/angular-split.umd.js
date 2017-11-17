@@ -59,6 +59,7 @@ var SplitComponent = (function () {
         this.gutterClick = new core.EventEmitter(false);
         this.transitionEndInternal = new Subject.Subject();
         this.transitionEnd = (/** @type {?} */ (this.transitionEndInternal.asObservable())).debounceTime(20);
+        this.isViewInitialized = false;
         this.isDragging = false;
         this.draggingWithoutMove = false;
         this.currentGutterNum = 0;
@@ -128,7 +129,6 @@ var SplitComponent = (function () {
         function (v) {
             v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
             this._disabled = v;
-            //this.build(false, false);
         },
         enumerable: true,
         configurable: true
@@ -294,6 +294,15 @@ var SplitComponent = (function () {
     /**
      * @return {?}
      */
+    SplitComponent.prototype.ngAfterViewInit = /**
+     * @return {?}
+     */
+    function () {
+        this.isViewInitialized = true;
+    };
+    /**
+     * @return {?}
+     */
     SplitComponent.prototype.getNbGutters = /**
      * @return {?}
      */
@@ -427,8 +436,7 @@ var SplitComponent = (function () {
             });
         }
         // ¤ AREAS SIZE PERCENT
-        //const totalRealSizes = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.size ? total + s.size : total, 0);
-        if (resetSizes === true /*|| totalRealSizes < .999 || totalRealSizes > 1.001*/) {
+        if (resetSizes === true) {
             var /** @type {?} */ totalUserSize = /** @type {?} */ (this.displayedAreas.reduce(function (total, s) { return s.comp.size ? total + s.comp.size : total; }, 0));
             // If user provided 'size' for each area and total == 1, use it.
             if (this.displayedAreas.every(function (a) { return a.comp.size !== null; }) && totalUserSize > .999 && totalUserSize < 1.001) {
@@ -444,7 +452,7 @@ var SplitComponent = (function () {
             }
         }
         // ¤
-        // If some area sizes are less than gutterSize,
+        // If some real area sizes are less than gutterSize,
         // set them to zero and dispatch size to others.
         var /** @type {?} */ percentToDispatch = 0;
         // Get container pixel size
@@ -461,7 +469,7 @@ var SplitComponent = (function () {
                 area.size = 0;
             }
         });
-        if (percentToDispatch > 0) {
+        if (percentToDispatch > 0 && this.displayedAreas.length > 0) {
             var /** @type {?} */ nbAreasNotZero = this.displayedAreas.filter(function (a) { return a.size !== 0; }).length;
             if (nbAreasNotZero > 0) {
                 var /** @type {?} */ percentToAdd_1 = percentToDispatch / nbAreasNotZero;
@@ -470,6 +478,7 @@ var SplitComponent = (function () {
                 });
             }
             else {
+                this.displayedAreas[0].size = 1;
             }
         }
         this.refreshStyleSizes();
@@ -930,12 +939,12 @@ var SplitAreaDirective = (function () {
      * @return {?}
      */
     function (value, isDragging) {
-        // If gutter being dragged, disable transition
-        if (isDragging === true) {
+        // If component not yet initialized or gutter being dragged, disable transition
+        if (this.split.isViewInitialized === false || isDragging === true) {
             this.setStyleTransition(false);
         }
         else {
-            this.setStyleTransition(this.split.useTransition === true);
+            this.setStyleTransition(this.split.useTransition);
         }
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
     };

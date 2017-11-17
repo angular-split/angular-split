@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, Input, Output, HostBinding, ChangeDetectionStrategy, 
-    EventEmitter, Renderer2, OnDestroy, ElementRef } from '@angular/core';
+    EventEmitter, Renderer2, OnDestroy, ElementRef, AfterViewInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
@@ -82,7 +82,7 @@ import { SplitAreaDirective } from './splitArea.directive';
                           (touchstart)="startDragging($event, index*2+1, index+1)"></split-gutter>
         </ng-template>`,
 })
-export class SplitComponent implements OnDestroy {
+export class SplitComponent implements AfterViewInit, OnDestroy {
 
     private _direction: 'horizontal' | 'vertical' = 'horizontal';
 
@@ -238,6 +238,7 @@ export class SplitComponent implements OnDestroy {
         return (this.direction === 'vertical') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
     }
 
+    public isViewInitialized: boolean = false;
     private isDragging: boolean = false;
     private draggingWithoutMove: boolean = false;
     private currentGutterNum: number = 0;
@@ -257,6 +258,10 @@ export class SplitComponent implements OnDestroy {
     constructor(private elRef: ElementRef,
                 private cdRef: ChangeDetectorRef,
                 private renderer: Renderer2) {}
+
+    public ngAfterViewInit() {
+        this.isViewInitialized = true;
+    }
 
     private getNbGutters(): number {
         return this.displayedAreas.length - 1;

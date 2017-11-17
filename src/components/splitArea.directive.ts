@@ -123,13 +123,13 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     }
     
     public setStyleFlexbasis(value: string, isDragging: boolean): void {
-        // If gutter being dragged, disable transition
-        if(isDragging === true) {
+        // If component not yet initialized or gutter being dragged, disable transition
+        if(this.split.isViewInitialized === false || isDragging === true) {
             this.setStyleTransition(false);
         }
         // Or use 'useTransition' to know if transition.
         else {
-            this.setStyleTransition(this.split.useTransition === true);
+            this.setStyleTransition(this.split.useTransition);
         }
 
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
