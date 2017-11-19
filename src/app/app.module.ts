@@ -6,27 +6,28 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http'
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
-import { AngularSplitModule } from 'angular-split'
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { SortableModule } from 'ngx-bootstrap/sortable';
+import { AngularSplitModule } from 'angular-split';
 
-import { AppComponent } from './app.component'
-import { TopbarComponent } from './topbar.component'
+import { AppComponent } from './app.component';
+import { TopbarComponent } from './topbar.component';
 
-import { HomeComponent } from './home/home.route.component'
-import { ChangelogComponent } from './changelog/changelog.route.component'
-import { DocComponent } from './doc/doc.route.component'
-import { ChangelogService } from './changelog.service'
+import { HomeComponent } from './home/home.route.component';
+import { ChangelogComponent } from './changelog/changelog.route.component';
+import { DocComponent } from './doc/doc.route.component';
+import { ChangelogService } from './changelog.service';
 
-import { ExamplesComponent } from './examples/examples.route.component'
-import { SimpleComponent } from './examples/simple.route.component'
-import { NestedComponent } from './examples/nested.route.component'
-import { TransitionsComponent } from './examples/transitions.route.component'
-import { CustomGutterStyleComponent } from './examples/customGutterStyle.route.component'
-import { TogglingDomAndVisibleComponent } from './examples/togglingDomAndVisible.route.component'
-import { GutterClickComponent } from './examples/gutterClick.route.component'
-import { ClassAccessComponent } from './examples/classAccess.route.component'
-import { GeekDemoComponent } from './examples/geekDemo.route.component'
-import { WorkspaceLocalstorageComponent } from './examples/workspaceLocalstorage.route.component'
+import { ExamplesComponent } from './examples/examples.route.component';
+import { SimpleComponent } from './examples/simple.route.component';
+import { NestedComponent } from './examples/nested.route.component';
+import { TransitionsComponent } from './examples/transitions.route.component';
+import { CustomGutterStyleComponent } from './examples/customGutterStyle.route.component';
+import { TogglingDomAndVisibleComponent } from './examples/togglingDomAndVisible.route.component';
+import { GutterClickComponent } from './examples/gutterClick.route.component';
+import { ClassAccessComponent } from './examples/classAccess.route.component';
+import { GeekDemoComponent } from './examples/geekDemo.route.component';
+import { WorkspaceLocalstorageComponent } from './examples/workspaceLocalstorage.route.component';
 
 
 const routes = [
@@ -71,6 +72,7 @@ const routes = [
     ButtonsModule.forRoot(),
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
+    SortableModule.forRoot(),
     AngularSplitModule,
   ],
   providers: [{
