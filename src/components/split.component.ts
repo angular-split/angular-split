@@ -73,6 +73,7 @@ import { SplitAreaDirective } from './splitArea.directive';
             <split-gutter *ngIf="last === false" 
                           [order]="index*2+1"
                           [direction]="direction"
+                          [useTransition]="useTransition"
                           [size]="gutterSize"
                           [color]="gutterColor"
                           [imageH]="gutterImageH"
@@ -206,6 +207,19 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     
     get gutterImageV(): string {
         return this._gutterImageV;
+    }
+
+    ////
+
+    private _dir: 'ltr' | 'rtl' = 'ltr';
+    
+    @Input() set dir(v: 'ltr' | 'rtl') {
+        v = (v === 'rtl') ? 'rtl' : 'ltr';
+        this._dir = v;
+    }
+    
+    get dir(): 'ltr' | 'rtl' {
+        return this._dir;
     }
 
     ////
@@ -416,7 +430,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             // All area sizes (container percentage) are less than guterSize,
             // It means containerSize < ngGutters * gutterSize
             else {
-                this.displayedAreas[0].size = 1;
+                this.displayedAreas[this.displayedAreas.length - 1].size = 1;
             }
         }
 
@@ -519,13 +533,13 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         // ¤ AREAS SIZE PIXEL
 
-        const offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
-        
+        let offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
+        if(this.dir === 'rtl') {
+            offsetPixel = -offsetPixel;
+        }
+
         let newSizePixelA = this.dragStartValues.sizePixelA - offsetPixel;
         let newSizePixelB = this.dragStartValues.sizePixelB + offsetPixel;
-
-// const debSizePxA = newSizePixelA;
-// const debSizePxB = newSizePixelB;
         
         if(newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
             // WTF.. get out of here!
@@ -542,9 +556,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         // ¤ AREAS SIZE PERCENT
 
-// const debSizeA = areaA.size;
-// const debSizeB = areaB.size;
-        
         if(newSizePixelA === 0) {
             areaB.size += areaA.size;
             areaA.size = 0;
@@ -569,16 +580,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             }
         }
 
-// const rd = (val: number) => Math.round(val*100)/100;
-// console.table([{
-//     'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
-//     'offset': offsetPixel,
-//     'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
-//     'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
-//     'curr %-px': `${ rd(debSizeA)*100 }% / ${ rd(debSizeB)*100 }%`, 
-//     'new %-px': `${ rd(areaA.size)*100 }% / ${ rd(areaB.size)*100 }%`, 
-// }]);
-
         this.refreshStyleSizes();
         this.notify('progress');
     }
@@ -591,7 +592,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.displayedAreas.forEach(area => {
             area.comp.unlockEvents();
         });
-// console.log('>', this.displayedAreas.map(a => a.size).join('/'), '  ', this.displayedAreas.map(a => a.size).reduce((tot, s) => tot+s, 0));
 
         while(this.dragListeners.length > 0) {
             const fct = this.dragListeners.pop();

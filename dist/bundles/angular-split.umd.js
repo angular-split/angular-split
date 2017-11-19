@@ -53,6 +53,7 @@ var SplitComponent = (function () {
         this._gutterColor = '';
         this._gutterImageH = '';
         this._gutterImageV = '';
+        this._dir = 'ltr';
         this.dragStart = new core.EventEmitter(false);
         this.dragProgress = new core.EventEmitter(false);
         this.dragEnd = new core.EventEmitter(false);
@@ -237,6 +238,24 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._gutterImageV = (typeof v === 'string' && v !== '') ? v : '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitComponent.prototype, "dir", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._dir;
+        },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            v = (v === 'rtl') ? 'rtl' : 'ltr';
+            this._dir = v;
         },
         enumerable: true,
         configurable: true
@@ -478,7 +497,7 @@ var SplitComponent = (function () {
                 });
             }
             else {
-                this.displayedAreas[0].size = 1;
+                this.displayedAreas[this.displayedAreas.length - 1].size = 1;
             }
         }
         this.refreshStyleSizes();
@@ -609,10 +628,11 @@ var SplitComponent = (function () {
     function (start, end, areaA, areaB) {
         // ¤ AREAS SIZE PIXEL
         var /** @type {?} */ offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
+        if (this.dir === 'rtl') {
+            offsetPixel = -offsetPixel;
+        }
         var /** @type {?} */ newSizePixelA = this.dragStartValues.sizePixelA - offsetPixel;
         var /** @type {?} */ newSizePixelB = this.dragStartValues.sizePixelB + offsetPixel;
-        // const debSizePxA = newSizePixelA;
-        // const debSizePxB = newSizePixelB;
         if (newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
             // WTF.. get out of here!
             return;
@@ -626,8 +646,6 @@ var SplitComponent = (function () {
             newSizePixelB = 0;
         }
         // ¤ AREAS SIZE PERCENT
-        // const debSizeA = areaA.size;
-        // const debSizeB = areaB.size;
         if (newSizePixelA === 0) {
             areaB.size += areaA.size;
             areaA.size = 0;
@@ -651,15 +669,6 @@ var SplitComponent = (function () {
                 areaB.size = (this.dragStartValues.sizePercentA + this.dragStartValues.sizePercentB) - areaA.size;
             }
         }
-        // const rd = (val: number) => Math.round(val*100)/100;
-        // console.table([{
-        //     'start drag PX': rd(this.dragStartValues.sizePixelA) + ' / ' + rd(this.dragStartValues.sizePixelB),
-        //     'offset': offsetPixel,
-        //     'new temp PX': rd(debSizePxA) + ' / ' + rd(debSizePxB),
-        //     'new final PX': rd(newSizePixelA) + ' / ' + rd(newSizePixelB),
-        //     'curr %-px': `${ rd(debSizeA)*100 }% / ${ rd(debSizeB)*100 }%`,
-        //     'new %-px': `${ rd(areaA.size)*100 }% / ${ rd(areaB.size)*100 }%`,
-        // }]);
         this.refreshStyleSizes();
         this.notify('progress');
     };
@@ -676,7 +685,6 @@ var SplitComponent = (function () {
         this.displayedAreas.forEach(function (area) {
             area.comp.unlockEvents();
         });
-        // console.log('>', this.displayedAreas.map(a => a.size).join('/'), '  ', this.displayedAreas.map(a => a.size).reduce((tot, s) => tot+s, 0));
         while (this.dragListeners.length > 0) {
             var /** @type {?} */ fct = this.dragListeners.pop();
             if (fct) {
@@ -729,7 +737,7 @@ var SplitComponent = (function () {
                     selector: 'split',
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     styles: ["\n        :host {\n            display: flex;\n            flex-wrap: nowrap;\n            justify-content: flex-start;\n            align-items: stretch;\n            overflow: hidden;\n            /* \n                Important to keep following rules even if overrided later by 'HostBinding' \n                because if [width] & [height] not provided, when build() is executed,\n                'HostBinding' hasn't been applied yet so code:\n                this.elRef.nativeElement[\"offsetHeight\"] gives wrong value!  \n             */\n            width: 100%;\n            height: 100%;   \n        }\n\n        split-gutter {\n            flex-grow: 0;\n            flex-shrink: 0;\n            background-position: center center;\n            background-repeat: no-repeat;\n        }\n    "],
-                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [size]=\"gutterSize\"\n                          [color]=\"gutterColor\"\n                          [imageH]=\"gutterImageH\"\n                          [imageV]=\"gutterImageV\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1, index+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1, index+1)\"></split-gutter>\n        </ng-template>",
+                    template: "\n        <ng-content></ng-content>\n        <ng-template ngFor let-area [ngForOf]=\"displayedAreas\" let-index=\"index\" let-last=\"last\">\n            <split-gutter *ngIf=\"last === false\" \n                          [order]=\"index*2+1\"\n                          [direction]=\"direction\"\n                          [useTransition]=\"useTransition\"\n                          [size]=\"gutterSize\"\n                          [color]=\"gutterColor\"\n                          [imageH]=\"gutterImageH\"\n                          [imageV]=\"gutterImageV\"\n                          [disabled]=\"disabled\"\n                          (mousedown)=\"startDragging($event, index*2+1, index+1)\"\n                          (touchstart)=\"startDragging($event, index*2+1, index+1)\"></split-gutter>\n        </ng-template>",
                 },] },
     ];
     /** @nocollapse */
@@ -748,6 +756,7 @@ var SplitComponent = (function () {
         "gutterColor": [{ type: core.Input },],
         "gutterImageH": [{ type: core.Input },],
         "gutterImageV": [{ type: core.Input },],
+        "dir": [{ type: core.Input },],
         "dragStart": [{ type: core.Output },],
         "dragProgress": [{ type: core.Output },],
         "dragEnd": [{ type: core.Output },],
@@ -1041,8 +1050,8 @@ var SplitAreaDirective = (function () {
  */
 var SplitGutterDirective = (function () {
     ////
-    function SplitGutterDirective(elementRef, renderer) {
-        this.elementRef = elementRef;
+    function SplitGutterDirective(elRef, renderer) {
+        this.elRef = elRef;
         this.renderer = renderer;
         this._disabled = false;
     }
@@ -1052,7 +1061,7 @@ var SplitGutterDirective = (function () {
          * @return {?}
          */
         function (v) {
-            this.renderer.setStyle(this.elementRef.nativeElement, 'order', v);
+            this.renderer.setStyle(this.elRef.nativeElement, 'order', v);
         },
         enumerable: true,
         configurable: true
@@ -1071,6 +1080,22 @@ var SplitGutterDirective = (function () {
         function (v) {
             this._direction = v;
             this.refreshStyle();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SplitGutterDirective.prototype, "useTransition", {
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            if (v) {
+                this.renderer.setStyle(this.elRef.nativeElement, 'transition', "flex-basis 0.3s");
+            }
+            else {
+                this.renderer.removeStyle(this.elRef.nativeElement, 'transition');
+            }
         },
         enumerable: true,
         configurable: true
@@ -1172,13 +1197,13 @@ var SplitGutterDirective = (function () {
      * @return {?}
      */
     function () {
-        this.renderer.setStyle(this.elementRef.nativeElement, 'flex-basis', this.size + "px");
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', this.size + "px");
         // fix safari bug about gutter height when direction is horizontal
-        this.renderer.setStyle(this.elementRef.nativeElement, 'height', (this.direction === 'vertical') ? this.size + "px" : "100%");
-        this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', (this.color !== '') ? this.color : "#eeeeee");
+        this.renderer.setStyle(this.elRef.nativeElement, 'height', (this.direction === 'vertical') ? this.size + "px" : "100%");
+        this.renderer.setStyle(this.elRef.nativeElement, 'background-color', (this.color !== '') ? this.color : "#eeeeee");
         var /** @type {?} */ state = (this.disabled === true) ? 'disabled' : this.direction;
-        this.renderer.setStyle(this.elementRef.nativeElement, 'background-image', this.getImage(state));
-        this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', this.getCursor(state));
+        this.renderer.setStyle(this.elRef.nativeElement, 'background-image', this.getImage(state));
+        this.renderer.setStyle(this.elRef.nativeElement, 'cursor', this.getCursor(state));
     };
     /**
      * @param {?} state
@@ -1229,6 +1254,7 @@ var SplitGutterDirective = (function () {
     SplitGutterDirective.propDecorators = {
         "order": [{ type: core.Input },],
         "direction": [{ type: core.Input },],
+        "useTransition": [{ type: core.Input },],
         "size": [{ type: core.Input },],
         "color": [{ type: core.Input },],
         "imageH": [{ type: core.Input },],

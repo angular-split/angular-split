@@ -6,7 +6,7 @@ import { Directive, Input, ElementRef, Renderer2 } from '@angular/core';
 export class SplitGutterDirective {
 
     @Input() set order(v: number) {
-        this.renderer.setStyle(this.elementRef.nativeElement, 'order', v);
+        this.renderer.setStyle(this.elRef.nativeElement, 'order', v);
     }
     
     ////
@@ -24,8 +24,19 @@ export class SplitGutterDirective {
     
     ////
 
-    private _size: number;
+    @Input() set useTransition(v: boolean) {
+        if(v) {
+            this.renderer.setStyle(this.elRef.nativeElement, 'transition', `flex-basis 0.3s`);
+        }
+        else {
+            this.renderer.removeStyle(this.elRef.nativeElement, 'transition');
+        }
+    }
+    
+    ////
 
+    private _size: number;
+    
     @Input() set size(v: number) {
         this._size = v;
         this.refreshStyle();
@@ -89,20 +100,20 @@ export class SplitGutterDirective {
     
     ////
 
-    constructor(private elementRef: ElementRef,
+    constructor(private elRef: ElementRef,
                 private renderer: Renderer2) {}
 
     private refreshStyle(): void {
-        this.renderer.setStyle(this.elementRef.nativeElement, 'flex-basis', `${ this.size }px`);
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', `${ this.size }px`);
         
         // fix safari bug about gutter height when direction is horizontal
-        this.renderer.setStyle(this.elementRef.nativeElement, 'height', (this.direction === 'vertical') ? `${ this.size }px` : `100%`);
+        this.renderer.setStyle(this.elRef.nativeElement, 'height', (this.direction === 'vertical') ? `${ this.size }px` : `100%`);
 
-        this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', (this.color !== '') ? this.color : `#eeeeee`);
+        this.renderer.setStyle(this.elRef.nativeElement, 'background-color', (this.color !== '') ? this.color : `#eeeeee`);
 
         const state: 'disabled' | 'vertical' | 'horizontal' = (this.disabled === true) ? 'disabled' : this.direction;
-        this.renderer.setStyle(this.elementRef.nativeElement, 'background-image', this.getImage(state));
-        this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', this.getCursor(state));
+        this.renderer.setStyle(this.elRef.nativeElement, 'background-image', this.getImage(state));
+        this.renderer.setStyle(this.elRef.nativeElement, 'cursor', this.getCursor(state));
     }
     
     private getCursor(state: 'disabled' | 'vertical' | 'horizontal'): string {

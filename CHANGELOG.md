@@ -1,4 +1,11 @@
 
+<a name="1.0.0-beta.9"></a>
+# 1.0.0-beta.9 (2017-11-19)
+
+* **Feature:** Add RTL support. Previously on 'right to the left' pages, dragging went opposite side, [issue here](https://github.com/bertrandg/angular-split/issues/48). Now just add  `dir="ltr"` on `<split>` component and that's fix.
+* **Bug:** Fix small bug when updating `[gutterSize]` with `useTransition="true"`, now gutter's size got transition too and it's visually better.
+
+
 <a name="1.0.0-beta.8"></a>
 # 1.0.0-beta.8 (2017-11-17)
 
