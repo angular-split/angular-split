@@ -9,62 +9,92 @@ import { Component } from '@angular/core'
         width: 100%;
         margin: 50px 0;
     }
+    .btns {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .btns > div {
+        flex: 1 1 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
   `],
   template: `
     <div class="container">
-        <div>GutterClickComponent</div>
-        <hr>
-        <button class="btn" (click)="useTransition = !useTransition">{{ 'useTransition: ' + useTransition }}</button>
-        <button class="btn" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
-        <br>
-        <div style="height:300px; border: 10px solid blue;">
-            <split [disabled]="isDisabled" gutterSize="10" direction="horizontal" [useTransition]="useTransition" (dragEnd)="dragEnd($event)" (gutterClick)="gutterClick($event)">
+        <h4>Split with custom behavior on <code>(gutterClick)</code> to roll/unroll areas</h4>
+        <div class="split-example">
+            <split [disabled]="isDisabled" 
+                   gutterSize="10" 
+                   direction="horizontal" 
+                   [useTransition]="useTransition" 
+                   (dragEnd)="dragEnd($event)" 
+                   (gutterClick)="gutterClick($event)">
                 <split-area *ngFor="let a of areas" [size]="a.size" [order]="a.order">
                     <p>{{ a.content }}</p>
                 </split-area>
             </split>
         </div>
+        <br>
+        <div class="btns">
+            <div>
+                <button class="btn btn-warning" (click)="useTransition = !useTransition">{{ 'useTransition: ' + useTransition }}</button>
+            </div>
+            <div>
+                <button class="btn btn-warning" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
+            </div>
+        </div>
+        <br>
+        <pre [innerText]="code"></pre>
     </div>`
 })
 export class GutterClickComponent {
-    isDisabled: boolean = false
-    useTransition: boolean = false
+    isDisabled: boolean = true
+    useTransition: boolean = true
     areas = [
         {size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg'},
         {size: 50, order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg'},
         {size: 25, order: 3, content: 'sd jslfd ijgil dfhlt jkgvbnhj fl bhjgflh jfglhj fl h fg'},
     ]
 
-    gutterClick(e) {
-        console.log('gutterClick', e);
-        const numGutter = <number> e.gutterNum;
-
-        if(numGutter === 1) {
-            if(this.areas[0].size === 0) {
-            this.areas[0].size = 25;
-            this.areas[1].size = 50;
-            this.areas[2].size = 25;
+    gutterClick(e: {gutterNum: number, sizes: Array<number>}) {
+        if(e.gutterNum === 1) {
+            if(this.areas[0].size > 0) {
+                this.areas[1].size += this.areas[0].size;
+                this.areas[0].size = 0;
+            }
+            else if(this.areas[1].size > 25) {
+                this.areas[1].size -= 25;
+                this.areas[0].size = 25;
             }
             else {
-            this.areas[1].size += this.areas[0].size;
-            this.areas[0].size = 0;
+                this.areas[0].size = 25;
+                this.areas[1].size = 50;
+                this.areas[2].size = 25;
             }
         }
-        else if(numGutter === 2) {
-            if(this.areas[2].size === 0) {
-            this.areas[0].size = 25;
-            this.areas[1].size = 50;
-            this.areas[2].size = 25;
+        else if(e.gutterNum === 2) {
+            if(this.areas[2].size > 0) {
+                this.areas[1].size += this.areas[2].size;
+                this.areas[2].size = 0;
+            }
+            else if(this.areas[1].size > 25) {
+                this.areas[1].size -= 25;
+                this.areas[2].size = 25;
             }
             else {
-            this.areas[1].size += this.areas[2].size;
-            this.areas[2].size = 0;
+                this.areas[0].size = 25;
+                this.areas[1].size = 50;
+                this.areas[2].size = 25;
             }
-            
         }
     }
 
-    dragEnd(e) {
-        console.log('dragEnd', e)
+    dragEnd(e: {gutterNum: number, sizes: Array<number>}) {
+        this.areas[0].size = e.sizes[0];
+        this.areas[1].size = e.sizes[1];
+        this.areas[2].size = e.sizes[2];
     }
 }

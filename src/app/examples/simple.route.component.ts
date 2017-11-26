@@ -9,12 +9,18 @@ import { Component } from '@angular/core'
         width: 100%;
         margin: 50px 0;
     }
+    .btns {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
   `],
   template: `
     <div class="container">
         <h4>Simple split</h4>
         <div class="split-example">
-            <split [direction]="dir">
+            <split [direction]="direction">
                 <split-area size="30">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                 </split-area>
@@ -24,25 +30,16 @@ import { Component } from '@angular/core'
             </split>
         </div>
         <br>
-        <button class="btn btn-warning" (click)="dir = (dir === 'horizontal') ? 'vertical' : 'horizontal'">{{ 'Toggle direction: "' + dir + '"' }}</button>
+        <div class="btns">
+            <button class="btn btn-warning" (click)="direction = (direction === 'horizontal') ? 'vertical' : 'horizontal'">{{ 'Toggle direction: "' + direction + '"' }}</button>    
+        </div>
         <br><br>
         <pre [innerText]="code"></pre>
     </div>`
 })
 export class SimpleComponent {
-    dir: string = 'horizontal'
+    direction: string = 'horizontal'
 
-    code: string = `<div class="split-example">
-    <split [direction]="dir">
-        <split-area size="30">
-            <p>Lorem ipsum dolor sit amet...</p>
-        </split-area>
-        <split-area size="70">
-            <p>Sed ut perspiciatis unde omnis...</p>
-        </split-area>
-    </split>
-</div>
-<br>
-<button (click)="dir = (dir === 'horizontal') ? 'vertical' : 'horizontal'">{{ 'Toggle direction: "' + dir + '"' }}</button>`
+    code: string = `x`
 
 }

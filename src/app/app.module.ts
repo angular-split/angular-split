@@ -27,6 +27,7 @@ import { TogglingDomAndVisibleComponent } from './examples/togglingDomAndVisible
 import { GutterClickComponent } from './examples/gutterClick.route.component';
 import { ClassAccessComponent } from './examples/classAccess.route.component';
 import { GeekDemoComponent } from './examples/geekDemo.route.component';
+import { DirRtlComponent } from './examples/dirRtl.route.component';
 import { WorkspaceLocalstorageComponent } from './examples/workspaceLocalstorage.route.component';
 
 
@@ -43,6 +44,7 @@ const routes = [
   { path: 'examples/gutter-click-roll-unroll', component: GutterClickComponent },
   { path: 'examples/access-from-class', component: ClassAccessComponent },
   { path: 'examples/geek-demo', component: GeekDemoComponent },
+  { path: 'examples/dir-rtl', component: DirRtlComponent },
   { path: 'examples/workspace-localstorage', component: WorkspaceLocalstorageComponent },
 ];
 
@@ -62,6 +64,7 @@ const routes = [
     GutterClickComponent,
     ClassAccessComponent,
     GeekDemoComponent,
+    DirRtlComponent,
     WorkspaceLocalstorageComponent,
   ],
   imports: [

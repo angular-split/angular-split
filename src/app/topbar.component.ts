@@ -82,6 +82,9 @@ import { Router, NavigationStart } from '@angular/router'
                     <li [class.active]="router.isActive('/examples/geek-demo', true)">
                         <a class="dropdown-item" routerLink="/examples/geek-demo">Geek demo (100% dynamic)</a>
                     </li>
+                    <li [class.active]="router.isActive('/examples/dir-rtl', true)">
+                        <a class="dropdown-item" routerLink="/examples/dir-rtl">Right to left page</a>
+                    </li>
                     <li [class.active]="router.isActive('/examples/workspace-localstorage', true)">
                         <a class="dropdown-item" routerLink="/examples/workspace-localstorage">Fullscreen workspace</a>
                     </li>

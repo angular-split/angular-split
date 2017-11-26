@@ -17,10 +17,16 @@ import { Component } from '@angular/core'
     .btns {
         display: flex;
         justify-content: space-around;
+        flex-wrap: wrap;
     }
     .btns > div {
         display: flex;
+        align-items: center;
         justify-content: center;
+        margin-bottom: 10px;
+    }
+    .btns > div > button {
+        margin-bottom: 10px;
     }
 
     .btns > div:nth-child(1) {
@@ -62,13 +68,13 @@ import { Component } from '@angular/core'
             <div class="btn-group">
                 <label class="btn btn-warning" 
                        [class.active]="action.a1v" 
-                       (click)="action.a1v = !action.a1v">{{ 'a1v: ' + action.a1v }}</label>
+                       (click)="action.a1v = !action.a1v">{{ 'area1: ' + action.a1v }}</label>
                 <label class="btn btn-warning" 
                        [class.active]="action.a2v" 
-                       (click)="action.a2v = !action.a2v">{{ 'a2v: ' + action.a2v }}</label>
+                       (click)="action.a2v = !action.a2v">{{ 'area2: ' + action.a2v }}</label>
                 <label class="btn btn-warning" 
                        [class.active]="action.a3v" 
-                       (click)="action.a3v = !action.a3v">{{ 'a3v: ' + action.a3v }}</label>
+                       (click)="action.a3v = !action.a3v">{{ 'area3: ' + action.a3v }}</label>
             </div>
             <div class="btn-group">
                 <label class="btn btn-warning"
