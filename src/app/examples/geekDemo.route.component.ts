@@ -22,10 +22,31 @@ import { examples } from './../listExamples';
 
     .opts-prop {
         display: flex;
+        flex-wrap: wrap;
+        align-items: center;
         justify-content: space-around;
     }
-    .opts-area {
-        
+    .opts-prop > div {
+        margin-bottom: 10px;
+    }
+
+    .opts-area > .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        background-color: #e8e8e8;
+    }
+
+    .area-item {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 4px;
+        cursor: move;
+    }
+    .area-item button {
+        margin: 0 5px;
     }
 
     .num {
@@ -39,7 +60,7 @@ import { examples } from './../listExamples';
   template: `
     <div class="container">
         <sp-example-title [ex]="data"></sp-example-title>
-        <div class="split-example" style="height: 500px; background-color: #e5e0e0;">
+        <div class="split-example" style="background-color: #e5e0e0;">
             <split [direction]="d.dir" 
                    [gutterSize]="d.gutterSize" 
                    [width]="d.width" 
@@ -67,16 +88,16 @@ import { examples } from './../listExamples';
                 <label>Width: </label>
                 <div class="btn-group">
                     <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" [btnRadio]="null">null</label>
-                    <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="600">600</label>
                     <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="400">400</label>
+                    <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="600">600</label>
                 </div>
             </div>
             <div>
                 <label>Height: </label>
                 <div class="btn-group">
                     <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" [btnRadio]="null">null</label>
-                    <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="350">350</label>
                     <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="200">200</label>
+                    <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="350">350</label>
                 </div>
             </div>
             <div>
@@ -89,33 +110,22 @@ import { examples } from './../listExamples';
             </div>
         </div>
         <div class="opts-area">
-            <label>Areas (drag elements to change order): </label>
-            <button class="btn btn-warning btn-sm" (click)="addArea()">Add</button>
-
-            <table class="table table-sm table-dark">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>isPresent</th>
-                        <th>isVisible</th>
-                        <th>Remove</th>
-                    </tr>
-                </thead>
-            </table>
-                <bs-sortable [(ngModel)]="d.areas"
-                             [itemTemplate]="itemTemplate"></bs-sortable>
-                <ng-template #itemTemplate let-item="item" let-index="index">
-                    <table class="table table-sm table-dark">
-                        <tbody>
-                            <tr [style.background-color]="item.value.color">
-                                <th class="num">{{ item.value.id }}</th>
-                                <td><button class="btn btn-warning btn-sm" (click)="item.value.present = !item.value.present">{{ 'Toggle presence: ' + item.value.present }}</button></td>
-                                <td><button class="btn btn-warning btn-sm" (click)="item.value.visible = !item.value.visible">{{ 'Toggle visibility: ' + item.value.visible }}</button></td>
-                                <td><button class="btn btn-warning btn-sm" (click)="removeArea(item.value)">Remove</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </ng-template>
+            <div class="title">
+                <label><b>Areas (drag elements to change order):</b></label>
+                <button class="btn btn-warning btn-sm" (click)="addArea()">Add area</button>
+            </div>
+            <bs-sortable [(ngModel)]="d.areas" [itemTemplate]="itemTemplate"></bs-sortable>
+            
+            <ng-template #itemTemplate let-item="item" let-index="index">
+                <div [style.background-color]="item.value.color" class="area-item">
+                    <div class="num">{{ item.value.id }}</div>
+                    <div>
+                        <button class="btn btn-warning btn-sm" [class.active]="!item.value.present" (click)="item.value.present = !item.value.present">{{ '*ngIf="' + item.value.present + '"' }}</button>
+                        <button class="btn btn-warning btn-sm" [class.active]="!item.value.visible" (click)="item.value.visible = !item.value.visible">{{ '[visible]="' + item.value.visible + '"' }}</button>
+                        <button class="btn btn-warning btn-sm" (click)="removeArea(item.value)">Remove</button>
+                    </div>
+                </div>
+            </ng-template>
         </div>
     </div>`
 })
@@ -133,7 +143,6 @@ export class GeekDemoComponent {
             {id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: true},
             {id: getRandomNum(), color: getRandomColor(), size: 50, present: true, visible: true},
             {id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: true},
-            {id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: false},
         ]
     }
 

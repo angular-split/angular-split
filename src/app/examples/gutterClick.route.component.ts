@@ -42,10 +42,10 @@ import { examples } from './../listExamples';
         <br>
         <div class="btns">
             <div>
-                <button class="btn btn-warning" (click)="useTransition = !useTransition">{{ 'useTransition: ' + useTransition }}</button>
+                <button class="btn btn-warning" [class.active]="!useTransition" (click)="useTransition = !useTransition">{{ 'useTransition: ' + useTransition }}</button>
             </div>
             <div>
-                <button class="btn btn-warning" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
+                <button class="btn btn-warning" [class.active]="!isDisabled" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
             </div>
         </div>
     </div>`

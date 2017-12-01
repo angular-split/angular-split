@@ -47,7 +47,7 @@ import { examples } from './../listExamples';
         <br>
         <div class="btns">
             <div>
-                <button class="btn btn-warning" (click)="splitEl.disabled = !splitEl.disabled">{{ 'splitEl.disabled: ' + splitEl.disabled }}</button>
+                <button class="btn btn-warning" [class.active]="!splitEl.disabled" (click)="splitEl.disabled = !splitEl.disabled">{{ 'splitEl.disabled: ' + splitEl.disabled }}</button>
             </div>
             <div>
                 <button class="btn btn-warning" (click)="splitEl.dir = (splitEl.dir === 'rtl' ? 'ltr' : 'rtl')">{{ 'splitEl.dir: "' + splitEl.dir + '"' }}</button>

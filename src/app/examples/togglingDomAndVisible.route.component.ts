@@ -38,28 +38,28 @@ import { examples } from './../listExamples';
         <div class="btns">
             <div class="btn-group">
                 <label class="btn btn-warning" 
-                       [class.active]="action.isVisibleA" 
-                       (click)="action.isVisibleA = !action.isVisibleA">{{ 'area1: ' + action.isVisibleA }}</label>
+                       [class.active]="!action.isVisibleA" 
+                       (click)="action.isVisibleA = !action.isVisibleA">{{ 'areaA: ' + action.isVisibleA }}</label>
                 <label class="btn btn-warning" 
-                       [class.active]="action.isVisibleB" 
-                       (click)="action.isVisibleB = !action.isVisibleB">{{ 'area2: ' + action.isVisibleB }}</label>
+                       [class.active]="!action.isVisibleB" 
+                       (click)="action.isVisibleB = !action.isVisibleB">{{ 'areaB: ' + action.isVisibleB }}</label>
                 <label class="btn btn-warning" 
-                       [class.active]="action.isVisibleC" 
-                       (click)="action.isVisibleC = !action.isVisibleC">{{ 'area3: ' + action.isVisibleC }}</label>
+                       [class.active]="!action.isVisibleC" 
+                       (click)="action.isVisibleC = !action.isVisibleC">{{ 'areaC: ' + action.isVisibleC }}</label>
             </div>
         </div>
         <p>Toggle <code>*ngIf="boolean"</code> properties:</p>
         <div class="btns">
             <div class="btn-group">
                 <label class="btn btn-warning" 
-                       [class.active]="action.isPresentA" 
-                       (click)="action.isPresentA = !action.isPresentA">{{ 'area1: ' + action.isPresentA }}</label>
+                       [class.active]="!action.isPresentA" 
+                       (click)="action.isPresentA = !action.isPresentA">{{ 'areaA: ' + action.isPresentA }}</label>
                 <label class="btn btn-warning" 
-                       [class.active]="action.isPresentB" 
-                       (click)="action.isPresentB = !action.isPresentB">{{ 'area2: ' + action.isPresentB }}</label>
+                       [class.active]="!action.isPresentB" 
+                       (click)="action.isPresentB = !action.isPresentB">{{ 'areaB: ' + action.isPresentB }}</label>
                 <label class="btn btn-warning" 
-                       [class.active]="action.isPresentC" 
-                       (click)="action.isPresentC = !action.isPresentC">{{ 'area3: ' + action.isPresentC }}</label>
+                       [class.active]="!action.isPresentC" 
+                       (click)="action.isPresentC = !action.isPresentC">{{ 'areaC: ' + action.isPresentC }}</label>
             </div>
         </div>
         <br>

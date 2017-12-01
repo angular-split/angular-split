@@ -80,6 +80,9 @@ const defaultConfig: IConfig = {
     .panel > p {
         margin: 0;
     }
+    button {
+        margin-bottom: 10px;
+    }
   `],
     template: `
         <split *ngIf="config" 
@@ -100,22 +103,20 @@ const defaultConfig: IConfig = {
                                 <div [ngSwitch]="row.type" class="bloc">
                                     <div *ngSwitchCase="'doc'" class="explanations">
                                         <sp-example-title [ex]="data"></sp-example-title>
-                                        <p>Toggle areas visibility using following buttons:</p>
+                                        <p>All areas size and visibility are saved to localStorage.<br>
+                                        Toggle areas visibility using following buttons:</p>
                                         <ng-template ngFor let-c [ngForOf]="config.columns">
                                             <ng-template ngFor let-r [ngForOf]="c.rows">
                                                 <button *ngIf="r.type !== 'doc'"
                                                         (click)="r.visible = !r.visible; refreshColumnVisibility()" 
-                                                        [class.active]="r.visible"
-                                                        class="btn btn-outline-warning">{{ r.type }}</button>
+                                                        [class.active]="!r.visible"
+                                                        class="btn btn-warning">{{ r.type }}</button>
                                             </ng-template>
                                         </ng-template>
-                                        <br><br>
-								        <button (click)="toggleDisabled(); btn.blur()" #btn
-                                                [class.active]="config.disabled"
-                                                class="btn btn-outline-warning">Disable splitters</button>
-                                        <br><br>
-                                        <p>All areas size and visibility are saved to localStorage.</p>
-								        <button (click)="resetConfig()" class="btn btn-outline-warning">Reset localStorage</button>
+                                        <br>
+                                        <button class="btn btn-warning" [class.active]="!config.disabled" (click)="toggleDisabled()">{{ 'isDisabled: ' + config.disabled }}</button>
+                                        <br>
+								        <button (click)="resetConfig()" class="btn btn-warning">Reset localStorage</button>
                                     </div>
                                     <div *ngSwitchDefault class="panel">
                                         <p>{{ row.type }}</p>

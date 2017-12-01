@@ -40,6 +40,17 @@ import { examples } from './../listExamples';
     .btns > div:nth-child(3) {
         flex: 1 1 40%;
     }
+    .logs > p {
+        margin-bottom: 5px;
+    }
+    .logs > ul {
+        height: 64px;
+        width: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        border: 1px solid #bfbfbf;
+        background-color: #e8e8e8;
+    }
   `],
   template: `
     <div class="container">
@@ -48,7 +59,8 @@ import { examples } from './../listExamples';
             <split direction="horizontal" 
                    disabled="true"
                    [useTransition]="action.useTransition"
-                   (dragEnd)="action.a1s=$event.sizes[0]; action.a2s=$event.sizes[1]; action.a3s=$event.sizes[2];">
+                   (dragEnd)="action.a1s=$event.sizes[0]; action.a2s=$event.sizes[1]; action.a3s=$event.sizes[2];"
+                   (transitionEnd)="log($event)">
                 <split-area [visible]="action.a1v" [size]="action.a1s" order="1">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                 </split-area>
@@ -64,18 +76,18 @@ import { examples } from './../listExamples';
         <div class="btns">
             <div>
                 <button class="btn btn-warning" 
-                        [class.active]="action.useTransition" 
+                        [class.active]="!action.useTransition" 
                         (click)="action.useTransition = !action.useTransition">{{ 'useTransition: ' + action.useTransition }}</button>
             </div>
             <div class="btn-group">
                 <label class="btn btn-warning" 
-                       [class.active]="action.a1v" 
+                       [class.active]="!action.a1v" 
                        (click)="action.a1v = !action.a1v">{{ 'area1: ' + action.a1v }}</label>
                 <label class="btn btn-warning" 
-                       [class.active]="action.a2v" 
+                       [class.active]="!action.a2v" 
                        (click)="action.a2v = !action.a2v">{{ 'area2: ' + action.a2v }}</label>
                 <label class="btn btn-warning" 
-                       [class.active]="action.a3v" 
+                       [class.active]="!action.a3v" 
                        (click)="action.a3v = !action.a3v">{{ 'area3: ' + action.a3v }}</label>
             </div>
             <div class="btn-group">
@@ -86,6 +98,12 @@ import { examples } from './../listExamples';
                        [class.disabled]="action.a1s === 40 || !action.a1v || !action.a2v || !action.a3v"
                        (click)="action.a1s=40; action.a2s=20; action.a3s=40">Set sizes to 40/20/40</label>
             </div>
+        </div>
+        <div class="logs">
+            <p>Events <code>(transitionEnd)</code>:</p>
+            <ul>
+                <li *ngFor="let l of logMessages">{{ l }}</li>
+            </ul>
         </div>
     </div>`
 })
@@ -100,9 +118,14 @@ export class TransitionsComponent {
         a3v: true,
         useTransition: true,
     }
+    logMessages: Array<string> = []
     
     constructor() {
         this.data = examples[2];
+    }
+
+    log(e) {
+        this.logMessages.unshift(`${ new Date() } > transitionEnd event > ${ e }`);
     }
 
 }
