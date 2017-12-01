@@ -58,6 +58,9 @@ const defaultConfig: IConfig = {
         width: 100%;
         height: 100%;
     }
+    .bloc {
+        height: 100%;
+    }
 
     .explanations {
         padding: 15px;
@@ -66,8 +69,16 @@ const defaultConfig: IConfig = {
     .panel {
         font-size: 100px;
         font-weight: bold;
-        text-align: center;
         color: #cccccc;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        overflow: hidden;
+    }
+    .panel > p {
+        margin: 0;
     }
   `],
     template: `
@@ -86,17 +97,14 @@ const defaultConfig: IConfig = {
                             <split-area *ngIf="row.visible"
                                         [order]="irow" 
                                         [size]="row.size">
-                                <div [ngSwitch]="row.type">
-                                    <p *ngSwitchCase="'doc'" class="explanations">
+                                <div [ngSwitch]="row.type" class="bloc">
+                                    <div *ngSwitchCase="'doc'" class="explanations">
                                         <sp-example-title [ex]="data"></sp-example-title>
-                                        Here all areas sizes and visibilities are editable and saved to localStorage.<br>
-                                        On component initialization, if present inside localStorage, it uses it.<br>
-                                        You can drag any gutters or click following buttons to toggle areas visibility:
-                                        <br>
+                                        <p>Toggle areas visibility using following buttons:</p>
                                         <ng-template ngFor let-c [ngForOf]="config.columns">
                                             <ng-template ngFor let-r [ngForOf]="c.rows">
-                                                <button *ngIf="r.type !== 'doc'" #btn
-                                                        (click)="r.visible = !r.visible; refreshColumnVisibility(); btn.blur()" 
+                                                <button *ngIf="r.type !== 'doc'"
+                                                        (click)="r.visible = !r.visible; refreshColumnVisibility()" 
                                                         [class.active]="r.visible"
                                                         class="btn btn-outline-warning">{{ r.type }}</button>
                                             </ng-template>
@@ -106,9 +114,12 @@ const defaultConfig: IConfig = {
                                                 [class.active]="config.disabled"
                                                 class="btn btn-outline-warning">Disable splitters</button>
                                         <br><br>
+                                        <p>All areas size and visibility are saved to localStorage.</p>
 								        <button (click)="resetConfig()" class="btn btn-outline-warning">Reset localStorage</button>
-                                    </p>
-                                    <p *ngSwitchDefault class="panel">{{ row.type }}</p>
+                                    </div>
+                                    <div *ngSwitchDefault class="panel">
+                                        <p>{{ row.type }}</p>
+                                    </div>
                                 </div>
                             </split-area>
                         </ng-template>
@@ -165,6 +176,7 @@ export class WorkspaceLocalstorageComponent implements OnInit {
     }
 
     refreshColumnVisibility() {
+        // Refresh columns visibility based on inside rows visibilities (If no row > hide column)
         this.config.columns.forEach((column, index) => {
             column.visible = column.rows.some(row => row.visible === true);
         });

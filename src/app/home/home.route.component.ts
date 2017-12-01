@@ -30,8 +30,8 @@ import { Component } from '@angular/core';
         <div class="jumbotron">
             <h1>angular-split 
               <a href="https://badge.fury.io/js/angular-split"><img src="https://badge.fury.io/js/angular-split.svg" alt="npm version" height="18"></a>
-              <small><br>Angular (2+) UI library to split views using CSS flexbox layout.</small>
             </h1>
+            <p>Angular UI library to split views and allow user dragging to resize areas using CSS flexbox layout.</p>
             <h4>Install npm module:</h4>
             <pre [innerText]="code1"></pre>
             <br>
