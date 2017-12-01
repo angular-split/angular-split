@@ -1,8 +1,10 @@
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
+
+import { examples } from './../listExamples';
 
 
 @Component({
-  selector: 'sp-ex-horizontal',
+  selector: 'sp-ex-simple',
   styles: [`
     :host {
         display: block;
@@ -18,7 +20,7 @@ import { Component } from '@angular/core'
   `],
   template: `
     <div class="container">
-        <h4>Simple split</h4>
+        <sp-example-title [ex]="data"></sp-example-title>
         <div class="split-example">
             <split [direction]="direction">
                 <split-area size="30">
@@ -33,13 +35,14 @@ import { Component } from '@angular/core'
         <div class="btns">
             <button class="btn btn-warning" (click)="direction = (direction === 'horizontal') ? 'vertical' : 'horizontal'">{{ 'Toggle direction: "' + direction + '"' }}</button>    
         </div>
-        <br><br>
-        <pre [innerText]="code"></pre>
     </div>`
 })
 export class SimpleComponent {
+    data: IExampleData
     direction: string = 'horizontal'
 
-    code: string = `x`
+    constructor() {
+        this.data = examples[0];
+    }
 
 }

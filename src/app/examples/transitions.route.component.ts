@@ -1,4 +1,6 @@
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
+
+import { examples } from './../listExamples';
 
 
 @Component({
@@ -41,7 +43,7 @@ import { Component } from '@angular/core'
   `],
   template: `
     <div class="container">
-        <h4>Split with transitions</h4>
+        <sp-example-title [ex]="data"></sp-example-title>
         <div class="split-example">
             <split direction="horizontal" 
                    disabled="true"
@@ -85,11 +87,10 @@ import { Component } from '@angular/core'
                        (click)="action.a1s=40; action.a2s=20; action.a3s=40">Set sizes to 40/20/40</label>
             </div>
         </div>
-        <br>
-        <pre [innerText]="code"></pre>
     </div>`
 })
 export class TransitionsComponent {
+    data: IExampleData
     action = {
         a1s: 25,
         a2s: 50,
@@ -99,49 +100,9 @@ export class TransitionsComponent {
         a3v: true,
         useTransition: true,
     }
-
-    code: string = `<div class="split-example">
-    <split direction="horizontal" 
-           disabled="true"
-           [useTransition]="action.useTransition"
-           (dragEnd)="action.a1s=$event.sizes[0]; action.a2s=$event.sizes[1]; action.a3s=$event.sizes[2];">
-        <split-area [visible]="action.a1v" [size]="action.a1s" order="1">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud...</p>
-        </split-area>
-        <split-area [visible]="action.a2v" [size]="action.a2s" order="2">
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium...</p>
-        </split-area>
-        <split-area [visible]="action.a3v" [size]="action.a3s" order="3">
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan...</p>
-        </split-area>
-    </split>
-</div>
-<br>
-<div class="btns">
-    <div>
-        <button class="btn btn-warning" 
-                [class.active]="action.useTransition" 
-                (click)="action.useTransition = !action.useTransition">{{ 'useTransition: ' + action.useTransition }}</button>
-    </div>
-    <div>
-        <button class="btn btn-warning" 
-                [class.active]="action.a1v" 
-                (click)="action.a1v = !action.a1v">{{ 'a1v: ' + action.a1v }}</button>
-        <button class="btn btn-warning" 
-                [class.active]="action.a2v" 
-                (click)="action.a2v = !action.a2v">{{ 'a2v: ' + action.a2v }}</button>
-        <button class="btn btn-warning" 
-                [class.active]="action.a3v" 
-                (click)="action.a3v = !action.a3v">{{ 'a3v: ' + action.a3v }}</button>
-    </div>
-    <div>
-        <button class="btn btn-warning"
-                [disabled]="action.a1s === 25 || !action.a1v || !action.a2v || !action.a3v" 
-                (click)="action.a1s=25; action.a2s=50; action.a3s=25">Set sizes to 25/50/25</button>
-        <button class="btn btn-warning" 
-                [disabled]="action.a1s === 40 || !action.a1v || !action.a2v || !action.a3v"
-                (click)="action.a1s=40; action.a2s=20; action.a3s=40">Set sizes to 40/20/40</button>
-    </div>
-</div>`
+    
+    constructor() {
+        this.data = examples[2];
+    }
 
 }

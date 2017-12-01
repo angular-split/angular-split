@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core'
-import * as _ from 'lodash'
+import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+
+import { examples } from './../listExamples';
 
 
 interface IConfig {
@@ -86,6 +88,7 @@ const defaultConfig: IConfig = {
                                         [size]="row.size">
                                 <div [ngSwitch]="row.type">
                                     <p *ngSwitchCase="'doc'" class="explanations">
+                                        <sp-example-title [ex]="data"></sp-example-title>
                                         Here all areas sizes and visibilities are editable and saved to localStorage.<br>
                                         On component initialization, if present inside localStorage, it uses it.<br>
                                         You can drag any gutters or click following buttons to toggle areas visibility:
@@ -104,8 +107,6 @@ const defaultConfig: IConfig = {
                                                 class="btn btn-outline-warning">Disable splitters</button>
                                         <br><br>
 								        <button (click)="resetConfig()" class="btn btn-outline-warning">Reset localStorage</button>
-                                        <br><br>
-								        <a href="https://github.com/bertrandg/angular-split/blob/website-src/src/app/advancedExample/advancedExample.route.component.ts" class="btn btn-outline-warning">View sources</a>
                                     </p>
                                     <p *ngSwitchDefault class="panel">{{ row.type }}</p>
                                 </div>
@@ -117,8 +118,13 @@ const defaultConfig: IConfig = {
         </split>`
 })
 export class WorkspaceLocalstorageComponent implements OnInit {
-    localStorageName = 'angular-split'
+    data: IExampleData
+    localStorageName = 'angular-split-ws'
     config: IConfig = null
+
+    constructor() {
+        this.data = examples[9];
+    }
 
     ngOnInit() {
         if(localStorage.getItem(this.localStorageName)) {

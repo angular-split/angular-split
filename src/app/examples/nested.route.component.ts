@@ -1,4 +1,6 @@
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
+
+import { examples } from './../listExamples';
 
 
 @Component({
@@ -12,8 +14,8 @@ import { Component } from '@angular/core'
   `],
   template: `
     <div class="container">
-        <h4>Nested splits</h4>
-        <div class="split-example" style="height: 600px;">
+        <sp-example-title [ex]="data"></sp-example-title>
+        <div class="split-example" style="height: 400px;">
             <split direction="horizontal">
                 <split-area size="40">
                     <split direction="vertical">
@@ -40,37 +42,13 @@ import { Component } from '@angular/core'
                 </split-area>
             </split>
         </div>
-        <br><br>
-        <pre [innerText]="code"></pre>
     </div>`
 })
 export class NestedComponent {
-    code: string = `<div class="split-example" style="height: 600px;">
-    <split direction="horizontal">
-        <split-area size="40">
-            <split direction="vertical">
-                <split-area>
-                    <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                </split-area>
-                <split-area>
-                    <p>Sed ut perspiciatis unde omnis iste natus error...</p>
-                </split-area>
-                <split-area>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing...</p>
-                </split-area>
-            </split>
-        </split-area>
-        <split-area size="60">
-            <split direction="vertical">
-                <split-area size="25">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing...</p>
-                </split-area>
-                <split-area size="75">
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem...</p>
-                </split-area>
-            </split>
-        </split-area>
-    </split>
-</div>`
+    data: IExampleData
+    
+    constructor() {
+        this.data = examples[1];
+    }
 
 }

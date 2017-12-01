@@ -1,5 +1,8 @@
-import { Component } from '@angular/core'
-import { Router, NavigationStart } from '@angular/router'
+import { Component } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+
+import { examples } from './listExamples';
 
 @Component({
   selector: 'sp-topbar',
@@ -58,35 +61,9 @@ import { Router, NavigationStart } from '@angular/router'
             <li class="nav-item dropdown" dropdown>
                 <a class="nav-link dropdown-toggle" dropdownToggle>Examples <span class="caret"></span></a>
                 <ul *dropdownMenu class="dropdown-menu" role="menu">
-                    <li [class.active]="router.isActive('/examples/simple-split', true)">
-                        <a class="dropdown-item" routerLink="/examples/simple-split">Simple split</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/nested-split', true)">
-                        <a class="dropdown-item" routerLink="/examples/nested-split">Nested splits</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/split-transitons', true)">
-                        <a class="dropdown-item" routerLink="/examples/split-transitons">Split transitions</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/custom-gutter-style', true)">
-                        <a class="dropdown-item" routerLink="/examples/custom-gutter-style">Custom gutter style</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/toggling-dom-and-visibility', true)">
-                        <a class="dropdown-item" routerLink="/examples/toggling-dom-and-visibility">Toggling areas using *ngIf and [visible]</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/gutter-click-roll-unroll', true)">
-                        <a class="dropdown-item" routerLink="/examples/gutter-click-roll-unroll">Roll/unroll area on gutter click</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/access-from-class', true)">
-                        <a class="dropdown-item" routerLink="/examples/access-from-class">Interact from TS class</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/geek-demo', true)">
-                        <a class="dropdown-item" routerLink="/examples/geek-demo">Geek demo (100% dynamic)</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/dir-rtl', true)">
-                        <a class="dropdown-item" routerLink="/examples/dir-rtl">Right to left page</a>
-                    </li>
-                    <li [class.active]="router.isActive('/examples/workspace-localstorage', true)">
-                        <a class="dropdown-item" routerLink="/examples/workspace-localstorage">Fullscreen workspace</a>
+                    <li *ngFor="let ex of examples"
+                            [class.active]="router.isActive(ex.path, true)">
+                        <a class="dropdown-item" [routerLink]="ex.path" [innerHTML]="transform(ex.label)"></a>
                     </li>
                 </ul>
             </li>
@@ -95,11 +72,19 @@ import { Router, NavigationStart } from '@angular/router'
       </div>`
 })
 export class TopbarComponent {
+    examples: Array<IExampleData>
     isCollapsed: boolean = true
 
-    constructor(public router: Router) {
+    constructor(private sanitizer: DomSanitizer,
+                public router: Router) {
+        this.examples = examples;
+
         this.router.events.filter(e => e instanceof NavigationStart).subscribe(event => {
             this.isCollapsed = true;
         });
+    }
+
+    transform(label: string) {
+        return this.sanitizer.bypassSecurityTrustHtml(label);
     }
 }

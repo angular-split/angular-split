@@ -1,5 +1,7 @@
-import { Component, ViewChild } from '@angular/core'
+import { Component, ViewChild } from '@angular/core';
 import { SortableComponent } from 'ngx-bootstrap/sortable';
+
+import { examples } from './../listExamples';
 
 
 @Component({
@@ -36,7 +38,7 @@ import { SortableComponent } from 'ngx-bootstrap/sortable';
   `],
   template: `
     <div class="container">
-        <h4>Geek demoDynamically split</h4>
+        <sp-example-title [ex]="data"></sp-example-title>
         <div class="split-example" style="height: 500px; background-color: #e5e0e0;">
             <split [direction]="d.dir" 
                    [gutterSize]="d.gutterSize" 
@@ -115,11 +117,11 @@ import { SortableComponent } from 'ngx-bootstrap/sortable';
                     </table>
                 </ng-template>
         </div>
-        <br><br>
-        <pre [innerText]="code"></pre>
     </div>`
 })
 export class GeekDemoComponent {
+    data: IExampleData
+
     @ViewChild(SortableComponent) sortableComponent: SortableComponent
     
     d = {
@@ -133,6 +135,10 @@ export class GeekDemoComponent {
             {id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: true},
             {id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: false},
         ]
+    }
+
+    constructor() {
+        this.data = examples[7];
     }
 
     addArea() {
@@ -152,9 +158,6 @@ export class GeekDemoComponent {
         
         this.sortableComponent.writeValue(this.d.areas);
     }
-    
-    code: string = `xxx`;
-    
 }
 
 

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
+
+import { examples } from './../listExamples';
 
 
 @Component({
@@ -18,7 +20,7 @@ import { Component } from '@angular/core'
   `],
   template: `
     <div class="container">
-        <h4>Split inside right to left (RTL) webpages</h4>
+        <sp-example-title [ex]="data"></sp-example-title>
         <div class="split-example" [dir]="dir">
             <split [direction]="dir" [dir]="dir">
                 <split-area size="20">
@@ -36,13 +38,14 @@ import { Component } from '@angular/core'
         <div class="btns">
             <button class="btn btn-warning" (click)="dir = (dir === 'rtl') ? 'ltr' : 'rtl'">{{ 'Toggle dir: "' + dir + '"' }}</button>    
         </div>
-        <br><br>
-        <pre [innerText]="code"></pre>
     </div>`
 })
 export class DirRtlComponent {
+    data: IExampleData
     dir: string = 'rtl'
-
-    code: string = `xxx`
+    
+    constructor() {
+        this.data = examples[8];
+    }
 
 }

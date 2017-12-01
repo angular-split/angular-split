@@ -1,4 +1,6 @@
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
+
+import { examples } from './../listExamples';
 
 
 @Component({
@@ -24,7 +26,7 @@ import { Component } from '@angular/core'
   `],
   template: `
     <div class="container">
-        <h4>Split with custom behavior on <code>(gutterClick)</code> to roll/unroll areas</h4>
+        <sp-example-title [ex]="data"></sp-example-title>
         <div class="split-example">
             <split [disabled]="isDisabled" 
                    gutterSize="10" 
@@ -46,11 +48,10 @@ import { Component } from '@angular/core'
                 <button class="btn btn-warning" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
             </div>
         </div>
-        <br>
-        <pre [innerText]="code"></pre>
     </div>`
 })
 export class GutterClickComponent {
+    data: IExampleData
     isDisabled: boolean = true
     useTransition: boolean = true
     areas = [
@@ -96,5 +97,9 @@ export class GutterClickComponent {
         this.areas[0].size = e.sizes[0];
         this.areas[1].size = e.sizes[1];
         this.areas[2].size = e.sizes[2];
+    }
+    
+    constructor() {
+        this.data = examples[5];
     }
 }
