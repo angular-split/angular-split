@@ -1,4 +1,10 @@
 
+<a name="1.0.0-rc.0"></a>
+# 1.0.0-rc.0 (2017-12-01)
+
+* **Bug:** Call `cdRef.markForCheck()` in several setters inside `SplitComponent` to force repaint if modified from TS class (instead of the template).
+
+
 <a name="1.0.0-beta.9"></a>
 # 1.0.0-beta.9 (2017-11-19)
 
