@@ -1,5 +1,5 @@
 # angular-split
-Angular UI library to split views and allow user dragging to resize areas using CSS flexbox layout.
+Angular UI library used to split views and to allow dragging to resize the split areas using CSS flexbox layout.
 
 [![npm version](https://badge.fury.io/js/angular-split.svg)](https://badge.fury.io/js/angular-split)
 
