@@ -31,7 +31,7 @@ import { Component } from '@angular/core';
             <h1>angular-split 
               <a href="https://badge.fury.io/js/angular-split"><img src="https://badge.fury.io/js/angular-split.svg" alt="npm version" height="18"></a>
             </h1>
-            <h4>Angular UI library to split views and allow user dragging to resize areas using CSS flexbox layout.</h4>
+            <h4>Angular UI library used to split views and to allow dragging to resize the split areas using CSS flexbox layout.</h4>
             <br>
             <p><b>Warning</b>: Versions <code>1.x</code> needs <code>@angular/*@5.x</code> to work, use <code>0.2.x</code> for older angular versions (<a href="https://bertrandg.github.io/angular-split/old_0.2.x/">doc</a>).</p>
             <h5>Install npm module:</h5>
