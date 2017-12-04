@@ -29,7 +29,7 @@
         "split-area",
         "flexbox"
     ],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "dependencies": {
         "tslib": "^1.7.1"
     },
