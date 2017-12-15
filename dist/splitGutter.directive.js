@@ -67,23 +67,23 @@ var SplitGutterDirective = (function () {
                 return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==';
         }
     };
+    SplitGutterDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: 'split-gutter'
+                },] },
+    ];
+    /** @nocollapse */
+    SplitGutterDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+        { type: Renderer, },
+    ]; };
+    SplitGutterDirective.propDecorators = {
+        "order": [{ type: Input },],
+        "direction": [{ type: Input },],
+        "size": [{ type: Input },],
+        "disabled": [{ type: Input },],
+    };
     return SplitGutterDirective;
 }());
 export { SplitGutterDirective };
-SplitGutterDirective.decorators = [
-    { type: Directive, args: [{
-                selector: 'split-gutter'
-            },] },
-];
-/** @nocollapse */
-SplitGutterDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer, },
-]; };
-SplitGutterDirective.propDecorators = {
-    'order': [{ type: Input },],
-    'direction': [{ type: Input },],
-    'size': [{ type: Input },],
-    'disabled': [{ type: Input },],
-};
 //# sourceMappingURL=splitGutter.directive.js.map

@@ -6,26 +6,26 @@ import { SplitGutterDirective } from './splitGutter.directive';
 var AngularSplitModule = (function () {
     function AngularSplitModule() {
     }
+    AngularSplitModule.decorators = [
+        { type: NgModule, args: [{
+                    imports: [
+                        CommonModule
+                    ],
+                    declarations: [
+                        SplitComponent,
+                        SplitAreaDirective,
+                        SplitGutterDirective
+                    ],
+                    exports: [
+                        SplitComponent,
+                        SplitAreaDirective,
+                        SplitGutterDirective
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    AngularSplitModule.ctorParameters = function () { return []; };
     return AngularSplitModule;
 }());
 export { AngularSplitModule };
-AngularSplitModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [
-                    CommonModule
-                ],
-                declarations: [
-                    SplitComponent,
-                    SplitAreaDirective,
-                    SplitGutterDirective
-                ],
-                exports: [
-                    SplitComponent,
-                    SplitAreaDirective,
-                    SplitGutterDirective
-                ]
-            },] },
-];
-/** @nocollapse */
-AngularSplitModule.ctorParameters = function () { return []; };
 //# sourceMappingURL=angularSplit.module.js.map
