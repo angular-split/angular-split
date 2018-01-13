@@ -1,7 +1,7 @@
 {
     "name": "angular-split",
-    "version": "1.0.0-beta.9",
-    "description": "Angular (2+) UI library to split views using CSS flexbox layout.",
+    "version": "1.0.0-rc.0",
+    "description": "Angular UI library used to split views and to allow dragging to resize the split areas using CSS flexbox layout.",
     "main": "./bundles/angular-split.umd.js",
     "module": "./esm5/angular-split.js",
     "es2015": "./esm2015/angular-split.js",
@@ -25,9 +25,11 @@
     "keywords": [
         "angular",
         "split",
+        "split-pane",
+        "split-area",
         "flexbox"
     ],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "dependencies": {
         "tslib": "^1.7.1"
     },

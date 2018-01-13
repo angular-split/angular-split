@@ -122,6 +122,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Input() set disabled(v: boolean) {
         v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
         this._disabled = v;
+
+        // Force repaint if modified from TS class (instead of the template)
+        this.cdRef.markForCheck();
     }
     
     get disabled(): boolean {
@@ -179,6 +182,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     @Input() set gutterColor(v: string) {
         this._gutterColor = (typeof v === 'string' && v !== '') ? v : '';
+
+        // Force repaint if modified from TS class (instead of the template)
+        this.cdRef.markForCheck();
     }
     
     get gutterColor(): string {
@@ -191,6 +197,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     @Input() set gutterImageH(v: string) {
         this._gutterImageH = (typeof v === 'string' && v !== '') ? v : '';
+        
+        // Force repaint if modified from TS class (instead of the template)
+        this.cdRef.markForCheck();
     }
     
     get gutterImageH(): string {
@@ -203,6 +212,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     @Input() set gutterImageV(v: string) {
         this._gutterImageV = (typeof v === 'string' && v !== '') ? v : '';
+
+        // Force repaint if modified from TS class (instead of the template)
+        this.cdRef.markForCheck();
     }
     
     get gutterImageV(): string {

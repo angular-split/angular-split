@@ -130,6 +130,8 @@ var SplitComponent = (function () {
         function (v) {
             v = (typeof (v) === 'boolean') ? v : (v === 'false' ? false : true);
             this._disabled = v;
+            // Force repaint if modified from TS class (instead of the template)
+            this.cdRef.markForCheck();
         },
         enumerable: true,
         configurable: true
@@ -204,6 +206,8 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._gutterColor = (typeof v === 'string' && v !== '') ? v : '';
+            // Force repaint if modified from TS class (instead of the template)
+            this.cdRef.markForCheck();
         },
         enumerable: true,
         configurable: true
@@ -221,6 +225,8 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._gutterImageH = (typeof v === 'string' && v !== '') ? v : '';
+            // Force repaint if modified from TS class (instead of the template)
+            this.cdRef.markForCheck();
         },
         enumerable: true,
         configurable: true
@@ -238,6 +244,8 @@ var SplitComponent = (function () {
          */
         function (v) {
             this._gutterImageV = (typeof v === 'string' && v !== '') ? v : '';
+            // Force repaint if modified from TS class (instead of the template)
+            this.cdRef.markForCheck();
         },
         enumerable: true,
         configurable: true
