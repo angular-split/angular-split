@@ -1,6 +1,6 @@
 {
     "name": "angular-split",
-    "version": "1.0.0-rc.0",
+    "version": "1.0.0-rc.1",
     "description": "Angular UI library used to split views and to allow dragging to resize the split areas using CSS flexbox layout.",
     "main": "./bundles/angular-split.umd.js",
     "module": "./esm5/angular-split.js",

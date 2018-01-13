@@ -40,7 +40,8 @@
  *
  */
 var SplitComponent = (function () {
-    function SplitComponent(elRef, cdRef, renderer) {
+    function SplitComponent(ngZone, elRef, cdRef, renderer) {
+        this.ngZone = ngZone;
         this.elRef = elRef;
         this.cdRef = cdRef;
         this.renderer = renderer;
@@ -542,9 +543,11 @@ var SplitComponent = (function () {
         // Place code here to allow '(gutterClick)' event even if '[disabled]="true"'.
         this.currentGutterNum = gutterNum;
         this.draggingWithoutMove = true;
-        this.dragListeners.push(this.renderer.listen('document', 'mouseup', function (e) { return _this.stopDragging(); }));
-        this.dragListeners.push(this.renderer.listen('document', 'touchend', function (e) { return _this.stopDragging(); }));
-        this.dragListeners.push(this.renderer.listen('document', 'touchcancel', function (e) { return _this.stopDragging(); }));
+        this.ngZone.runOutsideAngular(function () {
+            _this.dragListeners.push(_this.renderer.listen('document', 'mouseup', function (e) { return _this.stopDragging(); }));
+            _this.dragListeners.push(_this.renderer.listen('document', 'touchend', function (e) { return _this.stopDragging(); }));
+            _this.dragListeners.push(_this.renderer.listen('document', 'touchcancel', function (e) { return _this.stopDragging(); }));
+        });
         if (this.disabled) {
             return;
         }
@@ -575,8 +578,10 @@ var SplitComponent = (function () {
         else {
             return;
         }
-        this.dragListeners.push(this.renderer.listen('document', 'mousemove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
-        this.dragListeners.push(this.renderer.listen('document', 'touchmove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
+        this.ngZone.runOutsideAngular(function () {
+            _this.dragListeners.push(_this.renderer.listen('document', 'mousemove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
+            _this.dragListeners.push(_this.renderer.listen('document', 'touchmove', function (e) { return _this.dragEvent(e, start, areaA, areaB); }));
+        });
         areaA.comp.lockEvents();
         areaB.comp.lockEvents();
         this.isDragging = true;
@@ -750,6 +755,7 @@ var SplitComponent = (function () {
     ];
     /** @nocollapse */
     SplitComponent.ctorParameters = function () { return [
+        { type: core.NgZone, },
         { type: core.ElementRef, },
         { type: core.ChangeDetectorRef, },
         { type: core.Renderer2, },
@@ -784,7 +790,8 @@ var SplitComponent = (function () {
  * @suppress {checkTypes} checked by tsc
  */
 var SplitAreaDirective = (function () {
-    function SplitAreaDirective(elRef, renderer, split) {
+    function SplitAreaDirective(ngZone, elRef, renderer, split) {
+        this.ngZone = ngZone;
         this.elRef = elRef;
         this.renderer = renderer;
         this.split = split;
@@ -886,7 +893,9 @@ var SplitAreaDirective = (function () {
         this.split.addArea(this);
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', '0');
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', '0');
-        this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', function (e) { return _this.onTransitionEnd(e); });
+        this.ngZone.runOutsideAngular(function () {
+            _this.transitionListener = _this.renderer.listen(_this.elRef.nativeElement, 'transitionend', function (e) { return _this.onTransitionEnd(e); });
+        });
     };
     /**
      * @param {?} prop
@@ -1002,8 +1011,11 @@ var SplitAreaDirective = (function () {
      * @return {?}
      */
     function () {
-        this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'selectstart', function (e) { return false; }));
-        this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'dragstart', function (e) { return false; }));
+        var _this = this;
+        this.ngZone.runOutsideAngular(function () {
+            _this.lockListeners.push(_this.renderer.listen(_this.elRef.nativeElement, 'selectstart', function (e) { return false; }));
+            _this.lockListeners.push(_this.renderer.listen(_this.elRef.nativeElement, 'dragstart', function (e) { return false; }));
+        });
     };
     /**
      * @return {?}
@@ -1039,6 +1051,7 @@ var SplitAreaDirective = (function () {
     ];
     /** @nocollapse */
     SplitAreaDirective.ctorParameters = function () { return [
+        { type: core.NgZone, },
         { type: core.ElementRef, },
         { type: core.Renderer2, },
         { type: SplitComponent, },
