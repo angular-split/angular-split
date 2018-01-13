@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Renderer2, OnInit, OnDestroy } from '@angular/core';
+import { Directive, Input, ElementRef, Renderer2, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { SplitComponent } from './split.component';
 
@@ -75,7 +75,8 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private transitionListener: Function;
     private readonly lockListeners: Array<Function> = [];
 
-    constructor(private elRef: ElementRef,
+    constructor(private ngZone: NgZone,
+                private elRef: ElementRef,
                 private renderer: Renderer2,
                 private split: SplitComponent) {}
 
@@ -85,7 +86,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', '0');
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', '0');
 
-        this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', (e: TransitionEvent) => this.onTransitionEnd(e));
+        this.ngZone.runOutsideAngular(() => {
+            this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', (e: TransitionEvent) => this.onTransitionEnd(e));
+        });
     }
 
     public getSizePixel(prop: 'offsetWidth' | 'offsetHeight'): number {
@@ -152,8 +155,10 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     }
     
     public lockEvents(): void {
-        this.lockListeners.push( this.renderer.listen(this.elRef.nativeElement, 'selectstart', (e: Event) => false) );
-        this.lockListeners.push( this.renderer.listen(this.elRef.nativeElement, 'dragstart', (e: Event) => false) );
+        this.ngZone.runOutsideAngular(() => {
+            this.lockListeners.push( this.renderer.listen(this.elRef.nativeElement, 'selectstart', (e: Event) => false) );
+            this.lockListeners.push( this.renderer.listen(this.elRef.nativeElement, 'dragstart', (e: Event) => false) );
+        });
     }
 
     public unlockEvents(): void {

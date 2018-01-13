@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, Input, Output, HostBinding, ChangeDetectionStrategy, 
-    EventEmitter, Renderer2, OnDestroy, ElementRef, AfterViewInit } from '@angular/core';
+    EventEmitter, Renderer2, OnDestroy, ElementRef, AfterViewInit, NgZone } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
@@ -269,7 +269,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         sizePercentB: 0,
     };
 
-    constructor(private elRef: ElementRef,
+    constructor(private ngZone: NgZone,
+                private elRef: ElementRef,
                 private cdRef: ChangeDetectorRef,
                 private renderer: Renderer2) {}
 
@@ -453,9 +454,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         // Place code here to allow '(gutterClick)' event even if '[disabled]="true"'.
         this.currentGutterNum = gutterNum;
         this.draggingWithoutMove = true;
-        this.dragListeners.push( this.renderer.listen('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
-        this.dragListeners.push( this.renderer.listen('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
-        this.dragListeners.push( this.renderer.listen('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
+        this.ngZone.runOutsideAngular(() => {
+            this.dragListeners.push( this.renderer.listen('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
+        });
 
         if(this.disabled) {
             return;
@@ -492,8 +495,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             return;
         }
 
-        this.dragListeners.push( this.renderer.listen('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, start, areaA, areaB)) );
-        this.dragListeners.push( this.renderer.listen('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, start, areaA, areaB)) );
+        this.ngZone.runOutsideAngular(() => {
+            this.dragListeners.push( this.renderer.listen('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, start, areaA, areaB)) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, start, areaA, areaB)) );
+        });
 
         areaA.comp.lockEvents();
         areaB.comp.lockEvents();
