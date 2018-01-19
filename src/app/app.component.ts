@@ -11,7 +11,7 @@ import { Router, NavigationEnd } from '@angular/router';
     }
     :host > div {
       padding-top: 54px;
-      height: 100%;
+      width: 100%;
       height: 100%;
     }
   `],
