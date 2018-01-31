@@ -1,6 +1,6 @@
 
-<a name="1.0.0-rc.2"></a>
-# 1.0.0-rc.2 (2018-01-31)
+<a name="1.0.0-rc.3"></a>
+# 1.0.0-rc.3 (2018-01-31)
 
 * **Bug:** Use `devicePixelRatio` to make dragging value effective on HiDPI screen and browsers with zoom !== 100%, thanks to [tkglaser](https://github.com/tkglaser) and [HondaHiroyuki](https://github.com/HondaHiroyuki).
 
