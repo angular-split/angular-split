@@ -550,7 +550,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         // ¤ AREAS SIZE PIXEL
 
+        const devicePixelRatio = window.devicePixelRatio || 1;
         let offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
+        offsetPixel = offsetPixel / devicePixelRatio;
+        
         if(this.dir === 'rtl') {
             offsetPixel = -offsetPixel;
         }
