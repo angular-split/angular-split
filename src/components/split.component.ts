@@ -1,12 +1,10 @@
 import { Component, ChangeDetectorRef, Input, Output, HostBinding, ChangeDetectionStrategy, 
     EventEmitter, Renderer2, OnDestroy, ElementRef, AfterViewInit, NgZone } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/debounceTime';
-
+import { Subject, Observable } from 'rxjs';
 import { IArea } from './../interface/IArea';
 import { IPoint } from './../interface/IPoint';
 import { SplitAreaDirective } from './splitArea.directive';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * angular-split
@@ -242,7 +240,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Output() gutterClick = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
 
     private transitionEndInternal = new Subject<Array<number>>();
-    @Output() transitionEnd = (<Observable<Array<number>>> this.transitionEndInternal.asObservable()).debounceTime(20);
+    @Output() transitionEnd = (<Observable<Array<number>>> this.transitionEndInternal.asObservable()).pipe(debounceTime(20));
 
     @HostBinding('style.flex-direction') get cssFlexdirection() {
         return (this.direction === 'horizontal') ? 'row' : 'column';
