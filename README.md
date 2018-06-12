@@ -1,4 +1,8 @@
-# angular-split
+# angular-split-minsize
+This is a fork of the angular-split project. The project is at this time not being updated. I needed the minimum size feature, so this is the fork that has that feature.
+
+
+# Original Repo information
 Angular UI library used to split views and to allow dragging to resize the split areas using CSS flexbox layout.
 
 [![npm version](https://badge.fury.io/js/angular-split.svg)](https://badge.fury.io/js/angular-split)
