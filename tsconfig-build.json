@@ -32,7 +32,7 @@
         "skipTemplateCodegen": true,
         "annotateForClosureCompiler": true,
         "strictMetadataEmit": true,
-        "flatModuleOutFile": "angular-split.js",
-        "flatModuleId": "angular-split"
+        "flatModuleOutFile": "angular-split-minsize.js",
+        "flatModuleId": "angular-split-minsize"
     }
 }

@@ -3,7 +3,7 @@
 const shell = require('shelljs');
 const chalk = require('chalk');
 
-const PACKAGE = `angular-split`;
+const PACKAGE = `angular-split-minsize`;
 const NPM_DIR = `dist`;
 const ESM2015_DIR = `${NPM_DIR}/esm2015`;
 const ESM5_DIR = `${NPM_DIR}/esm5`;
