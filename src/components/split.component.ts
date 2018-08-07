@@ -310,7 +310,14 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
 
-        this.build(true, true);
+        // In case of transition, run build method after timeout so container
+        // element will finish transition and have it's actual size
+        // Timeout length same as transition length in SplitAreaDirective
+        if (this._useTransition) {
+            setTimeout(() => this.build(true, true), 300);
+        } else {
+            this.build(true, true);
+        }
     }
 
     public removeArea(comp: SplitAreaDirective): void {
