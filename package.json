@@ -8,9 +8,12 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "app_build": "ng build --prod --base-href /angular-split/",
+    "app_analyze": "ng build --prod --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
     "lib_build": "ng build angular-split",
-    "lib_pack": "cd dist/angular-split && npm pack",
-    "lib": "npm run lib_build && npm run lib_pack"
+    "lib_tgz": "ng build angular-split && cd dist/angular-split && npm pack",
+    "lib_pub_next": "ng build angular-split && npm publish --tag next ./dist/angular-split",
+    "lib_pub_latest": "ng build angular-split && npm publish --tag latest ./dist/angular-split"
   },
   "private": true,
   "dependencies": {
@@ -36,9 +39,9 @@
     "@angular/cli": "7.0.5",
     "@angular/compiler-cli": "7.0.3",
     "@angular/language-service": "7.0.3",
-    "@types/node": "10.12.3",
     "@types/jasmine": "2.8.11",
     "@types/jasminewd2": "2.0.6",
+    "@types/node": "10.12.3",
     "codelyzer": "4.5.0",
     "jasmine-core": "3.3.0",
     "jasmine-spec-reporter": "4.2.1",
@@ -52,6 +55,7 @@
     "tsickle": "0.33.1",
     "tslib": "1.9.3",
     "tslint": "5.11.0",
-    "typescript": "3.1.6"
+    "typescript": "3.1.6",
+    "webpack-bundle-analyzer": "^3.0.3"
   }
 }

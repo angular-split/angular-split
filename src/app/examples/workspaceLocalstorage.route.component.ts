@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+import { cloneDeep } from 'lodash';
 
 import { examples } from './../listExamples';
 
@@ -148,7 +148,7 @@ export class WorkspaceLocalstorageComponent implements OnInit {
     }
 
     resetConfig() {
-        this.config = _.cloneDeep(defaultConfig);
+        this.config = cloneDeep(defaultConfig);
 
         localStorage.removeItem(this.localStorageName);
     }

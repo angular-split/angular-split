@@ -13,7 +13,7 @@ import { examples } from './../listExamples';
             margin: 50px 0;
         }
 
-        split-area {
+        as-split-area {
             display: flex;
             justify-content: center;
             align-items: center;

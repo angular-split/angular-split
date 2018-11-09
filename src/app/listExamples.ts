@@ -10,7 +10,7 @@ import { DirRtlComponent } from './examples/dirRtl.route.component';
 import { WorkspaceLocalstorageComponent } from './examples/workspaceLocalstorage.route.component';
 
 
-const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/website-src/src/app/examples/';
+const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/master/src/app/examples/';
 
 export const examples: Array<IExampleData> = [
     {
