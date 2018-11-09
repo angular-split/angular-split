@@ -1,0 +1,24 @@
+
+:host {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow: hidden;
+    /* 
+        Important to keep following rules even if overrided later by 'HostBinding' 
+        because if [width] & [height] not provided, when build() is executed,
+        'HostBinding' hasn't been applied yet so code:
+        this.elRef.nativeElement["offsetHeight"] gives wrong value!  
+    */
+    width: 100%;
+    height: 100%;   
+}
+
+as-split-gutter {
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+    

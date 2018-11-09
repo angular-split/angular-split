@@ -1,0 +1,58 @@
+<div class="container">
+    <h4>Component <span class="directive">&#60;as-split&#62;</span></h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Input()</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let prop of splitDoc.inputs">
+                <td>{{ prop.name }}</td>
+                <td>{{ prop.type }}</td>
+                <td><code>{{ prop.default }}</code></td>
+                <td [innerHTML]="prop.details"></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Output()</th>
+                <th>Value</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let event of splitDoc.outputs">
+                <td>{{ event.name }}</td>
+                <td><code>{{ event.value }}</code></td>
+                <td [innerHTML]="event.details"></td>
+            </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <h4>Directive <span class="directive">&#60;as-split-area&#62;</span></h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Input()</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let prop of splitAreaDoc.inputs">
+                <td>{{ prop.name }}</td>
+                <td>{{ prop.type }}</td>
+                <td><code>{{ prop.default }}</code></td>
+                <td [innerHTML]="prop.details"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+</div>

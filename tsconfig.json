@@ -1,26 +1,29 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "strict": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "rootDir": ".",
-        "sourceMap": true,
-        "inlineSources": true,
-        "target": "es5",
-        "skipLibCheck": true,
-        "noUnusedLocals": true,
-        "lib": [
-            "es2015",
-            "dom"
-        ],
-        "typeRoots": [
-            "./node_modules/@types/"
-        ]
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "angular-split": [
+        "dist/angular-split"
+      ],
+      "angular-split/*": [
+        "dist/angular-split/*"
+      ]
+    }
+  }
 }

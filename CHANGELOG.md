@@ -1,4 +1,13 @@
 
+<a name="1.0.0"></a>
+# 1.0.0 (2018-11-10)
+
+* **Project organization:** Now follow `@angular/cli` library management way which is awesome: [Library status update 📢](https://github.com/bertrandg/angular-split/issues/122).
+* **Dependencies:** `angular@^7` and `rxjs@^6` with pipe method (`rxjs-compat` not needed anymore).
+* **Breaking changes:** Prefix `as-` added to component/directive to follow best practises: `<as-split>` & `<as-split-area>`.
+* **:** Revert change about `devicePixelRatio` added in `1.0.0-rc.3` because it was causing bad behavior on mobile [#85](https://github.com/bertrandg/angular-split/issues/85), need to investigate more to resolve [#81](https://github.com/bertrandg/angular-split/issues/81).
+
+
 <a name="1.0.0-rc.3"></a>
 # 1.0.0-rc.3 (2018-01-31)
 
