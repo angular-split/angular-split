@@ -27,3 +27,4 @@ context('Direction change', () => {
     cy.get('as-split-area[size="70"]').should('have.css', 'flex', '0 0 calc(-7.7px + 70%)');
   })
 })
+

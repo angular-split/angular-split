@@ -5,19 +5,16 @@
     "ng": "ng",
     "start": "ng serve",
     "lint": "ng lint",
-
     "app_build": "ng build --prod --base-href /angular-split/",
     "app_analyze": "ng build --prod --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
-
     "lib_build": "ng build angular-split",
     "lib_tgz": "npm run lib_build && cd dist/angular-split && npm pack",
     "lib_pub_next": "npm run lib_build && npm publish --tag next ./dist/angular-split",
     "lib_pub_latest": "npm run lib_build && npm publish --tag latest ./dist/angular-split",
-
     "cypress": "npm run lib_build && concurrently \"ng serve\" \"cypress open\"",
-    
-    "ci_cypress": "npm run lib_build && ng build --prod && concurrently \"npm run ci_server\" \"cypress run\"",
-    "ci_server": "http-server ./dist/angular-split-app -a localhost -p 4200 -c-1"
+    "ci_cypress": "npm run lib_build && ng build --prod && run-p --race ci_server ci_run",
+    "ci_server": "http-server ./dist/angular-split-app -a localhost -p 4200 -c-1",
+    "ci_run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +55,7 @@
     "karma-jasmine": "1.1.2",
     "karma-jasmine-html-reporter": "1.4.0",
     "ng-packagr": "4.4.0",
+    "npm-run-all": "4.1.3",
     "ts-node": "7.0.1",
     "tsickle": "0.33.1",
     "tslib": "1.9.3",
