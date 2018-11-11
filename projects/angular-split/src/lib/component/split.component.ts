@@ -468,20 +468,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.dragStartValues.sizePercentA = areaA.size;
         this.dragStartValues.sizePercentB = areaB.size;
 
-        let start: IPoint;
-        if(startEvent instanceof MouseEvent) {
-            start = {
-                x: startEvent.pageX,
-                y: startEvent.pageY,
-            };
-        }
-        else if(startEvent instanceof TouchEvent) {
-            start = {
-                x: startEvent.touches[0].pageX,
-                y: startEvent.touches[0].pageY,
-            };
-        }
-        else {
+        const start: IPoint = this.getPointFromEvent(startEvent);
+        if(!start) {
             return;
         }
 
@@ -502,26 +490,31 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         if(!this.isDragging) {
             return;
         }
-
-        let end: IPoint;
-        if(event instanceof MouseEvent) {
-            end = {
-                x: event.pageX,
-                y: event.pageY,
-            };
-        }
-        else if(event instanceof TouchEvent) {
-            end = {
-                x: event.touches[0].pageX,
-                y: event.touches[0].pageY,
-            };
-        }
-        else {
+        const end: IPoint = this.getPointFromEvent(event);
+        if(!end) {
             return;
         }
         
         this.draggingWithoutMove = false;
         this.drag(start, end, areaA, areaB);
+    }
+
+    private getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
+        // TouchEvent
+        if(event instanceof TouchEvent) {
+            return {
+                x: event.touches[0].pageX,
+                y: event.touches[0].pageY,
+            };
+        }
+        // MouseEvent
+        else if(event.pageX !== undefined && event.pageY !== undefined) {
+            return {
+                x: event.pageX,
+                y: event.pageY,
+            };
+        }
+        return null;
     }
 
     private drag(start: IPoint, end: IPoint, areaA: IArea, areaB: IArea): void {
