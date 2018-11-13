@@ -3,7 +3,7 @@
 import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
 
 
-context('Simple example page tests', () => {
+context('Sync splits example page tests', () => {
     const W = 1070;
     const H = 300;
     const GUTTER = 11;

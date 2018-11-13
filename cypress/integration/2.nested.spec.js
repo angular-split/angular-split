@@ -2,7 +2,7 @@
 
 import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
 
-context('Nested example page tests', () => {
+context('Nested splits example page tests', () => {
     const W = 1070;
     const H = 400;
     const GUTTER = 11;

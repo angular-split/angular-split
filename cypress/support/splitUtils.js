@@ -35,6 +35,7 @@ export function checkSplitDirAndCalcSizes(el, dir, w, h, gutter, sizes) {
 
 export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
     cy.log(`-- NEW SPLIT CHECK (${ dir },${ w },${ h },${ gutter })`);
+    
     // Before real test, check if values provided are ok !
     const total = sizes.reduce((acc, v) => acc + v, 0) + gutter * (sizes.length - 1);
     expect(total).to.eq((dir === 'horizontal') ? w : h);
