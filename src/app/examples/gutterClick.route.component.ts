@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-gutter-click',
+    host: {
+        'class': 'split-example-page'
+    },
     styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
         .btns {
             display: flex;
             justify-content: space-around;
@@ -26,7 +24,7 @@ import { examples } from './../listExamples';
     `],
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.CLICK"></sp-example-title>
             <div class="split-example">
                 <as-split [disabled]="isDisabled" 
                     gutterSize="10" 
@@ -50,8 +48,7 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class GutterClickComponent {
-    data: IExampleData
+export class GutterClickComponent extends AComponent {
     isDisabled: boolean = true
     useTransition: boolean = true
     areas = [
@@ -97,9 +94,5 @@ export class GutterClickComponent {
         this.areas[0].size = e.sizes[0];
         this.areas[1].size = e.sizes[1];
         this.areas[2].size = e.sizes[2];
-    }
-    
-    constructor() {
-        this.data = examples[5];
     }
 }

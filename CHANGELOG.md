@@ -1,4 +1,10 @@
 
+<a name="1.0.1"></a>
+# 1.0.1 (2018-11-13)
+
+* **Bug:** Some events were emitted outside of Zone.js leading to errors [#118](https://github.com/bertrandg/angular-split/issues/118).
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2018-11-10)
 
@@ -18,6 +24,7 @@
 # 1.0.0-rc.1 (2018-01-13)
 
 * **Performances:** Put all event listeners inside `ngZone.runOutsideAngular()` to avoid triggering change detection during drag, thanks to [klemenoslaj](https://github.com/klemenoslaj).
+
 
 <a name="1.0.0-rc.0"></a>
 # 1.0.0-rc.0 (2017-12-01)

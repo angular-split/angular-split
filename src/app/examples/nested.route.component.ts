@@ -1,20 +1,16 @@
 import { Component } from '@angular/core';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-nested',
-    styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
-    `],
+    host: {
+        'class': 'split-example-page'
+    },
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.NESTED"></sp-example-title>
             <div class="split-example" style="height: 400px;">
                 <as-split direction="horizontal">
                     <as-split-area size="40">
@@ -44,11 +40,4 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class NestedComponent {
-    data: IExampleData
-    
-    constructor() {
-        this.data = examples[1];
-    }
-
-}
+export class NestedComponent extends AComponent {}

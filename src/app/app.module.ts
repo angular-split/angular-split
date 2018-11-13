@@ -20,6 +20,7 @@ import { DocComponent } from './doc/doc.route.component';
 import { SimpleComponent } from './examples/simple.route.component';
 import { NestedComponent } from './examples/nested.route.component';
 import { TransitionsComponent } from './examples/transitions.route.component';
+import { SyncComponent } from './examples/sync.route.component';
 import { CustomGutterStyleComponent } from './examples/customGutterStyle.route.component';
 import { TogglingDomAndVisibleComponent } from './examples/togglingDomAndVisible.route.component';
 import { GutterClickComponent } from './examples/gutterClick.route.component';
@@ -52,6 +53,7 @@ const routes = [
         SimpleComponent,
         NestedComponent,
         TransitionsComponent,
+        SyncComponent,
         CustomGutterStyleComponent,
         TogglingDomAndVisibleComponent,
         GutterClickComponent,

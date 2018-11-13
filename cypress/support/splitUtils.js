@@ -2,7 +2,11 @@
 export function moveGutter(gutters, num, x, y) {
     cy.get(gutters).eq(num)
         .trigger('mousedown', { which: 1, pageX: 0, pageY: 0 })
-        .trigger('mousemove', { pageX: x, pageY: y });
+        .trigger('mousemove', { pageX: x*.25, pageY: y*.25 })
+        .trigger('mousemove', { pageX: x*.50, pageY: y*.50 })
+        .trigger('mousemove', { pageX: x*.75, pageY: y*.75 })
+        .trigger('mousemove', { pageX: x, pageY: y })
+        .trigger('mouseup');
         
     cy.document().trigger('mouseup', { force: true });
 }
@@ -30,6 +34,7 @@ export function checkSplitDirAndCalcSizes(el, dir, w, h, gutter, sizes) {
 //////////////////////////////////////////
 
 export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
+    cy.log(`-- NEW SPLIT CHECK (${ dir },${ w },${ h },${ gutter })`);
     // Before real test, check if values provided are ok !
     const total = sizes.reduce((acc, v) => acc + v, 0) + gutter * (sizes.length - 1);
     expect(total).to.eq((dir === 'horizontal') ? w : h);

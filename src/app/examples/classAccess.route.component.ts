@@ -1,17 +1,15 @@
 import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { SplitComponent, SplitAreaDirective } from 'angular-split';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-class-access',
+    host: {
+        'class': 'split-example-page'
+    },
     styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
         .btns {
             display: flex;
             justify-content: space-around;
@@ -27,7 +25,7 @@ import { examples } from './../listExamples';
     `],
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.CODE"></sp-example-title>
             <div class="split-example" [dir]="splitEl.dir">
                 <as-split direction="horizontal">
                     <as-split-area [size]="75">
@@ -55,18 +53,11 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class ClassAccessComponent implements AfterViewInit {
-    data: IExampleData
+export class ClassAccessComponent extends AComponent implements AfterViewInit {
 
     @ViewChild(SplitComponent) splitEl: SplitComponent
     @ViewChildren(SplitAreaDirective) areasEl: QueryList<SplitAreaDirective> 
-    
-    constructor() {
-        this.data = examples[6];
-    }
 
     ngAfterViewInit() {
-        console.log('this.splitEl', this.splitEl);
-        console.log('this.areasEl', this.areasEl);
     }
 }

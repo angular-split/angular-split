@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-simple',
+    host: {
+        'class': 'split-example-page'
+    },
     styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
         .btns {
             display: flex;
             justify-content: center;
@@ -20,7 +18,7 @@ import { examples } from './../listExamples';
     `],
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.SIMPLE"></sp-example-title>
             <div class="split-example">
                 <as-split [direction]="direction">
                     <as-split-area size="30">
@@ -37,12 +35,6 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class SimpleComponent {
-    data: IExampleData
+export class SimpleComponent extends AComponent {
     direction: string = 'horizontal'
-
-    constructor() {
-        this.data = examples[0];
-    }
-
 }

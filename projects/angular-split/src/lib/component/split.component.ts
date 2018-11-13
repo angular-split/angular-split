@@ -606,22 +606,24 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd'): void {
         const areasSize: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
-        switch(type) {
-            case 'start':
-                return this.dragStart.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-
-            case 'progress':
-                return this.dragProgress.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-
-            case 'end':
-                return this.dragEnd.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-                
-            case 'click':
-                return this.gutterClick.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-
-            case 'transitionEnd':
-                return this.transitionEndInternal.next(areasSize);
-        }
+        this.ngZone.run(() => {
+            switch(type) {
+                case 'start':
+                    return this.dragStart.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
+    
+                case 'progress':
+                    return this.dragProgress.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
+    
+                case 'end':
+                    return this.dragEnd.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
+                    
+                case 'click':
+                    return this.gutterClick.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
+    
+                case 'transitionEnd':
+                    return this.transitionEndInternal.next(areasSize);
+            }
+        });
     }
 
     public ngOnDestroy(): void {

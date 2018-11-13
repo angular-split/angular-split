@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-transitions',
+    host: {
+        'class': 'split-example-page'
+    },
     styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
-
         button {
             margin: 4px;
         }
@@ -54,7 +51,7 @@ import { examples } from './../listExamples';
     `],
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.TRANSITION"></sp-example-title>
             <div class="split-example">
                 <as-split direction="horizontal" 
                     disabled="true"
@@ -107,8 +104,7 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class TransitionsComponent {
-    data: IExampleData
+export class TransitionsComponent extends AComponent {
     action = {
         a1s: 25,
         a2s: 50,
@@ -119,13 +115,22 @@ export class TransitionsComponent {
         useTransition: true,
     }
     logMessages: Array<string> = []
-    
-    constructor() {
-        this.data = examples[2];
-    }
 
     log(e) {
-        this.logMessages.unshift(`${ new Date() } > transitionEnd event > ${ e }`);
+        this.logMessages.unshift(`${ formatDate(new Date()) } > transitionEnd event > ${ e }`);
     }
 
+}
+
+function formatDate(date) {
+    const year = date.getFullYear(),
+        month = date.getMonth() + 1, // months are zero indexed
+        day = date.getDate(),
+        hour = date.getHours(),
+        minute = date.getMinutes(),
+        hourFormatted = hour % 12 || 12, // hour returned in 24 hour format
+        minuteFormatted = minute < 10 ? "0" + minute : minute,
+        morning = hour < 12 ? "am" : "pm";
+
+    return `${ month }/${ day }/${ year } ${ hourFormatted }:${ minuteFormatted }${ morning }`;
 }

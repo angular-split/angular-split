@@ -1,18 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { SortableComponent } from 'ngx-bootstrap/sortable';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-geek-demo',
+    host: {
+        'class': 'split-example-page'
+    },
     styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
-
         as-split-area {
             display: flex;
             justify-content: center;
@@ -59,7 +56,7 @@ import { examples } from './../listExamples';
     `],
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.GEEK"></sp-example-title>
             <div class="split-example" style="background-color: #e5e0e0;">
                 <as-split [direction]="d.dir" 
                     [gutterSize]="d.gutterSize" 
@@ -129,9 +126,7 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class GeekDemoComponent {
-    data: IExampleData
-
+export class GeekDemoComponent extends AComponent {
     @ViewChild(SortableComponent) sortableComponent: SortableComponent
     
     d = {
@@ -144,10 +139,6 @@ export class GeekDemoComponent {
             {id: getRandomNum(), color: getRandomColor(), size: 50, present: true, visible: true},
             {id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: true},
         ]
-    }
-
-    constructor() {
-        this.data = examples[7];
     }
 
     addArea() {

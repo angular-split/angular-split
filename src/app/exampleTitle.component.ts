@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 
+import { examples } from './listExamples';
+import { ExampleEnum } from './enum';
+
 
 @Component({
     selector: 'sp-example-title',
@@ -24,9 +27,12 @@ export class ExampleTitleComponent {
     label: SafeHtml
     url: SafeResourceUrl
 
-    @Input() set ex(v: IExampleData) {
-        this.label = this.sanitizer.bypassSecurityTrustHtml(v.label);
-        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(v.srcUrl);
+    @Input() set type(v: ExampleEnum) {
+        const ex = examples.find(e => e.type === v);
+        if(!ex) return;
+
+        this.label = this.sanitizer.bypassSecurityTrustHtml(ex.label);
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(ex.srcUrl);
     }
 
     constructor(private sanitizer: DomSanitizer) {}

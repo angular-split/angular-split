@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-dir_rtl',
+    host: {
+        'class': 'split-example-page'
+    },
     styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
         .btns {
             display: flex;
             justify-content: center;
@@ -20,7 +18,7 @@ import { examples } from './../listExamples';
     `],
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.DIR"></sp-example-title>
             <div class="split-example" [dir]="dir">
                 <as-split [direction]="dir" [dir]="dir">
                     <as-split-area size="20">
@@ -40,12 +38,6 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class DirRtlComponent {
-    data: IExampleData
+export class DirRtlComponent extends AComponent {
     dir: string = 'rtl'
-    
-    constructor() {
-        this.data = examples[8];
-    }
-
 }

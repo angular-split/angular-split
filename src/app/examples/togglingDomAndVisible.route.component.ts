@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-toggling-dom-and-visible',
+    host: {
+        'class': 'split-example-page'
+    },
     styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
         .btns {
             display: flex;
             justify-content: center;
@@ -20,7 +18,7 @@ import { examples } from './../listExamples';
     `],
     template: `
         <div class="container">
-            <sp-example-title [ex]="data"></sp-example-title>
+            <sp-example-title [type]="exampleEnum.TOGGLE"></sp-example-title>
             <div class="split-example" style="height: 150px;">
                 <as-split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
                     <as-split-area *ngIf="action.isPresentA" [visible]="action.isVisibleA" [order]="0">
@@ -68,13 +66,7 @@ import { examples } from './../listExamples';
             </div>
         </div>`
 })
-export class TogglingDomAndVisibleComponent {
-    data: IExampleData
-
-    log(eventName, e) {
-        this.action.logs = `${ new Date() }: ${ eventName } > ${ e }\n${ this.action.logs }`;
-    }
-
+export class TogglingDomAndVisibleComponent extends AComponent {
     action = {
         isVisibleA: true,
         isVisibleB: true,
@@ -85,7 +77,7 @@ export class TogglingDomAndVisibleComponent {
         logs: ''
     }
 
-    constructor() {
-        this.data = examples[4];
+    log(eventName, e) {
+        this.action.logs = `${ new Date() }: ${ eventName } > ${ e }\n${ this.action.logs }`;
     }
 }

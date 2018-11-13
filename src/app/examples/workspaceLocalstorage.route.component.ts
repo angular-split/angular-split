@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { cloneDeep } from 'lodash';
 
-import { examples } from './../listExamples';
+import { AComponent } from './AComponent';
 
 
 interface IConfig {
@@ -102,7 +102,7 @@ const defaultConfig: IConfig = {
                                         [size]="row.size">
                                 <div [ngSwitch]="row.type" class="bloc">
                                     <div *ngSwitchCase="'doc'" class="explanations">
-                                        <sp-example-title [ex]="data"></sp-example-title>
+                                        <sp-example-title [type]="exampleEnum.WORKSPACE"></sp-example-title>
                                         <p>All areas size and visibility are saved to localStorage.<br>
                                         Toggle areas visibility using following buttons:</p>
                                         <ng-template ngFor let-c [ngForOf]="config.columns">
@@ -129,14 +129,9 @@ const defaultConfig: IConfig = {
             </ng-template>
         </as-split>`
 })
-export class WorkspaceLocalstorageComponent implements OnInit {
-    data: IExampleData
+export class WorkspaceLocalstorageComponent extends AComponent implements OnInit {
     localStorageName = 'angular-split-ws'
     config: IConfig = null
-
-    constructor() {
-        this.data = examples[9];
-    }
 
     ngOnInit() {
         if(localStorage.getItem(this.localStorageName)) {
@@ -154,8 +149,6 @@ export class WorkspaceLocalstorageComponent implements OnInit {
     }
 
     onDragEnd(columnindex: number, e: {gutterNum: number, sizes: Array<number>}) {
-        console.log('columnindex', columnindex)
-        console.log('sizesArray', e.sizes)
         // Column dragged
         if(columnindex === -1) {
             // Set size for all visible columns
