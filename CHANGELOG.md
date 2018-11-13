@@ -2,7 +2,7 @@
 <a name="1.0.1"></a>
 # 1.0.1 (2018-11-13)
 
-* **Bug:** Some events were emitted outside of Zone.js leading to errors [#118](https://github.com/bertrandg/angular-split/issues/118).
+* **Bug:** Some events were emitted outside of Zone.js leading to errors like [#118](https://github.com/bertrandg/angular-split/issues/118) &  [#109](https://github.com/bertrandg/angular-split/issues/109).
 
 
 <a name="1.0.0"></a>
