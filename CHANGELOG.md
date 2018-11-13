@@ -1,4 +1,10 @@
 
+<a name="1.0.2"></a>
+# 1.0.2 (2018-11-13)
+
+* **Bug:** Modify the way to emit gutterClick event which was buggy [#109](https://github.com/bertrandg/angular-split/issues/109).
+
+
 <a name="1.0.1"></a>
 # 1.0.1 (2018-11-13)
 
