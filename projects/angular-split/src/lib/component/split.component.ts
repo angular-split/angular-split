@@ -55,6 +55,7 @@ import { SplitAreaDirective } from '../directive/splitArea.directive';
                           [imageH]="gutterImageH"
                           [imageV]="gutterImageV"
                           [disabled]="disabled"
+                          (click)="clickGutter($event, index*2+1, index+1)"
                           (mousedown)="startDragging($event, index*2+1, index+1)"
                           (touchstart)="startDragging($event, index*2+1, index+1)"></as-split-gutter>
         </ng-template>`,
@@ -244,8 +245,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     public isViewInitialized: boolean = false;
     private isDragging: boolean = false;
-    private draggingWithoutMove: boolean = false;
     private currentGutterNum: number = 0;
+    private startPoint: IPoint | null = null;
+    private endPoint: IPoint | null = null;
 
     public readonly displayedAreas: Array<IArea> = [];
     private readonly hidedAreas: Array<IArea> = [];
@@ -348,7 +350,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         // ¤ AREAS ORDER
         
-        if(resetOrders === true) {    
+        if(resetOrders === true) {
 
             // If user provided 'order' for each area, use it to sort them.
             if(this.displayedAreas.every(a => a.comp.order !== null)) {
@@ -438,17 +440,21 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         });
     }
 
+    public clickGutter(event: MouseEvent, gutterOrder: number, gutterNum: number): void {
+        if(this.startPoint && this.startPoint.x === event.pageX && this.startPoint.y === event.pageY) {
+            this.currentGutterNum = gutterNum;
+
+            this.notify('click');
+        }
+    }
+
     public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
         startEvent.preventDefault();
 
-        // Place code here to allow '(gutterClick)' event even if '[disabled]="true"'.
-        this.currentGutterNum = gutterNum;
-        this.draggingWithoutMove = true;
-        this.ngZone.runOutsideAngular(() => {
-            this.dragListeners.push( this.renderer.listen('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
-        });
+        this.startPoint = getPointFromEvent(startEvent);
+        if(!this.startPoint) {
+            return;
+        }
 
         if(this.disabled) {
             return;
@@ -461,6 +467,12 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             return;
         }
 
+        this.ngZone.runOutsideAngular(() => {
+            this.dragListeners.push( this.renderer.listen('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
+        });
+
         const prop = (this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight';
         this.dragStartValues.sizePixelContainer = this.elRef.nativeElement[prop];
         this.dragStartValues.sizePixelA = areaA.comp.getSizePixel(prop);
@@ -468,14 +480,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.dragStartValues.sizePercentA = areaA.size;
         this.dragStartValues.sizePercentB = areaB.size;
 
-        const start: IPoint = this.getPointFromEvent(startEvent);
-        if(!start) {
-            return;
-        }
+        this.currentGutterNum = gutterNum;
 
         this.ngZone.runOutsideAngular(() => {
-            this.dragListeners.push( this.renderer.listen('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, start, areaA, areaB)) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, start, areaA, areaB)) );
+            this.dragListeners.push( this.renderer.listen('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, areaA, areaB)) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, areaA, areaB)) );
         });
 
         areaA.comp.lockEvents();
@@ -486,43 +495,25 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.notify('start');
     }
 
-    private dragEvent(event: MouseEvent | TouchEvent, start: IPoint, areaA: IArea, areaB: IArea): void {
+    private dragEvent(event: MouseEvent | TouchEvent, areaA: IArea, areaB: IArea): void {
         if(!this.isDragging) {
             return;
         }
-        const end: IPoint = this.getPointFromEvent(event);
-        if(!end) {
+
+        this.endPoint = getPointFromEvent(event);
+        if(!this.endPoint) {
             return;
         }
         
-        this.draggingWithoutMove = false;
-        this.drag(start, end, areaA, areaB);
+        this.drag(areaA, areaB);
     }
 
-    private getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
-        // TouchEvent
-        if(event instanceof TouchEvent) {
-            return {
-                x: event.touches[0].pageX,
-                y: event.touches[0].pageY,
-            };
-        }
-        // MouseEvent
-        else if(event.pageX !== undefined && event.pageY !== undefined) {
-            return {
-                x: event.pageX,
-                y: event.pageY,
-            };
-        }
-        return null;
-    }
-
-    private drag(start: IPoint, end: IPoint, areaA: IArea, areaB: IArea): void {
+    private drag(areaA: IArea, areaB: IArea): void {
 
         // ¤ AREAS SIZE PIXEL
 
         const devicePixelRatio = /*window.devicePixelRatio ||*/ 1;
-        let offsetPixel = (this.direction === 'horizontal') ? (start.x - end.x) : (start.y - end.y);
+        let offsetPixel = (this.direction === 'horizontal') ? (this.startPoint.x - this.endPoint.x) : (this.startPoint.y - this.endPoint.y);
         offsetPixel = offsetPixel / devicePixelRatio;
         
         if(this.dir === 'rtl') {
@@ -572,11 +563,14 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
 
         this.refreshStyleSizes();
-        this.notify('progress');
+        
+        if(this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
+            this.notify('progress');
+        }
     }
 
     private stopDragging(): void {
-        if(this.isDragging === false && this.draggingWithoutMove === false) {
+        if(this.isDragging === false) {
             return;
         }
 
@@ -591,15 +585,17 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             }
         }
         
-        if(this.draggingWithoutMove === true) {
-            this.notify('click');
-        }
-        else {
+        if(this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
             this.notify('end');
         }
 
         this.isDragging = false;
-        this.draggingWithoutMove = false;
+
+        // Needed to let (click)="clickGutter(...)" event run and verify if mouse moved or not
+        setTimeout(() => {
+            this.startPoint = null;
+            this.endPoint = null;
+        })
     }
 
 
@@ -629,4 +625,23 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     public ngOnDestroy(): void {
         this.stopDragging();
     }
+}
+
+
+function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
+    // TouchEvent
+    if(event instanceof TouchEvent) {
+        return {
+            x: event.touches[0].pageX,
+            y: event.touches[0].pageY,
+        };
+    }
+    // MouseEvent
+    else if(event.pageX !== undefined && event.pageY !== undefined) {
+        return {
+            x: event.pageX,
+            y: event.pageY,
+        };
+    }
+    return null;
 }
