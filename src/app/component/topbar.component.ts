@@ -3,7 +3,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
 
-import { examples } from './listExamples';
+import { examples } from '../data/listExamples';
 
 @Component({
     selector: 'sp-topbar',

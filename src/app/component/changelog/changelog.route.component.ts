@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ChangelogService } from '../changelog.service';
+import { ChangelogService } from '../../service/changelog.service';
 
 @Component({
     selector: 'sp-ex-changelog',

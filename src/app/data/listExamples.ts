@@ -1,14 +1,14 @@
-import { SimpleComponent } from './examples/simple.route.component';
-import { NestedComponent } from './examples/nested.route.component';
-import { TransitionsComponent } from './examples/transitions.route.component';
-import { SyncComponent } from './examples/sync.route.component';
-import { CustomGutterStyleComponent } from './examples/customGutterStyle.route.component';
-import { TogglingDomAndVisibleComponent } from './examples/togglingDomAndVisible.route.component';
-import { GutterClickComponent } from './examples/gutterClick.route.component';
-import { ClassAccessComponent } from './examples/classAccess.route.component';
-import { GeekDemoComponent } from './examples/geekDemo.route.component';
-import { DirRtlComponent } from './examples/dirRtl.route.component';
-import { WorkspaceLocalstorageComponent } from './examples/workspaceLocalstorage.route.component';
+import { SimpleComponent } from '../component/examples/simple.route.component';
+import { NestedComponent } from '../component/examples/nested.route.component';
+import { TransitionsComponent } from '../component/examples/transitions.route.component';
+import { SyncComponent } from '../component/examples/sync.route.component';
+import { CustomGutterStyleComponent } from '../component/examples/customGutterStyle.route.component';
+import { TogglingDomAndVisibleComponent } from '../component/examples/togglingDomAndVisible.route.component';
+import { GutterClickComponent } from '../component/examples/gutterClick.route.component';
+import { ClassAccessComponent } from '../component/examples/classAccess.route.component';
+import { GeekDemoComponent } from '../component/examples/geekDemo.route.component';
+import { DirRtlComponent } from '../component/examples/dirRtl.route.component';
+import { WorkspaceLocalstorageComponent } from '../component/examples/workspaceLocalstorage.route.component';
 import { ExampleEnum } from './enum'
 
 const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/master/src/app/examples/';

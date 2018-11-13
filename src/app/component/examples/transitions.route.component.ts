@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { AComponent } from './AComponent';
+import { formatDate } from '../../service/utils';
 
 
 @Component({
@@ -41,7 +42,7 @@ import { AComponent } from './AComponent';
             margin-bottom: 5px;
         }
         .logs > ul {
-            height: 64px;
+            height: 200px;
             width: 100%;
             overflow-y: scroll;
             overflow-x: hidden;
@@ -98,7 +99,7 @@ import { AComponent } from './AComponent';
             </div>
             <div class="logs">
                 <p>Events <code>(transitionEnd)</code>:</p>
-                <ul>
+                <ul #logs>
                     <li *ngFor="let l of logMessages">{{ l }}</li>
                 </ul>
             </div>
@@ -116,21 +117,13 @@ export class TransitionsComponent extends AComponent {
     }
     logMessages: Array<string> = []
 
+    @ViewChild('logs') logsEl: ElementRef
+
     log(e) {
-        this.logMessages.unshift(`${ formatDate(new Date()) } > transitionEnd event > ${ e }`);
+        this.logMessages.push(`${ formatDate(new Date()) } > transitionEnd event > ${ e }`);
+        setTimeout(() => {
+            (<HTMLElement> this.logsEl.nativeElement).scroll({top: this.logMessages.length*30});
+        })
     }
 
-}
-
-function formatDate(date) {
-    const year = date.getFullYear(),
-        month = date.getMonth() + 1, // months are zero indexed
-        day = date.getDate(),
-        hour = date.getHours(),
-        minute = date.getMinutes(),
-        hourFormatted = hour % 12 || 12, // hour returned in 24 hour format
-        minuteFormatted = minute < 10 ? "0" + minute : minute,
-        morning = hour < 12 ? "am" : "pm";
-
-    return `${ month }/${ day }/${ year } ${ hourFormatted }:${ minuteFormatted }${ morning }`;
 }

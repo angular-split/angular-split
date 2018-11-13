@@ -1,4 +1,4 @@
-import { ExampleEnum } from '../enum';
+import { ExampleEnum } from '../../data/enum';
 
 
 export class AComponent {

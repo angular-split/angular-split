@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { AComponent } from './AComponent';
+import { formatDate } from '../../service/utils';
 
 
 @Component({
@@ -12,7 +13,6 @@ import { AComponent } from './AComponent';
         .btns {
             display: flex;
             justify-content: space-around;
-            align-items: center;
             flex-wrap: wrap;
         }
         .btns > div {
@@ -20,6 +20,20 @@ import { AComponent } from './AComponent';
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        .btns > div > button {
+            margin-bottom: 10px;
+        }
+        .logs > p {
+            margin-bottom: 5px;
+        }
+        .logs > ul {
+            height: 200px;
+            width: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            border: 1px solid #bfbfbf;
+            background-color: #e8e8e8;
         }
     `],
     template: `
@@ -30,8 +44,10 @@ import { AComponent } from './AComponent';
                     gutterSize="10" 
                     direction="horizontal" 
                     [useTransition]="useTransition" 
-                    (dragEnd)="dragEnd($event)" 
-                    (gutterClick)="gutterClick($event)">
+                    (dragStart)="log('dragStart', $event)" 
+                    (dragProgress)="log('dragProgress', $event)" 
+                    (dragEnd)="log('dragEnd', $event)" 
+                    (gutterClick)="log('gutterClick', $event)" >
                     <as-split-area *ngFor="let a of areas" [size]="a.size" [order]="a.order">
                         <p>{{ a.content }}</p>
                     </as-split-area>
@@ -46,16 +62,36 @@ import { AComponent } from './AComponent';
                     <button class="btn btn-warning" [class.active]="!isDisabled" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
                 </div>
             </div>
+            <div class="logs">
+                <p>All <code>as-split</code> events emitted:</p>
+                <ul #logs>
+                    <li *ngFor="let l of logMessages">{{ l }}</li>
+                </ul>
+            </div>
         </div>`
 })
 export class GutterClickComponent extends AComponent {
     isDisabled: boolean = true
     useTransition: boolean = true
+    logMessages: Array<string> = []
     areas = [
         {size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg'},
         {size: 50, order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg'},
         {size: 25, order: 3, content: 'sd jslfd ijgil dfhlt jkgvbnhj fl bhjgflh jfglhj fl h fg'},
     ]
+
+    @ViewChild('logs') logsEl: ElementRef
+
+    log(type: string, e: {gutterNum: number, sizes: Array<number>}) {
+        this.logMessages.push(`${ formatDate(new Date()) } > ${ type } event > ${ JSON.stringify(e) }`);
+        setTimeout(() => {
+            (<HTMLElement> this.logsEl.nativeElement).scroll({top: this.logMessages.length*30});
+        })
+
+        if(type === 'gutterClick') {
+            this.gutterClick(e);
+        }
+    }
 
     gutterClick(e: {gutterNum: number, sizes: Array<number>}) {
         if(e.gutterNum === 1) {

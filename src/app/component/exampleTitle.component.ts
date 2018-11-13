@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 
-import { examples } from './listExamples';
-import { ExampleEnum } from './enum';
+import { examples } from '../data/listExamples';
+import { ExampleEnum } from '../data/enum';
 
 
 @Component({
