@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "lint": "ng lint",
-    "app_build": "ng build --prod --base-href /angular-split/",
+    "app_build": "npm run lib_build && ng build --prod --base-href /angular-split/",
     "app_analyze": "npm run lib_build && ng build --prod --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
     "lib_build": "ng build angular-split",
     "lib_tgz": "npm run lib_build && cd dist/angular-split && npm pack",
