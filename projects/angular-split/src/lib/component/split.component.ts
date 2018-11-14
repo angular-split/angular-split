@@ -47,17 +47,17 @@ import { SplitAreaDirective } from '../directive/splitArea.directive';
         <ng-content></ng-content>
         <ng-template ngFor let-area [ngForOf]="displayedAreas" let-index="index" let-last="last">
             <as-split-gutter *ngIf="last === false" 
-                          [order]="index*2+1"
-                          [direction]="direction"
-                          [useTransition]="useTransition"
-                          [size]="gutterSize"
-                          [color]="gutterColor"
-                          [imageH]="gutterImageH"
-                          [imageV]="gutterImageV"
-                          [disabled]="disabled"
-                          (click)="clickGutter($event, index*2+1, index+1)"
-                          (mousedown)="startDragging($event, index*2+1, index+1)"
-                          (touchstart)="startDragging($event, index*2+1, index+1)"></as-split-gutter>
+                             [order]="index*2+1"
+                             [direction]="direction"
+                             [useTransition]="useTransition"
+                             [size]="gutterSize"
+                             [color]="gutterColor"
+                             [imageH]="gutterImageH"
+                             [imageV]="gutterImageV"
+                             [disabled]="disabled"
+                             (click)="clickGutter($event, index*2+1, index+1)"
+                             (mousedown)="startDragging($event, index*2+1, index+1)"
+                             (touchstart)="startDragging($event, index*2+1, index+1)"></as-split-gutter>
         </ng-template>`,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {
@@ -630,17 +630,17 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
 function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
     // TouchEvent
-    if(event instanceof TouchEvent) {
+    if((<TouchEvent> event).touches !== undefined && (<TouchEvent> event).touches.length > 0) {
         return {
-            x: event.touches[0].pageX,
-            y: event.touches[0].pageY,
+            x: (<TouchEvent> event).touches[0].pageX,
+            y: (<TouchEvent> event).touches[0].pageY,
         };
     }
     // MouseEvent
-    else if(event.pageX !== undefined && event.pageY !== undefined) {
+    else if((<MouseEvent> event).pageX !== undefined && (<MouseEvent> event).pageY !== undefined) {
         return {
-            x: event.pageX,
-            y: event.pageY,
+            x: (<MouseEvent> event).pageX,
+            y: (<MouseEvent> event).pageY,
         };
     }
     return null;
