@@ -2,7 +2,7 @@
 <a name="1.0.3"></a>
 # 1.0.3 (2018-11-14)
 
-* **Bug:** Remove reference to `TouchEvent` which cause error on Firefox & IE/Edge. Introduced in `1.0.1` but was there (before)[https://github.com/bertrandg/angular-split/blob/c71b7cf10a66a698820e91962d06cf35b726edc2/projects/angular-split/src/lib/component/split.component.ts#L478] (less frequent).
+* **Bug:** Remove reference to `TouchEvent` which cause error on Firefox & IE/Edge. Introduced in `1.0.1` but was there [before](https://github.com/bertrandg/angular-split/blob/c71b7cf10a66a698820e91962d06cf35b726edc2/projects/angular-split/src/lib/component/split.component.ts#L478) (less frequent).
 
 
 <a name="1.0.2"></a>
