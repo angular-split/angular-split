@@ -78,3 +78,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// Needed to allow access directly on https://stackblitz.com/github/bertrandg/angular-split
+import 'core-js/es7/reflect';
