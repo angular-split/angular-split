@@ -2,7 +2,7 @@
 <a name="1.0.4"></a>
 # 1.0.4 (2018-11-15)
 
-* **Bug:** Fix Edge first rendering issue with nested split by applying css flex-direction property differently on `<as-split>` [#25](https://github.com/bertrandg/angular-split/issues/125).
+* **Bug:** Fix Edge first rendering issue with nested split by applying css flex-direction property differently on `<as-split>` [#125](https://github.com/bertrandg/angular-split/issues/125).
 
 
 <a name="1.0.3"></a>
