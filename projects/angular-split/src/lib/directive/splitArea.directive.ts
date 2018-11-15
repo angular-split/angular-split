@@ -67,7 +67,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.split.addArea(this);
-        this.split.updateArea(this, true, true);
 
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', '0');
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', '0');
