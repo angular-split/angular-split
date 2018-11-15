@@ -37,21 +37,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     ////
 
-    private _minSize: number = 0;
-
-    @Input() set minSize(v: number) {
-        v = Number(v);
-        this._minSize = (!isNaN(v) && v > 0 && v < 100) ? v/100 : 0;
-
-        this.split.updateArea(this, false, true);
-    }
-    
-    get minSize(): number {
-        return this._minSize;
-    }
-
-    ////
-
     private _visible: boolean = true;
 
     @Input() set visible(v: boolean) {
@@ -82,6 +67,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.split.addArea(this);
+        this.split.updateArea(this, true, true);
 
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', '0');
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', '0');
