@@ -68,6 +68,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         v = (v === 'vertical') ? 'vertical' : 'horizontal';
         this._direction = v;
         
+        // ngAfterViewInit not called but DOM element available
+        // Do this because using @HostBinding('style.flex-direction') cause Edge bug ()
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-direction', (v === 'horizontal') ? 'row' : 'column');
+        
         [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
             area.comp.setStyleVisibleAndDir(area.comp.visible, this.isDragging, this.direction);
         });
@@ -222,10 +226,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Output() transitionEnd = (<Observable<Array<number>>> this.transitionEndInternal.asObservable()).pipe(
         debounceTime(20)
     );
-
-    @HostBinding('style.flex-direction') get cssFlexdirection() {
-        return (this.direction === 'horizontal') ? 'row' : 'column';
-    }
 
     @HostBinding('style.width') get cssWidth() {
         return this.width ? `${ this.width }px` : '100%';
@@ -496,6 +496,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     private dragEvent(event: MouseEvent | TouchEvent, areaA: IArea, areaB: IArea): void {
+        event.preventDefault();
+
         if(!this.isDragging) {
             return;
         }
