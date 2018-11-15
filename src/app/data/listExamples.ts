@@ -11,7 +11,7 @@ import { DirRtlComponent } from '../component/examples/dirRtl.route.component';
 import { WorkspaceLocalstorageComponent } from '../component/examples/workspaceLocalstorage.route.component';
 import { ExampleEnum } from './enum'
 
-const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/master/src/app/examples/';
+const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/master/src/app/component/examples/';
 
 
 export const examples: Array<IExampleData> = [
