@@ -45,9 +45,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
         if(this.visible) { 
             this.split.showArea(this);
+            this.renderer.removeClass(this.elRef.nativeElement, 'hided');
         }
         else {
             this.split.hideArea(this);
+            this.renderer.addClass(this.elRef.nativeElement, 'hided');
         }
     }
 
@@ -68,9 +70,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     public ngOnInit(): void {
         this.split.addArea(this);
 
-        this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', '0');
-        this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', '0');
-
         this.ngZone.runOutsideAngular(() => {
             this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', (e: TransitionEvent) => this.onTransitionEnd(e));
         });
@@ -80,56 +79,12 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         return this.elRef.nativeElement[prop];
     }
 
-    public setStyleVisibleAndDir(isVisible: boolean, isDragging: boolean, direction: 'horizontal' | 'vertical'): void {
-        if(isVisible === false) {
-            this.setStyleFlexbasis('0', isDragging);
-            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-x', 'hidden');
-            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-y', 'hidden');
-            
-            if(direction === 'vertical') {
-                this.renderer.setStyle(this.elRef.nativeElement, 'max-width', '0');
-            }
-        }
-        else {
-            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-x', 'hidden');
-            this.renderer.setStyle(this.elRef.nativeElement, 'overflow-y', 'auto');
-            this.renderer.removeStyle(this.elRef.nativeElement, 'max-width');
-        }
-
-        if(direction === 'horizontal') {
-            this.renderer.setStyle(this.elRef.nativeElement, 'height', '100%');
-            this.renderer.removeStyle(this.elRef.nativeElement, 'width');
-        }
-        else {
-            this.renderer.setStyle(this.elRef.nativeElement, 'width', '100%');
-            this.renderer.removeStyle(this.elRef.nativeElement, 'height');
-        }
-    }
-
     public setStyleOrder(value: number): void {
         this.renderer.setStyle(this.elRef.nativeElement, 'order', value);
     }
     
-    public setStyleFlexbasis(value: string, isDragging: boolean): void {
-        // If component not yet initialized or gutter being dragged, disable transition
-        if(this.split.isViewInitialized === false || isDragging === true) {
-            this.setStyleTransition(false);
-        }
-        // Or use 'useTransition' to know if transition.
-        else {
-            this.setStyleTransition(this.split.useTransition);
-        }
-
+    public setStyleFlexbasis(value: string): void {
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
-    }
-    
-    private setStyleTransition(useTransition: boolean): void {
-        if(useTransition) {
-            this.renderer.setStyle(this.elRef.nativeElement, 'transition', `flex-basis 0.3s`);
-        }
-        else {
-            this.renderer.removeStyle(this.elRef.nativeElement, 'transition');
-        }
     }
     
     private onTransitionEnd(event: TransitionEvent): void {

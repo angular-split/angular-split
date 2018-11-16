@@ -5,20 +5,85 @@
     justify-content: flex-start;
     align-items: stretch;
     overflow: hidden;
-    /* 
-        Important to keep following rules even if overrided later by 'HostBinding' 
-        because if [width] & [height] not provided, when build() is executed,
-        'HostBinding' hasn't been applied yet so code:
-        this.elRef.nativeElement["offsetHeight"] gives wrong value!  
-    */
     width: 100%;
     height: 100%;   
-}
+    
 
-as-split-gutter {
-    flex-grow: 0;
-    flex-shrink: 0;
-    background-position: center center;
-    background-repeat: no-repeat;
+    & > .as-split-gutter {
+        flex-grow: 0;
+        flex-shrink: 0;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-color: #eeeeee;
+    }
+
+    & > as-split-area {
+        flex-grow: 0;
+        flex-shrink: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        &.hided {
+            flex-basis: 0;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+    }
+
+    
+    &.horizontal {
+        flex-direction: row;
+
+        & > .as-split-gutter {
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+            cursor: col-resize;
+
+            // Fix safari bug about gutter height when direction is horizontal
+            height: 100%;
+        }
+
+        & > as-split-area {
+            height: 100%;
+        }
+    }
+
+    &.vertical {
+        flex-direction: column;
+
+        & > .as-split-gutter {
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC");
+            cursor: row-resize;
+
+            width: 100%;
+        }
+
+        & > as-split-area {
+            width: 100%;
+
+            &.hided {
+                max-width: 0;
+            }
+        }
+    }
+
+    &.disabled {
+
+        & > .as-split-gutter {
+            background-color: '';
+            cursor: default;
+        }
+    }
+
+    &.transition:not(.dragging) {
+
+        & > .as-split-gutter {
+            transition: flex-basis 0.3s;
+        }
+
+        & > as-split-area {
+            transition: flex-basis 0.3s;
+        }
+
+    }
 }
     

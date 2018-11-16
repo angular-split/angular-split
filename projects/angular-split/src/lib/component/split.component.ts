@@ -1,5 +1,4 @@
-import { Component, ChangeDetectorRef, Input, Output, HostBinding, ChangeDetectionStrategy, 
-    EventEmitter, Renderer2, OnDestroy, ElementRef, AfterViewInit, NgZone } from '@angular/core';
+import { Component, ChangeDetectorRef, Input, Output, HostBinding, ChangeDetectionStrategy, EventEmitter, Renderer2, OnDestroy, ElementRef, NgZone } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -46,21 +45,16 @@ import { SplitAreaDirective } from '../directive/splitArea.directive';
     template: `
         <ng-content></ng-content>
         <ng-template ngFor let-area [ngForOf]="displayedAreas" let-index="index" let-last="last">
-            <as-split-gutter *ngIf="last === false" 
-                             [order]="index*2+1"
-                             [direction]="direction"
-                             [useTransition]="useTransition"
-                             [size]="gutterSize"
-                             [color]="gutterColor"
-                             [imageH]="gutterImageH"
-                             [imageV]="gutterImageV"
-                             [disabled]="disabled"
-                             (click)="clickGutter($event, index*2+1, index+1)"
-                             (mousedown)="startDragging($event, index*2+1, index+1)"
-                             (touchstart)="startDragging($event, index*2+1, index+1)"></as-split-gutter>
+            <div *ngIf="last === false" 
+                 class="as-split-gutter"
+                 [style.flex-basis.px]="gutterSize"
+                 [style.order]="index*2+1"
+                 (click)="clickGutter($event, index*2+1, index+1)"
+                 (mousedown)="startDragging($event, index*2+1, index+1)"
+                 (touchstart)="startDragging($event, index*2+1, index+1)"></div>
         </ng-template>`,
 })
-export class SplitComponent implements AfterViewInit, OnDestroy {
+export class SplitComponent implements OnDestroy {
 
     private _direction: 'horizontal' | 'vertical' = 'horizontal';
 
@@ -68,13 +62,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         v = (v === 'vertical') ? 'vertical' : 'horizontal';
         this._direction = v;
         
-        // ngAfterViewInit not called but DOM element available
-        // Do this because using @HostBinding('style.flex-direction') cause Edge bug ()
-        this.renderer.setStyle(this.elRef.nativeElement, 'flex-direction', (v === 'horizontal') ? 'row' : 'column');
-        
-        [...this.displayedAreas, ...this.hidedAreas].forEach(area => {
-            area.comp.setStyleVisibleAndDir(area.comp.visible, this.isDragging, this.direction);
-        });
+        this.renderer.addClass(this.elRef.nativeElement, this._direction);
         
         this.build(false, false);
     }
@@ -90,6 +78,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Input() set useTransition(v: boolean) {
         v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
         this._useTransition = v;
+
+        if(v)   this.renderer.addClass(this.elRef.nativeElement, 'transition');
+        else    this.renderer.removeClass(this.elRef.nativeElement, 'transition');
     }
     
     get useTransition(): boolean {
@@ -104,42 +95,12 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
         this._disabled = v;
 
-        // Force repaint if modified from TS class (instead of the template)
-        this.cdRef.markForCheck();
+        if(v)   this.renderer.addClass(this.elRef.nativeElement, 'disabled');
+        else    this.renderer.removeClass(this.elRef.nativeElement, 'disabled');
     }
     
     get disabled(): boolean {
         return this._disabled;
-    }
-    
-    ////
-
-    private _width: number | null = null;
-
-    @Input() set width(v: number | null) {
-        v = Number(v);
-        this._width = (!isNaN(v) && v > 0) ? v : null;
-        
-        this.build(false, false);
-    }
-    
-    get width(): number | null {
-        return this._width;
-    }
-    
-    ////
-
-    private _height: number | null = null;
-
-    @Input() set height(v: number | null) {
-        v = Number(v);
-        this._height = (!isNaN(v) && v > 0) ? v : null;
-        
-        this.build(false, false);
-    }
-    
-    get height(): number | null {
-        return this._height;
     }
     
     ////
@@ -156,51 +117,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     get gutterSize(): number {
         return this._gutterSize;
     }
-    
-    ////
-
-    private _gutterColor: string = '';
-
-    @Input() set gutterColor(v: string) {
-        this._gutterColor = (typeof v === 'string' && v !== '') ? v : '';
-
-        // Force repaint if modified from TS class (instead of the template)
-        this.cdRef.markForCheck();
-    }
-    
-    get gutterColor(): string {
-        return this._gutterColor;
-    }
-    
-    ////
-
-    private _gutterImageH: string = '';
-
-    @Input() set gutterImageH(v: string) {
-        this._gutterImageH = (typeof v === 'string' && v !== '') ? v : '';
-        
-        // Force repaint if modified from TS class (instead of the template)
-        this.cdRef.markForCheck();
-    }
-    
-    get gutterImageH(): string {
-        return this._gutterImageH;
-    }
-    
-    ////
-
-    private _gutterImageV: string = '';
-
-    @Input() set gutterImageV(v: string) {
-        this._gutterImageV = (typeof v === 'string' && v !== '') ? v : '';
-
-        // Force repaint if modified from TS class (instead of the template)
-        this.cdRef.markForCheck();
-    }
-    
-    get gutterImageV(): string {
-        return this._gutterImageV;
-    }
 
     ////
 
@@ -209,6 +125,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Input() set dir(v: 'ltr' | 'rtl') {
         v = (v === 'rtl') ? 'rtl' : 'ltr';
         this._dir = v;
+        
+        this.renderer.setAttribute(this.elRef.nativeElement, 'dir', this._dir);
     }
     
     get dir(): 'ltr' | 'rtl' {
@@ -227,14 +145,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         debounceTime(20)
     );
 
-    @HostBinding('style.width') get cssWidth() {
-        return this.width ? `${ this.width }px` : '100%';
-    }
-
-    @HostBinding('style.height') get cssHeight() {
-        return this.height ? `${ this.height }px` : '100%';
-    }
-
     @HostBinding('style.min-width') get cssMinwidth() {
         return (this.direction === 'horizontal') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
     }
@@ -243,7 +153,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         return (this.direction === 'vertical') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
     }
 
-    public isViewInitialized: boolean = false;
     private isDragging: boolean = false;
     private currentGutterNum: number = 0;
     private startPoint: IPoint | null = null;
@@ -266,10 +175,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                 private cdRef: ChangeDetectorRef,
                 private renderer: Renderer2) {}
 
-    public ngAfterViewInit() {
-        this.isViewInitialized = true;
-    }
-
     private getNbGutters(): number {
         return this.displayedAreas.length - 1;
     }
@@ -286,9 +191,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
         else {
             this.hidedAreas.push(newArea);
+            comp.setStyleFlexbasis('0');
         }
-
-        comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
 
         this.build(true, true);
     }
@@ -309,40 +213,39 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     public updateArea(comp: SplitAreaDirective, resetOrders: boolean, resetSizes: boolean): void {
         // Only refresh if area is displayed (No need to check inside 'hidedAreas')
         const item = this.displayedAreas.find(a => a.comp === comp);
-
-        if(item) {
-            this.build(resetOrders, resetSizes);
+        if(!item) {
+            return;
         }
+
+        this.build(resetOrders, resetSizes);
     }
 
     public showArea(comp: SplitAreaDirective): void {
         const area = this.hidedAreas.find(a => a.comp === comp);
-
-        if(area) {
-            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
-
-            const areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
-            this.displayedAreas.push(...areas);
-
-            this.build(true, true);
+        if(!area) {
+            return;
         }
+
+        const areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1);
+        this.displayedAreas.push(...areas);
+
+        this.build(true, true);
     }
 
     public hideArea(comp: SplitAreaDirective): void {
         const area = this.displayedAreas.find(a => a.comp === comp);
-
-        if(area) {
-            comp.setStyleVisibleAndDir(comp.visible, this.isDragging, this.direction);
-
-            const areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
-            areas.forEach(area => {
-                area.order = 0;
-                area.size = 0;
-            })
-            this.hidedAreas.push(...areas);
-
-            this.build(true, true);
+        if(!area) {
+            return;
         }
+
+        const areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
+        areas.forEach(area => {
+            area.order = 0;
+            area.size = 0;
+        })
+        this.hidedAreas.push(...areas);
+
+        this.build(true, true);
     }
 
     private build(resetOrders: boolean, resetSizes: boolean): void {
@@ -395,13 +298,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         let percentToDispatch = 0;
         
         // Get container pixel size
-        let containerSizePixel = this.getNbGutters() * this.gutterSize;
-        if(this.direction === 'horizontal') {
-            containerSizePixel = this.width ? this.width : this.elRef.nativeElement['offsetWidth'];
-        }
-        else {
-            containerSizePixel = this.height ? this.height : this.elRef.nativeElement['offsetHeight'];
-        }
+        const containerSizePixel = this.elRef.nativeElement[(this.direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight'];
 
         this.displayedAreas.forEach(area => {
             if(area.size * containerSizePixel < this.gutterSize) {
@@ -436,7 +333,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         const sumGutterSize = this.getNbGutters() * this.gutterSize;
 
         this.displayedAreas.forEach(area => {
-            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * sumGutterSize }px )`, this.isDragging);
+            area.comp.setStyleFlexbasis(`calc( ${ area.size * 100 }% - ${ area.size * sumGutterSize }px )`);
         });
     }
 
@@ -449,14 +346,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
+        console.log('startDragging', startEvent)
         startEvent.preventDefault();
 
         this.startPoint = getPointFromEvent(startEvent);
-        if(!this.startPoint) {
-            return;
-        }
-
-        if(this.disabled) {
+        if(!this.startPoint || this.disabled) {
             return;
         }
 
@@ -491,11 +385,12 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         areaB.comp.lockEvents();
 
         this.isDragging = true;
-
+        this.renderer.addClass(this.elRef.nativeElement, 'dragging');
         this.notify('start');
     }
 
     private dragEvent(event: MouseEvent | TouchEvent, areaA: IArea, areaB: IArea): void {
+        console.time('dragEvent')
         event.preventDefault();
 
         if(!this.isDragging) {
@@ -507,11 +402,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             return;
         }
         
-        this.drag(areaA, areaB);
-    }
-
-    private drag(areaA: IArea, areaB: IArea): void {
-
         // ¤ AREAS SIZE PIXEL
 
         const devicePixelRatio = /*window.devicePixelRatio ||*/ 1;
@@ -569,6 +459,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         if(this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
             this.notify('progress');
         }
+        console.timeEnd('dragEvent')
     }
 
     private stopDragging(): void {
@@ -590,8 +481,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         if(this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
             this.notify('end');
         }
-
+        
         this.isDragging = false;
+        this.renderer.removeClass(this.elRef.nativeElement, 'dragging');
 
         // Needed to let (click)="clickGutter(...)" event run and verify if mouse moved or not
         setTimeout(() => {
@@ -602,24 +494,15 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
 
     public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd'): void {
-        const areasSize: Array<number> = this.displayedAreas.map(a => a.size * 100);
+        const sizes: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
         this.ngZone.run(() => {
             switch(type) {
-                case 'start':
-                    return this.dragStart.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-    
-                case 'progress':
-                    return this.dragProgress.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-    
-                case 'end':
-                    return this.dragEnd.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-                    
-                case 'click':
-                    return this.gutterClick.emit({gutterNum: this.currentGutterNum, sizes: areasSize});
-    
-                case 'transitionEnd':
-                    return this.transitionEndInternal.next(areasSize);
+                case 'start':           return this.dragStart.emit({gutterNum: this.currentGutterNum, sizes});
+                case 'progress':        return this.dragProgress.emit({gutterNum: this.currentGutterNum, sizes});
+                case 'end':             return this.dragEnd.emit({gutterNum: this.currentGutterNum, sizes});
+                case 'click':           return this.gutterClick.emit({gutterNum: this.currentGutterNum, sizes});
+                case 'transitionEnd':   return this.transitionEndInternal.next(sizes);
             }
         });
     }
