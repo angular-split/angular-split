@@ -18,15 +18,15 @@ context('Custom split style example page tests', () => {
     it('Veriy gutter size color and horizontal image', () => {
         checkSplitDirAndSizes('as-split', 'horizontal', W, H, GUTTER, [312, 728]);
 
-        cy.get('as-split > as-split-gutter').should('have.css', 'background-color', COLOR);
-        cy.get('as-split > as-split-gutter').should('have.css', 'background-image', IMGH);
+        cy.get('as-split > .as-split-gutter').should('have.css', 'background-color', COLOR);
+        cy.get('as-split > .as-split-gutter').should('have.css', 'background-image', IMGH);
     })
 
     it('Change direction', () => {
         cy.get('.btns > .btn').click();
         checkSplitDirAndSizes('as-split', 'vertical', W, H, GUTTER, [81, 189]);
 
-        cy.get('as-split > as-split-gutter').should('have.css', 'background-color', COLOR);
-        cy.get('as-split > as-split-gutter').should('have.css', 'background-image', IMGV);
+        cy.get('as-split > .as-split-gutter').should('have.css', 'background-color', COLOR);
+        cy.get('as-split > .as-split-gutter').should('have.css', 'background-image', IMGV);
     })
 })

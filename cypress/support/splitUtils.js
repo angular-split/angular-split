@@ -18,7 +18,7 @@ export function checkSplitDirAndCalcSizes(el, dir, w, h, gutter, sizes) {
     cy.get(el).should('have.css', 'flex-direction', propFlexDir);
 
     const propSize = (dir === 'horizontal') ? 'width' : 'height';
-    cy.get(`${ el } > as-split-gutter`).should('have.css', propSize, `${ gutter }px`);
+    cy.get(`${ el } > .as-split-gutter`).should('have.css', propSize, `${ gutter }px`);
 
     const propSize2 = (propSize === 'width') ? 'height' : 'width';
     const propValue2 = (propSize === 'width') ? h : w;
@@ -47,9 +47,9 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
     const propSize2 = (propSize === 'width') ? 'height' : 'width';
     const propValue2 = (propSize === 'width') ? h : w;
 
-    cy.get(`${ el } > as-split-gutter`).should('have.length', sizes.length - 1);
-    cy.get(`${ el } > as-split-gutter`).invoke(propSize).should('eq', gutter);
-    cy.get(`${ el } > as-split-gutter`).invoke(propSize2).should('eq', propValue2);
+    cy.get(`${ el } > .as-split-gutter`).should('have.length', sizes.length - 1);
+    cy.get(`${ el } > .as-split-gutter`).invoke(propSize).should('eq', gutter);
+    cy.get(`${ el } > .as-split-gutter`).invoke(propSize2).should('eq', propValue2);
 
     cy.get(`${ el } > as-split-area`)
         .should('have.length', sizes.length)
