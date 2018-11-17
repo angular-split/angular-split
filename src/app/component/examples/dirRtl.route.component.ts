@@ -19,8 +19,8 @@ import { AComponent } from './AComponent';
     template: `
         <div class="container">
             <sp-example-title [type]="exampleEnum.DIR"></sp-example-title>
-            <div class="split-example" [dir]="dir">
-                <as-split [direction]="dir" [dir]="dir">
+            <div class="split-example">
+                <as-split [dir]="dir">
                     <as-split-area size="20">
                         <p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                     </as-split-area>

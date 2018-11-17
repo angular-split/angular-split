@@ -59,17 +59,17 @@ import { AComponent } from './AComponent';
             <sp-example-title [type]="exampleEnum.GEEK"></sp-example-title>
             <div class="split-example" style="background-color: #e5e0e0;">
                 <as-split [direction]="d.dir" 
-                    [gutterSize]="d.gutterSize" 
-                    [width]="d.width" 
-                    [height]="d.height" 
-                    useTransition="true" 
-                    style="background-color: #ffffff;">
+                          [gutterSize]="d.gutterSize" 
+                          [style.width]="d.width" 
+                          [style.height]="d.height" 
+                          useTransition="true" 
+                          style="background-color: #ffffff;">
                     <ng-template ngFor let-area [ngForOf]="d.areas" let-index="index">
                         <as-split-area *ngIf="area.present" 
-                                    [visible]="area.visible" 
-                                    [order]="index" 
-                                    [size]="area.size"
-                                    [style.background-color]="area.color">{{ area.id }}</as-split-area>
+                                        [visible]="area.visible" 
+                                        [order]="index" 
+                                        [size]="area.size"
+                                        [style.background-color]="area.color">{{ area.id }}</as-split-area>
                     </ng-template>
                 </as-split>
             </div>
@@ -85,16 +85,16 @@ import { AComponent } from './AComponent';
                     <label>Width: </label>
                     <div class="btn-group">
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" [btnRadio]="null">null</label>
-                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="400">400</label>
-                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="600">600</label>
+                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="400px">400</label>
+                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="600px">600</label>
                     </div>
                 </div>
                 <div>
                     <label>Height: </label>
                     <div class="btn-group">
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" [btnRadio]="null">null</label>
-                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="200">200</label>
-                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="350">350</label>
+                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="200px">200</label>
+                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="350px">350</label>
                     </div>
                 </div>
                 <div>
