@@ -45,11 +45,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
         if(this.visible) { 
             this.split.showArea(this);
-            this.renderer.removeClass(this.elRef.nativeElement, 'hided');
+            this.renderer.removeClass(this.elRef.nativeElement, 'is-hided');
         }
         else {
             this.split.hideArea(this);
-            this.renderer.addClass(this.elRef.nativeElement, 'hided');
+            this.renderer.addClass(this.elRef.nativeElement, 'is-hided');
         }
     }
 
@@ -63,7 +63,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private readonly lockListeners: Array<Function> = [];
 
     constructor(private ngZone: NgZone,
-                private elRef: ElementRef,
+                public elRef: ElementRef,
                 private renderer: Renderer2,
                 private split: SplitComponent) {}
 
@@ -73,10 +73,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.ngZone.runOutsideAngular(() => {
             this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', (e: TransitionEvent) => this.onTransitionEnd(e));
         });
-    }
-
-    public getSizePixel(prop: 'offsetWidth' | 'offsetHeight'): number {
-        return this.elRef.nativeElement[prop];
     }
 
     public setStyleOrder(value: number): void {
