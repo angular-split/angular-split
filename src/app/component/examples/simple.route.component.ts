@@ -20,7 +20,7 @@ import { AComponent } from './AComponent';
         <div class="container">
             <sp-example-title [type]="exampleEnum.SIMPLE"></sp-example-title>
             <div class="split-example">
-                <as-split [direction]="direction">
+                <as-split [direction]="direction" (dragProgress)="log($event)">
                     <as-split-area size="30">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                     </as-split-area>
@@ -31,10 +31,20 @@ import { AComponent } from './AComponent';
             </div>
             <br>
             <div class="btns">
+                {{ testChangeDetectorRun() }}
                 <button class="btn btn-warning" (click)="direction = (direction === 'horizontal') ? 'vertical' : 'horizontal'">{{ 'Toggle direction: "' + direction + '"' }}</button>    
             </div>
         </div>`
 })
 export class SimpleComponent extends AComponent {
     direction: string = 'horizontal'
+
+    testChangeDetectorRun() {
+        console.log('Change detector run just now !', Date.now())
+        return '';
+    }
+
+    log($event) {
+        console.log('>>>>', $event);
+    }
 }
