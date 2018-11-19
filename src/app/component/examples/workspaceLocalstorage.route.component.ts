@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { cloneDeep } from 'lodash';
 
 import { AComponent } from './AComponent';
@@ -52,6 +52,7 @@ const defaultConfig: IConfig = {
 
 @Component({
     selector: 'sp-ex-workspace-localstorage',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styles: [`
         :host {
             display: block;

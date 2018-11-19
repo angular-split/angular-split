@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { SortableComponent } from 'ngx-bootstrap/sortable';
 
 import { AComponent } from './AComponent';
@@ -6,6 +6,7 @@ import { AComponent } from './AComponent';
 
 @Component({
     selector: 'sp-ex-geek-demo',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         'class': 'split-example-page'
     },
@@ -55,6 +56,7 @@ import { AComponent } from './AComponent';
         }
     `],
     template: `
+        {{ testChangeDetectorRun() }}
         <div class="container">
             <sp-example-title [type]="exampleEnum.GEEK"></sp-example-title>
             <div class="split-example" style="background-color: #e5e0e0;">

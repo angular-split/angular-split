@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-sync',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         'class': 'split-example-page'
     },
     template: `
+        {{ testChangeDetectorRun() }}
         <div class="container">
             <sp-example-title [type]="exampleEnum.SYNC"></sp-example-title>
             <div class="split-example">

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-toggling-dom-and-visible',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         'class': 'split-example-page'
     },
@@ -17,6 +18,7 @@ import { AComponent } from './AComponent';
         }
     `],
     template: `
+        {{ testChangeDetectorRun() }}
         <div class="container">
             <sp-example-title [type]="exampleEnum.TOGGLE"></sp-example-title>
             <div class="split-example" style="height: 150px;">

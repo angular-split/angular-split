@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 
 import { AComponent } from './AComponent';
 import { formatDate } from '../../service/utils';
@@ -6,6 +6,7 @@ import { formatDate } from '../../service/utils';
 
 @Component({
     selector: 'sp-ex-gutter-click',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         'class': 'split-example-page'
     },
@@ -37,6 +38,7 @@ import { formatDate } from '../../service/utils';
         }
     `],
     template: `
+        {{ testChangeDetectorRun() }}
         <div class="container">
             <sp-example-title [type]="exampleEnum.CLICK"></sp-example-title>
             <div class="split-example">

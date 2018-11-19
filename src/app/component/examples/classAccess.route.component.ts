@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { SplitComponent, SplitAreaDirective } from 'angular-split';
 
 import { AComponent } from './AComponent';
@@ -6,6 +6,7 @@ import { AComponent } from './AComponent';
 
 @Component({
     selector: 'sp-ex-class-access',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         'class': 'split-example-page'
     },

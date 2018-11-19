@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { AComponent } from './AComponent';
 
 
 @Component({
     selector: 'sp-ex-nested',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         'class': 'split-example-page'
     },
     template: `
+        {{ testChangeDetectorRun() }}
         <div class="container">
             <sp-example-title [type]="exampleEnum.NESTED"></sp-example-title>
             <div class="split-example" style="height: 400px;">
