@@ -1,4 +1,16 @@
 
+<a name="2.0.0-beta.2"></a>
+# 2.0.0-beta.2 (2018-11-19)
+
+* **Performance:** Make `@Output()` event emitters (`dragStart`, `dragProgress`, `dragEnd`, `gutterClick`, `transitionEnd`) works "lazily" to avoid useless change detection runs, especially for `dragProgress` which could be costly in big app.
+
+
+<a name="2.0.0-beta.1"></a>
+# 2.0.0-beta.1 (2018-11-17)
+
+* **Styles:** Refactor the way styles are manage, no more `renderer.setStyle()` everywhere (except for areas `order` & `flex-basis`), now works with added/removed classes (`is-horizontal`/`is-vertical`, `is-disabled`, `is-transition`, `is-disabled`, `is-dragging`), way better. Doing like this, `<as-split-gutter>` directive is not needed anymore.
+
+
 <a name="1.0.4"></a>
 # 1.0.4 (2018-11-15)
 

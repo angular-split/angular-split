@@ -1,5 +1,5 @@
-import { Component, Input, Output, HostBinding, ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Component, Input, Output, HostBinding, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { Observable, Subscriber } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { IArea } from '../interface/IArea';
@@ -50,7 +50,7 @@ import { getPointFromEvent, getPixelSize } from '../utils';
                  class="as-split-gutter"
                  [style.flex-basis.px]="gutterSize"
                  [style.order]="index*2+1"
-                 (click)="clickGutter($event, index*2+1, index+1)"
+                 (click)="clickGutter($event, index+1)"
                  (mousedown)="startDragging($event, index*2+1, index+1)"
                  (touchstart)="startDragging($event, index*2+1, index+1)"></div>
         </ng-template>`,
@@ -137,15 +137,29 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     ////
 
-    @Output() dragStart = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
-    @Output() dragProgress = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
-    @Output() dragEnd = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
-    @Output() gutterClick = new EventEmitter<{gutterNum: number, sizes: Array<number>}>(false);
+    private _dragStartSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
+    @Output() get dragStart(): Observable<{gutterNum: number, sizes: Array<number>}> {
+        return new Observable(subscriber => this._dragStartSubscriber = subscriber);
+    }
+    private _dragProgressSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
+    @Output() get dragProgress(): Observable<{gutterNum: number, sizes: Array<number>}> {
+        return new Observable(subscriber => this._dragProgressSubscriber = subscriber);
+    }
+    private _dragEndSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
+    @Output() get dragEnd(): Observable<{gutterNum: number, sizes: Array<number>}> {
+        return new Observable(subscriber => this._dragEndSubscriber = subscriber);
+    }
+    private _gutterClickSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
+    @Output() get gutterClick(): Observable<{gutterNum: number, sizes: Array<number>}> {
+        return new Observable(subscriber => this._gutterClickSubscriber = subscriber);
+    }
 
-    private transitionEndInternal = new Subject<Array<number>>();
-    @Output() transitionEnd: Observable<Array<number>> = this.transitionEndInternal.asObservable().pipe(
-        debounceTime(20)
-    );
+    private _transitionEndSubscriber: Subscriber<Array<number>>
+    @Output() get transitionEnd(): Observable<Array<number>> {
+        return new Observable(subscriber => this._transitionEndSubscriber = subscriber).pipe(
+            debounceTime<Array<number>>(20)
+        );
+    }
 
     @HostBinding('style.min-width') get cssMinwidth() {
         return (this.direction === 'horizontal') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
@@ -350,7 +364,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    public clickGutter(event: MouseEvent, gutterOrder: number, gutterNum: number): void {
+    public clickGutter(event: MouseEvent, gutterNum: number): void {
         if(this.startPoint && this.startPoint.x === event.pageX && this.startPoint.y === event.pageY) {
             this.currentGutterNum = gutterNum;
 
@@ -373,21 +387,18 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             return;
         }
 
-        this.ngZone.runOutsideAngular(() => {
-            this.dragListeners.push( this.renderer.listen('document', 'mouseup', (e: MouseEvent) => this.stopDragging()) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchend', (e: TouchEvent) => this.stopDragging()) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchcancel', (e: TouchEvent) => this.stopDragging()) );
-        });
-
         this.dragStartValues.sizePixelContainer = getPixelSize(this.elRef, this.direction);
         this.dragStartValues.sizePixelA = getPixelSize(areaA.component.elRef, this.direction);
         this.dragStartValues.sizePixelB = getPixelSize(areaB.component.elRef, this.direction);
         this.dragStartValues.sizePercentA = areaA.size;
         this.dragStartValues.sizePercentB = areaB.size;
-
         this.currentGutterNum = gutterNum;
 
         this.ngZone.runOutsideAngular(() => {
+            this.dragListeners.push( this.renderer.listen('document', 'mouseup', this.stopDragging.bind(this)) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)) );
+            
             this.dragListeners.push( this.renderer.listen('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, areaA, areaB)) );
             this.dragListeners.push( this.renderer.listen('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, areaA, areaB)) );
         });
@@ -471,7 +482,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    private stopDragging(): void {
+    private stopDragging(event?: Event): void {
+        if(event) {
+            event.preventDefault();
+        }
+
         if(this.isDragging === false) {
             return;
         }
@@ -495,25 +510,43 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.renderer.removeClass(this.elRef.nativeElement, 'is-dragging');
 
         // Needed to let (click)="clickGutter(...)" event run and verify if mouse moved or not
-        setTimeout(() => {
-            this.startPoint = null;
-            this.endPoint = null;
-        })
+        this.ngZone.runOutsideAngular(() => {
+            setTimeout(() => {
+                this.startPoint = null;
+                this.endPoint = null;
+            })
+        });
     }
 
 
     public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd'): void {
         const sizes: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
-        this.ngZone.run(() => {
-            switch(type) {
-                case 'start':           return this.dragStart.emit({gutterNum: this.currentGutterNum, sizes});
-                case 'progress':        return this.dragProgress.emit({gutterNum: this.currentGutterNum, sizes});
-                case 'end':             return this.dragEnd.emit({gutterNum: this.currentGutterNum, sizes});
-                case 'click':           return this.gutterClick.emit({gutterNum: this.currentGutterNum, sizes});
-                case 'transitionEnd':   return this.transitionEndInternal.next(sizes);
+        if(type === 'start') {
+            if(this._dragStartSubscriber) {
+                this.ngZone.run(() => this._dragStartSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
             }
-        });
+        }
+        else if(type === 'progress') {
+            if(this._dragProgressSubscriber) {
+                this.ngZone.run(() => this._dragProgressSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
+            }
+        }
+        else if(type === 'end') {
+            if(this._dragEndSubscriber) {
+                this.ngZone.run(() => this._dragEndSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
+            }
+        }
+        else if(type === 'click') {
+            if(this._gutterClickSubscriber) {
+                this.ngZone.run(() => this._gutterClickSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
+            }
+        }
+        else if(type === 'transitionEnd') {
+            if(this._transitionEndSubscriber) {
+                this.ngZone.run(() => this._transitionEndSubscriber.next(sizes));
+            }
+        }
     }
 
     public ngOnDestroy(): void {
