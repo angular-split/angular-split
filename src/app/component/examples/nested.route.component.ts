@@ -14,7 +14,7 @@ import { AComponent } from './AComponent';
         <div class="container">
             <sp-example-title [type]="exampleEnum.NESTED"></sp-example-title>
             <div class="split-example" style="height: 400px;">
-                <as-split direction="horizontal">
+                <as-split direction="horizontal" [useTransition]="true" >
                     <as-split-area size="40">
                         <as-split direction="vertical">
                             <as-split-area>

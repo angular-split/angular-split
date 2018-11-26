@@ -1,4 +1,10 @@
 
+<a name="2.0.0-beta.3"></a>
+# 2.0.0-beta.3 (2018-11-26)
+
+* **Style:** Modify `<as-split-area>` CSS selector to act only on current split areas children and not on potential sub split areas.
+
+
 <a name="2.0.0-beta.2"></a>
 # 2.0.0-beta.2 (2018-11-19)
 

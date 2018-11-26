@@ -1,7 +1,7 @@
 {
   "name": "angular-split",
-  "version": "2.0.0-beta.2",
-  "description": "Angular UI library used to split views and to allow dragging to resize the split areas using CSS flexbox layout.",
+  "version": "2.0.0-beta.3",
+  "description": "Lightweight Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.",
   "author": "bertrandg",
   "repository": {
       "type": "git",
@@ -10,7 +10,7 @@
   "bugs": {
       "url": "https://github.com/bertrandg/angular-split/issues"
   },
-  "homepage": "https://github.com/bertrandg/angular-split",
+  "homepage": "https://bertrandg.github.io/angular-split/",
   "keywords": [
       "angular",
       "split",

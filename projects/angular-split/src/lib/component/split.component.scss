@@ -16,11 +16,13 @@
         background-color: #eeeeee;
     }
 
-    ::ng-deep as-split-area {
+    ::ng-deep > as-split-area {
         flex-grow: 0;
         flex-shrink: 0;
         overflow-x: hidden;
         overflow-y: auto;
+
+        /* When <as-split-area [visible]="false"> force size to 0. */
 
         &.is-hided {
             flex-basis: 0 !important;
@@ -36,11 +38,11 @@
             background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
             cursor: col-resize;
 
-            // Fix safari bug about gutter height when direction is horizontal
+            // Fix safari bug about gutter height when direction is horizontal.
             height: 100%;
         }
 
-        ::ng-deep as-split-area {
+        ::ng-deep > as-split-area {
             height: 100%;
         }
     }
@@ -55,7 +57,7 @@
             width: 100%;
         }
 
-        ::ng-deep as-split-area {
+        ::ng-deep > as-split-area {
             width: 100%;
 
             &.is-hided {
@@ -64,6 +66,8 @@
         }
     }
 
+    /* When disabled remove gutters background image and specific cursor. */
+    
     &.is-disabled {
         
         & > .as-split-gutter {
@@ -72,16 +76,14 @@
         }
     }
 
+    /* Add transition only when transition enabled + split initialized + not currently dragging. */
+
     &.is-transition.is-init:not(.is-dragging) {
 
-        & > .as-split-gutter {
+        & > .as-split-gutter,
+        ::ng-deep > as-split-area {
             transition: flex-basis 0.3s;
         }
-
-        ::ng-deep as-split-area {
-            transition: flex-basis 0.3s;
-        }
-
     }
 }
     
