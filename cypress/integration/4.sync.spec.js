@@ -45,4 +45,5 @@ context('Sync splits example page tests', () => {
         checkSplitDirAndSizes('.split-example > as-split > as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [0, 1059]);
         checkSplitDirAndSizes('.split-example > as-split > as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [0, 1059]);
     })
+    
 })

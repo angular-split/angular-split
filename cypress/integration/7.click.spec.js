@@ -69,8 +69,6 @@ context('Gutter click example page tests', () => {
         cy.get('.as-split-gutter').eq(0).click();
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263, 525, 262]);
         cy.get('.logs ul li').should('have.length', 20);
-
     })
-
 
 })

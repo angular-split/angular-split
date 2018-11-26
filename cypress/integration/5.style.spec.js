@@ -29,4 +29,5 @@ context('Custom split style example page tests', () => {
         cy.get('as-split > .as-split-gutter').should('have.css', 'background-color', COLOR);
         cy.get('as-split > .as-split-gutter').should('have.css', 'background-image', IMGV);
     })
+    
 })

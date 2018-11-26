@@ -59,4 +59,5 @@ context('Nested splits example page tests', () => {
         moveGutter('.split-example > as-split > as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, 0, -600);
         checkSplitDirAndSizes('.split-example > as-split > as-split-area:nth-child(2) > as-split', 'vertical', 635, H, GUTTER, [0, 389]);
     })
+    
 })
