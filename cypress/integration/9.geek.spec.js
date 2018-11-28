@@ -132,8 +132,8 @@ context('Geek demo example page tests', () => {
 
 
 function checkAreaOrder() {
-    // Retrieve all <as-split-area> displayed in order
-    cy.get('as-split-area').then($splitAreas => {
+    // Retrieve all as-split-area displayed in order
+    cy.get('.as-split-area').then($splitAreas => {
         const splitAreasNum = $splitAreas.map((i, $el) => $el.textContent);
 
         // Retrieve all listed areas displayed in order
