@@ -51,7 +51,7 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
     cy.get(`${ el } > .as-split-gutter`).invoke(propSize).should('eq', gutter);
     cy.get(`${ el } > .as-split-gutter`).invoke(propSize2).should('eq', propValue2);
 
-    cy.get(`${ el } > as-split-area`)
+    cy.get(`${ el } > .as-split-area`)
         .should('have.length', sizes.length)
         .each(($li, index) => {
             cy.wrap($li).invoke(propSize).should('eq', sizes[index]);
