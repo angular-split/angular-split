@@ -11,7 +11,7 @@ import { AComponent } from './AComponent';
         'class': 'split-example-page'
     },
     styles: [`
-        as-split-area {
+        .as-split-area {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -66,7 +66,7 @@ import { AComponent } from './AComponent';
                           [style.height]="d.height" 
                           useTransition="true" 
                           style="background-color: #ffffff;">
-                    <ng-template ngFor let-area [ngForOf]="d.areas" let-index="index">
+                    <ng-template ngFor let-area [ngForOf]="d.areas" [ngForTrackBy]="trackByFct" let-index="index">
                         <as-split-area *ngIf="area.present" 
                                         [visible]="area.visible" 
                                         [order]="index" 
@@ -141,6 +141,10 @@ export class GeekDemoComponent extends AComponent {
             {id: getRandomNum(), color: getRandomColor(), size: 50, present: true, visible: true},
             {id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: true},
         ]
+    }
+
+    trackByFct(index, area) {
+        return area.id;
     }
 
     addArea() {

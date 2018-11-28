@@ -3,7 +3,7 @@ import { Directive, Input, ElementRef, Renderer2, OnInit, OnDestroy, NgZone } fr
 import { SplitComponent } from '../component/split.component';
 
 @Directive({
-    selector: 'as-split-area'
+    selector: 'as-split-area, [as-split-area]'
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
 
@@ -65,7 +65,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     constructor(private ngZone: NgZone,
                 public elRef: ElementRef,
                 private renderer: Renderer2,
-                private split: SplitComponent) {}
+                private split: SplitComponent) {
+        this.renderer.addClass(this.elRef.nativeElement, 'as-split-area');
+    }
 
     public ngOnInit(): void {
         this.split.addArea(this);

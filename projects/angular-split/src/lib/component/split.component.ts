@@ -52,7 +52,9 @@ import { getPointFromEvent, getPixelSize } from '../utils';
                  [style.order]="index*2+1"
                  (click)="clickGutter($event, index+1)"
                  (mousedown)="startDragging($event, index*2+1, index+1)"
-                 (touchstart)="startDragging($event, index*2+1, index+1)"></div>
+                 (touchstart)="startDragging($event, index*2+1, index+1)">
+                <div class="as-split-gutter-icon"></div>
+            </div>
         </ng-template>`,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {

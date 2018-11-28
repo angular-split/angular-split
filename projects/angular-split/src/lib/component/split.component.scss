@@ -11,12 +11,20 @@
     & > .as-split-gutter {
         flex-grow: 0;
         flex-shrink: 0;
-        background-position: center center;
-        background-repeat: no-repeat;
         background-color: #eeeeee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & > .as-split-gutter-icon {
+            width: 100%;
+            height: 100%;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
     }
 
-    ::ng-deep > as-split-area {
+    ::ng-deep > .as-split-area {
         flex-grow: 0;
         flex-shrink: 0;
         overflow-x: hidden;
@@ -35,14 +43,16 @@
         flex-direction: row;
 
         & > .as-split-gutter {
-            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+            flex-direction: row;
             cursor: col-resize;
+            height: 100%; // <- Fix safari bug about gutter height when direction is horizontal.
 
-            // Fix safari bug about gutter height when direction is horizontal.
-            height: 100%;
+            & > .as-split-gutter-icon {
+                background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+            }
         }
 
-        ::ng-deep > as-split-area {
+        ::ng-deep > .as-split-area {
             height: 100%;
         }
     }
@@ -51,13 +61,16 @@
         flex-direction: column;
 
         & > .as-split-gutter {
-            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC");
+            flex-direction: column;
             cursor: row-resize;
-
             width: 100%;
+            
+            .as-split-gutter-icon {
+                background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC");
+            }
         }
 
-        ::ng-deep > as-split-area {
+        ::ng-deep > .as-split-area {
             width: 100%;
 
             &.is-hided {
@@ -71,8 +84,11 @@
     &.is-disabled {
         
         & > .as-split-gutter {
-            background-image: url("");
             cursor: default;
+            
+            .as-split-gutter-icon {
+                background-image: url("");
+            }
         }
     }
 
@@ -81,8 +97,14 @@
     &.is-transition.is-init:not(.is-dragging) {
 
         & > .as-split-gutter,
-        ::ng-deep > as-split-area {
+        ::ng-deep > .as-split-area {
             transition: flex-basis 0.3s;
+            
+            /*
+            transition-property: flex-basis;
+            transition-duration: .3s;
+            transition-timing-function: ease;
+            */
         }
     }
 }

@@ -1,4 +1,11 @@
 
+<a name="2.0.0-beta.4"></a>
+# 2.0.0-beta.4 (2018-11-28)
+
+* **Specific gutter style:** Add `<div>` inside `<div class="as-split-gutter">` to allow more customization.
+* **Add SplitAreaDirective attribute selector:** You can now use `<as-split-area>` or `<div as-split-area>`, a class `as-split-area` is added to each areas for CSS targeting purpose.
+
+
 <a name="2.0.0-beta.3"></a>
 # 2.0.0-beta.3 (2018-11-26)
 
