@@ -1,4 +1,11 @@
 
+<a name="2.0.0-beta.5"></a>
+# 2.0.0-beta.5 (2018-11-29)
+
+* **Performance:** Make library template event bindings (`click`, `mousedown`, `touchstart`) runs outside `zone.js` to avoid unnecessary change detection run.
+* **Performance (API change):** Remove `(dragProgress)` event emitter from template and add a `dragProgress$` observable accessible from `SplitComponent` class. Doing this you can track drag progress without triggering change detection inside component containing `<as-split>`, see "Sync example demo" opening devTools console to verify it.
+
+
 <a name="2.0.0-beta.4"></a>
 # 2.0.0-beta.4 (2018-11-28)
 

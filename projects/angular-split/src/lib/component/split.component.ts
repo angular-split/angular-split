@@ -1,11 +1,11 @@
 import { Component, Input, Output, HostBinding, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { IArea } from '../interface/IArea';
 import { IPoint } from '../interface/IPoint';
 import { SplitAreaDirective } from '../directive/splitArea.directive';
-import { getPointFromEvent, getPixelSize } from '../utils';
+import { getPointFromEvent, getPixelSize, getInputBoolean, isValidTotalSize } from '../utils';
 
 /**
  * angular-split
@@ -50,9 +50,9 @@ import { getPointFromEvent, getPixelSize } from '../utils';
                  class="as-split-gutter"
                  [style.flex-basis.px]="gutterSize"
                  [style.order]="index*2+1"
-                 (click)="clickGutter($event, index+1)"
-                 (mousedown)="startDragging($event, index*2+1, index+1)"
-                 (touchstart)="startDragging($event, index*2+1, index+1)">
+                 (click.out-zone)="clickGutter($event, index+1)"
+                 (mousedown.out-zone)="startDragging($event, index*2+1, index+1)"
+                 (touchstart.out-zone)="startDragging($event, index*2+1, index+1)">
                 <div class="as-split-gutter-icon"></div>
             </div>
         </ng-template>`,
@@ -62,8 +62,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private _direction: 'horizontal' | 'vertical' = 'horizontal';
 
     @Input() set direction(v: 'horizontal' | 'vertical') {
-        v = (v === 'vertical') ? 'vertical' : 'horizontal';
-        this._direction = v;
+        this._direction = (v === 'vertical') ? 'vertical' : 'horizontal';
         
         this.renderer.addClass(this.elRef.nativeElement, `is-${ this._direction }`);
         this.renderer.removeClass(this.elRef.nativeElement, `is-${ (this._direction === 'vertical') ? 'horizontal' : 'vertical' }`);
@@ -95,11 +94,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private _useTransition: boolean = false;
 
     @Input() set useTransition(v: boolean) {
-        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
-        this._useTransition = v;
+        this._useTransition = getInputBoolean(v);
 
-        if(v)   this.renderer.addClass(this.elRef.nativeElement, 'is-transition');
-        else    this.renderer.removeClass(this.elRef.nativeElement, 'is-transition');
+        if(this._useTransition) this.renderer.addClass(this.elRef.nativeElement, 'is-transition');
+        else                    this.renderer.removeClass(this.elRef.nativeElement, 'is-transition');
     }
     
     get useTransition(): boolean {
@@ -111,11 +109,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private _disabled: boolean = false;
     
     @Input() set disabled(v: boolean) {
-        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
-        this._disabled = v;
+        this._disabled = getInputBoolean(v);
 
-        if(v)   this.renderer.addClass(this.elRef.nativeElement, 'is-disabled');
-        else    this.renderer.removeClass(this.elRef.nativeElement, 'is-disabled');
+        if(this._disabled)  this.renderer.addClass(this.elRef.nativeElement, 'is-disabled');
+        else                this.renderer.removeClass(this.elRef.nativeElement, 'is-disabled');
     }
     
     get disabled(): boolean {
@@ -139,37 +136,42 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     ////
 
-    private _dragStartSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
+    private dragStartSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
     @Output() get dragStart(): Observable<{gutterNum: number, sizes: Array<number>}> {
-        return new Observable(subscriber => this._dragStartSubscriber = subscriber);
-    }
-    private _dragProgressSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
-    @Output() get dragProgress(): Observable<{gutterNum: number, sizes: Array<number>}> {
-        return new Observable(subscriber => this._dragProgressSubscriber = subscriber);
-    }
-    private _dragEndSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
-    @Output() get dragEnd(): Observable<{gutterNum: number, sizes: Array<number>}> {
-        return new Observable(subscriber => this._dragEndSubscriber = subscriber);
-    }
-    private _gutterClickSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
-    @Output() get gutterClick(): Observable<{gutterNum: number, sizes: Array<number>}> {
-        return new Observable(subscriber => this._gutterClickSubscriber = subscriber);
+        return new Observable(subscriber => this.dragStartSubscriber = subscriber);
     }
 
-    private _transitionEndSubscriber: Subscriber<Array<number>>
+    private dragEndSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
+    @Output() get dragEnd(): Observable<{gutterNum: number, sizes: Array<number>}> {
+        return new Observable(subscriber => this.dragEndSubscriber = subscriber);
+    }
+
+    private gutterClickSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
+    @Output() get gutterClick(): Observable<{gutterNum: number, sizes: Array<number>}> {
+        return new Observable(subscriber => this.gutterClickSubscriber = subscriber);
+    }
+
+    private transitionEndSubscriber: Subscriber<Array<number>>
     @Output() get transitionEnd(): Observable<Array<number>> {
-        return new Observable(subscriber => this._transitionEndSubscriber = subscriber).pipe(
+        return new Observable(subscriber => this.transitionEndSubscriber = subscriber).pipe(
             debounceTime<Array<number>>(20)
         );
     }
+    
+    private dragProgressSubject: Subject<{gutterNum: number, sizes: Array<number>}> = new Subject();
+    dragProgress$: Observable<{gutterNum: number, sizes: Array<number>}> = this.dragProgressSubject.asObservable();
 
-    @HostBinding('style.min-width') get cssMinwidth() {
-        return (this.direction === 'horizontal') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
-    }
+    ////
 
-    @HostBinding('style.min-height') get cssMinheight() {
-        return (this.direction === 'vertical') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
-    }
+    // @HostBinding('style.min-width') get cssMinwidth() {
+    //     return (this.direction === 'horizontal') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
+    // }
+
+    // @HostBinding('style.min-height') get cssMinheight() {
+    //     return (this.direction === 'vertical') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
+    // }
+
+    ////
 
     private isDragging: boolean = false;
     private currentGutterNum: number = 0;
@@ -279,6 +281,26 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.cdRef.markForCheck();
     }
 
+    public setVisibleAreaSizes(sizes: Array<number>): boolean {
+        if(sizes.length !== this.displayedAreas.length) {
+            return false;
+        }
+
+        sizes = sizes.map(s => s / 100);
+
+        const total = sizes.reduce((total: number, v: number) => total + v, 0);
+        if(!isValidTotalSize(total)) {
+            return false;
+        }
+
+        this.displayedAreas.forEach((area, i) => {
+            area.component['_size'] = sizes[i];
+        })
+
+        this.build(false, true);
+        return true;
+    }
+
     private build(resetOrders: boolean, resetSizes: boolean): void {
         this.stopDragging();
 
@@ -306,7 +328,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             const totalUserSize = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.component.size ? total + s.component.size : total, 0);
             
             // If user provided 'size' for each area and total == 1, use it.
-            if(this.displayedAreas.every(a => a.component.size !== null) && totalUserSize > .999 && totalUserSize < 1.001 ) {
+            if(this.displayedAreas.every(a => a.component.size !== null) && isValidTotalSize(totalUserSize) ) {
 
                 this.displayedAreas.forEach(area => {
                     area.size = <number> area.component.size;
@@ -367,6 +389,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     public clickGutter(event: MouseEvent, gutterNum: number): void {
+        event.preventDefault();
+        event.stopPropagation();
+
         if(this.startPoint && this.startPoint.x === event.pageX && this.startPoint.y === event.pageY) {
             this.currentGutterNum = gutterNum;
 
@@ -374,10 +399,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    public startDragging(startEvent: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
-        startEvent.preventDefault();
+    public startDragging(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
+        event.preventDefault();
+        event.stopPropagation();
 
-        this.startPoint = getPointFromEvent(startEvent);
+        this.startPoint = getPointFromEvent(event);
         if(!this.startPoint || this.disabled) {
             return;
         }
@@ -415,6 +441,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     private dragEvent(event: MouseEvent | TouchEvent, areaA: IArea, areaB: IArea): void {
         event.preventDefault();
+        event.stopPropagation();
 
         if(!this.isDragging) {
             return;
@@ -479,6 +506,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         this.refreshStyleSizes();
         
+        // If moved from starting point, notify progress
         if(this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
             this.notify('progress');
         }
@@ -487,16 +515,17 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private stopDragging(event?: Event): void {
         if(event) {
             event.preventDefault();
+            event.stopPropagation();
         }
-
+        
         if(this.isDragging === false) {
             return;
         }
-
+        
         this.displayedAreas.forEach(area => {
             area.component.unlockEvents();
         });
-
+        
         while(this.dragListeners.length > 0) {
             const fct = this.dragListeners.pop();
             if(fct) {
@@ -504,6 +533,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             }
         }
         
+        // If moved from starting point, notify end
         if(this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
             this.notify('end');
         }
@@ -520,34 +550,32 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-
     public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd'): void {
         const sizes: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
         if(type === 'start') {
-            if(this._dragStartSubscriber) {
-                this.ngZone.run(() => this._dragStartSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
-            }
-        }
-        else if(type === 'progress') {
-            if(this._dragProgressSubscriber) {
-                this.ngZone.run(() => this._dragProgressSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
+            if(this.dragStartSubscriber) {
+                this.ngZone.run(() => this.dragStartSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
             }
         }
         else if(type === 'end') {
-            if(this._dragEndSubscriber) {
-                this.ngZone.run(() => this._dragEndSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
+            if(this.dragEndSubscriber) {
+                this.ngZone.run(() => this.dragEndSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
             }
         }
         else if(type === 'click') {
-            if(this._gutterClickSubscriber) {
-                this.ngZone.run(() => this._gutterClickSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
+            if(this.gutterClickSubscriber) {
+                this.ngZone.run(() => this.gutterClickSubscriber.next({gutterNum: this.currentGutterNum, sizes}));
             }
         }
         else if(type === 'transitionEnd') {
-            if(this._transitionEndSubscriber) {
-                this.ngZone.run(() => this._transitionEndSubscriber.next(sizes));
+            if(this.transitionEndSubscriber) {
+                this.ngZone.run(() => this.transitionEndSubscriber.next(sizes));
             }
+        }
+        else if(type === 'progress') {
+            // Stay outside zone to allow users do what they want about change detection mecanism.
+            this.dragProgressSubject.next({gutterNum: this.currentGutterNum, sizes});
         }
     }
 

@@ -1,4 +1,6 @@
-import { Component, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectionStrategy, AfterViewInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs'
+import { SplitComponent } from 'angular-split';
 
 import { AComponent } from './AComponent';
 import { formatDate } from '../../service/utils';
@@ -11,6 +13,11 @@ import { formatDate } from '../../service/utils';
         'class': 'split-example-page'
     },
     styles: [`
+        as-split.is-transition.is-init:not(.is-dragging) > .as-split-gutter,
+        as-split.is-transition.is-init:not(.is-dragging) ::ng-deep > .as-split-area {
+            transition: flex-basis 1.5s;
+        }
+        
         .btns {
             display: flex;
             justify-content: space-around;
@@ -42,14 +49,15 @@ import { formatDate } from '../../service/utils';
         <div class="container">
             <sp-example-title [type]="exampleEnum.CLICK"></sp-example-title>
             <div class="split-example">
-                <as-split [disabled]="isDisabled" 
-                    gutterSize="10" 
-                    direction="horizontal" 
-                    [useTransition]="useTransition" 
-                    (dragStart)="log('dragStart', $event)" 
-                    (dragProgress)="log('dragProgress', $event)" 
-                    (dragEnd)="log('dragEnd', $event)" 
-                    (gutterClick)="log('gutterClick', $event)" >
+                <as-split #mySplit
+                          [disabled]="isDisabled" 
+                          gutterSize="10" 
+                          direction="horizontal" 
+                          [useTransition]="useTransition" 
+                          (dragStart)="log('dragStart', $event)" 
+                          (dragEnd)="log('dragEnd', $event)" 
+                          (gutterClick)="log('gutterClick', $event)"
+                          (transitionEnd)="log('transitionEnd', $event)" >
                     <as-split-area *ngFor="let a of areas" [size]="a.size" [order]="a.order">
                         <p>{{ a.content }}</p>
                     </as-split-area>
@@ -72,7 +80,7 @@ import { formatDate } from '../../service/utils';
             </div>
         </div>`
 })
-export class GutterClickComponent extends AComponent {
+export class GutterClickComponent extends AComponent implements AfterViewInit, OnDestroy {
     isDisabled: boolean = true
     useTransition: boolean = true
     logMessages: Array<string> = []
@@ -81,8 +89,16 @@ export class GutterClickComponent extends AComponent {
         {size: 50, order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg'},
         {size: 25, order: 3, content: 'sd jslfd ijgil dfhlt jkgvbnhj fl bhjgflh jfglhj fl h fg'},
     ]
+    sub: Subscription
 
+    @ViewChild('mySplit') mySplitEl: SplitComponent
     @ViewChild('logs') logsEl: ElementRef
+
+    ngAfterViewInit() {
+        this.sub = this.mySplitEl.dragProgress$.subscribe(data => {
+            console.log(`${ formatDate(new Date()) } > dragProgress$ observable emitted but current component change detection didn't runned!`, data);
+        })
+    }
 
     log(type: string, e: {gutterNum: number, sizes: Array<number>}) {
         this.logMessages.push(`${ formatDate(new Date()) } > ${ type } event > ${ JSON.stringify(e) }`);
@@ -132,5 +148,9 @@ export class GutterClickComponent extends AComponent {
         this.areas[0].size = e.sizes[0];
         this.areas[1].size = e.sizes[1];
         this.areas[2].size = e.sizes[2];
+    }
+
+    ngOnDestroy() {
+        if(this.sub) this.sub.unsubscribe();
     }
 }

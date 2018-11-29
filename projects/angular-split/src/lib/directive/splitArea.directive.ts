@@ -1,6 +1,7 @@
 import { Directive, Input, ElementRef, Renderer2, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { SplitComponent } from '../component/split.component';
+import { getInputBoolean } from '../utils';
 
 @Directive({
     selector: 'as-split-area, [as-split-area]'
@@ -40,10 +41,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private _visible: boolean = true;
 
     @Input() set visible(v: boolean) {
-        v = (typeof(v) === 'boolean') ? v : (v === 'false' ? false : true);
-        this._visible = v;
+        this._visible = getInputBoolean(v);
 
-        if(this.visible) { 
+        if(this._visible) { 
             this.split.showArea(this);
             this.renderer.removeClass(this.elRef.nativeElement, 'is-hided');
         }
@@ -73,7 +73,12 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.split.addArea(this);
 
         this.ngZone.runOutsideAngular(() => {
-            this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', (e: TransitionEvent) => this.onTransitionEnd(e));
+            this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', (event: TransitionEvent) => {
+                // Limit only flex-basis transition to trigger the event
+                if(event.propertyName === 'flex-basis') {
+                    this.split.notify('transitionEnd');
+                }
+            });
         });
     }
 
@@ -83,13 +88,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     
     public setStyleFlexbasis(value: string): void {
         this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
-    }
-    
-    private onTransitionEnd(event: TransitionEvent): void {
-        // Limit only flex-basis transition to trigger the event
-        if(event.propertyName === 'flex-basis') {
-            this.split.notify('transitionEnd');
-        }
     }
     
     public lockEvents(): void {
