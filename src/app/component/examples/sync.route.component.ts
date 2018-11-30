@@ -36,7 +36,7 @@ import { formatDate } from '../../service/utils';
                             <as-split-area [size]="sizes[0]">C 1</as-split-area>
                             <div as-split-area [size]="sizes[1]">
                                 C 2<br>
-                                Open devTools to view console.log() statement.<br>
+                                Open devTools to view console.log() statements.<br>
                                 <button class="btn btn-warning" (click)="test()">Trigger change detection</button>
                             </div>
                         </as-split>
@@ -55,28 +55,26 @@ export class SyncComponent extends AComponent implements AfterViewInit, OnDestro
 
     ngAfterViewInit() {
         this.sub = merge(
-            this.mySplitAEl.dragProgress$.pipe( map(data => ({name: 'A', data})) ),
-            this.mySplitBEl.dragProgress$.pipe( map(data => ({name: 'B', data})) ),
-            this.mySplitCEl.dragProgress$.pipe( map(data => ({name: 'C', data})) ),
-        ).subscribe(d => {
-            // If split A changed > update BC
-            if(d.name === 'A') {
-                this.mySplitBEl.setVisibleAreaSizes(d.data.sizes);
-                this.mySplitCEl.setVisibleAreaSizes(d.data.sizes);
-            }
-            // Else if split B changed > update AC
-            else if(d.name === 'B') {
-                this.mySplitAEl.setVisibleAreaSizes(d.data.sizes);
-                this.mySplitCEl.setVisibleAreaSizes(d.data.sizes);
-            }
-            // Else if split C changed > update AB
-            else if(d.name === 'C') {
-                this.mySplitAEl.setVisibleAreaSizes(d.data.sizes);
-                this.mySplitBEl.setVisibleAreaSizes(d.data.sizes);
-            }
+                this.mySplitAEl.dragProgress$.pipe( map(data => ({name: 'A', data})) ),
+                this.mySplitBEl.dragProgress$.pipe( map(data => ({name: 'B', data})) ),
+                this.mySplitCEl.dragProgress$.pipe( map(data => ({name: 'C', data})) ),
+            )
+            .subscribe(d => {
+                if(d.name === 'A') { // If split A changed > update BC
+                    this.mySplitBEl.setVisibleAreaSizes(d.data.sizes);
+                    this.mySplitCEl.setVisibleAreaSizes(d.data.sizes);
+                }
+                else if(d.name === 'B') { // Else if split B changed > update AC
+                    this.mySplitAEl.setVisibleAreaSizes(d.data.sizes);
+                    this.mySplitCEl.setVisibleAreaSizes(d.data.sizes);
+                }
+                else if(d.name === 'C') { // Else if split C changed > update AB
+                    this.mySplitAEl.setVisibleAreaSizes(d.data.sizes);
+                    this.mySplitBEl.setVisibleAreaSizes(d.data.sizes);
+                }
 
-            console.log(`${ formatDate(new Date()) } > dragProgress$ observable emitted, splits synchronized but current component change detection didn't runned! (from split ${ d.name })`);
-        })
+                console.log(`${ formatDate(new Date()) } > dragProgress$ observable emitted, splits synchronized but current component change detection didn't runned! (from split ${ d.name })`);
+            });
     }
 
     test() {}

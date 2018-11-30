@@ -11,8 +11,15 @@ import { Component } from '@angular/core';
         h4 {
             margin: 20px 0;
         }
+        .sel {
+            font-size: 16px;
+            color: #adadad;
+        }
+        tr > th {
+            color: #adadad;
+        }
         tr > th:first-child,
-        .directive {
+        .selContent {
             font-weight: bold;
             color: #ffc421;
         }
@@ -27,21 +34,19 @@ export class DocComponent {
     readonly splitDoc = {
         inputs: [
             {name: 'direction',       type: 'string',   default: '"horizontal"',  details: 'Select split direction: <code>"horizontal"</code> or <code>"vertical"</code>.'},
-            {name: 'width',           type: 'number',   default: 'null',          details: 'Container width value in pixels. If not provided container width set to 100%.'},
-            {name: 'height',          type: 'number',   default: 'null',          details: 'Container height in pixels. If not provided container height set to 100%.'},
             {name: 'gutterSize',      type: 'number',   default: '11',            details: `Gutters's size (dragging elements) in pixels.`},
-            {name: 'gutterColor',     type: 'string',   default: '#eeeeee',       details: `Gutters's color (dragging elements). Could be <code>grey</code>, <code>#ff0000</code>, <code>rgba(45,45,45,.5)</code>,..`},
-            {name: 'gutterImageH',    type: 'string',   default: '-',             details: `Gutters's image used in horizontal mode. Could be base64 (<code>"url('data:image/png;base64,iVBORw0..')"</code>) or path (<code>"url('./images/col-resize.png')"</code>)`},
-            {name: 'gutterImageV',    type: 'string',   default: '-',             details: `Gutters's image used in vertical mode. Could be base64 (<code>"url('data:image/png;base64,ORw0id..')"</code>) or path (<code>"url('./images/row-resize.png')"</code>)`},
             {name: 'disabled',        type: 'boolean',  default: 'false',         details: 'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code> still emits.'},
             {name: 'useTransition',   type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code>.'},
         ],
         outputs: [
             {name: 'dragStart',         value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag starts.'},
-            {name: 'dragProgress',      value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when dragging.'},
             {name: 'dragEnd',           value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag ends.'},
             {name: 'gutterClick',       value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when user clicks on a gutter.'},
             {name: 'transitionEnd',     value: 'Array<number>', details: 'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code>).<br>Only if <code>[useTransition]="true"</code>'},
+        ],
+        class: [
+            {name: 'dragProgress$',         type: 'Observable<{gutterNum: number, sizes: Array<number>}>',  details: 'Emit when dragging. Replace old <code>(dragProgress)</code> template event for better flexibility about change detection mechanism.'},
+            {name: 'setVisibleAreaSizes()', type: '(Array<number>) => boolean',                             details: 'Set all <b>visible</b> area sizes in one go, return a boolean to know if input values were correct. Useful when combined with <code>dragProgress$</code> to sync multiple splits.'},
         ],
     };
 

@@ -1,5 +1,5 @@
 <div class="container">
-    <h4>Component <span class="directive">&#60;as-split&#62;</span></h4>
+    <h4>SplitComponent <span class="sel">(selector: '<span class="selContent">as-split</span>')</span></h4>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -34,8 +34,24 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Access from TS class</th>
+                <th>Type</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of splitDoc.class">
+                <td>{{ item.name }}</td>
+                <td><code>{{ item.type }}</code></td>
+                <td [innerHTML]="item.details"></td>
+            </tr>
+        </tbody>
+    </table>
     <br><br>
-    <h4>Directive <span class="directive">&#60;as-split-area&#62;</span></h4>
+    <h4>SplitAreaDirective <span class="sel">(selector: '<span class="selContent">as-split-area, [as-split-area]</span>')</span></h4>
     <table class="table table-striped">
         <thead>
             <tr>

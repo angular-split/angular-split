@@ -294,7 +294,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
 
         this.displayedAreas.forEach((area, i) => {
-            area.component['_size'] = sizes[i];
+            // @ts-ignore
+            area.component._size = sizes[i];
         })
 
         this.build(false, true);

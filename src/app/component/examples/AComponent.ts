@@ -6,7 +6,7 @@ export class AComponent {
     exampleEnum = ExampleEnum
 
     testChangeDetectorRun() {
-        console.log(`${ formatDate(new Date()) } > AComponent.ts - Change detector run just now!`);
+        console.log(`${ formatDate(new Date()) } > AComponent.ts - Change detection just run!`);
 
         return '';
     }
