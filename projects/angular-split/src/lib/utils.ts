@@ -7,15 +7,15 @@ export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
     // TouchEvent
     if((<TouchEvent> event).touches !== undefined && (<TouchEvent> event).touches.length > 0) {
         return {
-            x: (<TouchEvent> event).touches[0].pageX,
-            y: (<TouchEvent> event).touches[0].pageY,
+            x: (<TouchEvent> event).touches[0].clientX,
+            y: (<TouchEvent> event).touches[0].clientY,
         };
     }
     // MouseEvent
-    else if((<MouseEvent> event).pageX !== undefined && (<MouseEvent> event).pageY !== undefined) {
+    else if((<MouseEvent> event).clientX !== undefined && (<MouseEvent> event).clientY !== undefined) {
         return {
-            x: (<MouseEvent> event).pageX,
-            y: (<MouseEvent> event).pageY,
+            x: (<MouseEvent> event).clientX,
+            y: (<MouseEvent> event).clientY,
         };
     }
     return null;

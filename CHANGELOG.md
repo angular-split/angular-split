@@ -1,4 +1,10 @@
 
+<a name="2.0.0-beta.6"></a>
+# 2.0.0-beta.6 (2018-12-03)
+
+* **Internal:** Use `clientX`/`clientY` instead `pageX`/`pageY` to calculate distance while mouse moves.
+
+
 <a name="2.0.0-beta.5"></a>
 # 2.0.0-beta.5 (2018-11-29)
 
