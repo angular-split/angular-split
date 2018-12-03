@@ -1,4 +1,4 @@
-# angular-split [![npm version](https://badge.fury.io/js/angular-split.svg)](https://badge.fury.io/js/angular-split)
+# angular-split [![npm version](https://badge.fury.io/js/angular-split.svg)](https://badge.fury.io/js/angular-split) [![NPM version](https://img.shields.io/npm/v/angular-split/next.svg)](https://www.npmjs.com/package/angular-split)
 Lightweight Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.
 
 Documentation and examples:
