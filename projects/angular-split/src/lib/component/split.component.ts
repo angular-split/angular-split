@@ -163,16 +163,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     ////
 
-    // @HostBinding('style.min-width') get cssMinwidth() {
-    //     return (this.direction === 'horizontal') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
-    // }
-
-    // @HostBinding('style.min-height') get cssMinheight() {
-    //     return (this.direction === 'vertical') ? `${ this.getNbGutters() * this.gutterSize }px` : null;
-    // }
-
-    ////
-
     private isDragging: boolean = false;
     private currentGutterNum: number = 0;
     private startPoint: IPoint | null = null;
@@ -220,7 +210,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             this.displayedAreas.push(newArea);
 
             this.build(true, true);
-            this.cdRef.markForCheck();
         }
         else {
             this.hidedAreas.push(newArea);
@@ -233,7 +222,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1);
 
             this.build(true, true);
-            this.cdRef.markForCheck();
         }
         else if(this.hidedAreas.some(a => a.component === component)) {
             const area = this.hidedAreas.find(a => a.component === component);
@@ -261,7 +249,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.displayedAreas.push(...areas);
 
         this.build(true, true);
-        this.cdRef.markForCheck();
     }
 
     public hideArea(comp: SplitAreaDirective): void {
@@ -278,7 +265,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.hidedAreas.push(...areas);
 
         this.build(true, true);
-        this.cdRef.markForCheck();
+    }
+
+    public getVisibleAreaSizes(): Array<number> {
+        return this.displayedAreas.map(a => a.size * 100);
     }
 
     public setVisibleAreaSizes(sizes: Array<number>): boolean {
@@ -379,6 +369,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
 
         this.refreshStyleSizes();
+        this.cdRef.markForCheck();
     }
 
     private refreshStyleSizes(): void {
@@ -393,7 +384,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         event.preventDefault();
         event.stopPropagation();
 
-        if(this.startPoint && this.startPoint.x === event.pageX && this.startPoint.y === event.pageY) {
+        if(this.startPoint && this.startPoint.x === event.clientX && this.startPoint.y === event.clientY) {
             this.currentGutterNum = gutterNum;
 
             this.notify('click');
@@ -455,10 +446,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         
         // ¤ AREAS SIZE PIXEL
 
-        const devicePixelRatio = /*window.devicePixelRatio ||*/ 1;
         let offsetPixel = (this.direction === 'horizontal') ? (this.startPoint.x - this.endPoint.x) : (this.startPoint.y - this.endPoint.y);
-        offsetPixel = offsetPixel / devicePixelRatio;
-        
         if(this.dir === 'rtl') {
             offsetPixel = -offsetPixel;
         }
@@ -535,7 +523,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
         
         // If moved from starting point, notify end
-        if(this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
+        if(event && this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
             this.notify('end');
         }
         
@@ -575,7 +563,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             }
         }
         else if(type === 'progress') {
-            // Stay outside zone to allow users do what they want about change detection mecanism.
+            // Stay outside zone to allow users do what they want about change detection mechanism.
             this.dragProgressSubject.next({gutterNum: this.currentGutterNum, sizes});
         }
     }

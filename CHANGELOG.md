@@ -1,4 +1,10 @@
 
+<a name="2.0.0-beta.7"></a>
+# 2.0.0-beta.7 (2018-12-05)
+
+* **New API:** Add `getVisibleAreaSizes(): Array<number>` function on `SplitComponent` class.
+
+
 <a name="2.0.0-beta.6"></a>
 # 2.0.0-beta.6 (2018-12-03)
 
@@ -10,6 +16,7 @@
 
 * **Performance:** Make library template event bindings (`click`, `mousedown`, `touchstart`) runs outside `zone.js` to avoid unnecessary change detection run.
 * **Performance (API change):** Remove `(dragProgress)` event emitter from template and add a `dragProgress$` observable accessible from `SplitComponent` class. Doing this you can track drag progress without triggering change detection inside component containing `<as-split>`, see "Sync example demo" opening devTools console to verify it.
+* **New API:** Add `setVisibleAreaSizes(sizes: Array<number>): boolean` function on `SplitComponent` class.
 
 
 <a name="2.0.0-beta.4"></a>

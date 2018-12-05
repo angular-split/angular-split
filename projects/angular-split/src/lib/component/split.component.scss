@@ -98,13 +98,7 @@
 
         & > .as-split-gutter,
         ::ng-deep > .as-split-area {
-            transition: flex-basis 0.3s;
-            
-            /*
-            transition-property: flex-basis;
-            transition-duration: .3s;
-            transition-timing-function: ease;
-            */
+            transition: flex-basis .3s;
         }
     }
 }
