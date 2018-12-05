@@ -111,21 +111,56 @@ context('Geek demo example page tests', () => {
     })
     
     
-    it.only('Add areas, check order, move them and check order', () => {
-        // cy.get('.opts-area .btn').contains('Add area').click();
-        // cy.get('.opts-area .btn').contains('Add area').click();
-        // cy.get('.opts-area .btn').contains('Add area').click();
-        // cy.get('.opts-area .btn').contains('Add area').click();
-        // cy.get('.opts-area .btn').contains('Add area').click();
+    it('Add areas, check order, move them and check order', () => {
+        cy.get('.opts-area .btn').contains('Add area').click();
+        cy.get('.opts-area .btn').contains('Add area').click();
+        cy.get('.opts-area .btn').contains('Add area').click();
+        cy.get('.opts-area .btn').contains('Add area').click();
+        cy.get('.opts-area .btn').contains('Add area').click();
 
-        // checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [124, 124, 124, 125, 124, 124, 124, 124]);
-        // cy.get('.opts-area div[draggable="true"]').should('have.length', 8);
-        // checkAreaOrder();
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [124, 124, 124, 125, 124, 124, 124, 124]);
+        cy.get('.opts-area div[draggable="true"]').should('have.length', 8);
+        checkAreaOrder();
         
         moveArea(0, 2);
         checkAreaOrder();
+        
+        moveArea(7, -5);
+        checkAreaOrder();
+        
+        moveArea(7, -7);
+        checkAreaOrder();
+        
+        moveArea(2, -2);
+        checkAreaOrder();
+        
+        moveArea(0, 7);
+        checkAreaOrder();
     })
 
+    it('Add areas, move them, hide/remove and move again', () => {
+        cy.get('.opts-area .btn').contains('Add area').click();
+        cy.get('.opts-area .btn').contains('Add area').click();
+        cy.get('.opts-area .btn').contains('Add area').click();
+
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [169, 169, 169, 170, 169, 169]);
+        cy.get('.opts-area div[draggable="true"]').should('have.length', 6);
+        checkAreaOrder();
+        
+        moveArea(4, -3);
+        checkAreaOrder();
+
+        cy.get('.opts-area div[draggable="true"]').eq(3).find('button').contains('[visible]').click();
+        checkAreaOrder();
+        
+        moveArea(3, -2);
+        checkAreaOrder();
+
+        cy.get('.opts-area div[draggable="true"]').eq(1).find('button').contains('[visible]').click();
+        checkAreaOrder();
+        
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [169, 169, 169, 170, 169, 169]);
+    })
 
 })
 
@@ -147,27 +182,8 @@ function checkAreaOrder() {
 }
 
 function moveArea(numArea, gap) {
-    const dataTransfer = new DataTransfer();
-    dataTransfer.effectAllowed = 'all';
-
-    const dataTransferOptions = {
-        dataTransfer/*: {
-            dropEffect: 'none',
-            effectAllowed: 'all',
-            files: [],
-            types: ['Text'],
-            setData: (x, y) => {},
-            //getData: k => 'placeholder',
-        }*/
-    };
-
     cy.get('.opts-area div[draggable="true"]').eq(numArea).as('movedItem')
       .get('.opts-area div[draggable="true"]').eq(numArea + gap).as('destItem')
-      .get('bs-sortable > div').as('dropDiv')
-      .get('@movedItem')
-        .trigger('dragstart', dataTransferOptions)
-      .get('@destItem')
-        .trigger('dragover', dataTransferOptions)
-      .get('@dropDiv')
-        .trigger('drop', dataTransferOptions);
+      .get('@movedItem').trigger('dragstart', {dataTransfer: new DataTransfer()})
+      .get('@destItem').trigger('dragover', {dataTransfer: new DataTransfer()});
 }

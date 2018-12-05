@@ -118,7 +118,7 @@ import { AComponent } from './AComponent';
                 <bs-sortable [(ngModel)]="d.areas" [itemTemplate]="itemTemplate"></bs-sortable>
                 
                 <ng-template #itemTemplate let-item="item" let-index="index">
-                    <div [style.background-color]="item.value.color" class="area-item">
+                    <div [style.background-color]="item.value.color" class="area-item id-{{ item.value.id }}">
                         <div class="num">{{ item.value.id }}</div>
                         <div>
                             <button class="btn btn-warning btn-sm" [class.active]="!item.value.present" (click)="item.value.present = !item.value.present">{{ '*ngIf="' + item.value.present + '"' }}</button>
