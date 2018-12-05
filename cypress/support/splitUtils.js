@@ -1,11 +1,11 @@
 
 export function moveGutter(gutters, num, x, y) {
     cy.get(gutters).eq(num)
-        .trigger('mousedown', { which: 1, pageX: 0, pageY: 0 })
-        .trigger('mousemove', { pageX: x*.25, pageY: y*.25 })
-        .trigger('mousemove', { pageX: x*.50, pageY: y*.50 })
-        .trigger('mousemove', { pageX: x*.75, pageY: y*.75 })
-        .trigger('mousemove', { pageX: x, pageY: y })
+        .trigger('mousedown', { which: 1, clientX: 0, clientY: 0 })
+        .trigger('mousemove', { clientX: x*.25, clientY: y*.25 })
+        .trigger('mousemove', { clientX: x*.50, clientY: y*.50 })
+        .trigger('mousemove', { clientX: x*.75, clientY: y*.75 })
+        .trigger('mousemove', { clientX: x, clientY: y })
         .trigger('mouseup');
         
     cy.document().trigger('mouseup', { force: true });

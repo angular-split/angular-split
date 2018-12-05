@@ -13,44 +13,44 @@ context('Sync splits example page tests', () => {
     })
 
     it('Display initial state', () => {
-        checkSplitDirAndSizes('.split-example > as-split', 'vertical', W, H, GUTTER, [87, 202]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [265, 794]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [265, 794]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 202, GUTTER, [265, 794]);
+        checkSplitDirAndSizes('.split-example > as-split', 'vertical', W, H, GUTTER, [56, 55, 167]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 56, GUTTER, [265, 794]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 56, GUTTER, [265, 794]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 167, GUTTER, [265, 794]);
     })
     
-    it('Move gutter upper split horizontally and check if others splits follow', () => {
+    it('Move gutter first split horizontally and check if others splits follow', () => {
         moveGutter('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, 280, 0);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [544, 515]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [544, 515]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 202, GUTTER, [544, 515]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 56, GUTTER, [544, 515]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 56, GUTTER, [544, 515]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 167, GUTTER, [544, 515]);
         
         moveGutter('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, 600, 0);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [1059, 0]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [1059, 0]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 202, GUTTER, [1059, 0]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 56, GUTTER, [1059, 0]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 56, GUTTER, [1059, 0]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 167, GUTTER, [1059, 0]);
         
         moveGutter('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, -1500, 0);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [0, 1059]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [0, 1059]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 202, GUTTER, [0, 1059]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 56, GUTTER, [0, 1059]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 56, GUTTER, [0, 1059]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 167, GUTTER, [0, 1059]);
     })
     
-    it('Move gutter down split horizontally and check if others splits follow', () => {
+    it('Move gutter second split horizontally and check if others splits follow', () => {
         moveGutter('.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, 280, 0);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [544, 515]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [544, 515]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 202, GUTTER, [544, 515]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 56, GUTTER, [544, 515]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 56, GUTTER, [544, 515]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 167, GUTTER, [544, 515]);
         
         moveGutter('.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, 600, 0);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [1059, 0]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [1059, 0]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 202, GUTTER, [1059, 0]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 56, GUTTER, [1059, 0]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 56, GUTTER, [1059, 0]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 167, GUTTER, [1059, 0]);
         
         moveGutter('.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, -1500, 0);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 87, GUTTER, [0, 1059]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 202, GUTTER, [0, 1059]);
-        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 202, GUTTER, [0, 1059]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(1) > as-split', 'horizontal', W, 56, GUTTER, [0, 1059]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(2) > as-split', 'horizontal', W, 56, GUTTER, [0, 1059]);
+        checkSplitDirAndSizes('.split-example > as-split > .as-split-area:nth-child(3) > as-split', 'horizontal', W, 167, GUTTER, [0, 1059]);
     })
     
 })
