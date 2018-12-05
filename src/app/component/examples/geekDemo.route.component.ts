@@ -64,7 +64,7 @@ import { AComponent } from './AComponent';
                           [gutterSize]="d.gutterSize" 
                           [style.width]="d.width" 
                           [style.height]="d.height" 
-                          useTransition="true" 
+                          [useTransition]="d.useTransition" 
                           style="background-color: #ffffff;">
                     <ng-template ngFor let-area [ngForOf]="d.areas" [ngForTrackBy]="trackByFct" let-index="index">
                         <as-split-area *ngIf="area.present" 
@@ -77,7 +77,9 @@ import { AComponent } from './AComponent';
             </div>
             <div class="opts-prop">
                 <div>
-                    <label>Direction: </label>
+                    <button class="btn btn-warning btn-sm" [class.active]="!d.useTransition" (click)="d.useTransition = !d.useTransition">{{ 'useTransition: ' + d.useTransition }}</button>
+                </div>
+                <div>
                     <div class="btn-group">
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.dir" btnRadio="horizontal">horizontal</label>
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.dir" btnRadio="vertical">vertical</label>
@@ -133,6 +135,7 @@ export class GeekDemoComponent extends AComponent {
     
     d = {
         dir: 'horizontal',
+        useTransition: true,
         gutterSize: null,
         width: null,
         height: null,

@@ -36,17 +36,18 @@ export class DocComponent {
             {name: 'direction',       type: 'string',   default: '"horizontal"',  details: 'Select split direction: <code>"horizontal"</code> or <code>"vertical"</code>.'},
             {name: 'gutterSize',      type: 'number',   default: '11',            details: `Gutters's size (dragging elements) in pixels.`},
             {name: 'disabled',        type: 'boolean',  default: 'false',         details: 'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code> still emits.'},
-            {name: 'useTransition',   type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code>.'},
+            {name: 'useTransition',   type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
         ],
         outputs: [
             {name: 'dragStart',         value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag starts.'},
             {name: 'dragEnd',           value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag ends.'},
             {name: 'gutterClick',       value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when user clicks on a gutter.'},
-            {name: 'transitionEnd',     value: 'Array<number>', details: 'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code>).<br>Only if <code>[useTransition]="true"</code>'},
+            {name: 'transitionEnd',     value: 'Array<number>', details: 'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code>).<br>Only if <code>[useTransition]="true"</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
         ],
         class: [
             {name: 'dragProgress$',         type: 'Observable<{gutterNum: number, sizes: Array<number>}>',  details: 'Emit when dragging. Replace old <code>(dragProgress)</code> template event for better flexibility about change detection mechanism.'},
             {name: 'setVisibleAreaSizes()', type: '(Array<number>) => boolean',                             details: 'Set all <b>visible</b> area sizes in one go, return a boolean to know if input values were correct. Useful when combined with <code>dragProgress$</code> to sync multiple splits.'},
+            {name: 'getVisibleAreaSizes()', type: '() => Array<number>',                                    details: 'Get all <b>visible</b> area sizes.'},
         ],
     };
 

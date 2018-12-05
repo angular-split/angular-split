@@ -13,9 +13,12 @@ import { formatDate } from '../../service/utils';
         'class': 'split-example-page'
     },
     styles: [`
-        as-split.is-transition.is-init:not(.is-dragging) > .as-split-gutter,
-        as-split.is-transition.is-init:not(.is-dragging) ::ng-deep > .as-split-area {
-            transition: flex-basis 1.5s;
+        as-split.is-transition.is-init:not(.is-dragging) ::ng-deep > .as-split-gutter,
+        as-split.is-transition.is-init:not(.is-dragging) > .as-split-area {
+            transition: flex-basis 1.5s !important;
+        }
+        as-split.is-disabled ::ng-deep > .as-split-gutter {
+            cursor: pointer !important;
         }
         
         .btns {
@@ -75,7 +78,7 @@ import { formatDate } from '../../service/utils';
             <div class="logs">
                 <p>All <code>as-split</code> events emitted:</p>
                 <ul #logs>
-                    <li *ngFor="let l of logMessages">{{ l }}</li>
+                    <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
                 </ul>
             </div>
         </div>`
@@ -83,7 +86,7 @@ import { formatDate } from '../../service/utils';
 export class GutterClickComponent extends AComponent implements AfterViewInit, OnDestroy {
     isDisabled: boolean = true
     useTransition: boolean = true
-    logMessages: Array<string> = []
+    logMessages: Array<{type: string, text: string}> = []
     areas = [
         {size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg'},
         {size: 50, order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg'},
@@ -101,13 +104,20 @@ export class GutterClickComponent extends AComponent implements AfterViewInit, O
     }
 
     log(type: string, e: {gutterNum: number, sizes: Array<number>}) {
-        this.logMessages.push(`${ formatDate(new Date()) } > ${ type } event > ${ JSON.stringify(e) }`);
+        this.logMessages.push({type, text: `${ formatDate(new Date()) } > ${ type } event > ${ JSON.stringify(e) }`});
         setTimeout(() => {
-            (<HTMLElement> this.logsEl.nativeElement).scroll({top: this.logMessages.length*30});
+            if(this.logsEl.nativeElement.scroll) {
+                (<HTMLElement> this.logsEl.nativeElement).scroll({top: this.logMessages.length*30});
+            }
         })
 
         if(type === 'gutterClick') {
             this.gutterClick(e);
+        }
+        else if(type === 'dragEnd') {
+            this.areas[0].size = e.sizes[0];
+            this.areas[1].size = e.sizes[1];
+            this.areas[2].size = e.sizes[2];
         }
     }
 

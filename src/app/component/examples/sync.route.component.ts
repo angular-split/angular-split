@@ -61,16 +61,22 @@ export class SyncComponent extends AComponent implements AfterViewInit, OnDestro
             )
             .subscribe(d => {
                 if(d.name === 'A') { // If split A changed > update BC
-                    this.mySplitBEl.setVisibleAreaSizes(d.data.sizes);
-                    this.mySplitCEl.setVisibleAreaSizes(d.data.sizes);
+                    const sizesSplitA = this.mySplitAEl.getVisibleAreaSizes(); //d.data.sizes; <-- Could have use these values too
+
+                    this.mySplitBEl.setVisibleAreaSizes(sizesSplitA);
+                    this.mySplitCEl.setVisibleAreaSizes(sizesSplitA);
                 }
                 else if(d.name === 'B') { // Else if split B changed > update AC
-                    this.mySplitAEl.setVisibleAreaSizes(d.data.sizes);
-                    this.mySplitCEl.setVisibleAreaSizes(d.data.sizes);
+                    const sizesSplitB = this.mySplitBEl.getVisibleAreaSizes(); //d.data.sizes; <-- Could have use these values too
+
+                    this.mySplitAEl.setVisibleAreaSizes(sizesSplitB);
+                    this.mySplitCEl.setVisibleAreaSizes(sizesSplitB);
                 }
                 else if(d.name === 'C') { // Else if split C changed > update AB
-                    this.mySplitAEl.setVisibleAreaSizes(d.data.sizes);
-                    this.mySplitBEl.setVisibleAreaSizes(d.data.sizes);
+                    const sizesSplitC = this.mySplitCEl.getVisibleAreaSizes(); //d.data.sizes; <-- Could have use these values too
+
+                    this.mySplitAEl.setVisibleAreaSizes(sizesSplitC);
+                    this.mySplitBEl.setVisibleAreaSizes(sizesSplitC);
                 }
 
                 console.log(`${ formatDate(new Date()) } > dragProgress$ observable emitted, splits synchronized but current component change detection didn't runned! (from split ${ d.name })`);

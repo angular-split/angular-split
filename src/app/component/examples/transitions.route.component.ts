@@ -102,7 +102,7 @@ import { formatDate } from '../../service/utils';
             <div class="logs">
                 <p>Events <code>(transitionEnd)</code>:</p>
                 <ul #logs>
-                    <li *ngFor="let l of logMessages">{{ l }}</li>
+                    <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
                 </ul>
             </div>
         </div>`
@@ -117,15 +117,16 @@ export class TransitionsComponent extends AComponent {
         a3v: true,
         useTransition: true,
     }
-    logMessages: Array<string> = []
+    logMessages: Array<{type: string, text: string}> = []
 
     @ViewChild('logs') logsEl: ElementRef
 
     log(e) {
-        this.logMessages.push(`${ formatDate(new Date()) } > transitionEnd event > ${ e }`);
+        this.logMessages.push({type: 'transitionEnd', text: `${ formatDate(new Date()) } > transitionEnd event > ${ e }`});
         setTimeout(() => {
-            (<HTMLElement> this.logsEl.nativeElement).scroll({top: this.logMessages.length*30});
+            if(this.logsEl.nativeElement.scroll) {
+                (<HTMLElement> this.logsEl.nativeElement).scroll({top: this.logMessages.length*30});
+            }
         })
     }
-
 }
