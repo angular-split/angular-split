@@ -1,11 +1,8 @@
-# angular-split [![npm version](https://badge.fury.io/js/angular-split.svg)](https://badge.fury.io/js/angular-split) [![NPM version](https://img.shields.io/npm/v/angular-split/next.svg)](https://www.npmjs.com/package/angular-split)
+# angular-split [![npm latest version](https://img.shields.io/npm/v/angular-split/latest.svg?style=flat-square)](https://www.npmjs.com/package/angular-split) [![NPM next version](https://img.shields.io/npm/v/angular-split/next.svg?style=flat-square)](https://www.npmjs.com/package/angular-split) [![Travis build](https://img.shields.io/travis/com/bertrandg/angular-split/master.svg?style=flat-square&label=Cypress+E2E+tests)](https://travis-ci.com/bertrandg/angular-split)
 Lightweight Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.
 
 Documentation and examples:
 [https://bertrandg.github.io/angular-split/](https://bertrandg.github.io/angular-split/)
-
-[![Build Status](https://travis-ci.com/bertrandg/angular-split.svg?branch=master)](https://travis-ci.com/bertrandg/angular-split)
-
 
 ### Credits
 Crossbrowser testing sponsored by [Browser Stack](https://www.browserstack.com)
@@ -13,4 +10,4 @@ Crossbrowser testing sponsored by [Browser Stack](https://www.browserstack.com)
 
 ### License
 
-Apache 
+Apache 2.0
