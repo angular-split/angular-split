@@ -51,6 +51,7 @@
         </tbody>
     </table>
     <br><br>
+
     <h4>SplitAreaDirective <span class="sel">(selector: '<span class="selContent">as-split-area, [as-split-area]</span>')</span></h4>
     <table class="table table-striped">
         <thead>
@@ -70,5 +71,49 @@
             </tr>
         </tbody>
     </table>
-    
+    <br><br>
+
+    <h4>CSS classes</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 40%">Split element classes</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of cssClasses.split">
+                <td><code>{{ x.name }}</code></td>
+                <td [innerHTML]="x.details"></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 40%">Area element classes</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of cssClasses.area">
+                <td><code>{{ x.name }}</code></td>
+                <td [innerHTML]="x.details"></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 40%">Gutter element classes</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let x of cssClasses.gutter">
+                <td><code>{{ x.name }}</code></td>
+                <td [innerHTML]="x.details"></td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -1,4 +1,10 @@
 
+<a name="2.0.0-beta.8"></a>
+# 2.0.0-beta.8 (2018-12-06)
+
+* **New gutter css class:** CSS class `is-dragged` added on the gutter while being dragged.
+
+
 <a name="2.0.0-beta.7"></a>
 # 2.0.0-beta.7 (2018-12-05)
 

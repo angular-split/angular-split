@@ -1,8 +1,7 @@
 
 
 :host {
-
-    as-split {
+    .ex-a as-split {
         overflow: inherit;
     
         ::ng-deep .as-split-gutter {
@@ -86,10 +85,15 @@
                 font-size: 0;
                 line-height: 0;
             }
-                
-            /* Show tooltip content on hover */
-            &:hover:before,
-            &:hover:after {
+        }
+    
+        /* Show tooltip content on hover */
+        ::ng-deep .as-split-gutter.is-dragged > .as-split-gutter-icon,
+        ::ng-deep .as-split-gutter > .as-split-gutter-icon:hover {
+            opacity: 1;
+             
+            &:before,
+            &:after {
                 visibility: visible;
                 -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
                 filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -98,6 +102,49 @@
         }
     }
     
+    .ex-b as-split {
+
+        .as-split-area {
+            background-color: lightgrey;
+
+            & > p {
+               padding: 5px;
+           }
+        }
+
+        ::ng-deep .as-split-gutter {
+            background-color: grey !important;
+            position: relative;
+        }
+
+        ::ng-deep .as-split-gutter-icon {
+            background-image: none !important;
+            background-color: black;
+            transition: opacity .3s;
+            opacity: 0;
+            position: absolute;
+        }
+
+        ::ng-deep .as-split-gutter.is-dragged .as-split-gutter-icon,
+        ::ng-deep .as-split-gutter-icon:hover {
+            opacity: .1;
+        }
+
+        &.is-horizontal {
+            ::ng-deep .as-split-gutter-icon {
+                width: 13px !important;
+                left: -6px;
+                right: 6px;
+            }
+        }
+        &.is-vertical {
+            ::ng-deep .as-split-gutter-icon {
+                height: 13px !important;
+                top: -6px;
+                bottom: 6px;
+            }
+        }
+    }
 
     .btns {
         display: flex;

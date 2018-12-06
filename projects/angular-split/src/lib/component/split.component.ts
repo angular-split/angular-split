@@ -1,4 +1,4 @@
-import { Component, Input, Output, HostBinding, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone, ViewChildren, QueryList } from '@angular/core';
 import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -45,8 +45,9 @@ import { getPointFromEvent, getPixelSize, getInputBoolean, isValidTotalSize } fr
     styleUrls: [`./split.component.scss`],
     template: `
         <ng-content></ng-content>
-        <ng-template ngFor let-area [ngForOf]="displayedAreas" let-index="index" let-last="last">
+        <ng-template ngFor [ngForOf]="displayedAreas" let-index="index" let-last="last">
             <div *ngIf="last === false" 
+                 #gutterEls
                  class="as-split-gutter"
                  [style.flex-basis.px]="gutterSize"
                  [style.order]="index*2+1"
@@ -179,6 +180,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         sizePercentA: 0,
         sizePercentB: 0,
     };
+
+    @ViewChildren('gutterEls') private gutterEls: QueryList<ElementRef>;
 
     constructor(private ngZone: NgZone,
                 private elRef: ElementRef,
@@ -428,6 +431,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         this.isDragging = true;
         this.renderer.addClass(this.elRef.nativeElement, 'is-dragging');
+        this.renderer.addClass(this.gutterEls.toArray()[this.currentGutterNum-1].nativeElement, 'is-dragged');
+        
         this.notify('start');
     }
 
@@ -529,6 +534,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         
         this.isDragging = false;
         this.renderer.removeClass(this.elRef.nativeElement, 'is-dragging');
+        this.renderer.removeClass(this.gutterEls.toArray()[this.currentGutterNum-1].nativeElement, 'is-dragged');
 
         // Needed to let (click)="clickGutter(...)" event run and verify if mouse moved or not
         this.ngZone.runOutsideAngular(() => {
