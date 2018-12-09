@@ -1,4 +1,10 @@
 
+<a name="2.0.0"></a>
+# 2.0.0 (2018-12-09)
+
+* **New major version:** Check previous betas to know main changes from `1.x` and take a look on website examples.
+
+
 <a name="2.0.0-beta.8"></a>
 # 2.0.0-beta.8 (2018-12-06)
 
