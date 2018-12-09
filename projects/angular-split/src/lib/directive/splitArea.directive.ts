@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef, Renderer2, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { SplitComponent } from '../component/split.component';
-import { getInputBoolean } from '../utils';
+import { getInputPositiveNumber, getInputBoolean } from '../utils';
 
 @Directive({
     selector: 'as-split-area, [as-split-area]'
@@ -11,8 +11,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private _order: number | null = null;
 
     @Input() set order(v: number | null) {
-        v = Number(v);
-        this._order = !isNaN(v) ? v : null;
+        this._order = getInputPositiveNumber(v, null);
 
         this.split.updateArea(this, true, false);
     }
@@ -26,14 +25,41 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     private _size: number | null = null;
 
     @Input() set size(v: number | null) {
-        v = Number(v);
-        this._size = (!isNaN(v) && v >= 0 && v <= 100) ? (v/100) : null;
+        this._size = getInputPositiveNumber(v, null);
 
         this.split.updateArea(this, false, true);
     }
     
     get size(): number | null {
         return this._size;
+    }
+
+    ////
+
+    private _minSize: number | null = null;
+
+    @Input() set minSize(v: number | null) {
+        this._minSize = getInputPositiveNumber(v, null);
+
+        this.split.updateArea(this, false, true);
+    }
+    
+    get minSize(): number | null {
+        return this._minSize;
+    }
+
+    ////
+
+    private _maxSize: number | null = null;
+
+    @Input() set maxSize(v: number | null) {
+        this._maxSize = getInputPositiveNumber(v, null);
+
+        this.split.updateArea(this, false, true);
+    }
+    
+    get maxSize(): number | null {
+        return this._maxSize;
     }
 
     ////
@@ -86,8 +112,8 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.renderer.setStyle(this.elRef.nativeElement, 'order', value);
     }
     
-    public setStyleFlexbasis(value: string): void {
-        this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', value);
+    public setStyleFlex(value: string): void {
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex', value);
     }
     
     public lockEvents(): void {
