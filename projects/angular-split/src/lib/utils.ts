@@ -1,8 +1,6 @@
 import { ElementRef } from '@angular/core';
 
-import { IPoint } from './interface/IPoint';
-import { ISplitSnapshot } from './interface/ISplitSnapshot';
-import { IAreaSnapshot } from './interface/IAreaSnapshot';
+import { IPoint, IAreaSnapshot } from './interface';
 
 export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
     // TouchEvent
@@ -22,6 +20,7 @@ export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
     return null;
 }
 
+// TODO Check using https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 export function getElementPixelSize(elRef: ElementRef, direction: 'horizontal' | 'vertical'): number {
     return elRef.nativeElement[(direction === 'horizontal') ? 'offsetWidth' : 'offsetHeight'];
 
@@ -42,10 +41,6 @@ export function isValidTotalSize(total: number): boolean {
     return total > 99.9 && total < 100.1;
 }
 
-export function getSteppedValue(value: number, step: number): number {
-    return Math.round(value / step) * step;
-}
-
 // Return how many pixels can't be absorbed by the area!
 // If output = 0 -> area can absorb all
 // If output = pixels -> area can absorb nothing (already at min/0/max)
@@ -57,7 +52,7 @@ export function getSteppedValue(value: number, step: number): number {
 //  _________________________________________________
 // |________________maxSize_(%_/_px)_________________|
 //
-export function areaAbsorb(unit: 'percent' | 'pixel', areaSnapshot: IAreaSnapshot, pixels: number): {absorb: number, remain: number} {
+export function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapshot: IAreaSnapshot, pixels: number): {absorb: number, remain: number} {
     // No pain no gain
     if(pixels === 0) {
         return {

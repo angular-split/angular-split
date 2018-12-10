@@ -2,12 +2,9 @@ import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, R
 import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { IArea } from '../interface/IArea';
-import { IPoint } from '../interface/IPoint';
-import { ISplitSnapshot } from '../interface/ISplitSnapshot';
-import { IAreaSnapshot } from '../interface/IAreaSnapshot';
+import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot } from '../interface';
 import { SplitAreaDirective } from '../directive/splitArea.directive';
-import { getInputPositiveNumber, getInputBoolean, getPointFromEvent, getElementPixelSize, getSteppedValue, areaAbsorb, isValidTotalSize } from '../utils';
+import { getInputPositiveNumber, getInputBoolean, getPointFromEvent, getElementPixelSize, getAreaAbsorptionCapacity, isValidTotalSize } from '../utils';
 
 /**
  * angular-split
@@ -474,8 +471,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             this.dragListeners.push( this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)) );
             this.dragListeners.push( this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)) );
             
-            this.dragListeners.push( this.renderer.listen('document', 'mousemove', (e: MouseEvent) => this.dragEvent(e, areaA, areaB)) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchmove', (e: TouchEvent) => this.dragEvent(e, areaA, areaB)) );
+            this.dragListeners.push( this.renderer.listen('document', 'mousemove', this.dragEvent.bind(this)) );
+            this.dragListeners.push( this.renderer.listen('document', 'touchmove', this.dragEvent.bind(this)) );
         });
 
         this.displayedAreas.forEach(area => {
@@ -501,14 +498,12 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         if(!this.endPoint) {
             return;
         }
-        
-        // ¤ AREAS SIZE PIXEL
 
         let offset = (this.direction === 'horizontal') ? (this.startPoint.x - this.endPoint.x) : (this.startPoint.y - this.endPoint.y);
         if(this.dir === 'rtl') {
             offset = -offset;
         }
-        const steppedOffset = getSteppedValue(offset, this.gutterStep);
+        const steppedOffset = Math.round(offset / this.gutterStep) * this.gutterStep;
 
         if(steppedOffset === this.snapshot.lastSteppedOffset) {
             return;
@@ -516,58 +511,42 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         this.snapshot.lastSteppedOffset = steppedOffset;
         
-        const pixelBeforeRemaining = this.snapshot.areasBeforeGutter.reduce((pixel, a) => areaAbsorb(this.unit, a, pixel).remain, steppedOffset);
-        if(pixelBeforeRemaining !== 0) return;
-
-        const pixelAfterRemaining = this.snapshot.areasAfterGutter.reduce((pixel, a) => areaAbsorb(this.unit, a, pixel).remain, -steppedOffset);
-        if(pixelAfterRemaining !== 0) return;
-
-
-        /*let newSizePixelA = this.dragStartValues.sizePixelA - offset;
-        let newSizePixelB = this.dragStartValues.sizePixelB + offset;
+        const areasBefore = this.snapshot.areasBeforeGutter.reduce((acc, area) => {
+            const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain);
+            acc.list.push(res);
+            acc.remain  = res.remain;
+            return acc;
+        }, {remain: steppedOffset, list: []});
         
-        if(newSizePixelA < this.gutterSize && newSizePixelB < this.gutterSize) {
-            // WTF.. get out of here!
-            return;
-        }
-        else if(newSizePixelA < this.gutterSize) {
-            newSizePixelB += newSizePixelA;
-            newSizePixelA = 0;
-        }
-        else if(newSizePixelB < this.gutterSize) {
-            newSizePixelA += newSizePixelB;
-            newSizePixelB = 0;
-        }
+        if(areasBefore.remain !== 0) return;
 
-        // ¤ AREAS SIZE PERCENT
+        const areasAfter = this.snapshot.areasAfterGutter.reduce((acc, a) => {
+            const res = getAreaAbsorptionCapacity(this.unit, a, acc.remain);
+            acc.list.push(res);
+            acc.remain  = res.remain;
+            return acc;
+        }, {remain: -steppedOffset, list: []});
 
-        if(newSizePixelA === 0) {
-            areaB.size += areaA.size;
-            areaA.size = 0;
-        }
-        else if(newSizePixelB === 0) {
-            areaA.size += areaB.size;
-            areaB.size = 0;
-        }
-        else {
-            // NEW_PERCENT = START_PERCENT / START_PIXEL * NEW_PIXEL;
-            if(this.dragStartValues.sizePercentA === 0) {
-                areaB.size = this.dragStartValues.sizePercentB / this.dragStartValues.sizePixelB * newSizePixelB;
-                areaA.size = this.dragStartValues.sizePercentB - areaB.size;
-            }
-            else if(this.dragStartValues.sizePercentB === 0) {
-                areaA.size = this.dragStartValues.sizePercentA / this.dragStartValues.sizePixelA * newSizePixelA;
-                areaB.size = this.dragStartValues.sizePercentA - areaA.size;
-            }
-            else {
-                areaA.size = this.dragStartValues.sizePercentA / this.dragStartValues.sizePixelA * newSizePixelA;
-                areaB.size = (this.dragStartValues.sizePercentA + this.dragStartValues.sizePercentB) - areaA.size;
-            }
-        }*/
+        if(areasAfter.remain !== 0) return;
+
+        // Now we know areas on each gutter side could absorb stepped offset
+        // Time to update area sizes really
+
+        // for (let el of areasBefore.list) {
+        //     console.log(el);
+        //     if (el === 5) {
+        //         break;
+        //     }
+        // }
+
+        areasBefore.list.forEach((e, i) => {
+            if(e.)
+        });
 
         this.refreshStyleSizes();
         
         // If moved from starting point, notify progress
+        // TODO test but normally, IF condition is not needed because L513 "if(steppedOffset === this.snapshot.lastSteppedOffset)..."
         if(this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
             this.notify('progress');
         }
