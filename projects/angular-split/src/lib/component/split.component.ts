@@ -2,7 +2,7 @@ import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, R
 import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot } from '../interface';
+import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, ISplitSideAbsorptionSnapshot } from '../interface';
 import { SplitAreaDirective } from '../directive/splitArea.directive';
 import { getInputPositiveNumber, getInputBoolean, getPointFromEvent, getElementPixelSize, getAreaAbsorptionCapacity, isValidTotalSize } from '../utils';
 
@@ -152,8 +152,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private _dir: 'ltr' | 'rtl' = 'ltr';
     
     @Input() set dir(v: 'ltr' | 'rtl') {
-        v = (v === 'rtl') ? 'rtl' : 'ltr';
-        this._dir = v;
+        this._dir = (v === 'rtl') ? 'rtl' : 'ltr';
         
         this.renderer.setAttribute(this.elRef.nativeElement, 'dir', this._dir);
     }
@@ -424,9 +423,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         event.stopPropagation();
 
         if(this.startPoint && this.startPoint.x === event.clientX && this.startPoint.y === event.clientY) {
-            this.currentGutterNum = gutterNum;
-
-            this.notify('click');
+            this.notify('click', gutterNum);
         }
     }
 
@@ -483,7 +480,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.renderer.addClass(this.elRef.nativeElement, 'is-dragging');
         this.renderer.addClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'is-dragged');
         
-        this.notify('start');
+        this.notify('start', this.snapshot.gutterNum);
     }
 
     private dragEvent(event: MouseEvent | TouchEvent, areaA: IArea, areaB: IArea): void {
@@ -511,7 +508,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         this.snapshot.lastSteppedOffset = steppedOffset;
         
-        const areasBefore = this.snapshot.areasBeforeGutter.reduce((acc, area) => {
+        const areasBefore: ISplitSideAbsorptionSnapshot = this.snapshot.areasBeforeGutter.reduce((acc, area) => {
             const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain);
             acc.list.push(res);
             acc.remain  = res.remain;
@@ -520,7 +517,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         
         if(areasBefore.remain !== 0) return;
 
-        const areasAfter = this.snapshot.areasAfterGutter.reduce((acc, a) => {
+        const areasAfter: ISplitSideAbsorptionSnapshot = this.snapshot.areasAfterGutter.reduce((acc, a) => {
             const res = getAreaAbsorptionCapacity(this.unit, a, acc.remain);
             acc.list.push(res);
             acc.remain  = res.remain;
@@ -540,16 +537,28 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         // }
 
         areasBefore.list.forEach((e, i) => {
-            if(e.)
+            if(e.absorb > 0) {
+                if(this.unit === 'percent') {
+
+                }
+                else if(this.unit === 'pixel') {
+                    if(e.areaSnapshot.area.size === null) {
+
+                    }
+                    else {
+                        e.areaSnapshot.area.size -= e.absorb;
+                    }
+                }
+            }
         });
 
         this.refreshStyleSizes();
         
         // If moved from starting point, notify progress
         // TODO test but normally, IF condition is not needed because L513 "if(steppedOffset === this.snapshot.lastSteppedOffset)..."
-        if(this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
-            this.notify('progress');
-        }
+        //if(this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
+            this.notify('progress', this.snapshot.gutterNum);
+        //}
     }
 
     private stopDragging(event?: Event): void {
@@ -575,7 +584,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         
         // If moved from starting point, notify end
         if(event && this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
-            this.notify('end');
+            this.notify('end', this.snapshot.gutterNum);
         }
         
         this.isDragging = false;
@@ -592,22 +601,22 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd'): void {
+    public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd', gutterNum: number): void {
         const sizes: Array<number> = this.displayedAreas.map(a => a.size * 100);
 
         if(type === 'start') {
             if(this.dragStartSubscriber) {
-                this.ngZone.run(() => this.dragStartSubscriber.next({gutterNum: this.snapshot.gutterNum, sizes}));
+                this.ngZone.run(() => this.dragStartSubscriber.next({gutterNum, sizes}));
             }
         }
         else if(type === 'end') {
             if(this.dragEndSubscriber) {
-                this.ngZone.run(() => this.dragEndSubscriber.next({gutterNum: this.snapshot.gutterNum, sizes}));
+                this.ngZone.run(() => this.dragEndSubscriber.next({gutterNum, sizes}));
             }
         }
         else if(type === 'click') {
             if(this.gutterClickSubscriber) {
-                this.ngZone.run(() => this.gutterClickSubscriber.next({gutterNum: this.snapshot.gutterNum, sizes}));
+                this.ngZone.run(() => this.gutterClickSubscriber.next({gutterNum, sizes}));
             }
         }
         else if(type === 'transitionEnd') {
@@ -617,7 +626,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
         else if(type === 'progress') {
             // Stay outside zone to allow users do what they want about change detection mechanism.
-            this.dragProgressSubject.next({gutterNum: this.snapshot.gutterNum, sizes});
+            this.dragProgressSubject.next({gutterNum, sizes});
         }
     }
 
