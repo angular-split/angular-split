@@ -2,9 +2,9 @@ import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, R
 import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, ISplitSideAbsorptionSnapshot } from '../interface';
+import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, ISplitSideAbsorptionCapacity, IOutputData, IOutputAreaSizes } from '../interface';
 import { SplitAreaDirective } from '../directive/splitArea.directive';
-import { getInputPositiveNumber, getInputBoolean, getPointFromEvent, getElementPixelSize, getAreaAbsorptionCapacity, isValidTotalSize } from '../utils';
+import { getInputPositiveNumber, getInputBoolean, getPointFromEvent, getElementPixelSize, getAreaAbsorptionCapacity, updateAreaSize, isUserSizesValid } from '../utils';
 
 /**
  * angular-split
@@ -163,43 +163,41 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     ////
 
-    private dragStartSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
-    @Output() get dragStart(): Observable<{gutterNum: number, sizes: Array<number>}> {
+    private dragStartSubscriber: Subscriber<IOutputData>
+    @Output() get dragStart(): Observable<IOutputData> {
         return new Observable(subscriber => this.dragStartSubscriber = subscriber);
     }
 
-    private dragEndSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
-    @Output() get dragEnd(): Observable<{gutterNum: number, sizes: Array<number>}> {
+    private dragEndSubscriber: Subscriber<IOutputData>
+    @Output() get dragEnd(): Observable<IOutputData> {
         return new Observable(subscriber => this.dragEndSubscriber = subscriber);
     }
 
-    private gutterClickSubscriber: Subscriber<{gutterNum: number, sizes: Array<number>}>
-    @Output() get gutterClick(): Observable<{gutterNum: number, sizes: Array<number>}> {
+    private gutterClickSubscriber: Subscriber<IOutputData>
+    @Output() get gutterClick(): Observable<IOutputData> {
         return new Observable(subscriber => this.gutterClickSubscriber = subscriber);
     }
 
-    private transitionEndSubscriber: Subscriber<Array<number>>
-    @Output() get transitionEnd(): Observable<Array<number>> {
+    private transitionEndSubscriber: Subscriber<IOutputAreaSizes>
+    @Output() get transitionEnd(): Observable<IOutputAreaSizes> {
         return new Observable(subscriber => this.transitionEndSubscriber = subscriber).pipe(
-            debounceTime<Array<number>>(20)
+            debounceTime<IOutputAreaSizes>(20)
         );
     }
     
-    private dragProgressSubject: Subject<{gutterNum: number, sizes: Array<number>}> = new Subject();
-    dragProgress$: Observable<{gutterNum: number, sizes: Array<number>}> = this.dragProgressSubject.asObservable();
+    private dragProgressSubject: Subject<IOutputData> = new Subject();
+    dragProgress$: Observable<IOutputData> = this.dragProgressSubject.asObservable();
 
     ////
 
     private isDragging: boolean = false;
-    //private currentGutterNum: number = 0;
+    private dragListeners: Array<Function> = [];
+    private snapshot: ISplitSnapshot | null = null;
     private startPoint: IPoint | null = null;
     private endPoint: IPoint | null = null;
 
     public readonly displayedAreas: Array<IArea> = [];
     private readonly hidedAreas: Array<IArea> = [];
-    
-    private readonly dragListeners: Array<Function> = [];
-    private snapshot: ISplitSnapshot | null = null;
 
     @ViewChildren('gutterEls') private gutterEls: QueryList<ElementRef>;
 
@@ -227,6 +225,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             component, 
             order: 0, 
             size: 0,
+            minSize: null,
+            maxSize: null,
         };
 
         if(component.visible === true) {
@@ -253,18 +253,14 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     public updateArea(component: SplitAreaDirective, resetOrders: boolean, resetSizes: boolean): void {
-        // Only refresh if area is displayed (No need to check inside 'hidedAreas')
-        const area = this.displayedAreas.find(a => a.component === component);
-        if(!area) {
-            return;
+        if(component.visible === true) {
+            this.build(resetOrders, resetSizes);
         }
-
-        this.build(resetOrders, resetSizes);
     }
 
     public showArea(component: SplitAreaDirective): void {
         const area = this.hidedAreas.find(a => a.component === component);
-        if(!area) {
+        if(area === undefined) {
             return;
         }
 
@@ -276,7 +272,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     public hideArea(comp: SplitAreaDirective): void {
         const area = this.displayedAreas.find(a => a.component === comp);
-        if(!area) {
+        if(area === undefined) {
             return;
         }
 
@@ -290,26 +286,24 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.build(true, true);
     }
 
-    public getVisibleAreaSizes(): Array<number> {
-        return this.displayedAreas.map(a => a.size * 100);
+    public getVisibleAreaSizes(): IOutputAreaSizes {
+        return this.displayedAreas.map(a => a.size || '*');
     }
 
-    public setVisibleAreaSizes(sizes: Array<number>): boolean {
+    public setVisibleAreaSizes(sizes: IOutputAreaSizes): boolean {
         if(sizes.length !== this.displayedAreas.length) {
             return false;
         }
 
-        sizes = sizes.map(s => s / 100);
+        const formatedSizes = sizes.map(s => getInputPositiveNumber(s, null));
+        const isValid = isUserSizesValid(this.unit, formatedSizes);
 
-        const total = sizes.reduce((total: number, v: number) => total + v, 0);
-        if(!isValidTotalSize(total)) {
+        if(isValid === false) {
             return false;
         }
 
-        this.displayedAreas.forEach((area, i) => {
-            // @ts-ignore
-            area.component._size = sizes[i];
-        })
+        // @ts-ignore
+        this.displayedAreas.forEach((area, i) => area.component._size = formatedSizes[i]);
 
         this.build(false, true);
         return true;
@@ -332,90 +326,84 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                 area.order = i * 2;
                 area.component.setStyleOrder(area.order);
             });
-
         }
 
-        // ¤ AREAS SIZE PERCENT
+        // ¤ AREAS SIZE
         
         if(resetSizes === true) {
+            const useUserSizes = isUserSizesValid(this.unit, this.displayedAreas.map(a => a.component.size));
 
-            const totalUserSize = <number> this.displayedAreas.reduce((total: number, s: IArea) => s.component.size ? total + s.component.size : total, 0);
-            
-            // If user provided 'size' for each area and total == 1, use it.
-            if(this.displayedAreas.every(a => a.component.size !== null) && isValidTotalSize(totalUserSize) ) {
-
-                this.displayedAreas.forEach(area => {
-                    area.size = <number> area.component.size;
-                });
-            }
-            // Else set equal sizes for all areas.
-            else {
-                const size = 1 / this.displayedAreas.length;
-                
-                this.displayedAreas.forEach(area => {
-                    area.size = size;
-                });
-            }
-        }
-        
-        // ¤ 
-        // If some real area sizes are less than gutterSize, 
-        // set them to zero and dispatch size to others.
-
-        let percentToDispatch = 0;
-        
-        // Get container pixel size
-        const containerSizePixel = getElementPixelSize(this.elRef, this.direction);
-
-        this.displayedAreas.forEach(area => {
-            if(area.size * containerSizePixel < this.gutterSize) {
-                percentToDispatch += area.size;
-                area.size = 0;
-            }
-        });
-        
-        if(percentToDispatch > 0 && this.displayedAreas.length > 0) {
-            const nbAreasNotZero = this.displayedAreas.filter(a => a.size !== 0).length;
-
-            if(nbAreasNotZero > 0) {
-                const percentToAdd = percentToDispatch / nbAreasNotZero;
+            switch(this.unit) {
+                case 'percent': {
+                    const defaultSize = 100 / this.displayedAreas.length;
     
-                this.displayedAreas.filter(a => a.size !== 0).forEach(area => {
-                    area.size += percentToAdd;
-                });
+                    this.displayedAreas.forEach(area => {
+                        area.size = useUserSizes ? <number> area.component.size : defaultSize;
+                        
+                        // Set min/max to area.size if size provided 'less than min'/'more than max'
+                        area.minSize = (area.component.minSize === null) ? null : (area.component.minSize > area.size ? area.size : area.component.minSize);
+                        area.maxSize = (area.component.maxSize === null) ? null : (area.component.maxSize < area.size ? area.size : area.component.maxSize);
+                    });
+                    break;
+                }
+                case 'pixel': {
+                    if(useUserSizes) {
+                        this.displayedAreas.forEach(area => {
+                            area.size = area.component.size;
+    
+                            // Set min/max to area.size if size provided less than min/more than max
+                            area.minSize = (area.component.minSize === null) ? null : (area.size !== null && area.component.minSize > area.size ? area.size : area.component.minSize);
+                            area.maxSize = (area.component.maxSize === null) ? null : (area.size !== null && area.component.maxSize < area.size ? area.size : area.component.maxSize);
+                        });
+                    }
+                    else {
+                        const wildcardSizeAreas = this.displayedAreas.filter(a => a.component.size === null);
+    
+                        // No wildcard area > Need to select one arbitrarily
+                        if(wildcardSizeAreas.length === 0) {
+                            
+                        }
+                        // More than one wildcard area > Need to keep only one arbitrarily
+                        else if(wildcardSizeAreas.length > 1) {
+    
+                        }
+                    }
+                    break;
+                }
             }
-            // All area sizes (container percentage) are less than guterSize,
-            // It means containerSize < ngGutters * gutterSize
-            else {
-                this.displayedAreas[this.displayedAreas.length - 1].size = 1;
-            }
+
+            this.refreshStyleSizes();
         }
 
-        this.refreshStyleSizes();
         this.cdRef.markForCheck();
     }
 
     private refreshStyleSizes(): void {
-        switch(this.unit) {
-            case 'percent':
-                const sumGutterSize = this.getNbGutters() * this.gutterSize;
-
-                this.displayedAreas.forEach(area => {
-                    area.component.setStyleFlex(`0 0 calc( ${ area.size }% - ${ area.size * sumGutterSize }px )`);
-                });
-                break;
-
-            case 'pixel':
-                this.displayedAreas.forEach(area => {
-                    if(area.size === null) {
-                        area.component.setStyleFlex(`1 1 auto`);
-                    }
-                    else {
-                        area.component.setStyleFlex(`0 0 ${ area.size }px`);
-                    }
-                });
-                break;
+        if(this.displayedAreas.length === 1) {
+            this.displayedAreas[0].component.setStyleFlex(`0 0 100%`);
         }
+        else if(this.unit === 'percent') {
+            const sumGutterSize = this.getNbGutters() * this.gutterSize;
+            
+            this.displayedAreas.forEach(area => {
+                area.component.setStyleFlex(`0 0 calc( ${ area.size }% - ${ <number> area.size / 100 * sumGutterSize }px )`);
+            });
+        }
+        else if(this.unit === 'pixel') {
+            this.displayedAreas.forEach(area => {
+                if(area.size === null) {
+                    area.component.setStyleFlex(`1 1 auto`);
+                }
+                else {
+                    area.component.setStyleFlex(`0 0 ${ area.size }px`);
+                }
+            });
+        }
+        
+        // TODO add or remove is-min / is-max CSS classes
+        this.displayedAreas.forEach(area => {
+            //
+        });
     }
 
     public clickGutter(event: MouseEvent, gutterNum: number): void {
@@ -432,7 +420,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         event.stopPropagation();
 
         this.startPoint = getPointFromEvent(event);
-        if(!this.startPoint || this.disabled) {
+        if(this.startPoint === null || this.disabled === true) {
             return;
         }
 
@@ -472,9 +460,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             this.dragListeners.push( this.renderer.listen('document', 'touchmove', this.dragEvent.bind(this)) );
         });
 
-        this.displayedAreas.forEach(area => {
-            area.component.lockEvents();
-        });
+        this.displayedAreas.forEach(area => area.component.lockEvents());
 
         this.isDragging = true;
         this.renderer.addClass(this.elRef.nativeElement, 'is-dragging');
@@ -483,18 +469,20 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.notify('start', this.snapshot.gutterNum);
     }
 
-    private dragEvent(event: MouseEvent | TouchEvent, areaA: IArea, areaB: IArea): void {
+    private dragEvent(event: MouseEvent | TouchEvent): void {
         event.preventDefault();
         event.stopPropagation();
 
-        if(!this.isDragging) {
+        if(this.isDragging === false) {
             return;
         }
 
         this.endPoint = getPointFromEvent(event);
-        if(!this.endPoint) {
+        if(this.endPoint === null) {
             return;
         }
+
+        // Calculate steppedOffset
 
         let offset = (this.direction === 'horizontal') ? (this.startPoint.x - this.endPoint.x) : (this.startPoint.y - this.endPoint.y);
         if(this.dir === 'rtl') {
@@ -508,57 +496,33 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         this.snapshot.lastSteppedOffset = steppedOffset;
         
-        const areasBefore: ISplitSideAbsorptionSnapshot = this.snapshot.areasBeforeGutter.reduce((acc, area) => {
+        // Need to know if each gutter side areas could reacts to steppedOffset
+
+        const areasBefore: ISplitSideAbsorptionCapacity = this.snapshot.areasBeforeGutter.reduce((acc, area) => {
             const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain);
             acc.list.push(res);
-            acc.remain  = res.remain;
+            acc.remain  = res.pixelRemain;
             return acc;
-        }, {remain: steppedOffset, list: []});
+        }, {remain: -steppedOffset, list: []});
         
         if(areasBefore.remain !== 0) return;
 
-        const areasAfter: ISplitSideAbsorptionSnapshot = this.snapshot.areasAfterGutter.reduce((acc, a) => {
+        const areasAfter: ISplitSideAbsorptionCapacity = this.snapshot.areasAfterGutter.reduce((acc, a) => {
             const res = getAreaAbsorptionCapacity(this.unit, a, acc.remain);
             acc.list.push(res);
-            acc.remain  = res.remain;
+            acc.remain  = res.pixelRemain;
             return acc;
-        }, {remain: -steppedOffset, list: []});
+        }, {remain: steppedOffset, list: []});
 
         if(areasAfter.remain !== 0) return;
 
-        // Now we know areas on each gutter side could absorb stepped offset
-        // Time to update area sizes really
+        // Now we know areas could absorb steppedOffset, time to really update sizes
 
-        // for (let el of areasBefore.list) {
-        //     console.log(el);
-        //     if (el === 5) {
-        //         break;
-        //     }
-        // }
-
-        areasBefore.list.forEach((e, i) => {
-            if(e.absorb > 0) {
-                if(this.unit === 'percent') {
-
-                }
-                else if(this.unit === 'pixel') {
-                    if(e.areaSnapshot.area.size === null) {
-
-                    }
-                    else {
-                        e.areaSnapshot.area.size -= e.absorb;
-                    }
-                }
-            }
-        });
+        areasBefore.list.forEach(item => updateAreaSize(this.unit, item));
+        areasAfter.list.forEach(item => updateAreaSize(this.unit, item));
 
         this.refreshStyleSizes();
-        
-        // If moved from starting point, notify progress
-        // TODO test but normally, IF condition is not needed because L513 "if(steppedOffset === this.snapshot.lastSteppedOffset)..."
-        //if(this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
-            this.notify('progress', this.snapshot.gutterNum);
-        //}
+        this.notify('progress', this.snapshot.gutterNum);
     }
 
     private stopDragging(event?: Event): void {
@@ -571,15 +535,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             return;
         }
         
-        this.displayedAreas.forEach(area => {
-            area.component.unlockEvents();
-        });
+        this.displayedAreas.forEach(area => area.component.unlockEvents());
         
         while(this.dragListeners.length > 0) {
             const fct = this.dragListeners.pop();
-            if(fct) {
-                fct();
-            }
+            if(fct) fct();
         }
         
         // If moved from starting point, notify end
@@ -587,10 +547,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             this.notify('end', this.snapshot.gutterNum);
         }
         
-        this.isDragging = false;
-        this.snapshot = null;
         this.renderer.removeClass(this.elRef.nativeElement, 'is-dragging');
         this.renderer.removeClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'is-dragged');
+        this.isDragging = false;
+        this.snapshot = null;
 
         // Needed to let (click)="clickGutter(...)" event run and verify if mouse moved or not
         this.ngZone.runOutsideAngular(() => {
@@ -602,7 +562,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd', gutterNum: number): void {
-        const sizes: Array<number> = this.displayedAreas.map(a => a.size * 100);
+        const sizes = this.getVisibleAreaSizes();
 
         if(type === 'start') {
             if(this.dragStartSubscriber) {

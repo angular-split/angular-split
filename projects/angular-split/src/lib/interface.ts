@@ -8,10 +8,12 @@ export interface IPoint {
 export interface IArea {
     component: SplitAreaDirective;
     order: number;
-    size: number;
-    minSize?: number;
-    maxSize?: number;
+    size: number | null;
+    minSize: number | null;
+    maxSize: number | null;
 }
+
+// CREATED ON DRAG START
 
 export interface ISplitSnapshot {
     gutterNum: number
@@ -27,13 +29,25 @@ export interface IAreaSnapshot {
     sizePercentAtStart: number
 }
 
-export interface ISplitSideAbsorptionSnapshot {
+// CREATED ON DRAG PROGRESS
+
+export interface ISplitSideAbsorptionCapacity {
     remain: number
-    list: Array<IAreaAbsorptionSnapshot>
+    list: Array<IAreaAbsorptionCapacity>
 }
 
-export interface IAreaAbsorptionSnapshot {
+export interface IAreaAbsorptionCapacity {
     areaSnapshot: IAreaSnapshot
-    absorb: number
-    remain: number
+    pixelAbsorb: number
+    percentAfterAbsorption: number
+    pixelRemain: number
 }
+
+// CREATED TO SEND OUTSIDE
+
+export interface IOutputData {
+    gutterNum: number
+    sizes: IOutputAreaSizes
+}
+
+export interface IOutputAreaSizes extends Array<number | '*'> {}

@@ -102,7 +102,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
             this.transitionListener = this.renderer.listen(this.elRef.nativeElement, 'transitionend', (event: TransitionEvent) => {
                 // Limit only flex-basis transition to trigger the event
                 if(event.propertyName === 'flex-basis') {
-                    this.split.notify('transitionEnd');
+                    this.split.notify('transitionEnd', -1);
                 }
             });
         });
@@ -126,9 +126,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     public unlockEvents(): void {
         while(this.lockListeners.length > 0) {
             const fct = this.lockListeners.pop();
-            if(fct) {
-                fct();
-            }
+            if(fct) fct();
         }
     }
 
