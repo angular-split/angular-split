@@ -5,7 +5,7 @@
   "projects": {
     "angular-split-app": {
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "src_app",
       "projectType": "application",
       "prefix": "app",
       "schematics": {
@@ -18,17 +18,17 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/angular-split-app",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "index": "src_app/index.html",
+            "main": "src_app/main.ts",
+            "polyfills": "src_app/polyfills.ts",
+            "tsConfig": "src_app/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src_app/favicon.ico",
+              "src_app/assets"
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.scss"
+              "src_app/styles.scss"
             ],
             "scripts": []
           },
@@ -36,8 +36,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "src_app/environments/environment.ts",
+                  "with": "src_app/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -69,40 +69,74 @@
               "browserTarget": "angular-split-app:build:production"
             }
           }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+        }
+      }
+    },
+    "angular-split-app-lazy": {
+      "root": "",
+      "sourceRoot": "src_lazy_app",
+      "projectType": "application",
+      "prefix": "app-lazy",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "browserTarget": "angular-split-app:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
+            "outputPath": "dist/angular-split-app-lazy",
+            "index": "src_lazy_app/index.html",
+            "main": "src_lazy_app/main.ts",
+            "polyfills": "src_lazy_app/polyfills.ts",
+            "tsConfig": "src_lazy_app/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ]
+              "src_lazy_app/favicon.ico",
+              "src_lazy_app/assets"
+            ],
+            "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src_lazy_app/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src_lazy_app/environments/environment.ts",
+                  "with": "src_lazy_app/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "browserTarget": "angular-split-app-lazy:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-split-app-lazy:build:production"
+            }
           }
         }
       }
@@ -118,26 +152,6 @@
           "options": {
             "tsConfig": "projects/angular-split/tsconfig.lib.json",
             "project": "projects/angular-split/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/angular-split/src/test.ts",
-            "tsConfig": "projects/angular-split/tsconfig.spec.json",
-            "karmaConfig": "projects/angular-split/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/angular-split/tsconfig.lib.json",
-              "projects/angular-split/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }

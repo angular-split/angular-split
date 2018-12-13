@@ -1,10 +1,10 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EventManager } from '@angular/platform-browser';
+import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 
 import { SplitComponent } from './component/split.component';
 import { SplitAreaDirective } from './directive/splitArea.directive';
-import { CustomEventManager } from './service/customEventManager.service';
+import { UndetectedEventPlugin } from "./service/UndetectedEventPlugin";
 
 @NgModule({
     imports: [
@@ -19,7 +19,11 @@ import { CustomEventManager } from './service/customEventManager.service';
         SplitAreaDirective,
     ],
     providers: [
-        { provide: EventManager, useClass: CustomEventManager }
+        {
+            provide: EVENT_MANAGER_PLUGINS,
+            useClass: UndetectedEventPlugin,
+            multi: true
+        }
     ]
 })
 export class AngularSplitModule {

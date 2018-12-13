@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { examples } from '../data/listExamples';
 
 @Component({
     selector: 'sp-topbar',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styles: [`
         a.navbar-brand,
         a.navbar-brand:hover {

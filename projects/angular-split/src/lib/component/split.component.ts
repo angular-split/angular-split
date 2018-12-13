@@ -50,9 +50,9 @@ import { getInputPositiveNumber, getInputBoolean, getPointFromEvent, getElementP
                  class="as-split-gutter"
                  [style.flex-basis.px]="gutterSize"
                  [style.order]="index*2+1"
-                 (click.out-zone)="clickGutter($event, index+1)"
-                 (mousedown.out-zone)="startDragging($event, index*2+1, index+1)"
-                 (touchstart.out-zone)="startDragging($event, index*2+1, index+1)">
+                 (undetected.click)="clickGutter($event, index+1)"
+                 (undetected.mousedown)="startDragging($event, index*2+1, index+1)"
+                 (undetected.touchstart)="startDragging($event, index*2+1, index+1)">
                 <div class="as-split-gutter-icon"></div>
             </div>
         </ng-template>`,
