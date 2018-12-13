@@ -499,25 +499,23 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         // Need to know if each gutter side areas could reacts to steppedOffset
 
         const areasBefore: ISplitSideAbsorptionCapacity = this.snapshot.areasBeforeGutter.reduce((acc, area) => {
-            const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain);
+            const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain, this.snapshot.containerSizePixel);
             acc.list.push(res);
             acc.remain  = res.pixelRemain;
             return acc;
         }, {remain: -steppedOffset, list: []});
-        
-        if(areasBefore.remain !== 0) return;
 
-        const areasAfter: ISplitSideAbsorptionCapacity = this.snapshot.areasAfterGutter.reduce((acc, a) => {
-            const res = getAreaAbsorptionCapacity(this.unit, a, acc.remain);
+        const areasAfter: ISplitSideAbsorptionCapacity = this.snapshot.areasAfterGutter.reduce((acc, area) => {
+            const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain, this.snapshot.containerSizePixel);
             acc.list.push(res);
             acc.remain  = res.pixelRemain;
             return acc;
         }, {remain: steppedOffset, list: []});
 
-        if(areasAfter.remain !== 0) return;
-
         // Now we know areas could absorb steppedOffset, time to really update sizes
 
+        console.log('A', areasBefore.list[0].pixelAbsorb, areasBefore.list[0].percentAfterAbsorption);
+        console.log('B', areasAfter.list[0].pixelAbsorb, areasAfter.list[0].percentAfterAbsorption);
         areasBefore.list.forEach(item => updateAreaSize(this.unit, item));
         areasAfter.list.forEach(item => updateAreaSize(this.unit, item));
 
