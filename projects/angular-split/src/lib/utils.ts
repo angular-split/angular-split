@@ -1,6 +1,6 @@
 import { ElementRef } from '@angular/core';
 
-import { IPoint, IAreaSnapshot, IAreaAbsorptionCapacity } from './interface';
+import { IPoint, IAreaSnapshot, ISplitSideAbsorptionCapacity, IAreaAbsorptionCapacity } from './interface';
 
 export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
     // TouchEvent
@@ -48,19 +48,28 @@ export function isUserSizesValid(unit: 'percent' | 'pixel', sizes: Array<number 
     }
 }
 
-export function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapshot: IAreaSnapshot, pixels: number, containerSizePixel: number): IAreaAbsorptionCapacity {
+export function getGutterSideAbsorptionCapacity(unit: 'percent' | 'pixel', sideAreas: Array<IAreaSnapshot>, pixels: number, allAreasSizePixel: number): ISplitSideAbsorptionCapacity {
+    return sideAreas.reduce((acc, area) => {
+        const res = getAreaAbsorptionCapacity(unit, area, acc.remain, allAreasSizePixel);
+        acc.list.push(res);
+        acc.remain  = res.pixelRemain;
+        return acc;
+    }, {remain: pixels, list: []});
+}
+
+function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapshot: IAreaSnapshot, pixels: number, allAreasSizePixel: number): IAreaAbsorptionCapacity {
     // No pain no gain
     if(pixels === 0) {
         return {
             areaSnapshot,
             pixelAbsorb: 0,
-            percentAfterAbsorption: 0,
+            percentAfterAbsorption: areaSnapshot.sizePercentAtStart,
             pixelRemain: 0,
         };
     }
     
-    // Area at zero and need to be reduced, not possible
-    if(areaSnapshot.area.size === 0 && pixels < 0) {
+    // Area start at zero and need to be reduced, not possible
+    if(areaSnapshot.sizePixelAtStart === 0 && pixels < 0) {
         return {
             areaSnapshot,
             pixelAbsorb: 0,
@@ -70,16 +79,17 @@ export function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapsho
     }
     
 	if(unit === 'pixel') {
-        return getAreaAbsorptionCapacityPixel(areaSnapshot, pixels, containerSizePixel);
+        return getAreaAbsorptionCapacityPixel(areaSnapshot, pixels, allAreasSizePixel);
     }
-    else if(unit === 'percent') {
-        return getAreaAbsorptionCapacityPercent(areaSnapshot, pixels, containerSizePixel);
+    
+    if(unit === 'percent') {
+        return getAreaAbsorptionCapacityPercent(areaSnapshot, pixels, allAreasSizePixel);
     }
 }
 
-function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: number, containerSizePixel: number): IAreaAbsorptionCapacity {
+function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: number, allAreasSizePixel: number): IAreaAbsorptionCapacity {
     const tempPixelSize = areaSnapshot.sizePixelAtStart + pixels;
-    const tempPercentSize = tempPixelSize / areaSnapshot.sizePixelAtStart * areaSnapshot.sizePercentAtStart;
+    const tempPercentSize = tempPixelSize / allAreasSizePixel * 100;
 
     // ENLARGE AREA
 
@@ -93,15 +103,6 @@ function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: n
                 pixelAbsorb: maxPixelAbsorb,
                 percentAfterAbsorption: (areaSnapshot.sizePixelAtStart + maxPixelAbsorb) / areaSnapshot.sizePixelAtStart * areaSnapshot.sizePercentAtStart,
                 pixelRemain: pixels - maxPixelAbsorb
-            };
-        }
-        else if(areaSnapshot.sizePixelAtStart === 0) {
-            console.log('TODO percentAfterAbsorption', (pixels / containerSizePixel * 100))
-            return {
-                areaSnapshot,
-                pixelAbsorb: pixels,
-                percentAfterAbsorption: pixels / containerSizePixel * 100,
-                pixelRemain: pixels,
             };
         }
         return {
@@ -118,12 +119,12 @@ function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: n
         // If minSize & newSize smaller than it > absorb to min and return remaining pixels 
         if(areaSnapshot.area.minSize !== null && tempPercentSize < areaSnapshot.area.minSize) {
             // Use area.area.minSize as newPercentSize and return calculate pixels remaining
-            const maxPixelAbsorb = areaSnapshot.sizePixelAtStart * areaSnapshot.area.minSize / areaSnapshot.sizePercentAtStart;
+            const minSizePixel = areaSnapshot.area.minSize / 100 * allAreasSizePixel;
             return {
                 areaSnapshot,
-                pixelAbsorb: maxPixelAbsorb,
-                percentAfterAbsorption: (areaSnapshot.sizePixelAtStart + maxPixelAbsorb) / areaSnapshot.sizePixelAtStart * areaSnapshot.sizePercentAtStart,
-                pixelRemain: pixels - maxPixelAbsorb
+                pixelAbsorb: minSizePixel,
+                percentAfterAbsorption: areaSnapshot.area.minSize,
+                pixelRemain: areaSnapshot.sizePixelAtStart + pixels - minSizePixel
             };
         }
         // If reduced under zero > return remaining pixels

@@ -4,37 +4,35 @@ import { debounceTime } from 'rxjs/operators';
 
 import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, ISplitSideAbsorptionCapacity, IOutputData, IOutputAreaSizes } from '../interface';
 import { SplitAreaDirective } from '../directive/splitArea.directive';
-import { getInputPositiveNumber, getInputBoolean, getPointFromEvent, getElementPixelSize, getAreaAbsorptionCapacity, updateAreaSize, isUserSizesValid } from '../utils';
+import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getPointFromEvent, getElementPixelSize, getGutterSideAbsorptionCapacity, updateAreaSize } from '../utils';
 
 /**
  * angular-split
  * 
- * Areas size are set in percentage of the split container.
- * Gutters size are set in pixels.
  * 
- * So we set css 'flex-basis' property like this (where 0 <= area.size <= 1): 
- *  calc( { area.size * 100 }% - { area.size * nbGutter * gutterSize }px );
- * 
- * Examples with 3 visible areas and 2 gutters: 
- * 
- * |                     10px                   10px                                  |
- * |---------------------[]---------------------[]------------------------------------|
- * |  calc(20% - 4px)          calc(20% - 4px)              calc(60% - 12px)          |
- * 
- * 
- * |                          10px                        10px                        |
- * |--------------------------[]--------------------------[]--------------------------|
- * |  calc(33.33% - 6.667px)      calc(33.33% - 6.667px)      calc(33.33% - 6.667px)  |
+ *  PERCENT MODE ([unit]="'percent'")
+ *  ___________________________________________________________________________________________
+ * |       A       [g1]       B       [g2]       C       [g3]       D       [g4]       E       |
+ * |-------------------------------------------------------------------------------------------|
+ * |       20                 30                 20                 15                 15      | <-- [size]="x"
+ * |               10px               10px               10px               10px               | <-- [gutterSize]="10"
+ * |calc(20% - 8px)    calc(30% - 12px)   calc(20% - 8px)    calc(15% - 6px)    calc(15% - 6px)| <-- CSS flex-basis property (with flex-grow&shrink at 0)
+ * |     152px              228px              152px              114px              114px     | <-- el.getBoundingClientRect().width
+ * |___________________________________________________________________________________________|
+ *                                                                                 800px         <-- el.getBoundingClientRect().width
+ *  flex-basis = calc( { area.size }% - { area.size/100 * nbGutter*gutterSize }px );
  * 
  * 
- * |10px                                                  10px                        |
- * |[]----------------------------------------------------[]--------------------------|
- * |0                 calc(66.66% - 13.333px)                  calc(33%% - 6.667px)   |
- * 
- * 
- *  10px 10px                                                                         |
- * |[][]------------------------------------------------------------------------------|
- * |0 0                               calc(100% - 20px)                               |
+ *  PIXEL MODE ([unit]="'pixel'")
+ *  ___________________________________________________________________________________________
+ * |       A       [g1]       B       [g2]       C       [g3]       D       [g4]       E       | 
+ * |-------------------------------------------------------------------------------------------|
+ * |      100                250                 *                 150                100      | <-- [size]="y"
+ * |               10px               10px               10px               10px               | <-- [gutterSize]="10"
+ * |   0 0 100px          0 0 250px           1 1 auto          0 0 150px          0 0 100px   | <-- CSS flex property (flex-grow/flex-shrink/flex-basis)
+ * |     100px              250px              200px              150px              100px     | <-- el.getBoundingClientRect().width
+ * |___________________________________________________________________________________________|
+ *                                                                                 800px         <-- el.getBoundingClientRect().width
  * 
  */
 
@@ -287,7 +285,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     public getVisibleAreaSizes(): IOutputAreaSizes {
-        return this.displayedAreas.map(a => a.size || '*');
+        return this.displayedAreas.map(a => a.size === null ? '*' : a.size);
     }
 
     public setVisibleAreaSizes(sizes: IOutputAreaSizes): boolean {
@@ -380,22 +378,34 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     private refreshStyleSizes(): void {
         if(this.displayedAreas.length === 1) {
-            this.displayedAreas[0].component.setStyleFlex(`0 0 100%`);
+            this.displayedAreas[0].component.setStyleFlex(`0 0 100%`, false, false);
         }
         else if(this.unit === 'percent') {
             const sumGutterSize = this.getNbGutters() * this.gutterSize;
             
             this.displayedAreas.forEach(area => {
-                area.component.setStyleFlex(`0 0 calc( ${ area.size }% - ${ <number> area.size / 100 * sumGutterSize }px )`);
+                area.component.setStyleFlex(
+                    `0 0 calc( ${ area.size }% - ${ <number> area.size / 100 * sumGutterSize }px )`,
+                    area.minSize !== null && area.minSize === area.size ? true : false,
+                    area.maxSize !== null && area.maxSize === area.size ? true : false,
+                );
             });
         }
         else if(this.unit === 'pixel') {
             this.displayedAreas.forEach(area => {
                 if(area.size === null) {
-                    area.component.setStyleFlex(`1 1 auto`);
+                    area.component.setStyleFlex(
+                        `1 1 auto`,
+                        area.minSize !== null && area.minSize === area.size ? true : false,
+                        area.maxSize !== null && area.maxSize === area.size ? true : false,
+                    );
                 }
                 else {
-                    area.component.setStyleFlex(`0 0 ${ area.size }px`);
+                    area.component.setStyleFlex(
+                        `0 0 ${ area.size }px`,
+                        area.minSize !== null && area.minSize === area.size ? true : false,
+                        area.maxSize !== null && area.maxSize === area.size ? true : false,
+                    );
                 }
             });
         }
@@ -427,7 +437,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.snapshot = {
             gutterNum,
             lastSteppedOffset: 0,
-            containerSizePixel: getElementPixelSize(this.elRef, this.direction),
+            allAreasSizePixel: getElementPixelSize(this.elRef, this.direction) - this.getNbGutters() * this.gutterSize,
             areasBeforeGutter: [],
             areasAfterGutter: [],
         };
@@ -498,24 +508,44 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         
         // Need to know if each gutter side areas could reacts to steppedOffset
 
-        const areasBefore: ISplitSideAbsorptionCapacity = this.snapshot.areasBeforeGutter.reduce((acc, area) => {
-            const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain, this.snapshot.containerSizePixel);
-            acc.list.push(res);
-            acc.remain  = res.pixelRemain;
-            return acc;
-        }, {remain: -steppedOffset, list: []});
+        let areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -steppedOffset, this.snapshot.allAreasSizePixel);
+        let areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset, this.snapshot.allAreasSizePixel);
 
-        const areasAfter: ISplitSideAbsorptionCapacity = this.snapshot.areasAfterGutter.reduce((acc, area) => {
-            const res = getAreaAbsorptionCapacity(this.unit, area, acc.remain, this.snapshot.containerSizePixel);
-            acc.list.push(res);
-            acc.remain  = res.pixelRemain;
-            return acc;
-        }, {remain: steppedOffset, list: []});
+        // Each gutter side areas can't absorb all offset 
+        if(areasBefore.remain !== 0 && areasAfter.remain !== 0) {
+            console.log('Case AAA > before=', areasBefore, ' - after=', areasAfter)
+            if(Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
+                
+            }
+            else {
+                
+            }
+        }
+        // Areas before gutter can't absorbs all offset > need to recalculate sizes for areas after gutter.
+        else if(areasBefore.remain !== 0) {
+            console.log('Case BBB > before=', areasBefore.remain)
+            areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
+        }
+        // Areas after gutter can't absorbs all offset > need to recalculate sizes for areas before gutter.
+        else if(areasAfter.remain !== 0) {
+            console.log('Case CCC > after=', areasAfter.remain)
+            areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
+        }
+
+        // Hack to force total === 100
+        if(this.unit === 'percent') {
+            // get first area not at min/max and set size to 100-allAreaSizes
+            const areaToReset = this.displayedAreas.find(a => a.size !== 0 && a.size !== a.minSize && a.size !== a.maxSize);
+
+            areaToReset.size = 100 - this.displayedAreas.filter(a => a !== areaToReset).reduce((total, a) => total+a.size, 0);
+        }
+
+
+        const tt = [...areasBefore.list.map(a=>a.percentAfterAbsorption), ...areasAfter.list.map(a=>a.percentAfterAbsorption)].reduce((t,s)=>t+s, 0);
+        if(tt !== 100) debugger;
 
         // Now we know areas could absorb steppedOffset, time to really update sizes
 
-        console.log('A', areasBefore.list[0].pixelAbsorb, areasBefore.list[0].percentAfterAbsorption);
-        console.log('B', areasAfter.list[0].pixelAbsorb, areasAfter.list[0].percentAfterAbsorption);
         areasBefore.list.forEach(item => updateAreaSize(this.unit, item));
         areasAfter.list.forEach(item => updateAreaSize(this.unit, item));
 

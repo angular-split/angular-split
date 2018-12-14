@@ -112,8 +112,14 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.renderer.setStyle(this.elRef.nativeElement, 'order', value);
     }
     
-    public setStyleFlex(value: string): void {
+    public setStyleFlex(value: string, isMin: boolean, isMax: boolean): void {
         this.renderer.setStyle(this.elRef.nativeElement, 'flex', value);
+        
+        if(isMin === true)  this.renderer.addClass(this.elRef.nativeElement, 'as-min');
+        else                this.renderer.removeClass(this.elRef.nativeElement, 'as-min');
+        
+        if(isMax === true)  this.renderer.addClass(this.elRef.nativeElement, 'as-max');
+        else                this.renderer.removeClass(this.elRef.nativeElement, 'as-max');
     }
     
     public lockEvents(): void {

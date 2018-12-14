@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-// import { AngularSplitModule } from 'angular-split';
 
 import { SharedModule } from  './shared-module/shared.module';
 import { AppComponent } from './app.component';
@@ -23,7 +22,6 @@ const routes: Routes = [
     BrowserModule,
     RouterModule.forRoot(routes),
     SharedModule,
-    // AngularSplitModule
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
