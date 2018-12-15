@@ -63,7 +63,7 @@ function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapshot: IAre
         return {
             areaSnapshot,
             pixelAbsorb: 0,
-            percentAfterAbsorption: areaSnapshot.sizePercentAtStart,
+            percentAfterAbsorption: round(areaSnapshot.sizePercentAtStart),
             pixelRemain: 0,
         };
     }
@@ -90,25 +90,25 @@ function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapshot: IAre
 function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: number, allAreasSizePixel: number): IAreaAbsorptionCapacity {
     const tempPixelSize = areaSnapshot.sizePixelAtStart + pixels;
     const tempPercentSize = tempPixelSize / allAreasSizePixel * 100;
-
+    
     // ENLARGE AREA
-
+    
     if(pixels > 0) {
         // If maxSize & newSize bigger than it > absorb to max and return remaining pixels 
         if(areaSnapshot.area.maxSize !== null && tempPercentSize > areaSnapshot.area.maxSize) {
             // Use area.area.maxSize as newPercentSize and return calculate pixels remaining
-            const maxPixelAbsorb = areaSnapshot.sizePixelAtStart * areaSnapshot.area.maxSize / areaSnapshot.sizePercentAtStart;
+            const maxSizePixel = areaSnapshot.area.maxSize / 100 * allAreasSizePixel;
             return {
                 areaSnapshot,
-                pixelAbsorb: maxPixelAbsorb,
-                percentAfterAbsorption: (areaSnapshot.sizePixelAtStart + maxPixelAbsorb) / areaSnapshot.sizePixelAtStart * areaSnapshot.sizePercentAtStart,
-                pixelRemain: pixels - maxPixelAbsorb
+                pixelAbsorb: maxSizePixel,
+                percentAfterAbsorption: round(areaSnapshot.area.maxSize),
+                pixelRemain: areaSnapshot.sizePixelAtStart + pixels - maxSizePixel
             };
         }
         return {
             areaSnapshot,
             pixelAbsorb: pixels,
-            percentAfterAbsorption: tempPercentSize > 100 ? 100 : tempPercentSize,
+            percentAfterAbsorption: round(tempPercentSize > 100 ? 100 : tempPercentSize),
             pixelRemain: 0
         };
     }
@@ -123,7 +123,7 @@ function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: n
             return {
                 areaSnapshot,
                 pixelAbsorb: minSizePixel,
-                percentAfterAbsorption: areaSnapshot.area.minSize,
+                percentAfterAbsorption: round(areaSnapshot.area.minSize),
                 pixelRemain: areaSnapshot.sizePixelAtStart + pixels - minSizePixel
             };
         }
@@ -140,7 +140,7 @@ function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: n
         return {
             areaSnapshot,
             pixelAbsorb: pixels,
-            percentAfterAbsorption: tempPercentSize,
+            percentAfterAbsorption: round(tempPercentSize),
             pixelRemain: 0
         };
     }
@@ -215,4 +215,8 @@ export function updateAreaSize(unit: 'percent' | 'pixel', item: IAreaAbsorptionC
     }
 
     return Boolean(item.pixelRemain > 0);
+}
+
+function round(v: number): number {
+return Math.round(v * 1000) / 1000;
 }
