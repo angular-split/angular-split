@@ -32,7 +32,7 @@ import { AComponent } from './AComponent';
         <div class="container">
             <sp-example-title [type]="exampleEnum.SIMPLE"></sp-example-title>
             <div class="split-example">
-                <as-split [direction]="direction" gutterSize="9" (dragEnd)="log($event)">
+                <as-split [direction]="direction" gutterSize="50" (dragEnd)="log($event)">
                     <as-split-area size="30" minSize="20" maxSize="30">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                     </as-split-area>
@@ -56,7 +56,7 @@ export class SimpleComponent extends AComponent {
     //
     log(x) {
         if(x.sizes.includes('*')) { debugger; }
-        console.log('dragEnd ', x.sizes, ' total > ', x.sizes.reduce((t, s) => t+s, 0))
+        //console.log('dragEnd ', x.sizes, ' total > ', x.sizes.reduce((t, s) => t+s, 0))
     }
 }
 

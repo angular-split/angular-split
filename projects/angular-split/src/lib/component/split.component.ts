@@ -2,7 +2,7 @@ import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, R
 import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, ISplitSideAbsorptionCapacity, IOutputData, IOutputAreaSizes } from '../interface';
+import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, IOutputData, IOutputAreaSizes } from '../interface';
 import { SplitAreaDirective } from '../directive/splitArea.directive';
 import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getPointFromEvent, getElementPixelSize, getGutterSideAbsorptionCapacity, updateAreaSize } from '../utils';
 
@@ -499,42 +499,58 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             offset = -offset;
         }
         const steppedOffset = Math.round(offset / this.gutterStep) * this.gutterStep;
-
+        
         if(steppedOffset === this.snapshot.lastSteppedOffset) {
             return;
         }
-
+        
         this.snapshot.lastSteppedOffset = steppedOffset;
         
         // Need to know if each gutter side areas could reacts to steppedOffset
-
+        
+        console.log('steppedOffset', steppedOffset)
         let areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -steppedOffset, this.snapshot.allAreasSizePixel);
         let areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset, this.snapshot.allAreasSizePixel);
 
+        console.log('>> ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+
         // Each gutter side areas can't absorb all offset 
         if(areasBefore.remain !== 0 && areasAfter.remain !== 0) {
-            console.log('Case AAA > before=', areasBefore, ' - after=', areasAfter)
-            if(Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
+            if(Math.abs(areasBefore.remain) === Math.abs(areasAfter.remain)) {
+                areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, 0, this.snapshot.allAreasSizePixel);
+                areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, 0, this.snapshot.allAreasSizePixel);
+                console.log('AAA >> 1 ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+            }
+            else if(Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
                 areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
+                console.log('AAA >> 2 ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
             }
             else {
                 areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
+                console.log('AAA >> 3 ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
             }
         }
         // Areas before gutter can't absorbs all offset > need to recalculate sizes for areas after gutter.
         else if(areasBefore.remain !== 0) {
-            console.log('Case BBB > before=', areasBefore.remain)
             areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
+            console.log('Case BBB > ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
         }
         // Areas after gutter can't absorbs all offset > need to recalculate sizes for areas before gutter.
         else if(areasAfter.remain !== 0) {
-            console.log('Case CCC > after=', areasAfter.remain)
             areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
+            console.log('Case CCC > ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+        }
+        else {
+            console.log('Case DDD WTF > ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+            //debugger;
         }
 
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
         // Hack to force total === 100
         // get first area not at min/max and set size to total-allAreaSizes
-        const areaToReset = this.displayedAreas.find(a => a.size !== 0 && a.size !== a.minSize && a.size !== a.maxSize);
+        /*const areaToReset = this.displayedAreas.find(a => a.size !== 0 && a.size !== a.minSize && a.size !== a.maxSize);
         
         if(areaToReset) {
             if(this.unit === 'percent') {
@@ -543,16 +559,37 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             if(this.unit === 'pixel') {
                 areaToReset.size = this.snapshot.allAreasSizePixel - this.displayedAreas.filter(a => a !== areaToReset).reduce((total, a) => total+a.size, 0);
             }
-        }
+        }*/
+
+
+
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        /*const all = [...areasBefore.list, ...areasAfter.list];
+        
+        if(this.unit === 'percent') {
+            const areaToReset = all.find(a => a.percentAfterAbsorption !== 0 && a.percentAfterAbsorption !== a.areaSnapshot.area.minSize && a.percentAfterAbsorption !== a.areaSnapshot.area.maxSize)
+
+            if(areaToReset) {
+                const x = areaToReset.percentAfterAbsorption;
+                areaToReset.percentAfterAbsorption = 100 - all.filter(a => a !== areaToReset).reduce((total, a) => total+a.percentAfterAbsorption, 0);
+                console.log('areaToReset', areaToReset, 'before=', x, ' after=', areaToReset.percentAfterAbsorption)
+            }
+        }*/
         
         // Now we know areas could absorb steppedOffset, time to really update sizes
         
         areasBefore.list.forEach(item => updateAreaSize(this.unit, item));
         areasAfter.list.forEach(item => updateAreaSize(this.unit, item));
-        console.log(this.displayedAreas.map(a=>a.size), this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0))
+
+        const ttt = this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0);
+        console.log(ttt)
+        //if(ttt < 98.2 || ttt > 101.8) debugger;
         
         this.refreshStyleSizes();
         this.notify('progress', this.snapshot.gutterNum);
+
+        console.log('------------------------------------------------------------------------')
     }
 
     private stopDragging(event?: Event): void {
