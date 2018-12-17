@@ -369,10 +369,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                     break;
                 }
             }
-
-            this.refreshStyleSizes();
         }
 
+        this.refreshStyleSizes();
         this.cdRef.markForCheck();
     }
 
@@ -409,11 +408,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                 }
             });
         }
-        
-        // TODO add or remove is-min / is-max CSS classes
-        this.displayedAreas.forEach(area => {
-            //
-        });
     }
 
     public clickGutter(event: MouseEvent, gutterNum: number): void {
@@ -456,6 +450,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                 this.snapshot.areasAfterGutter.push(areaSnapshot);
             }
         });
+        console.log('START', this.displayedAreas.map(a=>a.size), ' TOTAL > ', this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0));
         
         if(this.snapshot.areasBeforeGutter.length === 0 || this.snapshot.areasAfterGutter.length === 0) {
             return;
@@ -508,88 +503,75 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         
         // Need to know if each gutter side areas could reacts to steppedOffset
         
-        console.log('steppedOffset', steppedOffset)
+        console.groupCollapsed('steppedOffset', steppedOffset)
         let areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -steppedOffset, this.snapshot.allAreasSizePixel);
         let areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset, this.snapshot.allAreasSizePixel);
 
-        console.log('>> ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+        logMe('--- > ', areasBefore, areasAfter)
 
         // Each gutter side areas can't absorb all offset 
         if(areasBefore.remain !== 0 && areasAfter.remain !== 0) {
             if(Math.abs(areasBefore.remain) === Math.abs(areasAfter.remain)) {
-                areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, 0, this.snapshot.allAreasSizePixel);
-                areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, 0, this.snapshot.allAreasSizePixel);
-                console.log('AAA >> 1 ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+                // areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, 0, this.snapshot.allAreasSizePixel);
+                // areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, 0, this.snapshot.allAreasSizePixel);
+                logMe('AA1 > ', areasBefore, areasAfter)
             }
             else if(Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
                 areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
-                console.log('AAA >> 2 ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+                logMe('AA2 > ', areasBefore, areasAfter)
             }
             else {
                 areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
-                console.log('AAA >> 3 ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+                logMe('AA3 > ', areasBefore, areasAfter)
             }
         }
         // Areas before gutter can't absorbs all offset > need to recalculate sizes for areas after gutter.
         else if(areasBefore.remain !== 0) {
             areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
-            console.log('Case BBB > ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+            logMe('BBB > ', areasBefore, areasAfter)
         }
         // Areas after gutter can't absorbs all offset > need to recalculate sizes for areas before gutter.
         else if(areasAfter.remain !== 0) {
             areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
-            console.log('Case CCC > ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+            logMe('CCC > ', areasBefore, areasAfter)
         }
         else {
-            console.log('Case DDD WTF > ', areasBefore.list.map(a=>a.percentAfterAbsorption), ' ', areasAfter.list.map(a=>a.percentAfterAbsorption))
+            logMe('DDD > ', areasBefore, areasAfter)
             //debugger;
         }
 
 
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Hack to force total === 100
-        // get first area not at min/max and set size to total-allAreaSizes
-        /*const areaToReset = this.displayedAreas.find(a => a.size !== 0 && a.size !== a.minSize && a.size !== a.maxSize);
+        function logMe(txt, lBefore, lAfter) {
+            console.log(txt, lBefore.remain, ' ¤ ', lAfter.remain, ' // ', ...lBefore.list.map(a=>a.percentAfterAbsorption).reverse(), ' ¤ ', ...lAfter.list.map(a=>a.percentAfterAbsorption))
+        }
         
-        if(areaToReset) {
-            if(this.unit === 'percent') {
-                areaToReset.size = 100 - this.displayedAreas.filter(a => a !== areaToReset).reduce((total, a) => total+a.size, 0);
-            }
-            if(this.unit === 'pixel') {
-                areaToReset.size = this.snapshot.allAreasSizePixel - this.displayedAreas.filter(a => a !== areaToReset).reduce((total, a) => total+a.size, 0);
-            }
-        }*/
 
-
-
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        /*const all = [...areasBefore.list, ...areasAfter.list];
-        
         if(this.unit === 'percent') {
+            // Hack because of browser messing up with sizes using calc(X% - Ypx) -> el.getBoundingClientRect()
+            // If not there, playing with gutters makes total going down to 99.99875% then 99.99286%, 99.98986%,..
+            const all = [...areasBefore.list, ...areasAfter.list];
             const areaToReset = all.find(a => a.percentAfterAbsorption !== 0 && a.percentAfterAbsorption !== a.areaSnapshot.area.minSize && a.percentAfterAbsorption !== a.areaSnapshot.area.maxSize)
 
             if(areaToReset) {
                 const x = areaToReset.percentAfterAbsorption;
                 areaToReset.percentAfterAbsorption = 100 - all.filter(a => a !== areaToReset).reduce((total, a) => total+a.percentAfterAbsorption, 0);
-                console.log('areaToReset', areaToReset, 'before=', x, ' after=', areaToReset.percentAfterAbsorption)
+                console.log('ZZZZZZZ areaToReset', areaToReset, 'before=', x, ' after=', areaToReset.percentAfterAbsorption)
             }
-        }*/
-        
+        }
+
+
         // Now we know areas could absorb steppedOffset, time to really update sizes
         
         areasBefore.list.forEach(item => updateAreaSize(this.unit, item));
         areasAfter.list.forEach(item => updateAreaSize(this.unit, item));
 
         const ttt = this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0);
-        console.log(ttt)
-        //if(ttt < 98.2 || ttt > 101.8) debugger;
+        console.log('all a.size = ', ttt)
         
         this.refreshStyleSizes();
         this.notify('progress', this.snapshot.gutterNum);
 
-        console.log('------------------------------------------------------------------------')
+        console.groupEnd()
     }
 
     private stopDragging(event?: Event): void {

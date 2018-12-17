@@ -31,8 +31,9 @@ export function getInputBoolean(v: any): boolean {
 }
 
 export function getInputPositiveNumber<T>(v: any, defaultValue: T): number | T {
-    v = Number(v);
+    if(v === null || v === undefined) return defaultValue;
 
+    v = Number(v);
     return !isNaN(v) && v >= 0 ? v : defaultValue;
 }
 
@@ -42,6 +43,7 @@ export function isUserSizesValid(unit: 'percent' | 'pixel', sizes: Array<number 
         const total = sizes.reduce((total, s) => s !== null ? total + s : total, 0);
         return sizes.every(s => s !== null) && total > 99.9 && total < 100.1;
     }
+    
     // A size at null is mandatory but only one.
     if(unit === 'pixel') {
         return sizes.filter(s => s === null).length === 1;
@@ -63,7 +65,7 @@ function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapshot: IAre
         return {
             areaSnapshot,
             pixelAbsorb: 0,
-            percentAfterAbsorption: round(areaSnapshot.sizePercentAtStart),
+            percentAfterAbsorption: areaSnapshot.sizePercentAtStart,
             pixelRemain: 0,
         };
     }
@@ -101,14 +103,14 @@ function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: n
             return {
                 areaSnapshot,
                 pixelAbsorb: maxSizePixel,
-                percentAfterAbsorption: round(areaSnapshot.area.maxSize),
+                percentAfterAbsorption: areaSnapshot.area.maxSize,
                 pixelRemain: areaSnapshot.sizePixelAtStart + pixels - maxSizePixel
             };
         }
         return {
             areaSnapshot,
             pixelAbsorb: pixels,
-            percentAfterAbsorption: round(tempPercentSize > 100 ? 100 : tempPercentSize),
+            percentAfterAbsorption: tempPercentSize > 100 ? 100 : tempPercentSize,
             pixelRemain: 0
         };
     }
@@ -123,7 +125,7 @@ function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: n
             return {
                 areaSnapshot,
                 pixelAbsorb: minSizePixel,
-                percentAfterAbsorption: round(areaSnapshot.area.minSize),
+                percentAfterAbsorption: areaSnapshot.area.minSize,
                 pixelRemain: areaSnapshot.sizePixelAtStart + pixels - minSizePixel
             };
         }
@@ -140,7 +142,7 @@ function getAreaAbsorptionCapacityPercent(areaSnapshot: IAreaSnapshot, pixels: n
         return {
             areaSnapshot,
             pixelAbsorb: pixels,
-            percentAfterAbsorption: round(tempPercentSize),
+            percentAfterAbsorption: tempPercentSize,
             pixelRemain: 0
         };
     }
@@ -199,11 +201,8 @@ function getAreaAbsorptionCapacityPixel(areaSnapshot: IAreaSnapshot, pixels: num
     }
 }
 
-export function updateAreaSize(unit: 'percent' | 'pixel', item: IAreaAbsorptionCapacity): boolean {
-    if(item.pixelAbsorb === 0) {
-        return Boolean(item.pixelRemain > 0);
-    }
-
+export function updateAreaSize(unit: 'percent' | 'pixel', item: IAreaAbsorptionCapacity) {
+    
     if(unit === 'percent') {
         item.areaSnapshot.area.size = item.percentAfterAbsorption;
     }
@@ -213,10 +212,4 @@ export function updateAreaSize(unit: 'percent' | 'pixel', item: IAreaAbsorptionC
             item.areaSnapshot.area.size += item.pixelAbsorb;
         }
     }
-
-    return Boolean(item.pixelRemain > 0);
-}
-
-function round(v: number): number {
-return Math.round(v * 1000) / 1000;
 }
