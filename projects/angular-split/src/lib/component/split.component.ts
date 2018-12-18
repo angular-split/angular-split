@@ -440,7 +440,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             const areaSnapshot: IAreaSnapshot = {
                 area,
                 sizePixelAtStart: getElementPixelSize(area.component.elRef, this.direction),
-                sizePercentAtStart: area.size // If pixel mode, anyway, will not be used.
+                sizePercentAtStart: (this.unit === 'percent') ? area.size : -1 // If pixel mode, anyway, will not be used.
             };
 
             if(area.order < gutterOrder) {
@@ -450,7 +450,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                 this.snapshot.areasAfterGutter.push(areaSnapshot);
             }
         });
-        console.log('START', this.displayedAreas.map(a=>a.size), ' TOTAL > ', this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0));
+        console.log('START', this.displayedAreas.map(a=>a.size), ' TOTAL > ', this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0), this.snapshot);
         
         if(this.snapshot.areasBeforeGutter.length === 0 || this.snapshot.areasAfterGutter.length === 0) {
             return;
@@ -507,42 +507,47 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         let areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -steppedOffset, this.snapshot.allAreasSizePixel);
         let areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset, this.snapshot.allAreasSizePixel);
 
-        logMe('--- > ', areasBefore, areasAfter)
+        logMe(this.unit, '--- > ', areasBefore, areasAfter)
 
         // Each gutter side areas can't absorb all offset 
         if(areasBefore.remain !== 0 && areasAfter.remain !== 0) {
             if(Math.abs(areasBefore.remain) === Math.abs(areasAfter.remain)) {
-                // areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, 0, this.snapshot.allAreasSizePixel);
-                // areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, 0, this.snapshot.allAreasSizePixel);
-                logMe('AA1 > ', areasBefore, areasAfter)
+                logMe(this.unit, 'AA1 > ', areasBefore, areasAfter)
             }
             else if(Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
                 areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
-                logMe('AA2 > ', areasBefore, areasAfter)
+                logMe(this.unit, 'AA2 > ', areasBefore, areasAfter)
             }
             else {
                 areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
-                logMe('AA3 > ', areasBefore, areasAfter)
+                logMe(this.unit, 'AA3 > ', areasBefore, areasAfter)
             }
         }
         // Areas before gutter can't absorbs all offset > need to recalculate sizes for areas after gutter.
         else if(areasBefore.remain !== 0) {
             areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
-            logMe('BBB > ', areasBefore, areasAfter)
+            logMe(this.unit, 'BBB > ', areasBefore, areasAfter)
         }
         // Areas after gutter can't absorbs all offset > need to recalculate sizes for areas before gutter.
         else if(areasAfter.remain !== 0) {
             areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
-            logMe('CCC > ', areasBefore, areasAfter)
+            logMe(this.unit, 'CCC > ', areasBefore, areasAfter)
         }
         else {
-            logMe('DDD > ', areasBefore, areasAfter)
+            logMe(this.unit, 'DDD > ', areasBefore, areasAfter)
             //debugger;
         }
 
 
-        function logMe(txt, lBefore, lAfter) {
-            console.log(txt, lBefore.remain, ' ¤ ', lAfter.remain, ' // ', ...lBefore.list.map(a=>a.percentAfterAbsorption).reverse(), ' ¤ ', ...lAfter.list.map(a=>a.percentAfterAbsorption))
+        function logMe(unit, txt, lBefore, lAfter) {
+            // PERCENT
+            if(unit === 'percent') {
+                console.log(txt, lBefore.remain, ' ¤ ', lAfter.remain, ' // ', ...lBefore.list.map(a=>a.percentAfterAbsorption).reverse(), ' ¤ ', ...lAfter.list.map(a=>a.percentAfterAbsorption))
+            }
+            // PIXEL
+            else {
+                console.log(txt, lBefore.remain, ' ¤ ', lAfter.remain, ' // ', ...lBefore.list.map(a=>a.pixelAbsorb).reverse(), ' ¤ ', ...lAfter.list.map(a=>a.pixelAbsorb))
+            }
         }
         
 

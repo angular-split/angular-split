@@ -18,6 +18,7 @@ import { ChangelogComponent } from './component/changelog/changelog.route.compon
 import { DocComponent } from './component/doc/doc.route.component';
 
 import { SimpleComponent } from './component/examples/simple.route.component';
+import { MinMaxComponent } from './component/examples/minMax.route.component';
 import { NestedComponent } from './component/examples/nested.route.component';
 import { TransitionsComponent } from './component/examples/transitions.route.component';
 import { SyncComponent } from './component/examples/sync.route.component';
@@ -51,6 +52,7 @@ const routes = [
         DocComponent,
         ExampleTitleComponent,
         SimpleComponent,
+        MinMaxComponent,
         NestedComponent,
         TransitionsComponent,
         SyncComponent,

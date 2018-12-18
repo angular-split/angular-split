@@ -1,4 +1,5 @@
 import { SimpleComponent } from '../component/examples/simple.route.component';
+import { MinMaxComponent } from '../component/examples/minMax.route.component';
 import { NestedComponent } from '../component/examples/nested.route.component';
 import { TransitionsComponent } from '../component/examples/transitions.route.component';
 import { SyncComponent } from '../component/examples/sync.route.component';
@@ -11,7 +12,7 @@ import { DirRtlComponent } from '../component/examples/dirRtl.route.component';
 import { WorkspaceLocalstorageComponent } from '../component/examples/workspaceLocalstorage.route.component';
 import { ExampleEnum } from './enum'
 
-const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/master/src/app/component/examples/';
+const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/master/src_app/app/component/examples/';
 
 
 export const examples: Array<IExampleData> = [
@@ -21,6 +22,13 @@ export const examples: Array<IExampleData> = [
         component: SimpleComponent,
         label: 'Simple split', 
         srcUrl: `${ srcUrlBase }simple.route.component.ts`,
+    },
+    {
+        type: ExampleEnum.MINMAX,
+        path: 'examples/min-max-split', 
+        component: MinMaxComponent,
+        label: 'Split with minSize & maxSize', 
+        srcUrl: `${ srcUrlBase }minMax.route.component`,
     },
     {
         type: ExampleEnum.NESTED,

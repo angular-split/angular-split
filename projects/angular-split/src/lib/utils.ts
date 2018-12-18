@@ -80,12 +80,12 @@ function getAreaAbsorptionCapacity(unit: 'percent' | 'pixel', areaSnapshot: IAre
         };
     }
     
-	if(unit === 'pixel') {
-        return getAreaAbsorptionCapacityPixel(areaSnapshot, pixels, allAreasSizePixel);
-    }
-    
     if(unit === 'percent') {
         return getAreaAbsorptionCapacityPercent(areaSnapshot, pixels, allAreasSizePixel);
+    }
+    
+	if(unit === 'pixel') {
+        return getAreaAbsorptionCapacityPixel(areaSnapshot, pixels, allAreasSizePixel);
     }
 }
 
@@ -209,7 +209,7 @@ export function updateAreaSize(unit: 'percent' | 'pixel', item: IAreaAbsorptionC
     else if(unit === 'pixel') {
         // Update size except for the wildcard size area
         if(item.areaSnapshot.area.size !== null) {
-            item.areaSnapshot.area.size += item.pixelAbsorb;
+            item.areaSnapshot.area.size = item.areaSnapshot.sizePixelAtStart + item.pixelAbsorb;
         }
     }
 }

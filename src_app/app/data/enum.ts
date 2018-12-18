@@ -1,6 +1,7 @@
 
 export enum ExampleEnum {
     SIMPLE = 'simple',
+    MINMAX = 'minmax',
     NESTED = 'nested',
     TRANSITION = 'transition',
     SYNC = 'sync',
