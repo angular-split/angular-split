@@ -444,6 +444,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             gutterNum,
             lastSteppedOffset: 0,
             allAreasSizePixel: getElementPixelSize(this.elRef, this.direction) - this.getNbGutters() * this.gutterSize,
+            allInvolvedAreasSizePercent: 100,
             areasBeforeGutter: [],
             areasAfterGutter: [],
         };
@@ -472,7 +473,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                 }
             }
         });
-        //console.log('START', this.displayedAreas.map(a=>a.size), ' TOTAL > ', this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0), this.snapshot);
+
+        this.snapshot.allInvolvedAreasSizePercent = [...this.snapshot.areasBeforeGutter, ...this.snapshot.areasAfterGutter].reduce((t, a) => t+a.sizePercentAtStart, 0);
         
         if(this.snapshot.areasBeforeGutter.length === 0 || this.snapshot.areasAfterGutter.length === 0) {
             return;
@@ -525,80 +527,47 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         
         // Need to know if each gutter side areas could reacts to steppedOffset
         
-        //console.groupCollapsed('steppedOffset', steppedOffset)
         let areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -steppedOffset, this.snapshot.allAreasSizePixel);
         let areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset, this.snapshot.allAreasSizePixel);
-
-        //logMe(this.unit, '--- > ', areasBefore, areasAfter)
 
         // Each gutter side areas can't absorb all offset 
         if(areasBefore.remain !== 0 && areasAfter.remain !== 0) {
             if(Math.abs(areasBefore.remain) === Math.abs(areasAfter.remain)) {
-                //logMe(this.unit, 'AA1 > ', areasBefore, areasAfter)
             }
             else if(Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
                 areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
-                //logMe(this.unit, 'AA2 > ', areasBefore, areasAfter)
             }
             else {
                 areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
-                //logMe(this.unit, 'AA3 > ', areasBefore, areasAfter)
             }
         }
         // Areas before gutter can't absorbs all offset > need to recalculate sizes for areas after gutter.
         else if(areasBefore.remain !== 0) {
             areasAfter = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasAfterGutter, steppedOffset + areasBefore.remain, this.snapshot.allAreasSizePixel);
-            //logMe(this.unit, 'BBB > ', areasBefore, areasAfter)
         }
         // Areas after gutter can't absorbs all offset > need to recalculate sizes for areas before gutter.
         else if(areasAfter.remain !== 0) {
             areasBefore = getGutterSideAbsorptionCapacity(this.unit, this.snapshot.areasBeforeGutter, -(steppedOffset - areasAfter.remain), this.snapshot.allAreasSizePixel);
-            //logMe(this.unit, 'CCC > ', areasBefore, areasAfter)
         }
-        //else {
-            //logMe(this.unit, 'DDD > ', areasBefore, areasAfter)
-        //}
-
-        /*
-        function logMe(unit, txt, lBefore, lAfter) {
-            // PERCENT
-            if(unit === 'percent') {
-                //console.log(txt, lBefore.remain, ' ¤ ', lAfter.remain, ' // ', ...lBefore.list.map(a=>a.percentAfterAbsorption).reverse(), ' ¤ ', ...lAfter.list.map(a=>a.percentAfterAbsorption))
-            }
-            // PIXEL
-            else {
-                //console.log(txt, lBefore.remain, ' ¤ ', lAfter.remain, ' // ', ...lBefore.list.map(a=>a.pixelAbsorb).reverse(), ' ¤ ', ...lAfter.list.map(a=>a.pixelAbsorb))
-            }
-        }
-        */
 
         if(this.unit === 'percent') {
             // Hack because of browser messing up with sizes using calc(X% - Ypx) -> el.getBoundingClientRect()
             // If not there, playing with gutters makes total going down to 99.99875% then 99.99286%, 99.98986%,..
             const all = [...areasBefore.list, ...areasAfter.list];
-            const allPercent = all.reduce((t, a) => t+a.areaSnapshot.sizePercentAtStart, 0);
             const areaToReset = all.find(a => a.percentAfterAbsorption !== 0 && a.percentAfterAbsorption !== a.areaSnapshot.area.minSize && a.percentAfterAbsorption !== a.areaSnapshot.area.maxSize)
 
             if(areaToReset) {
-                const x = areaToReset.percentAfterAbsorption;
-                areaToReset.percentAfterAbsorption = allPercent - all.filter(a => a !== areaToReset).reduce((total, a) => total+a.percentAfterAbsorption, 0);
-                //console.log('ZZZZZZZ areaToReset', areaToReset, 'before=', x, ' after=', areaToReset.percentAfterAbsorption)
+                areaToReset.percentAfterAbsorption = this.snapshot.allInvolvedAreasSizePercent - all.filter(a => a !== areaToReset).reduce((total, a) => total+a.percentAfterAbsorption, 0);
             }
         }
-
 
         // Now we know areas could absorb steppedOffset, time to really update sizes
         
         areasBefore.list.forEach(item => updateAreaSize(this.unit, item));
         areasAfter.list.forEach(item => updateAreaSize(this.unit, item));
-
-        const ttt = this.displayedAreas.map(a=>a.size).reduce((t,s)=>t+s, 0);
-        //console.log('all a.size = ', ttt)
         
         this.refreshStyleSizes();
         this.notify('progress', this.snapshot.gutterNum);
-
-        //console.groupEnd()
     }
 
     private stopDragging(event?: Event): void {

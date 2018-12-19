@@ -17,7 +17,8 @@ export interface IArea {
 
 export interface ISplitSnapshot {
     gutterNum: number
-	allAreasSizePixel: number
+    allAreasSizePixel: number
+    allInvolvedAreasSizePercent: number
     lastSteppedOffset: number
     areasBeforeGutter: Array<IAreaSnapshot>
     areasAfterGutter: Array<IAreaSnapshot>
