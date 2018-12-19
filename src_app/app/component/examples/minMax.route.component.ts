@@ -10,8 +10,16 @@ import { AComponent } from './AComponent';
         'class': 'split-example-page'
     },
     styles: [`
+        .btns {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .txt-min,
-        .txt-max {
+        .txt-max,
+        .txt-minmax {
             pointer-events: none;
             position: absolute;
             opacity: 0;
@@ -25,10 +33,12 @@ import { AComponent } from './AComponent';
         }
         
         .txt-min > p,
-        .txt-max > p {
-            font-size: 60px;
+        .txt-max > p,
+        .txt-minmax > p {
+            font-size: 30px;
             font-weight: bold;
             color: #cccccc;
+            text-align: center;
         }
 
         as-split-area {
@@ -57,6 +67,12 @@ import { AComponent } from './AComponent';
         as-split-area.as-max .txt-max {
             opacity: 1;
         }
+        as-split-area.as-min.as-max {
+            background: purple;
+        }
+        as-split-area.as-min.as-max .txt-minmax {
+            opacity: 1;
+        }
     `],
     template: `
         {{ testChangeDetectorRun() }}
@@ -64,7 +80,7 @@ import { AComponent } from './AComponent';
             <sp-example-title [type]="exampleEnum.MINMAX"></sp-example-title>
             <h5>Percent mode:</h5>
             <div class="split-example">
-                <as-split unit="percent" [direction]="direction" gutterSize="30" (dragEnd)="log($event)">
+                <as-split unit="percent" [restrictMove]="restrictMove" [direction]="direction" gutterSize="30" (dragEnd)="log($event)">
                     <as-split-area size="30" minSize="20" maxSize="30">
                         <p>size="30"<br>minSize="20"<br>maxSize="30"</p>
                         <div class="txt-min"><p>MIN</p></div>
@@ -84,7 +100,7 @@ import { AComponent } from './AComponent';
             </div>
             <h5>Pixel mode:</h5>
             <div class="split-example">
-                <as-split unit="pixel" [direction]="direction" gutterSize="30" (dragEnd)="log($event)">
+                <as-split unit="pixel" [restrictMove]="restrictMove" [direction]="direction" gutterSize="30" (dragEnd)="log($event)">
                     <as-split-area size="200" minSize="100" maxSize="200">
                         <p>size="200"<br>minSize="100"<br>maxSize="200"</p>
                         <div class="txt-min"><p>MIN</p></div>
@@ -95,6 +111,10 @@ import { AComponent } from './AComponent';
                         <div class="txt-min"><p>MIN</p></div>
                         <div class="txt-max"><p>MAX</p></div>
                     </as-split-area>
+                    <as-split-area size="80" minSize="80" maxSize="80">
+                        <p>size="80"<br>minSize="80"<br>maxSize="80"</p>
+                        <div class="txt-minmax"><p>MIN<br>&<br>MAX</p></div>
+                    </as-split-area>
                     <as-split-area size="250" minSize="250" maxSize="400">
                         <p>size="250"<br>minSize="250"<br>maxSize="400"</p>
                         <div class="txt-min"><p>MIN</p></div>
@@ -102,9 +122,14 @@ import { AComponent } from './AComponent';
                     </as-split-area>
                 </as-split>
             </div>
+            <br>
+            <div class="btns">
+                <button class="btn btn-warning" (click)="restrictMove = restrictMove ? false : true">{{ 'Restrict move: "' + restrictMove + '"' }}</button>    
+            </div>
         </div>`
 })
 export class MinMaxComponent extends AComponent {
+    restrictMove: boolean = false
 
     //
     log(x) {

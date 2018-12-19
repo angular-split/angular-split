@@ -158,7 +158,7 @@ function getAreaAbsorptionCapacityPixel(areaSnapshot: IAreaSnapshot, pixels: num
         if(areaSnapshot.area.maxSize !== null && tempPixelSize > areaSnapshot.area.maxSize) {
             return {
                 areaSnapshot,
-                pixelAbsorb: areaSnapshot.area.maxSize,
+                pixelAbsorb: areaSnapshot.area.maxSize - areaSnapshot.sizePixelAtStart,
                 percentAfterAbsorption: -1,
                 pixelRemain: tempPixelSize - areaSnapshot.area.maxSize
             };
@@ -178,7 +178,7 @@ function getAreaAbsorptionCapacityPixel(areaSnapshot: IAreaSnapshot, pixels: num
         if(areaSnapshot.area.minSize !== null && tempPixelSize < areaSnapshot.area.minSize) {
             return {
                 areaSnapshot,
-                pixelAbsorb: areaSnapshot.area.minSize,
+                pixelAbsorb: areaSnapshot.area.minSize + pixels - tempPixelSize,
                 percentAfterAbsorption: -1,
                 pixelRemain: tempPixelSize - areaSnapshot.area.minSize
             };
@@ -189,7 +189,7 @@ function getAreaAbsorptionCapacityPixel(areaSnapshot: IAreaSnapshot, pixels: num
                 areaSnapshot,
                 pixelAbsorb: -areaSnapshot.sizePixelAtStart,
                 percentAfterAbsorption: -1,
-                pixelRemain: pixels - areaSnapshot.sizePixelAtStart
+                pixelRemain: pixels + areaSnapshot.sizePixelAtStart
             };
         }
         return {
