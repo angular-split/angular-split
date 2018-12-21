@@ -1,5 +1,5 @@
 # angular-split [![npm latest version](https://img.shields.io/npm/v/angular-split/latest.svg?style=flat-square)](https://www.npmjs.com/package/angular-split) [![NPM next version](https://img.shields.io/npm/v/angular-split/next.svg?style=flat-square)](https://www.npmjs.com/package/angular-split) [![Travis build](https://img.shields.io/travis/com/bertrandg/angular-split/master.svg?style=flat-square&label=Cypress+E2E+tests)](https://travis-ci.com/bertrandg/angular-split)
-Lightweight Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.
+Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.
 
 Documentation and examples:
 [https://bertrandg.github.io/angular-split/](https://bertrandg.github.io/angular-split/)

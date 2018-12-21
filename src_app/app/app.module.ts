@@ -71,7 +71,7 @@ const routes = [
         CollapseModule.forRoot(),
         BsDropdownModule.forRoot(),
         SortableModule.forRoot(),
-        AngularSplitModule,
+        AngularSplitModule.forRoot(),
     ],
     providers: [{
         provide: LocationStrategy, useClass: HashLocationStrategy},

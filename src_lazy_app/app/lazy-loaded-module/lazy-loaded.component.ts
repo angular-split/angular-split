@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
   `],
   template: `
     <h1>LazyLoadedComponent from LazyLoadedModule using a split</h1>
-    <button (undetected.click)="test()">(undetected.click)</button> $ 
+    <button (as-split-undetected.click)="test()">(as-split-undetected.click)</button> $ 
     <button (click)="test()">(click)</button>
     <hr>
     <div style="height: 200px; background: red;">

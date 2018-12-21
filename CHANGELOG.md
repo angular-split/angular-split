@@ -1,4 +1,10 @@
 
+<a name="2.0.1"></a>
+# 2.0.1 (2018-12-21)
+
+* **Module import:** Service now provided inside `AngularSplitModule.forRoot()` method instead of directly in module annotation. **Warning:** Be sure to import module using `forRoot()` method otherwise it will not works anymore.
+* **Internal:** Now use an `EventManagerPlugin` instead of extending `EventManager` and use "as-split-undetected." template event prefix.
+
 <a name="2.0.0"></a>
 # 2.0.0 (2018-12-09)
 
