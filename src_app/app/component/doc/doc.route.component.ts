@@ -34,9 +34,13 @@ export class DocComponent {
     readonly splitDoc = {
         inputs: [
             {name: 'direction',       type: 'string',   default: '"horizontal"',  details: 'Select split direction: <code>"horizontal"</code> or <code>"vertical"</code>.'},
+            {name: 'unit',            type: 'string',   default: '"percent"',     details: `Selected unit you want to use: <code>"percent"</code> or <code>"pixel"</code>.`},
             {name: 'gutterSize',      type: 'number',   default: '11',            details: `Gutters's size (dragging elements) in pixels.`},
+            {name: 'gutterStep',      type: 'number',   default: '1',             details: `Gutter step while moving in pixels.`},
+            {name: 'restrictMove',    type: 'boolean',  default: 'false',         details: 'Set to <code>true</code> if you want to limit gutter move to adjacent areas.'},
             {name: 'disabled',        type: 'boolean',  default: 'false',         details: 'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code> still emits.'},
             {name: 'useTransition',   type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
+            {name: 'dir',             type: 'string',   default: '"ltr"',         details: 'Indicates the directionality of the areas: <code>"ltr"</code> (left to right) or <code>"rtl"</code> (right to left).'},
         ],
         outputs: [
             {name: 'dragStart',         value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag starts.'},
@@ -53,25 +57,28 @@ export class DocComponent {
 
     readonly splitAreaDoc = {
         inputs: [
-            {name: 'size',      type: 'number',   default: '100/nb_visible_areas',  details: 'Size of the area in percent (value between <code>0</code> and <code>100</code>).<br>If not provided or if all areas sizes not equal to 100, all areas will have the same size.'},
+            {name: 'size',      type: 'number',   default: '-',     details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br>Percent mode: If not provided or if all areas sizes not equal to 100, all areas will have the same size.<br>Pixel mode: An area with <code>[size]="'*'"</code> is mandatory (only one) and can't have <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code>.`},
+            {name: 'minSize',   type: 'number',   default: 'null',  details: 'Minimum pixel or percent size, can\'t be smaller than provided <code>size</code>.'},
+            {name: 'maxSize',   type: 'number',   default: 'null',  details: 'Maximum pixel or percent size, can\'t be bigger than provided <code>size</code>.'},
+            {name: 'lockSize',  type: 'boolean',  default: 'false', details: 'Lock area size, same as <code>minSize</code> = <code>maxSize</code> = <code>size</code>.'},
         ]
     }
 
     readonly cssClasses = {
         split: [
-            {name: 'is-init',                   details: 'Added after component initialization.'},
-            {name: 'is-horizontal / is-vertical', details: 'Depends on <code>&lt;as-split [direction]="x"&gt;</code>.'},
-            {name: 'is-disabled',               details: 'Added when <code>&lt;as-split [disabled]="true"&gt;</code>.'},
-            {name: 'is-transition',             details: 'Added when <code>&lt;as-split [useTransition]="true"&gt;</code>.'},
-            {name: 'is-dragging',               details: 'Added while a gutter is dragged.'},
+            {name: 'as-init',                   details: 'Added after component initialization.'},
+            {name: 'as-horizontal / as-vertical', details: 'Depends on <code>&lt;as-split [direction]="x"&gt;</code>.'},
+            {name: 'as-disabled',               details: 'Added when <code>&lt;as-split [disabled]="true"&gt;</code>.'},
+            {name: 'as-transition',             details: 'Added when <code>&lt;as-split [useTransition]="true"&gt;</code>.'},
+            {name: 'as-dragging',               details: 'Added while a gutter is dragged.'},
         ],
         area: [
             {name: 'as-split-area',             details: 'Added on all areas.'},
-            {name: 'is-hided',                  details: 'Added when <code>&lt;as-split-area [visible]="false"&gt;</code>.'},
+            {name: 'as-hidden',                 details: 'Added when <code>&lt;as-split-area [visible]="false"&gt;</code>.'},
         ],
         gutter: [
             {name: 'as-split-gutter',           details: 'Added on all gutters.'},
-            {name: 'is-dragged',                details: 'Added on gutter while dragged.'},
+            {name: 'as-dragged',                details: 'Added on gutter while dragged.'},
         ],
     };
 

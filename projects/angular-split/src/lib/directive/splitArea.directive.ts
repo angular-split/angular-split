@@ -71,11 +71,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
         if(this._visible) { 
             this.split.showArea(this);
-            this.renderer.removeClass(this.elRef.nativeElement, 'is-hided');
+            this.renderer.removeClass(this.elRef.nativeElement, 'as-hidden');
         }
         else {
             this.split.hideArea(this);
-            this.renderer.addClass(this.elRef.nativeElement, 'is-hided');
+            this.renderer.addClass(this.elRef.nativeElement, 'as-hidden');
         }
     }
 

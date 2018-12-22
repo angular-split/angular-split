@@ -32,14 +32,14 @@
 
         /* When <as-split-area [visible]="false"> force size to 0. */
 
-        &.is-hided {
+        &.as-hidden {
             flex-basis: 0 !important;
             overflow-x: hidden;
             overflow-y: hidden;
         }
     }
     
-    &.is-horizontal {
+    &.as-horizontal {
         flex-direction: row;
 
         & > .as-split-gutter {
@@ -57,7 +57,7 @@
         }
     }
 
-    &.is-vertical {
+    &.as-vertical {
         flex-direction: column;
 
         & > .as-split-gutter {
@@ -73,7 +73,7 @@
         ::ng-deep > .as-split-area {
             width: 100%;
 
-            &.is-hided {
+            &.as-hidden {
                 max-width: 0;
             }
         }
@@ -81,7 +81,7 @@
 
     /* When disabled remove gutters background image and specific cursor. */
     
-    &.is-disabled {
+    &.as-disabled {
         
         & > .as-split-gutter {
             cursor: default;
@@ -94,7 +94,7 @@
 
     /* Add transition only when transition enabled + split initialized + not currently dragging. */
 
-    &.is-transition.is-init:not(.is-dragging) {
+    &.as-transition.as-init:not(.as-dragging) {
 
         & > .as-split-gutter,
         ::ng-deep > .as-split-area {

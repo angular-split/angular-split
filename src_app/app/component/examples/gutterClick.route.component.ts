@@ -13,11 +13,11 @@ import { formatDate } from '../../service/utils';
         'class': 'split-example-page'
     },
     styles: [`
-        as-split.is-transition.is-init:not(.is-dragging) ::ng-deep > .as-split-gutter,
-        as-split.is-transition.is-init:not(.is-dragging) > .as-split-area {
+        as-split.as-transition.as-init:not(.as-dragging) ::ng-deep > .as-split-gutter,
+        as-split.as-transition.as-init:not(.as-dragging) > .as-split-area {
             transition: flex-basis 1.5s !important;
         }
-        as-split.is-disabled ::ng-deep > .as-split-gutter {
+        as-split.as-disabled ::ng-deep > .as-split-gutter {
             cursor: pointer !important;
         }
         

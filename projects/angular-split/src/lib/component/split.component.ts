@@ -134,8 +134,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Input() set useTransition(v: boolean) {
         this._useTransition = getInputBoolean(v);
 
-        if(this._useTransition) this.renderer.addClass(this.elRef.nativeElement, 'is-transition');
-        else                    this.renderer.removeClass(this.elRef.nativeElement, 'is-transition');
+        if(this._useTransition) this.renderer.addClass(this.elRef.nativeElement, 'as-transition');
+        else                    this.renderer.removeClass(this.elRef.nativeElement, 'as-transition');
     }
     
     get useTransition(): boolean {
@@ -149,8 +149,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Input() set disabled(v: boolean) {
         this._disabled = getInputBoolean(v);
 
-        if(this._disabled)  this.renderer.addClass(this.elRef.nativeElement, 'is-disabled');
-        else                this.renderer.removeClass(this.elRef.nativeElement, 'is-disabled');
+        if(this._disabled)  this.renderer.addClass(this.elRef.nativeElement, 'as-disabled');
+        else                this.renderer.removeClass(this.elRef.nativeElement, 'as-disabled');
     }
     
     get disabled(): boolean {
@@ -222,7 +222,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     public ngAfterViewInit() {
         this.ngZone.runOutsideAngular(() => {
             // To avoid transition at first rendering
-            setTimeout(() => this.renderer.addClass(this.elRef.nativeElement, 'is-init'));
+            setTimeout(() => this.renderer.addClass(this.elRef.nativeElement, 'as-init'));
         });
     }
     
@@ -492,8 +492,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.displayedAreas.forEach(area => area.component.lockEvents());
 
         this.isDragging = true;
-        this.renderer.addClass(this.elRef.nativeElement, 'is-dragging');
-        this.renderer.addClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'is-dragged');
+        this.renderer.addClass(this.elRef.nativeElement, 'as-dragging');
+        this.renderer.addClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged');
         
         this.notify('start', this.snapshot.gutterNum);
     }
@@ -592,8 +592,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             this.notify('end', this.snapshot.gutterNum);
         }
         
-        this.renderer.removeClass(this.elRef.nativeElement, 'is-dragging');
-        this.renderer.removeClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'is-dragged');
+        this.renderer.removeClass(this.elRef.nativeElement, 'as-dragging');
+        this.renderer.removeClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged');
         this.isDragging = false;
         this.snapshot = null;
 
