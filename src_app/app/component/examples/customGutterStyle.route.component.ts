@@ -25,7 +25,7 @@ import { AComponent } from './AComponent';
                 </as-split>
             </div>
             <div class="split-example ex-b">
-                <as-split [direction]="direction" gutterSize="1">
+                <as-split [direction]="direction" restrictMove="true" gutterSize="1">
                     <as-split-area [size]="30"><p>A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A</p></as-split-area>
                     <as-split-area [size]="50"><p>B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B</p></as-split-area>
                     <as-split-area [size]="20"><p>C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C</p></as-split-area>

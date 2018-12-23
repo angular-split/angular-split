@@ -62,8 +62,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Input() set direction(v: 'horizontal' | 'vertical') {
         this._direction = (v === 'vertical') ? 'vertical' : 'horizontal';
         
-        this.renderer.addClass(this.elRef.nativeElement, `is-${ this._direction }`);
-        this.renderer.removeClass(this.elRef.nativeElement, `is-${ (this._direction === 'vertical') ? 'horizontal' : 'vertical' }`);
+        this.renderer.addClass(this.elRef.nativeElement, `as-${ this._direction }`);
+        this.renderer.removeClass(this.elRef.nativeElement, `as-${ (this._direction === 'vertical') ? 'horizontal' : 'vertical' }`);
         
         this.build(false, false);
     }
@@ -79,8 +79,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     @Input() set unit(v: 'percent' | 'pixel') {
         this._unit = (v === 'pixel') ? 'pixel' : 'percent';
         
-        this.renderer.addClass(this.elRef.nativeElement, `is-${ this._unit }`);
-        this.renderer.removeClass(this.elRef.nativeElement, `is-${ (this._unit === 'pixel') ? 'percent' : 'pixel' }`);
+        this.renderer.addClass(this.elRef.nativeElement, `as-${ this._unit }`);
+        this.renderer.removeClass(this.elRef.nativeElement, `as-${ (this._unit === 'pixel') ? 'percent' : 'pixel' }`);
         
         this.build(false, true);
     }
