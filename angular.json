@@ -96,7 +96,6 @@
               "src_lazy_app/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src_lazy_app/styles.scss"
             ],
             "scripts": []

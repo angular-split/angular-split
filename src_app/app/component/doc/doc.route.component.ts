@@ -46,10 +46,10 @@ export class DocComponent {
             {name: 'dragStart',         value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag starts.'},
             {name: 'dragEnd',           value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag ends.'},
             {name: 'gutterClick',       value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when user clicks on a gutter.'},
-            {name: 'transitionEnd',     value: 'Array<number>',                             details: 'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code>).<br>Only if <code>[useTransition]="true"</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
+            {name: 'transitionEnd',     value: 'Array<number>',                             details: 'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code> changes).<br>Only if <code>[useTransition]="true"</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
         ],
         class: [
-            {name: 'dragProgress$',         type: 'Observable<{gutterNum: number, sizes: Array<number>}>',  details: 'Emit when dragging. Replace old <code>(dragProgress)</code> template event for better flexibility about change detection mechanism.'},
+            {name: 'dragProgress$',         type: 'Observable<{gutterNum: number, sizes: Array<number>}>',  details: `Emit when dragging. Replace old <code>(dragProgress)</code> template event for better flexibility about change detection mechanism.<br><u>Warning: Running outside zone by design, if you need to notify angular add</u> <code>this.splitEl.dragProgress$.subscribe(x => this.ngZone.run(() => this.x = x));</code>`},
             {name: 'setVisibleAreaSizes()', type: '(Array<number>) => boolean',                             details: 'Set all <b>visible</b> area sizes in one go, return a boolean to know if input values were correct. Useful when combined with <code>dragProgress$</code> to sync multiple splits.'},
             {name: 'getVisibleAreaSizes()', type: '() => Array<number>',                                    details: 'Get all <b>visible</b> area sizes.'},
         ],

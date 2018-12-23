@@ -1,5 +1,5 @@
-import { Injectable} from '@angular/core';
-import { EventManager} from '@angular/platform-browser';
+import { Injectable } from '@angular/core';
+import { EventManager } from '@angular/platform-browser';
 
 /**
  * Credit to Michael Strobel from:
@@ -10,11 +10,11 @@ export class UndetectedEventPlugin {
     manager: EventManager;
 
     supports(eventName: string): boolean {
-        return eventName.indexOf('undetected.') === 0;
+        return eventName.indexOf('as-split-undetected.') === 0;
     }
 
     addEventListener(element: HTMLElement, eventName: string, handler: Function): Function {
-        const realEventName = eventName.slice(11);
+        const realEventName = eventName.slice(20);
 
         return this.manager.getZone().runOutsideAngular(() => this.manager.addEventListener(element, realEventName, handler));
     }

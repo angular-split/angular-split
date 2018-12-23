@@ -17,13 +17,6 @@ import { UndetectedEventPlugin } from "./service/UndetectedEventPlugin";
     exports: [
         SplitComponent,
         SplitAreaDirective,
-    ],
-    providers: [
-        {
-            provide: EVENT_MANAGER_PLUGINS,
-            useClass: UndetectedEventPlugin,
-            multi: true
-        }
     ]
 })
 export class AngularSplitModule {
@@ -31,7 +24,11 @@ export class AngularSplitModule {
     public static forRoot(): ModuleWithProviders {
         return {
             ngModule: AngularSplitModule,
-            providers: []
+            providers: [{
+                provide: EVENT_MANAGER_PLUGINS,
+                useClass: UndetectedEventPlugin,
+                multi: true
+            }]
         };
     }
 

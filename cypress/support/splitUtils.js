@@ -9,6 +9,7 @@ export function moveGutter(gutters, num, x, y) {
         .trigger('mouseup');
         
     cy.document().trigger('mouseup', { force: true });
+    cy.wait(10);
 }
 
 //////////////////////////////////////////
