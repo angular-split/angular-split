@@ -13,32 +13,38 @@ context('Gutter click example page tests', () => {
     })
 
     it('Display initial state', () => {
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263, 525, 262]);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5]);
     })
     
     it('Click gutters to switch area sizes between 0 and X', () => {
         cy.get('.as-split-gutter').eq(0).click();
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 788, 262]);
+        cy.wait(1500);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5]);
         cy.wait(10);
         
         cy.get('.as-split-gutter').eq(0).click();
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263, 525, 262]);
+        cy.wait(1500);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5]);
         cy.wait(10);
         
         cy.get('.as-split-gutter').eq(0).click();
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 788, 262]);
+        cy.wait(1500);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5]);
         cy.wait(10);
         
         cy.get('.as-split-gutter').eq(1).click();
+        cy.wait(1500);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0]);
         cy.wait(10);
         
         cy.get('.as-split-gutter').eq(0).click();
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263, 787, 0]);
+        cy.wait(1500);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 787.5, 0]);
         cy.wait(10);
         
         cy.get('.as-split-gutter').eq(1).click();
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263, 525, 262]);
+        cy.wait(1500);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5]);
         cy.wait(10);
 
         cy.get('.logs ul li').filter('.gutterClick').should('have.length', 6);
@@ -48,21 +54,22 @@ context('Gutter click example page tests', () => {
     it('Mix gutter click and dragging', () => {
         // Try move gutter event if disabled
         moveGutter('.as-split-gutter', 0, -100, 0);
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263, 525, 262]);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5]);
         cy.get('.logs ul li').should('have.length', 0);
 
         // Enable it
         cy.get('.btns button').eq(1).click();
 
         moveGutter('.as-split-gutter', 0, -100, 0);
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [163, 624, 263]);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [162.5, 625, 262.5]);
 
         cy.get('.logs ul li').filter('.dragStart').should('have.length', 1);
         cy.get('.logs ul li').filter('.dragEnd').should('have.length', 1);
         
         cy.get('.as-split-gutter').eq(0).click();
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 788, 262]);
-        cy.wait(1000);
+        cy.wait(1500);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5]);
+        cy.wait(10);
         
         cy.get('.logs ul li').filter('.dragStart').should('have.length', 2);
         cy.get('.logs ul li').filter('.dragEnd').should('have.length', 1);
@@ -70,6 +77,7 @@ context('Gutter click example page tests', () => {
         cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 1);
 
         cy.get('.as-split-gutter').eq(1).click();
+        cy.wait(1500);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0]);
         cy.wait(10);
         
@@ -87,6 +95,7 @@ context('Gutter click example page tests', () => {
         // cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 2);
 
         cy.get('.as-split-gutter').eq(1).click();
+        cy.wait(1500);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0]);
         cy.wait(10);
         
@@ -96,7 +105,8 @@ context('Gutter click example page tests', () => {
         // cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 4);
 
         cy.get('.as-split-gutter').eq(0).click();
-        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263, 787, 0]);
+        cy.wait(1500);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 787.5, 0]);
         cy.wait(10);
         
         cy.get('.logs ul li').filter('.dragStart').should('have.length', 6);

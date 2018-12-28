@@ -15,8 +15,8 @@ context('Custom split style example page tests', () => {
         cy.visit('/#/examples/custom-gutter-style')
     })
 
-    it('Veriy gutter size color and horizontal image', () => {
-        checkSplitDirAndSizes('.ex-a as-split', 'horizontal', W, H, GUTTER, [311, 724]);
+    it('Verify gutter size color and horizontal image', () => {
+        checkSplitDirAndSizes('.ex-a as-split', 'horizontal', W, H, GUTTER, [310.5, 724.5]);
 
         cy.get('.ex-a as-split > .as-split-gutter').should('have.css', 'background-color', COLOR);
         cy.get('.ex-a as-split > .as-split-gutter > .as-split-gutter-icon').should('have.css', 'background-image', IMGH);
@@ -24,7 +24,7 @@ context('Custom split style example page tests', () => {
 
     it('Change direction', () => {
         cy.get('.btns > .btn').click();
-        checkSplitDirAndSizes('.ex-a as-split', 'vertical', W, H, GUTTER, [80, 185]);
+        checkSplitDirAndSizes('.ex-a as-split', 'vertical', W, H, GUTTER, [79.5, 185.5]);
 
         cy.get('.ex-a as-split > .as-split-gutter').should('have.css', 'background-color', COLOR);
         cy.get('.ex-a as-split > .as-split-gutter > .as-split-gutter-icon').should('have.css', 'background-image', IMGV);

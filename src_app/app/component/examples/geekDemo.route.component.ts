@@ -61,6 +61,7 @@ import { AComponent } from './AComponent';
             <sp-example-title [type]="exampleEnum.GEEK"></sp-example-title>
             <div class="split-example" style="background-color: #e5e0e0;">
                 <as-split [direction]="d.dir" 
+                          [restrictMove]="d.restrictMove"
                           [gutterSize]="d.gutterSize" 
                           [style.width]="d.width" 
                           [style.height]="d.height" 
@@ -135,6 +136,7 @@ export class GeekDemoComponent extends AComponent {
     
     d = {
         dir: 'horizontal',
+        restrictMove: true,
         useTransition: true,
         gutterSize: null,
         width: null,

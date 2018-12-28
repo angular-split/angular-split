@@ -389,14 +389,16 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     private refreshStyleSizes(): void {
         if(this.displayedAreas.length === 1) {
-            this.displayedAreas[0].component.setStyleFlex(`0 0 100%`, false, false);
+            this.displayedAreas[0].component.setStyleFlex(0, 0, `100%`, false, false);
         }
         else if(this.unit === 'percent') {
             const sumGutterSize = this.getNbGutters() * this.gutterSize;
             
             this.displayedAreas.forEach(area => {
                 area.component.setStyleFlex(
-                    `0 0 calc( ${ area.size }% - ${ <number> area.size / 100 * sumGutterSize }px )`,
+                    0, 
+                    0,
+                    `calc( ${ area.size }% - ${ <number> area.size / 100 * sumGutterSize }px )`,
                     area.minSize !== null && area.minSize === area.size ? true : false,
                     area.maxSize !== null && area.maxSize === area.size ? true : false,
                 );
@@ -406,14 +408,18 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             this.displayedAreas.forEach(area => {
                 if(area.size === null) {
                     area.component.setStyleFlex(
-                        `1 1 auto`,
+                        1,
+                        1,
+                        `auto`,
                         area.minSize !== null && area.minSize === area.size ? true : false,
                         area.maxSize !== null && area.maxSize === area.size ? true : false,
                     );
                 }
                 else {
                     area.component.setStyleFlex(
-                        `0 0 ${ area.size }px`,
+                        0,
+                        0,
+                        `${ area.size }px`,
                         area.minSize !== null && area.minSize === area.size ? true : false,
                         area.maxSize !== null && area.maxSize === area.size ? true : false,
                     );
@@ -587,14 +593,17 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             if(fct) fct();
         }
         
+        // Warning: Have to be before "notify('end')" 
+        // because "notify('end')"" can be linked to "[size]='x'" > "build()" > "stopDragging()"
+        this.isDragging = false;
+
         // If moved from starting point, notify end
-        if(event && this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
+        if(this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
             this.notify('end', this.snapshot.gutterNum);
         }
         
         this.renderer.removeClass(this.elRef.nativeElement, 'as-dragging');
         this.renderer.removeClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged');
-        this.isDragging = false;
         this.snapshot = null;
 
         // Needed to let (click)="clickGutter(...)" event run and verify if mouse moved or not
