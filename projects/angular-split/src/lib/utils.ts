@@ -1,6 +1,6 @@
 import { ElementRef } from '@angular/core';
 
-import { IPoint, IAreaSnapshot, ISplitSideAbsorptionCapacity, IAreaAbsorptionCapacity } from './interface';
+import { IArea, IPoint, IAreaSnapshot, ISplitSideAbsorptionCapacity, IAreaAbsorptionCapacity } from './interface';
 
 export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
     // TouchEvent
@@ -48,6 +48,46 @@ export function isUserSizesValid(unit: 'percent' | 'pixel', sizes: Array<number 
     if(unit === 'pixel') {
         return sizes.filter(s => s === null).length === 1;
     }
+}
+
+export function getAreaMinSize(a: IArea): null | number {
+    if(a.size === null) {
+        return null;
+    }
+    
+    if(a.component.lockSize === true) {
+        return a.size;
+    }
+
+    if(a.component.minSize === null) {
+        return null;
+    }
+
+    if(a.component.minSize > a.size) {
+        return a.size;
+    }
+
+    return a.component.minSize;
+}
+
+export function getAreaMaxSize(a: IArea): null | number {
+    if(a.size === null) {
+        return null;
+    }
+    
+    if(a.component.lockSize === true) {
+        return a.size;
+    }
+
+    if(a.component.maxSize === null) {
+        return null;
+    }
+
+    if(a.component.maxSize < a.size) {
+        return a.size;
+    }
+
+    return a.component.maxSize;
 }
 
 export function getGutterSideAbsorptionCapacity(unit: 'percent' | 'pixel', sideAreas: Array<IAreaSnapshot>, pixels: number, allAreasSizePixel: number): ISplitSideAbsorptionCapacity {

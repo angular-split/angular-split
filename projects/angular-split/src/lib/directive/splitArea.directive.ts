@@ -64,6 +64,20 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
     ////
 
+    private _lockSize: boolean = false;
+
+    @Input() set lockSize(v: boolean) {
+        this._lockSize = getInputBoolean(v);
+
+        this.split.updateArea(this, false, true);
+    }
+    
+    get lockSize(): boolean {
+        return this._lockSize;
+    }
+
+    ////
+
     private _visible: boolean = true;
 
     @Input() set visible(v: boolean) {

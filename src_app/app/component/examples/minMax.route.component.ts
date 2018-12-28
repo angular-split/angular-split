@@ -53,6 +53,7 @@ import { AComponent } from './AComponent';
             font-size: 12px;
             font-weight: bold;
             padding: 5px;
+            line-height: 12px;
         }
 
         as-split-area.as-min {
@@ -80,7 +81,7 @@ import { AComponent } from './AComponent';
             <sp-example-title [type]="exampleEnum.MINMAX"></sp-example-title>
             <h5>Percent mode:</h5>
             <div class="split-example">
-                <as-split unit="percent" [restrictMove]="restrictMove" [direction]="direction" gutterSize="30" (dragEnd)="log($event)">
+                <as-split unit="percent" [restrictMove]="restrictMove" gutterSize="30" (dragEnd)="log($event)">
                     <as-split-area size="30" minSize="20" maxSize="30">
                         <p>size="30"<br>minSize="20"<br>maxSize="30"</p>
                         <div class="txt-min"><p>MIN</p></div>
@@ -100,7 +101,7 @@ import { AComponent } from './AComponent';
             </div>
             <h5>Pixel mode:</h5>
             <div class="split-example">
-                <as-split unit="pixel" [restrictMove]="restrictMove" [direction]="direction" gutterSize="30" (dragEnd)="log($event)">
+                <as-split unit="pixel" [restrictMove]="restrictMove" gutterSize="30" (dragEnd)="log($event)">
                     <as-split-area size="200" minSize="100" maxSize="200">
                         <p>size="200"<br>minSize="100"<br>maxSize="200"</p>
                         <div class="txt-min"><p>MIN</p></div>
@@ -111,8 +112,8 @@ import { AComponent } from './AComponent';
                         <div class="txt-min"><p>MIN</p></div>
                         <div class="txt-max"><p>MAX</p></div>
                     </as-split-area>
-                    <as-split-area size="80" minSize="80" maxSize="80">
-                        <p>size="80"<br>minSize="80"<br>maxSize="80"</p>
+                    <as-split-area size="150" lockSize="true">
+                        <p>size="150"<br>lockSize="true"<br><br>Same as<br>minSize="150"<br>maxSize="150"</p>
                         <div class="txt-minmax"><p>MIN<br>&<br>MAX</p></div>
                     </as-split-area>
                     <as-split-area size="250" minSize="250" maxSize="400">

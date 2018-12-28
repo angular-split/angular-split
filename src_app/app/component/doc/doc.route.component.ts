@@ -39,8 +39,8 @@ export class DocComponent {
             {name: 'gutterStep',      type: 'number',   default: '1',             details: `Gutter step while moving in pixels.`},
             {name: 'restrictMove',    type: 'boolean',  default: 'false',         details: 'Set to <code>true</code> if you want to limit gutter move to adjacent areas.'},
             {name: 'disabled',        type: 'boolean',  default: 'false',         details: 'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code> still emits.'},
-            {name: 'useTransition',   type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
             {name: 'dir',             type: 'string',   default: '"ltr"',         details: 'Indicates the directionality of the areas: <code>"ltr"</code> (left to right) or <code>"rtl"</code> (right to left).'},
+            {name: 'useTransition',   type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
         ],
         outputs: [
             {name: 'dragStart',         value: '{gutterNum: number, sizes: Array<number>}', details: 'Emit when drag starts.'},
@@ -57,7 +57,7 @@ export class DocComponent {
 
     readonly splitAreaDoc = {
         inputs: [
-            {name: 'size',      type: 'number',   default: '-',     details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br>Percent mode: If not provided or if all areas sizes not equal to 100, all areas will have the same size.<br>Pixel mode: An area with <code>[size]="'*'"</code> is mandatory (only one) and can't have <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code>.`},
+            {name: 'size',      type: 'number',   default: '-',     details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br><u>Percent mode:</u> If not provided or if all areas sizes not equal to 100, all areas will have the same size.<br><u>Pixel mode:</u> An area with <code>[size]="'*'"</code> is mandatory (only one) and can't have <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code>.`},
             {name: 'minSize',   type: 'number',   default: 'null',  details: 'Minimum pixel or percent size, can\'t be smaller than provided <code>size</code>.'},
             {name: 'maxSize',   type: 'number',   default: 'null',  details: 'Maximum pixel or percent size, can\'t be bigger than provided <code>size</code>.'},
             {name: 'lockSize',  type: 'boolean',  default: 'false', details: 'Lock area size, same as <code>minSize</code> = <code>maxSize</code> = <code>size</code>.'},

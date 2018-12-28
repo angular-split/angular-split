@@ -4,7 +4,7 @@ import { debounceTime } from 'rxjs/operators';
 
 import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, IOutputData, IOutputAreaSizes } from '../interface';
 import { SplitAreaDirective } from '../directive/splitArea.directive';
-import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getPointFromEvent, getElementPixelSize, getGutterSideAbsorptionCapacity, updateAreaSize } from '../utils';
+import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getAreaMinSize, getAreaMaxSize, getPointFromEvent, getElementPixelSize, getGutterSideAbsorptionCapacity, updateAreaSize } from '../utils';
 
 /**
  * angular-split
@@ -349,10 +349,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     
                     this.displayedAreas.forEach(area => {
                         area.size = useUserSizes ? <number> area.component.size : defaultSize;
-                        
-                        // Set min/max to area.size if size provided 'less than min'/'more than max'
-                        area.minSize = (area.component.minSize === null) ? null : (area.component.minSize > area.size ? area.size : area.component.minSize);
-                        area.maxSize = (area.component.maxSize === null) ? null : (area.component.maxSize < area.size ? area.size : area.component.maxSize);
+                        area.minSize = getAreaMinSize(area);
+                        area.maxSize = getAreaMaxSize(area);
                     });
                     break;
                 }
@@ -360,10 +358,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                     if(useUserSizes) {
                         this.displayedAreas.forEach(area => {
                             area.size = area.component.size;
-    
-                            // Set min/max to area.size if size provided 'less than min'/'more than max'
-                            area.minSize = (area.component.minSize === null) ? null : (area.size !== null && area.component.minSize > area.size ? area.size : area.component.minSize);
-                            area.maxSize = (area.component.maxSize === null) ? null : (area.size !== null && area.component.maxSize < area.size ? area.size : area.component.maxSize);
+                            area.minSize = getAreaMinSize(area);
+                            area.maxSize = getAreaMaxSize(area);
                         });
                     }
                     else {
