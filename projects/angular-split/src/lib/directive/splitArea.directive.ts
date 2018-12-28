@@ -126,8 +126,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
         this.renderer.setStyle(this.elRef.nativeElement, 'order', value);
     }
     
-    public setStyleFlex(value: string, isMin: boolean, isMax: boolean): void {
-        this.renderer.setStyle(this.elRef.nativeElement, 'flex', value);
+    public setStyleFlex(grow: number, shrink: number, basis: string, isMin: boolean, isMax: boolean): void {
+        // Need 3 separated properties to work on IE11 (https://github.com/angular/flex-layout/issues/323)
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', grow);
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', shrink);
+        this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', basis);
         
         if(isMin === true)  this.renderer.addClass(this.elRef.nativeElement, 'as-min');
         else                this.renderer.removeClass(this.elRef.nativeElement, 'as-min');

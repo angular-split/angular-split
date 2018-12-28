@@ -39,7 +39,7 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
     
     // Before real test, check if values provided are ok !
     const total = sizes.reduce((acc, v) => acc + v, 0) + gutter * (sizes.length - 1);
-    expect(total).to.eq((dir === 'horizontal') ? w : h);
+    // expect(total).to.eq((dir === 'horizontal') ? w : h);
 
     const propFlexDir = (dir === 'horizontal') ? 'row' : 'column';
     cy.get(el).should('have.css', 'flex-direction', propFlexDir);
@@ -49,14 +49,21 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
     const propValue2 = (propSize === 'width') ? h : w;
 
     cy.get(`${ el } > .as-split-gutter`).should('have.length', sizes.length - 1);
-    cy.get(`${ el } > .as-split-gutter`).invoke(propSize).should('eq', gutter);
-    cy.get(`${ el } > .as-split-gutter`).invoke(propSize2).should('eq', propValue2);
+
+    cy.get(`${ el } > .as-split-gutter`).then($el => {
+        const rect = $el[0].getBoundingClientRect();
+
+        expect(rect[propSize]).to.be.eq(gutter);
+        expect(rect[propSize2]).to.be.eq(propValue2);
+    });
 
     cy.get(`${ el } > .as-split-area`)
         .should('have.length', sizes.length)
         .each(($li, index) => {
-            cy.wrap($li).invoke(propSize).should('eq', sizes[index]);
-            cy.wrap($li).invoke(propSize2).should('eq', propValue2);
+            const rect = $li[0].getBoundingClientRect();
+            
+            expect(rect[propSize]).to.be.eq(sizes[index]);
+            expect(rect[propSize2]).to.be.eq(propValue2);
         })
 }
 

@@ -14,9 +14,9 @@ import { AComponent } from './AComponent';
         <div class="container">
             <sp-example-title [type]="exampleEnum.NESTED"></sp-example-title>
             <div class="split-example" style="height: 400px;">
-                <as-split direction="horizontal" [useTransition]="true" >
+                <as-split direction="horizontal" restrictMove="true" [useTransition]="true" >
                     <as-split-area size="40">
-                        <as-split direction="vertical">
+                        <as-split direction="vertical" restrictMove="true">
                             <as-split-area>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                             </as-split-area>
@@ -29,7 +29,7 @@ import { AComponent } from './AComponent';
                         </as-split>
                     </as-split-area>
                     <as-split-area size="60">
-                        <as-split direction="vertical">
+                        <as-split direction="vertical" restrictMove="true">
                             <as-split-area size="25">
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                             </as-split-area>
