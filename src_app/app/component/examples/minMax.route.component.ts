@@ -80,7 +80,7 @@ import { AComponent } from './AComponent';
         <div class="container">
             <sp-example-title [type]="exampleEnum.MINMAX"></sp-example-title>
             <h5>Percent mode:</h5>
-            <div class="split-example">
+            <div class="split-example ex-percent">
                 <as-split unit="percent" [restrictMove]="restrictMove" gutterSize="30" (dragEnd)="log($event)">
                     <as-split-area size="30" minSize="20" maxSize="30">
                         <p>size="30"<br>minSize="20"<br>maxSize="30"</p>
@@ -100,7 +100,7 @@ import { AComponent } from './AComponent';
                 </as-split>
             </div>
             <h5>Pixel mode:</h5>
-            <div class="split-example">
+            <div class="split-example ex-pixel">
                 <as-split unit="pixel" [restrictMove]="restrictMove" gutterSize="30" (dragEnd)="log($event)">
                     <as-split-area size="200" minSize="100" maxSize="200">
                         <p>size="200"<br>minSize="100"<br>maxSize="200"</p>
