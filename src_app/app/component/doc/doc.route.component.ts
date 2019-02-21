@@ -34,7 +34,7 @@ export class DocComponent {
     readonly splitDoc = {
         inputs: [
             {name: 'direction',                 type: 'string',   default: '"horizontal"',  details: 'Select split direction: <code>"horizontal"</code> or <code>"vertical"</code>.'},
-            {name: 'unit',                      type: 'string',   default: '"percent"',     details: `Selected unit you want to use: <code>"percent"</code> or <code>"pixel"</code>.`},
+            {name: 'unit',                      type: 'string',   default: '"percent"',     details: `Selected unit you want to use: <code>"percent"</code> or <code>"pixel"</code> to specify area sizes.`},
             {name: 'gutterSize',                type: 'number',   default: '11',            details: `Gutters's size (dragging elements) in pixels.`},
             {name: 'gutterStep',                type: 'number',   default: '1',             details: `Gutter step while moving in pixels.`},
             {name: 'restrictMove',              type: 'boolean',  default: 'false',         details: 'Set to <code>true</code> if you want to limit gutter move to adjacent areas.'},
@@ -59,10 +59,11 @@ export class DocComponent {
 
     readonly splitAreaDoc = {
         inputs: [
-            {name: 'size',      type: 'number',   default: '-',     details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br><u>Percent mode:</u> If not provided or if all areas sizes not equal to 100, all areas will have the same size.<br><u>Pixel mode:</u> An area with <code>[size]="'*'"</code> is mandatory (only one) and can't have <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code>.`},
-            {name: 'minSize',   type: 'number',   default: 'null',  details: 'Minimum pixel or percent size, can\'t be smaller than provided <code>size</code>.'},
-            {name: 'maxSize',   type: 'number',   default: 'null',  details: 'Maximum pixel or percent size, can\'t be bigger than provided <code>size</code>.'},
-            {name: 'lockSize',  type: 'boolean',  default: 'false', details: 'Lock area size, same as <code>minSize</code> = <code>maxSize</code> = <code>size</code>.'},
+            {name: 'size',      type: 'number',   default: '-',     details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br><u>Percent mode:</u> All areas sizes should equal to 100, If not, all areas will have the same size.<br><u>Pixel mode:</u> An area with  wildcard size (<code>[size]="'*'"</code>) is mandatory (only one) and can't have <code>[visible]="false"</code> or <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code> properties.`},
+            {name: 'minSize',   type: 'number',   default: 'null',  details: `Minimum pixel or percent size, can't be smaller than provided <code>size</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`},
+            {name: 'maxSize',   type: 'number',   default: 'null',  details: `Maximum pixel or percent size, can't be bigger than provided <code>size</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`},
+            {name: 'lockSize',  type: 'boolean',  default: 'false', details: `Lock area size, same as <code>minSize</code> = <code>maxSize</code> = <code>size</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`},
+            {name: 'visible',   type: 'boolean',  default: 'true',  details: `Hide area visually but still present in the DOM, use <code>ngIf</code> to completely remove it.<br><u>Not working when <code>[size]="'*'"</code></u>`},
         ]
     }
 

@@ -49,9 +49,10 @@ import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getAreaMinSi
                  class="as-split-gutter"
                  [style.flex-basis.px]="gutterSize"
                  [style.order]="index*2+1"
-                 (click)="clickGutter($event, index+1)"
                  (mousedown)="startDragging($event, index*2+1, index+1)"
-                 (touchstart)="startDragging($event, index*2+1, index+1)">
+                 (touchstart)="startDragging($event, index*2+1, index+1)"
+                 (mouseup)="clickGutter($event, index+1)"
+                 (touchend)="clickGutter($event, index+1)">
                 <div class="as-split-gutter-icon"></div>
             </div>
         </ng-template>`,
@@ -430,23 +431,22 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     _clickTimeout: number | null = null
 
     public clickGutter(event: MouseEvent, gutterNum: number): void {
-        console.log('DEBUG > clickGutter', event)
-        event.preventDefault();
-        event.stopPropagation();
-
+        // Be sure mouseup/touchend happened at same point as mousedown/touchstart to trigger click/dblclick
         if(this.startPoint && this.startPoint.x === event.clientX && this.startPoint.y === event.clientY) {
 
-            // If timeout in progress and new again > clearTimeout & dblClickEvent
+            // If timeout in progress and new click > clearTimeout & dblClickEvent
             if(this._clickTimeout !== null) {
                 window.clearTimeout(this._clickTimeout);
                 this._clickTimeout = null;
                 this.notify('dblclick', gutterNum);
+                this.stopDragging();
             }
             // Else start timeout to call clickEvent at end
             else {
                 this._clickTimeout = window.setTimeout(() => {
                     this._clickTimeout = null;
                     this.notify('click', gutterNum);
+                    this.stopDragging();
                 }, this.gutterDblClickDuration);
             }
         }
@@ -522,6 +522,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private dragEvent(event: MouseEvent | TouchEvent): void {
         event.preventDefault();
         event.stopPropagation();
+
+        if(this._clickTimeout !== null) {
+            window.clearTimeout(this._clickTimeout);
+            this._clickTimeout = null;
+        }
 
         if(this.isDragging === false) {
             return;

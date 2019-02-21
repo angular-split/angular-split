@@ -121,6 +121,7 @@ export class GutterClickComponent extends AComponent implements AfterViewInit, O
 
     log(type: string, e: {gutterNum: number, sizes: Array<number>}) {
         this.logMessages.push({type, text: `${ formatDate(new Date()) } > ${ type } event > ${ JSON.stringify(e) }`});
+        
         setTimeout(() => {
             if(this.logsEl.nativeElement.scroll) {
                 (<HTMLElement> this.logsEl.nativeElement).scroll({top: this.logMessages.length*30});

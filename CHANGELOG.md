@@ -3,9 +3,11 @@
 
 * **Pixel mode:** Now your can choose to work with `pixel` or `percent` mode. In `pixel` mode, an area with wildcard size (`size="*"`) is mandatory.
 * **minSize & maxSize area:** Now you can set minimum and maximum sizes for each areas whatever the current mode (Only exception is the wildcard area size in `pixel` mode).
+* **lockSize area:** Use `<as-split-area [size]="X" [lockSize]="true">` as a shortcut for `<as-split-area [size]="X" [minSize]="X" [maxSize]="X">`.
 * **gutterDblClick event:** Double click on gutter is now catchable with `(gutterDblClick)`.
 * **gutterDblClickDuration property:** Specify duration between 2 clicks to consider a double click `(gutterDblClick)` event.
 * **exportAs:** You can access `SplitComponent` as `<as-split #split="asSplit">` and `SplitAreaDirective` as `<as-split-area #area1="asSplitArea">` from template variables easily with `ViewChild`.
+* **CSS classes updates:** Some `split`, `area` and `gutter` elements has CSS class names update.
 * **Internal:** Remove `EventManagerPlugin` and start/end/click subscribers stuff which was added to avoid some change detection runs but adding too much complexity.. I stopped going against the framework, clearer now!
 
 <a name="2.0.1"></a>
