@@ -55,11 +55,13 @@ import { formatDate } from '../../service/utils';
                 <as-split #mySplit
                           [disabled]="isDisabled" 
                           gutterSize="10" 
+                          [gutterDblClickDuration]="dblClickTime" 
                           direction="horizontal" 
                           [useTransition]="useTransition" 
                           (dragStart)="log('dragStart', $event)" 
                           (dragEnd)="log('dragEnd', $event)" 
                           (gutterClick)="log('gutterClick', $event)"
+                          (gutterDblClick)="log('gutterDblClick', $event)"
                           (transitionEnd)="log('transitionEnd', $event)" >
                     <as-split-area *ngFor="let a of areas" [size]="a.size" [order]="a.order">
                         <p>{{ a.content }}</p>
@@ -74,6 +76,19 @@ import { formatDate } from '../../service/utils';
                 <div>
                     <button class="btn btn-warning" [class.active]="!isDisabled" (click)="isDisabled = !isDisabled">{{ 'isDisabled: ' + isDisabled }}</button>
                 </div>
+                <div>
+                    <label>Property <code>[gutterDblClickDuration]</code>:&nbsp;</label>
+                    <div class="btn-group">
+                        <label class="btn btn-warning"
+                            tooltip="When set to 0ms, 'click' is instant and 'dblclick' is impossible."
+                            [class.disabled]="dblClickTime === 0" 
+                            (click)="dblClickTime = 0">0ms</label>
+                        <label class="btn btn-warning" 
+                            tooltip="When set to 500ms, 'click' is delayed and 'dblclick' is possible."
+                            [class.disabled]="dblClickTime === 500"
+                            (click)="dblClickTime = 500">500ms</label>
+                    </div>
+                </div>
             </div>
             <div class="logs">
                 <p>All <code>as-split</code> events emitted:</p>
@@ -86,6 +101,7 @@ import { formatDate } from '../../service/utils';
 export class GutterClickComponent extends AComponent implements AfterViewInit, OnDestroy {
     isDisabled: boolean = true
     useTransition: boolean = true
+    dblClickTime: number = 0
     logMessages: Array<{type: string, text: string}> = []
     areas = [
         {size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg'},

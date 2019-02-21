@@ -1,6 +1,7 @@
 import { SimpleComponent } from '../component/examples/simple.route.component';
 import { MinMaxComponent } from '../component/examples/minMax.route.component';
 import { NestedComponent } from '../component/examples/nested.route.component';
+import { IframeComponent } from '../component/examples/iframe.route.component';
 import { TransitionsComponent } from '../component/examples/transitions.route.component';
 import { SyncComponent } from '../component/examples/sync.route.component';
 import { CustomGutterStyleComponent } from '../component/examples/customGutterStyle.route.component';
@@ -36,6 +37,13 @@ export const examples: Array<IExampleData> = [
         component: NestedComponent,
         label: 'Nested splits', 
         srcUrl: `${ srcUrlBase }nested.route.component.ts`,
+    },
+    {
+        type: ExampleEnum.IFRAME,
+        path: 'examples/iframes', 
+        component: IframeComponent,
+        label: 'Split containing iframes', 
+        srcUrl: `${ srcUrlBase }iframe.route.component.ts`,
     },
     {
         type: ExampleEnum.TRANSITION,

@@ -63,6 +63,7 @@ import { AComponent } from './AComponent';
                 <as-split [direction]="d.dir" 
                           [restrictMove]="d.restrictMove"
                           [gutterSize]="d.gutterSize" 
+                          [gutterStep]="d.gutterStep" 
                           [style.width]="d.width" 
                           [style.height]="d.height" 
                           [useTransition]="d.useTransition" 
@@ -87,7 +88,7 @@ import { AComponent } from './AComponent';
                     </div>
                 </div>
                 <div>
-                    <label>Width: </label>
+                    <label>Width:&nbsp;</label>
                     <div class="btn-group">
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" [btnRadio]="null">null</label>
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.width" btnRadio="400px">400</label>
@@ -95,7 +96,7 @@ import { AComponent } from './AComponent';
                     </div>
                 </div>
                 <div>
-                    <label>Height: </label>
+                    <label>Height:&nbsp;</label>
                     <div class="btn-group">
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" [btnRadio]="null">null</label>
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.height" btnRadio="200px">200</label>
@@ -103,11 +104,19 @@ import { AComponent } from './AComponent';
                     </div>
                 </div>
                 <div>
-                    <label>Gutter size: </label>
+                    <label>Gutter size:&nbsp;</label>
                     <div class="btn-group">
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.gutterSize" [btnRadio]="null">null</label>
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.gutterSize" btnRadio="7">7</label>
                         <label class="btn btn-warning btn-sm" [(ngModel)]="d.gutterSize" btnRadio="22">22</label>
+                    </div>
+                </div>
+                <div>
+                    <label>Gutter step:&nbsp;</label>
+                    <div class="btn-group">
+                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.gutterStep" [btnRadio]="null">null</label>
+                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.gutterStep" btnRadio="10">10</label>
+                        <label class="btn btn-warning btn-sm" [(ngModel)]="d.gutterStep" btnRadio="50">50</label>
                     </div>
                 </div>
             </div>
@@ -139,6 +148,7 @@ export class GeekDemoComponent extends AComponent {
         restrictMove: true,
         useTransition: true,
         gutterSize: null,
+        gutterStep: null,
         width: null,
         height: null,
         areas: [

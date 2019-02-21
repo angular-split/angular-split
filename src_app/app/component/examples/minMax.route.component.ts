@@ -69,7 +69,7 @@ import { AComponent } from './AComponent';
             opacity: 1;
         }
         as-split-area.as-min.as-max {
-            background: purple;
+            background: #ff77e7;
         }
         as-split-area.as-min.as-max .txt-minmax {
             opacity: 1;

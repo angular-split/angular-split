@@ -9,6 +9,11 @@ import { examples } from '../data/listExamples';
     selector: 'sp-topbar',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styles: [`
+        :host {
+            /* To override default 'fixed' who prevent scrolling */
+            position: absolute;
+        }
+
         a.navbar-brand,
         a.navbar-brand:hover {
             font-weight: bold;
@@ -33,10 +38,10 @@ import { examples } from '../data/listExamples';
 
         @media (max-width: 992px) {
             .container-fluid {
-            padding-left: 0;
+                padding-left: 0;
             }
             a.navbar-brand {
-            margin-right: 0;
+                margin-right: 0;
             }
         }
     `],

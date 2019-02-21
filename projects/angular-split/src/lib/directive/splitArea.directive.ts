@@ -4,7 +4,8 @@ import { SplitComponent } from '../component/split.component';
 import { getInputPositiveNumber, getInputBoolean } from '../utils';
 
 @Directive({
-    selector: 'as-split-area, [as-split-area]'
+    selector: 'as-split-area, [as-split-area]',
+    exportAs: 'asSplitArea'
 })
 export class SplitAreaDirective implements OnInit, OnDestroy {
 

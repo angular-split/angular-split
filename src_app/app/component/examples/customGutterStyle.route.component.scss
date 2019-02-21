@@ -132,16 +132,16 @@
 
         &.as-horizontal {
             ::ng-deep .as-split-gutter-icon {
-                width: 13px !important;
-                left: -6px;
-                right: 6px;
+                width: 17px !important;
+                left: -8px;
+                right: 8px;
             }
         }
         &.as-vertical {
             ::ng-deep .as-split-gutter-icon {
-                height: 13px !important;
-                top: -6px;
-                bottom: 6px;
+                height: 17px !important;
+                top: -8px;
+                bottom: 8px;
             }
         }
     }

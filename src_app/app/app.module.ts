@@ -8,6 +8,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SortableModule } from 'ngx-bootstrap/sortable';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AngularSplitModule } from 'angular-split';
 
 import { AppComponent } from './component/app.component';
@@ -20,6 +21,7 @@ import { DocComponent } from './component/doc/doc.route.component';
 import { SimpleComponent } from './component/examples/simple.route.component';
 import { MinMaxComponent } from './component/examples/minMax.route.component';
 import { NestedComponent } from './component/examples/nested.route.component';
+import { IframeComponent } from './component/examples/iframe.route.component';
 import { TransitionsComponent } from './component/examples/transitions.route.component';
 import { SyncComponent } from './component/examples/sync.route.component';
 import { CustomGutterStyleComponent } from './component/examples/customGutterStyle.route.component';
@@ -54,6 +56,7 @@ const routes = [
         SimpleComponent,
         MinMaxComponent,
         NestedComponent,
+        IframeComponent,
         TransitionsComponent,
         SyncComponent,
         CustomGutterStyleComponent,
@@ -73,6 +76,7 @@ const routes = [
         CollapseModule.forRoot(),
         BsDropdownModule.forRoot(),
         SortableModule.forRoot(),
+        TooltipModule.forRoot(),
         AngularSplitModule.forRoot(),
     ],
     providers: [{

@@ -1,4 +1,4 @@
-import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone, ViewChildren, QueryList } from '@angular/core';
+import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone, ViewChildren, QueryList, EventEmitter } from '@angular/core';
 import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -38,6 +38,7 @@ import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getAreaMinSi
 
 @Component({
     selector: 'as-split',
+    exportAs: 'asSplit',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: [`./split.component.scss`],
     template: `
@@ -48,9 +49,9 @@ import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getAreaMinSi
                  class="as-split-gutter"
                  [style.flex-basis.px]="gutterSize"
                  [style.order]="index*2+1"
-                 (as-split-undetected.click)="clickGutter($event, index+1)"
-                 (as-split-undetected.mousedown)="startDragging($event, index*2+1, index+1)"
-                 (as-split-undetected.touchstart)="startDragging($event, index*2+1, index+1)">
+                 (click)="clickGutter($event, index+1)"
+                 (mousedown)="startDragging($event, index*2+1, index+1)"
+                 (touchstart)="startDragging($event, index*2+1, index+1)">
                 <div class="as-split-gutter-icon"></div>
             </div>
         </ng-template>`,
@@ -170,23 +171,25 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     get dir(): 'ltr' | 'rtl' {
         return this._dir;
     }
+    
+    ////
+
+    private _gutterDblClickDuration: number = 0;
+
+    @Input() set gutterDblClickDuration(v: number) {
+        this._gutterDblClickDuration = getInputPositiveNumber(v, 0);
+    }
+    
+    get gutterDblClickDuration(): number {
+        return this._gutterDblClickDuration;
+    }
 
     ////
 
-    private dragStartSubscriber: Subscriber<IOutputData>
-    @Output() get dragStart(): Observable<IOutputData> {
-        return new Observable(subscriber => this.dragStartSubscriber = subscriber);
-    }
-
-    private dragEndSubscriber: Subscriber<IOutputData>
-    @Output() get dragEnd(): Observable<IOutputData> {
-        return new Observable(subscriber => this.dragEndSubscriber = subscriber);
-    }
-
-    private gutterClickSubscriber: Subscriber<IOutputData>
-    @Output() get gutterClick(): Observable<IOutputData> {
-        return new Observable(subscriber => this.gutterClickSubscriber = subscriber);
-    }
+    @Output() dragStart = new EventEmitter<IOutputData>(false)
+    @Output() dragEnd = new EventEmitter<IOutputData>(false)
+    @Output() gutterClick = new EventEmitter<IOutputData>(false)
+    @Output() gutterDblClick = new EventEmitter<IOutputData>(false)
 
     private transitionEndSubscriber: Subscriber<IOutputAreaSizes>
     @Output() get transitionEnd(): Observable<IOutputAreaSizes> {
@@ -424,12 +427,28 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
     }
 
+    _clickTimeout: number | null = null
+
     public clickGutter(event: MouseEvent, gutterNum: number): void {
+        console.log('DEBUG > clickGutter', event)
         event.preventDefault();
         event.stopPropagation();
 
         if(this.startPoint && this.startPoint.x === event.clientX && this.startPoint.y === event.clientY) {
-            this.notify('click', gutterNum);
+
+            // If timeout in progress and new again > clearTimeout & dblClickEvent
+            if(this._clickTimeout !== null) {
+                window.clearTimeout(this._clickTimeout);
+                this._clickTimeout = null;
+                this.notify('dblclick', gutterNum);
+            }
+            // Else start timeout to call clickEvent at end
+            else {
+                this._clickTimeout = window.setTimeout(() => {
+                    this._clickTimeout = null;
+                    this.notify('click', gutterNum);
+                }, this.gutterDblClickDuration);
+            }
         }
     }
 
@@ -611,23 +630,20 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    public notify(type: 'start' | 'progress' | 'end' | 'click' | 'transitionEnd', gutterNum: number): void {
+    public notify(type: 'start' | 'progress' | 'end' | 'click' | 'dblclick' | 'transitionEnd', gutterNum: number): void {
         const sizes = this.getVisibleAreaSizes();
 
         if(type === 'start') {
-            if(this.dragStartSubscriber) {
-                this.ngZone.run(() => this.dragStartSubscriber.next({gutterNum, sizes}));
-            }
+            this.dragStart.emit({gutterNum, sizes});
         }
         else if(type === 'end') {
-            if(this.dragEndSubscriber) {
-                this.ngZone.run(() => this.dragEndSubscriber.next({gutterNum, sizes}));
-            }
+            this.dragEnd.emit({gutterNum, sizes});
         }
         else if(type === 'click') {
-            if(this.gutterClickSubscriber) {
-                this.ngZone.run(() => this.gutterClickSubscriber.next({gutterNum, sizes}));
-            }
+            this.gutterClick.emit({gutterNum, sizes});
+        }
+        else if(type === 'dblclick') {
+            this.gutterDblClick.emit({gutterNum, sizes});
         }
         else if(type === 'transitionEnd') {
             if(this.transitionEndSubscriber) {
