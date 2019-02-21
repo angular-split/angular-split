@@ -430,9 +430,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     _clickTimeout: number | null = null
 
-    public clickGutter(event: MouseEvent, gutterNum: number): void {
+    public clickGutter(event: MouseEvent | TouchEvent, gutterNum: number): void {
+        const tempPoint = getPointFromEvent(event);
+
         // Be sure mouseup/touchend happened at same point as mousedown/touchstart to trigger click/dblclick
-        if(this.startPoint && this.startPoint.x === event.clientX && this.startPoint.y === event.clientY) {
+        if(this.startPoint && this.startPoint.x === tempPoint.x && this.startPoint.y === tempPoint.y) {
 
             // If timeout in progress and new click > clearTimeout & dblClickEvent
             if(this._clickTimeout !== null) {
