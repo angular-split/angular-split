@@ -4,10 +4,10 @@ import { IArea, IPoint, IAreaSnapshot, ISplitSideAbsorptionCapacity, IAreaAbsorp
 
 export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
     // TouchEvent
-    if((<TouchEvent> event).touches !== undefined && (<TouchEvent> event).touches.length > 0) {
+    if((<TouchEvent> event).changedTouches !== undefined && (<TouchEvent> event).changedTouches.length > 0) {
         return {
-            x: (<TouchEvent> event).touches[0].clientX,
-            y: (<TouchEvent> event).touches[0].clientY,
+            x: (<TouchEvent> event).changedTouches[0].clientX,
+            y: (<TouchEvent> event).changedTouches[0].clientY,
         };
     }
     // MouseEvent
