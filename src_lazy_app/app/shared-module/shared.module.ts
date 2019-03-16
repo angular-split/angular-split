@@ -12,14 +12,4 @@ import { AngularSplitModule } from 'angular-split';
     AngularSplitModule
   ]
 })
-export class SharedModule {
-
-  public static forRoot(): ModuleWithProviders {
-      return {
-          ngModule: SharedModule,
-          providers: [
-            ...AngularSplitModule.forRoot().providers
-          ]
-      };
-  }
-}
+export class SharedModule {}

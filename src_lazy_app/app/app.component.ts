@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
     }
   `],
   template: `
-    <h1>AppComponent from AppModule using a split</h1>
+    <h1>AppComponent from AppModule</h1>
     <a href="#/home">HOME</a> $ 
     <a href="#/lazy">LAZY</a>
     <router-outlet></router-outlet>

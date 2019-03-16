@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
-import { SharedModule } from  './shared-module/shared.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home.component';
 
@@ -21,7 +20,6 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
-    SharedModule.forRoot(),
   ],
   providers: [{
     provide: LocationStrategy, 

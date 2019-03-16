@@ -11,22 +11,7 @@ import { Component } from '@angular/core';
     }
   `],
   template: `
-    <h1>HomeComponent from AppModule using a split</h1>
-    <button (as-split-undetected.click)="test()">(as-split-undetected.click)</button> $ 
-    <button (click)="test()">(click)</button>
-    <hr>
-    <div style="height: 200px; background: yellow;">
-      <as-split>
-        <as-split-area size="30">A</as-split-area>
-        <as-split-area size="40">B</as-split-area>
-        <as-split-area size="30">C</as-split-area>
-      </as-split>
-    </div>
-    <router-outlet></router-outlet>
-  `,
+    <h1>HomeComponent from AppModule</h1>
+    `,
 })
-export class HomeComponent {
-  test() {
-    console.log('TEST')
-  }
-}
+export class HomeComponent {}

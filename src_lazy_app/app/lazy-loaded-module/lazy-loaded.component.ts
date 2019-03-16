@@ -12,8 +12,7 @@ import { Component } from '@angular/core';
   `],
   template: `
     <h1>LazyLoadedComponent from LazyLoadedModule using a split</h1>
-    <button (as-split-undetected.click)="test()">(as-split-undetected.click)</button> $ 
-    <button (click)="test()">(click)</button>
+    <p><code>angular-split</code> module is only inside LazyLoadedModule so not loaded before needed.</p>
     <hr>
     <div style="height: 200px; background: red;">
       <as-split>
