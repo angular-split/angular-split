@@ -86,7 +86,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-split-app-lazy",
+            "outputPath": "dist/angular-split-app/lazy",
             "index": "src_lazy_app/index.html",
             "main": "src_lazy_app/main.ts",
             "polyfills": "src_lazy_app/polyfills.ts",
@@ -135,6 +135,74 @@
           "configurations": {
             "production": {
               "browserTarget": "angular-split-app-lazy:build:production"
+            }
+          }
+        }
+      }
+    },
+    "angular-split-app-lazy2": {
+      "root": "",
+      "sourceRoot": "src_lazy_app2",
+      "projectType": "application",
+      "prefix": "app-lazy2",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/angular-split-app/lazy2",
+            "index": "src_lazy_app2/index.html",
+            "main": "src_lazy_app2/main.ts",
+            "polyfills": "src_lazy_app2/polyfills.ts",
+            "tsConfig": "src_lazy_app2/tsconfig.app.json",
+            "assets": [
+              "src_lazy_app2/favicon.ico",
+              "src_lazy_app2/assets"
+            ],
+            "styles": [
+              "src_lazy_app2/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src_lazy_app2/environments/environment.ts",
+                  "with": "src_lazy_app2/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "angular-split-app-lazy2:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-split-app-lazy2:build:production"
             }
           }
         }
