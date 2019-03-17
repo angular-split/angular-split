@@ -369,13 +369,39 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                     else {
                         const wildcardSizeAreas = this.displayedAreas.filter(a => a.component.size === null);
     
-                        // No wildcard area > Need to select one arbitrarily
-                        if(wildcardSizeAreas.length === 0) {
-                            
+                        // No wildcard area > Need to select one arbitrarily > first
+                        if(wildcardSizeAreas.length === 0 && this.displayedAreas.length > 0) {
+
+                            this.displayedAreas.forEach((area, i) => {
+                                area.size = (i === 0) ? null : area.component.size;
+                                area.minSize = (i === 0) ? null : getAreaMinSize(area);
+                                area.maxSize = (i === 0) ? null : getAreaMaxSize(area);
+                            });
                         }
-                        // More than one wildcard area > Need to keep only one arbitrarily
+                        // More than one wildcard area > Need to keep only one arbitrarly > first
                         else if(wildcardSizeAreas.length > 1) {
-    
+
+                            let alreadyGotOne = false;
+                            this.displayedAreas.forEach(area => {
+                                if(area.component.size === null) {
+                                    if(alreadyGotOne === false) {
+                                        area.size = null;
+                                        area.minSize = null;
+                                        area.maxSize = null;
+                                        alreadyGotOne = true;
+                                    }
+                                    else {
+                                        area.size = 100;
+                                        area.minSize = null;
+                                        area.maxSize = null;
+                                    }
+                                }
+                                else {
+                                    area.size = area.component.size;
+                                    area.minSize = getAreaMinSize(area);
+                                    area.maxSize = getAreaMaxSize(area);
+                                }
+                            });
                         }
                     }
                     break;
@@ -388,41 +414,53 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     private refreshStyleSizes(): void {
-        if(this.displayedAreas.length === 1) {
-            this.displayedAreas[0].component.setStyleFlex(0, 0, `100%`, false, false);
+        ///////////////////////////////////////////
+        // PERCENT MODE
+        if(this.unit === 'percent') {
+            // Only one area > flex-basis 100%
+            if(this.displayedAreas.length === 1) {
+                this.displayedAreas[0].component.setStyleFlex(0, 0, `100%`, false, false);
+            }
+            // Multiple areas > use each percent basis
+            else {
+                const sumGutterSize = this.getNbGutters() * this.gutterSize;
+                
+                this.displayedAreas.forEach(area => {
+                    area.component.setStyleFlex(
+                        0, 0, `calc( ${ area.size }% - ${ <number> area.size / 100 * sumGutterSize }px )`,
+                        (area.minSize !== null && area.minSize === area.size) ? true : false,
+                        (area.maxSize !== null && area.maxSize === area.size) ? true : false,
+                    );
+                });
+            } 
         }
-        else if(this.unit === 'percent') {
-            const sumGutterSize = this.getNbGutters() * this.gutterSize;
-            
-            this.displayedAreas.forEach(area => {
-                area.component.setStyleFlex(
-                    0, 
-                    0,
-                    `calc( ${ area.size }% - ${ <number> area.size / 100 * sumGutterSize }px )`,
-                    area.minSize !== null && area.minSize === area.size ? true : false,
-                    area.maxSize !== null && area.maxSize === area.size ? true : false,
-                );
-            });
-        }
+        ///////////////////////////////////////////
+        // PIXEL MODE
         else if(this.unit === 'pixel') {
             this.displayedAreas.forEach(area => {
+                // Area with wildcard size
                 if(area.size === null) {
-                    area.component.setStyleFlex(
-                        1,
-                        1,
-                        `auto`,
-                        area.minSize !== null && area.minSize === area.size ? true : false,
-                        area.maxSize !== null && area.maxSize === area.size ? true : false,
-                    );
+                    if(this.displayedAreas.length === 1) {
+                        area.component.setStyleFlex(1, 1, `100%`, false, false);
+                    }
+                    else {
+                        area.component.setStyleFlex(1, 1, `auto`, false, false);
+                    }
                 }
+                // Area with pixel size
                 else {
-                    area.component.setStyleFlex(
-                        0,
-                        0,
-                        `${ area.size }px`,
-                        area.minSize !== null && area.minSize === area.size ? true : false,
-                        area.maxSize !== null && area.maxSize === area.size ? true : false,
-                    );
+                    // Only one area > flex-basis 100%
+                    if(this.displayedAreas.length === 1) {
+                        area.component.setStyleFlex(0, 0, `100%`, false, false);
+                    }
+                    // Multiple areas > use each pixel basis
+                    else {
+                        area.component.setStyleFlex(
+                            0, 0, `${ area.size }px`,
+                            (area.minSize !== null && area.minSize === area.size) ? true : false,
+                            (area.maxSize !== null && area.maxSize === area.size) ? true : false,
+                        );
+                    }
                 }
             });
         }
