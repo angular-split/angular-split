@@ -50,6 +50,26 @@ import { formatDate } from '../../service/utils';
             border: 1px solid #bfbfbf;
             background-color: #e8e8e8;
         }
+
+        .as-split-area {
+            background: lightgrey;
+        }
+        
+        .as-split-area.as-min {
+            background: green;
+        }
+        
+        .as-split-area.as-max {
+            background: red;
+        }
+        
+        :host .ex2 button {
+            width: 100%;
+        }
+        
+        :host .ex2 /deep/ .as-transition.as-init:not(.as-dragging) >.as-split-area, :host /deep/ .as-transition.as-init:not(.as-dragging) > .as-split-gutter {
+            transition: flex-basis 1s !important;
+        }
     `],
     template: `
         {{ testChangeDetectorRun() }}
@@ -105,6 +125,83 @@ import { formatDate } from '../../service/utils';
                     <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
                 </ul>
             </div>
+            <br>
+            <hr>
+            <br>
+            <div class="split-example ex2" style="height: 150px;">
+                <as-split useTransition="true" unit="pixel">
+                    <as-split-area size="200" minSize="200" order="1" [visible]="only === 1 || only === 0">
+                        <button (click)="left()" class="btn btn-warning">{{ only === 1 ? 'LEFT ⬅️' : 'LEFT ➡' }}</button>
+                        <p>size: 200px<br>minSize: 200px</p>
+                    </as-split-area>
+                    <as-split-area size="*" order="2" [visible]="only === 2 || only === 0">
+                        <button (click)="center()" class="btn btn-warning">{{ only === 2 ? '➡ ️CENTER ⬅' : '️⬅ ️CENTER ➡' }}</button>
+                        <p>size: *</p>
+                    </as-split-area>
+                    <as-split-area size="200" minSize="200" order="3" [visible]="only === 3 || only === 0">
+                        <button (click)="right()" class="btn btn-warning">{{ only === 3 ? '➡ RIGHT' : '⬅️ RIGHT' }}</button>
+                        <p>size: 200px<br>minSize: 200px</p>
+                    </as-split-area>
+                </as-split>
+            </div>
+            <div class="split-example ex2" style="height: 150px;">
+                <as-split useTransition="true" unit="percent">
+                    <as-split-area size="30" minSize="30" order="1" [visible]="only === 1 || only === 0">
+                        <button (click)="left()" class="btn btn-warning">{{ only === 1 ? 'LEFT ⬅️' : 'LEFT ➡' }}</button>
+                        <p>size: 30%<br>minSize: 30%</p>
+                    </as-split-area>
+                    <as-split-area size="40" order="2" [visible]="only === 2 || only === 0">
+                        <button (click)="center()" class="btn btn-warning">{{ only === 2 ? '➡ ️CENTER ⬅' : '️⬅ ️CENTER ➡' }}</button>
+                        <p>size: 40%</p>
+                    </as-split-area>
+                    <as-split-area size="30" minSize="30" order="3" [visible]="only === 3 || only === 0">
+                        <button (click)="right()" class="btn btn-warning">{{ only === 3 ? '➡ RIGHT' : '⬅️ RIGHT' }}</button>
+                        <p>size: 30%<br>minSize: 30%</p>
+                    </as-split-area>
+                </as-split>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div class="btns">
+                <div class="btn-group">
+                    <label class="btn btn-warning" 
+                        [class.active]="!keepA" 
+                        (click)="keepA = !keepA">{{ 'A: ' + keepA }}</label>
+                    <label class="btn btn-warning" 
+                        [class.active]="!keepB" 
+                        (click)="keepB = !keepB">{{ 'B: ' + keepB }}</label>
+                    <label class="btn btn-warning" 
+                        [class.active]="!keepC" 
+                        (click)="keepC = !keepC">{{ 'C: ' + keepC }}</label>
+                </div>
+            </div>
+            <div class="split-example ex2" style="height: 150px;">
+                <as-split useTransition="true" unit="pixel">
+                    <as-split-area size="200" minSize="200" order="1" [visible]="keepA">
+                        <p>A<br>size: 200px<br>minSize: 200px</p>
+                    </as-split-area>
+                    <as-split-area size="*" order="2" [visible]="keepB">
+                        <p>B<br>size: *</p>
+                    </as-split-area>
+                    <as-split-area size="200" minSize="200" order="3" [visible]="keepC">
+                        <p>C<br>size: 200px<br>minSize: 200px</p>
+                    </as-split-area>
+                </as-split>
+            </div>
+            <div class="split-example ex2" style="height: 150px;">
+                <as-split useTransition="true" unit="percent">
+                    <as-split-area size="30" minSize="30" order="1" [visible]="keepA">
+                        <p>A<br>size: 30%<br>minSize: 30%</p>
+                    </as-split-area>
+                    <as-split-area size="40" order="2" [visible]="keepB">
+                        <p>B<br>size: 40%</p>
+                    </as-split-area>
+                    <as-split-area size="30" minSize="30" order="3" [visible]="keepC">
+                        <p>C<br>size: 30%<br>minSize: 30%</p>
+                    </as-split-area>
+                </as-split>
+            </div>
         </div>`
 })
 export class TransitionsComponent extends AComponent {
@@ -129,4 +226,51 @@ export class TransitionsComponent extends AComponent {
             }
         })
     }
+
+    //
+
+    only: number = 0
+
+    left() {
+        switch(this.only) {
+        case 0: 
+        case 2: 
+        case 3: 
+            this.only = 1; 
+            return;
+        case 1:
+            this.only = 0; 
+            return;
+        }
+    }
+    center() {
+        switch(this.only) {
+        case 0: 
+        case 1: 
+        case 3: 
+            this.only = 2; 
+            return;
+        case 2:
+            this.only = 0; 
+            return;
+        }
+    }
+    right() {
+        switch(this.only) {
+        case 0: 
+        case 1: 
+        case 2: 
+            this.only = 3; 
+            return;
+        case 3:
+            this.only = 0; 
+            return;
+        }
+    }
+
+    //
+
+    keepA: boolean = true;
+    keepB: boolean = true;
+    keepC: boolean = true;
 }
