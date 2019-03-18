@@ -48,7 +48,7 @@ context('Geek demo example page tests', () => {
         cy.wait(1000);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', 600, 350, 22, [139, 278, 139]);
         
-        cy.get('.opts-prop').contains('Width: ').parent().contains('null').click();
+        cy.get('.opts-prop').contains('Width:').parent().contains('null').click();
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 350, 22, [256.5, 513, 256.5]);
     })
     
@@ -115,7 +115,6 @@ context('Geek demo example page tests', () => {
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, 22, [77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625]);
     })
     
-    
     it('Add areas, check order, move them and check order', () => {
         cy.get('.opts-area .btn').contains('Add area').click();
         cy.get('.opts-area .btn').contains('Add area').click();
@@ -170,6 +169,49 @@ context('Geek demo example page tests', () => {
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [169.15625, 169.15625, 169.15625, 169.15625, 169.15625, 169.15625]);
     })
 
+    it('Use gutterStep null / 10 / 50', () => {
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262, 524, 262]);
+
+        // Move gutter 5px > move 5px
+        moveGutter('.split-example .as-split-gutter', 0, 5, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [267, 519, 262]);
+
+        ///////////////////////////////////
+        // SET gutterStep to 10px
+        cy.get('.opts-prop').contains('Gutter step:').parent().contains('10').click();
+        
+        // Move gutter 5px > no move
+        moveGutter('.split-example .as-split-gutter', 0, 5, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [267, 519, 262]);
+        
+        // Move gutter 6px > move 10px
+        moveGutter('.split-example .as-split-gutter', 0, 6, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [277, 509, 262]);
+        
+        // Move gutter 15px > move 10px
+        moveGutter('.split-example .as-split-gutter', 0, 15, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [287, 499, 262]);
+        
+        // Move gutter 16px > move 20px
+        moveGutter('.split-example .as-split-gutter', 0, 16, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [307, 479, 262]);
+
+        ///////////////////////////////////
+        // SET gutterStep to 50px
+        cy.get('.opts-prop').contains('Gutter step:').parent().contains('50').click();
+        
+        // Move gutter 20px > nomove
+        moveGutter('.split-example .as-split-gutter', 0, 20, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [307, 479, 262]);
+        
+        // Move gutter 25px > nomove
+        moveGutter('.split-example .as-split-gutter', 0, 25, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [307, 479, 262]);
+        
+        // Move gutter 26px > move 50px
+        moveGutter('.split-example .as-split-gutter', 0, 26, 0);
+        checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [357, 429, 262]);
+    })
 })
 
 

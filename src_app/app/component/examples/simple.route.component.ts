@@ -23,7 +23,7 @@ import { AComponent } from './AComponent';
         <div class="container">
             <sp-example-title [type]="exampleEnum.SIMPLE"></sp-example-title>
             <h5>Percent mode:</h5>
-            <div class="split-example">
+            <div class="split-example ex-percent">
                 <as-split unit="percent" [direction]="direction" #split="asSplit">
                     <as-split-area size="30" #area1="asSplitArea">
                         <h5>Size: <b>30%</b></h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
@@ -34,7 +34,7 @@ import { AComponent } from './AComponent';
                 </as-split>
             </div>
             <h5>Pixel mode:</h5>
-            <div class="split-example">
+            <div class="split-example ex-pixel">
                 <as-split unit="pixel" [direction]="direction">
                     <as-split-area size="120">
                         <h5>Size: <b>120px</b></h5><p>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>

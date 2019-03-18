@@ -157,7 +157,7 @@ context('Min & max splits example page tests', () => {
     })
 
     it('Move gutters having restrictMove on [PERCENT MODE]', () => {
-
+ 
     })
 
     it('Move gutters having restrictMove on [PIXEL MODE]', () => {
