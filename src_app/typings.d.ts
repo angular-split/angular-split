@@ -5,4 +5,5 @@ interface IExampleData {
     component: any
     label: string
     srcUrl: string
+    srcUrl2?: string
 }

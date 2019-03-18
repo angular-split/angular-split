@@ -19,18 +19,21 @@ import { ExampleEnum } from '../data/enum';
     template:  `
         <h4>
             <div [innerHTML]="label"></div>
-            <a class="btn btn-secondary" [href]="url" target="_blank">View code</a>
+            <a *ngIf="_type !== exampleEnum.LAZY" class="btn btn-secondary" [href]="url" target="_blank">View code</a>
         </h4>
         <hr>`
 })
 export class ExampleTitleComponent {
+    exampleEnum = ExampleEnum
     label: SafeHtml
     url: SafeResourceUrl
-
+    
+    _type: ExampleEnum
     @Input() set type(v: ExampleEnum) {
         const ex = examples.find(e => e.type === v);
         if(!ex) return;
-
+        
+        this._type = v;
         this.label = this.sanitizer.bypassSecurityTrustHtml(ex.label);
         this.url = this.sanitizer.bypassSecurityTrustResourceUrl(ex.srcUrl);
     }

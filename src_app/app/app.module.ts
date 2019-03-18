@@ -31,6 +31,7 @@ import { ClassAccessComponent } from './component/examples/classAccess.route.com
 import { GeekDemoComponent } from './component/examples/geekDemo.route.component';
 import { DirRtlComponent } from './component/examples/dirRtl.route.component';
 import { WorkspaceLocalstorageComponent } from './component/examples/workspaceLocalstorage.route.component';
+import { LazyComponent } from './component/examples/lazy.route.component';
 
 import { ChangelogService } from './service/changelog.service';
 
@@ -66,6 +67,7 @@ const routes = [
         GeekDemoComponent,
         DirRtlComponent,
         WorkspaceLocalstorageComponent,
+        LazyComponent,
     ],
     imports: [
         BrowserModule,
