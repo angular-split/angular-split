@@ -29,7 +29,7 @@ import { AComponent } from './AComponent';
             <a class="btn btn-secondary btn-sm" [href]="url1" target="_blank">code</a>
             <hr>
             <h5>Demo 2</h5>
-            <p><code>angular-split</code> is loaded one time at startup inside AppModule and then use inside a lazy loaded module:</p>
+            <p><code>angular-split</code> is loaded one time at startup inside AppModule and then used inside a lazy loaded module:</p>
             <a class="btn btn-warning btn-sm" href="/angular-split/lazy2" target="_blank">demo</a>&nbsp;
             <a class="btn btn-secondary btn-sm" [href]="url2" target="_blank">code</a>
         </div>`

@@ -37,10 +37,10 @@ export class DocComponent {
             {name: 'unit',                      type: 'string',   default: '"percent"',     details: `Selected unit you want to use: <code>"percent"</code> or <code>"pixel"</code> to specify area sizes.`},
             {name: 'gutterSize',                type: 'number',   default: '11',            details: `Gutters's size (dragging elements) in pixels.`},
             {name: 'gutterStep',                type: 'number',   default: '1',             details: `Gutter step while moving in pixels.`},
-            {name: 'restrictMove',              type: 'boolean',  default: 'false',         details: 'Set to <code>true</code> if you want to limit gutter move to adjacent areas.'},
-            {name: 'disabled',                  type: 'boolean',  default: 'false',         details: 'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code> still emits.'},
+            {name: 'restrictMove',              type: 'boolean',  default: 'false',         details: 'Set to <code>true</code> if you want to limit gutter move to adjacent areas only.'},
+            {name: 'disabled',                  type: 'boolean',  default: 'false',         details: 'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code>/<code>(gutterDblClick)</code> still emits.'},
             {name: 'dir',                       type: 'string',   default: '"ltr"',         details: 'Indicates the directionality of the areas: <code>"ltr"</code> (left to right) or <code>"rtl"</code> (right to left).'},
-            {name: 'useTransition',             type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
+            {name: 'useTransition',             type: 'boolean',  default: 'false',         details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code> changes.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>'},
             {name: 'gutterDblClickDuration',    type: 'number',   default: '0',             details: `Milliseconds to detect a double click on a gutter. Set it around 300-500ms if you want to use <code>(gutterDblClick)</code> event.`},
         ],
         outputs: [
