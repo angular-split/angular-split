@@ -541,11 +541,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             return;
         }
 
+        this.dragListeners.push( this.renderer.listen('document', 'mouseup', this.stopDragging.bind(this)) );
+        this.dragListeners.push( this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)) );
+        this.dragListeners.push( this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)) );
+        
         this.ngZone.runOutsideAngular(() => {
-            this.dragListeners.push( this.renderer.listen('document', 'mouseup', this.stopDragging.bind(this)) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)) );
-            this.dragListeners.push( this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)) );
-            
             this.dragListeners.push( this.renderer.listen('document', 'mousemove', this.dragEvent.bind(this)) );
             this.dragListeners.push( this.renderer.listen('document', 'touchmove', this.dragEvent.bind(this)) );
         });

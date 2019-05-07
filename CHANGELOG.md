@@ -1,3 +1,8 @@
+<a name="3.0.1"></a>
+# 3.0.1 (2019-05-07)
+
+* **Bug:** Fix `(dragEnd)` event which was emitted outside zone [#172](https://github.com/bertrandg/angular-split/issues/171).
+
 <a name="3.0.0"></a>
 # 3.0.0 (2019-05-06)
 
