@@ -38,7 +38,7 @@ script:
   ## CYPRESS_RECORD_KEY environment
   ## variable by default and apply
   ## this to the run.
-  - npm run ci_cypress
+  - npm run cypress_ci
 
   ## alternatively we could specify
   ## a specific record key to use
