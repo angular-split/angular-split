@@ -33,7 +33,7 @@ export const examples: Array<IExampleData> = [
         path: 'examples/min-max-split', 
         component: MinMaxComponent,
         label: 'Split with minSize & maxSize', 
-        srcUrl: `${ srcUrlBaseApp }minMax.route.component`,
+        srcUrl: `${ srcUrlBaseApp }minMax.route.component.ts`,
     },
     {
         type: ExampleEnum.NESTED,
