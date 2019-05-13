@@ -48,6 +48,14 @@ import { AComponent } from './AComponent';
                 <button class="btn btn-warning" (click)="onClose3(60)">Collapse #3 to 60</button>
               </div>
             </div>
+          <div class="btns">
+            <div>
+              <button class="btn btn-warning" style="margin-right: 10px" (click)="onExpand1()">Expand #1</button>
+            </div>
+            <div>
+              <button class="btn btn-warning" style="margin-right: 10px" (click)="onExpand3()">Expand #3</button>
+            </div>
+          </div>
         </div>`
 })
 export class ClassCollapseComponent extends AComponent implements AfterViewInit {
@@ -64,5 +72,13 @@ export class ClassCollapseComponent extends AComponent implements AfterViewInit 
 
   onClose3(newSize: number = 0) {
     this.areasEl.last.collapse(newSize, 'left');
+  }
+
+  onExpand1() {
+    this.areasEl.first.expand();
+  }
+
+  onExpand3() {
+    this.areasEl.last.expand();
   }
 }
