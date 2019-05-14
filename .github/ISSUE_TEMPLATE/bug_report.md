@@ -9,6 +9,7 @@ assignees: ''
 
 **Describe the bug**
 A clear and concise description of what the bug is.
+Please specify library version.
 
 **To Reproduce**
 Create a Stackblitz demoing the bug/issue:
