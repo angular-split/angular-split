@@ -10,6 +10,7 @@ export enum ExampleEnum {
     TOGGLE = 'toggle',
     CLICK = 'click',
     CODE = 'code',
+    COLLAPSE = 'collapse',
     GEEK = 'geek',
     DIR = 'dir',
     WORKSPACE = 'workspace',
