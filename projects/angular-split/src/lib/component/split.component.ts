@@ -330,6 +330,37 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.build(true, true)
   }
 
+  public collapseArea(comp: SplitAreaDirective, newSize: number, gutter: 'left' | 'right'): void {
+    const area = this.displayedAreas.find((a) => a.component === comp)
+    if (area === undefined) {
+      return
+    }
+    const whichGutter = gutter === 'right' ? 1 : -1
+    if (!area.sizeBeforeCollapse) {
+      area.sizeBeforeCollapse = area.size
+      area.gutterBeforeCollapse = whichGutter
+    }
+    area.size = newSize
+    const gtr = this.gutterEls.find((f) => f.nativeElement.style.order === `${area.order + whichGutter}`)
+    this.renderer.addClass(gtr.nativeElement, 'as-split-gutter-collapsed')
+    this.updateArea(comp, false, false)
+  }
+
+  public expandArea(comp: SplitAreaDirective): void {
+    const area = this.displayedAreas.find((a) => a.component === comp)
+    if (area === undefined) {
+      return
+    }
+    if (!area.sizeBeforeCollapse) {
+      return
+    }
+    area.size = area.sizeBeforeCollapse
+    area.sizeBeforeCollapse = null
+    const gtr = this.gutterEls.find((f) => f.nativeElement.style.order === `${area.order + area.gutterBeforeCollapse}`)
+    this.renderer.removeClass(gtr.nativeElement, 'as-split-gutter-collapsed')
+    this.updateArea(comp, false, false)
+  }
+
   public getVisibleAreaSizes(): IOutputAreaSizes {
     return this.displayedAreas.map((a) => (a.size === null ? '*' : a.size))
   }

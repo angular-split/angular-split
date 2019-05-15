@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "ng serve",
     "lint": "ng lint",
-    "build&serve": "ng build angular-split && npm run start",
     "app_build": "npm run lib_build && ng build --prod --base-href /angular-split/ && npm run app_lazy_build && npm run app_lazy2_build",
     "app_lazy_build": "ng build angular-split-app-lazy --prod --base-href /angular-split/lazy --deploy-url /angular-split/lazy/",
     "app_lazy2_build": "ng build angular-split-app-lazy2 --prod --base-href /angular-split/lazy2 --deploy-url /angular-split/lazy2/",

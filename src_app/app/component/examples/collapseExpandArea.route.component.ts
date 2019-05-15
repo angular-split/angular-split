@@ -67,18 +67,18 @@ export class CollapseExpandComponent extends AComponent implements AfterViewInit
   }
 
   onClose1(newSize: number = 0) {
-    // this.areasEl.first.collapse(newSize);
+    this.areasEl.first.collapse(newSize);
   }
 
   onClose3(newSize: number = 0) {
-    // this.areasEl.last.collapse(newSize, 'left');
+    this.areasEl.last.collapse(newSize, 'left');
   }
 
   onExpand1() {
-    // this.areasEl.first.expand();
+    this.areasEl.first.expand();
   }
 
   onExpand3() {
-    // this.areasEl.last.expand();
+    this.areasEl.last.expand();
   }
 }

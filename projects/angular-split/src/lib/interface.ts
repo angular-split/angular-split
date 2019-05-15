@@ -11,6 +11,8 @@ export interface IArea {
   size: number | null
   minSize: number | null
   maxSize: number | null
+  sizeBeforeCollapse?: number | null
+  gutterBeforeCollapse?: number
 }
 
 // CREATED ON DRAG START
