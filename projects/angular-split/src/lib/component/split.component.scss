@@ -16,6 +16,11 @@
         align-items: center;
         justify-content: center;
 
+        &.as-split-gutter-collapsed {
+          flex-basis: 1px !important;
+          pointer-events: none;
+        }
+
         & > .as-split-gutter-icon {
             width: 100%;
             height: 100%;

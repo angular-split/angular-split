@@ -163,4 +163,12 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
         this.split.removeArea(this);
     }
+
+    public collapse(newSize: number = 0, gutter: 'left'|'right' = 'right'): void {
+      this.split.collapseArea(this, newSize, gutter);
+    }
+
+    public expand(): void {
+      this.split.expandArea(this);
+    }
 }
