@@ -32,6 +32,7 @@ import { GeekDemoComponent } from './component/examples/geekDemo.route.component
 import { DirRtlComponent } from './component/examples/dirRtl.route.component'
 import { WorkspaceLocalstorageComponent } from './component/examples/workspaceLocalstorage.route.component'
 import { LazyComponent } from './component/examples/lazy.route.component'
+import { CollapseExpandComponent } from './component/examples/collapseExpandArea.route.component'
 
 import { ChangelogService } from './service/changelog.service'
 
@@ -62,6 +63,7 @@ const routes = [
     TogglingDomAndVisibleComponent,
     GutterClickComponent,
     ClassAccessComponent,
+    CollapseExpandComponent,
     GeekDemoComponent,
     DirRtlComponent,
     WorkspaceLocalstorageComponent,

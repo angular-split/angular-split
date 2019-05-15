@@ -12,6 +12,8 @@ import { GeekDemoComponent } from '../component/examples/geekDemo.route.componen
 import { DirRtlComponent } from '../component/examples/dirRtl.route.component'
 import { WorkspaceLocalstorageComponent } from '../component/examples/workspaceLocalstorage.route.component'
 import { LazyComponent } from '../component/examples/lazy.route.component'
+import { CollapseExpandComponent } from '../component/examples/collapseExpandArea.route.component'
+
 import { ExampleEnum } from './enum'
 
 const srcUrlBase = 'https://github.com/angular-split/angular-split/blob/master/'
@@ -89,6 +91,13 @@ export const examples: Array<IExampleData> = [
     component: ClassAccessComponent,
     label: 'Access and interact <code>SplitComponent</code> from TS class',
     srcUrl: `${srcUrlBaseApp}classAccess.route.component.ts`,
+  },
+  {
+    type: ExampleEnum.COLLAPSE,
+    path: 'examples/collapse-expand',
+    component: CollapseExpandComponent,
+    label: 'Collapse/Expand a specific area',
+    srcUrl: `${srcUrlBaseApp}collapseExpandArea.route.component.ts`,
   },
   {
     type: ExampleEnum.GEEK,
