@@ -1,3 +1,8 @@
+<a name="3.0.2"></a>
+# 3.0.2 (2019-06-22)
+
+* **Angular version upgrade:** Add support for Angular 8 [#175](https://github.com/bertrandg/angular-split/issues/175).
+
 <a name="3.0.1"></a>
 # 3.0.1 (2019-05-07)
 
