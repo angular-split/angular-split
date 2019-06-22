@@ -110,8 +110,8 @@ export class GutterClickComponent extends AComponent implements AfterViewInit, O
     ]
     sub: Subscription
 
-    @ViewChild('mySplit') mySplitEl: SplitComponent
-    @ViewChild('logs') logsEl: ElementRef
+    @ViewChild('mySplit', {static: false}) mySplitEl: SplitComponent
+    @ViewChild('logs', {static: false}) logsEl: ElementRef
 
     ngAfterViewInit() {
         this.sub = this.mySplitEl.dragProgress$.subscribe(data => {

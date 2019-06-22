@@ -67,7 +67,8 @@ import { formatDate } from '../../service/utils';
             width: 100%;
         }
         
-        :host .ex2 /deep/ .as-transition.as-init:not(.as-dragging) >.as-split-area, :host /deep/ .as-transition.as-init:not(.as-dragging) > .as-split-gutter {
+        :host .ex2 ::ng-deep .as-transition.as-init:not(.as-dragging) >.as-split-area, 
+        :host ::ng-deep .as-transition.as-init:not(.as-dragging) > .as-split-gutter {
             transition: flex-basis 1s !important;
         }
     `],
@@ -216,7 +217,7 @@ export class TransitionsComponent extends AComponent {
     }
     logMessages: Array<{type: string, text: string}> = []
 
-    @ViewChild('logs') logsEl: ElementRef
+    @ViewChild('logs', {static: false}) logsEl: ElementRef
 
     log(e) {
         this.logMessages.push({type: 'transitionEnd', text: `${ formatDate(new Date()) } > transitionEnd event > ${ e }`});

@@ -46,9 +46,9 @@ import { formatDate } from '../../service/utils';
         </div>`
 })
 export class SyncComponent extends AComponent implements AfterViewInit, OnDestroy {
-    @ViewChild('mySplitA') mySplitAEl: SplitComponent
-    @ViewChild('mySplitB') mySplitBEl: SplitComponent
-    @ViewChild('mySplitC') mySplitCEl: SplitComponent
+    @ViewChild('mySplitA', {static: false}) mySplitAEl: SplitComponent
+    @ViewChild('mySplitB', {static: false}) mySplitBEl: SplitComponent
+    @ViewChild('mySplitC', {static: false}) mySplitCEl: SplitComponent
     
     sizes = [25, 75]
     sub: Subscription

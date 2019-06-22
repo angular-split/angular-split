@@ -63,7 +63,7 @@ import { AComponent } from './AComponent';
         </div>`
 })
 export class ClassAccessComponent extends AComponent implements AfterViewInit {
-    @ViewChild(SplitComponent) splitEl: SplitComponent
+    @ViewChild(SplitComponent, {static: false}) splitEl: SplitComponent
     @ViewChildren(SplitAreaDirective) areasEl: QueryList<SplitAreaDirective> 
     
     ngAfterViewInit() {
