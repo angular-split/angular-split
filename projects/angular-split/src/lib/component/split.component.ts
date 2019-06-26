@@ -1,4 +1,4 @@
-import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone, ViewChildren, QueryList, EventEmitter } from '@angular/core';
+import { Component, Input, Output, ChangeDetectionStrategy, ChangeDetectorRef, Renderer2, AfterViewInit, OnDestroy, ElementRef, NgZone, ViewChildren, QueryList, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Observable, Subscriber, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -56,6 +56,7 @@ import { getInputPositiveNumber, getInputBoolean, isUserSizesValid, getAreaMinSi
                 <div class="as-split-gutter-icon"></div>
             </div>
         </ng-template>`,
+    encapsulation: ViewEncapsulation.Emulated
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {
 
