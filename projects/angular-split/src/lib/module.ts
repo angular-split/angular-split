@@ -19,14 +19,14 @@ import { SplitAreaDirective } from './directive/splitArea.directive';
 })
 export class AngularSplitModule {
 
-    public static forRoot(): ModuleWithProviders {
+    public static forRoot(): ModuleWithProviders<AngularSplitModule> {
         return {
             ngModule: AngularSplitModule,
             providers: []
         };
     }
 
-    public static forChild(): ModuleWithProviders {
+    public static forChild(): ModuleWithProviders<AngularSplitModule> {
         return {
             ngModule: AngularSplitModule,
             providers: []
