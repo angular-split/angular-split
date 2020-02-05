@@ -205,6 +205,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     ////
 
     private isDragging: boolean = false;
+    private isWaitingClear: boolean = false;
     private dragListeners: Array<Function> = [];
     private snapshot: ISplitSnapshot | null = null;
     private startPoint: IPoint | null = null;
@@ -497,7 +498,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         event.stopPropagation();
 
         this.startPoint = getPointFromEvent(event);
-        if(this.startPoint === null || this.disabled === true) {
+        if(this.startPoint === null || this.disabled === true || this.isWaitingClear === true) {
             return;
         }
 
@@ -665,12 +666,14 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.renderer.removeClass(this.elRef.nativeElement, 'as-dragging');
         this.renderer.removeClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged');
         this.snapshot = null;
+        this.isWaitingClear = true;
 
         // Needed to let (click)="clickGutter(...)" event run and verify if mouse moved or not
         this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
                 this.startPoint = null;
                 this.endPoint = null;
+                this.isWaitingClear = false;
             })
         });
     }
