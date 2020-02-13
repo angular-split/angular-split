@@ -1,3 +1,8 @@
+<a name="3.0.3"></a>
+# 3.0.3 (2020-02-13)
+
+* **Angular version upgrade:** Update `package.json` peerDependancies versions to allow Angular 9 [#218](https://github.com/bertrandg/angular-split/issues/218).
+
 <a name="3.0.2"></a>
 # 3.0.2 (2019-06-22)
 
