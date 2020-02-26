@@ -70,7 +70,7 @@ context('Gutter click example page tests', () => {
         
         // Click gutter1 to close area1
         cy.get('.as-split-gutter').eq(0).click();
-        cy.wait(1500);
+        cy.wait(2000);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5]);
         cy.wait(10);
         
@@ -81,7 +81,7 @@ context('Gutter click example page tests', () => {
 
         // Click gutter2 to close area3
         cy.get('.as-split-gutter').eq(1).click();
-        cy.wait(1500);
+        cy.wait(2000);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0]);
         cy.wait(10);
         
@@ -101,7 +101,7 @@ context('Gutter click example page tests', () => {
 
         // Click gutter2 to close area3
         cy.get('.as-split-gutter').eq(1).click();
-        cy.wait(1500);
+        cy.wait(2000);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0]);
         cy.wait(10);
         
@@ -112,7 +112,7 @@ context('Gutter click example page tests', () => {
 
         // Click gutter1 to display area1
         cy.get('.as-split-gutter').eq(0).click();
-        cy.wait(1500);
+        cy.wait(2000);
         checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 787.5, 0]);
         cy.wait(10);
         
