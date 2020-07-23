@@ -1,3 +1,9 @@
+<a name="4.0.0-beta.1"></a>
+
+# 4.0.0-beta.1 (2020-07-23)
+
+- **Fix** fix: undefined errors in access-from-class demo [#247](https://github.com/bertrandg/angular-split/issues/247).
+
 <a name="4.0.0-beta.0"></a>
 
 # 4.0.0-beta.0 (2020-07-23)
