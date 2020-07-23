@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core'
+import { IOutputData, SplitComponent } from 'angular-split'
 
 import { AComponent } from './AComponent'
 
@@ -30,7 +31,13 @@ import { AComponent } from './AComponent'
     <div class="container">
       <sp-example-title [type]="exampleEnum.IFRAME"></sp-example-title>
       <div class="split-example" style="height: 400px;">
-        <as-split direction="horizontal" (dragStart)="showIframeHider = true" (dragEnd)="showIframeHider = false">
+        <as-split
+          #split
+          direction="horizontal"
+          (dragStart)="dragStartHandler($event)"
+          (dragEnd)="dragEndHandler($event)"
+          (gutterClick)="splitGutterClick($event)"
+        >
           <as-split-area size="40">
             <div>
               <iframe
@@ -59,4 +66,23 @@ import { AComponent } from './AComponent'
 })
 export class IframeComponent extends AComponent {
   showIframeHider = false
+  @ViewChild(SplitComponent, { static: false }) split: SplitComponent
+
+  dragStartHandler($event: IOutputData) {
+    console.log('dragStartHandler', { event: $event })
+    this.showIframeHider = true
+  }
+
+  dragEndHandler($event: IOutputData) {
+    console.log('dragEndHandler', { event: $event })
+    this.showIframeHider = false
+  }
+
+  splitGutterClick({ gutterNum }: IOutputData) {
+    // By default, clicking the gutter without changing position does not trigger the 'dragEnd' event
+    // This can be fixed by manually notifying the component
+    // See issue: https://github.com/bertrandg/angular-split/issues/186
+    // TODO: Create custom example for this, and document it
+    this.split.notify('end', gutterNum)
+  }
 }

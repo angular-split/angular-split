@@ -58,7 +58,7 @@ import { Component } from '@angular/core'
       <h5>Bug report:</h5>
       <p>
         If you find a bug, open an issue with a
-        <a href="https://stackblitz.com/edit/angular-rcqyv1" target="_blank">stackblitz</a> demo showing it.
+        <a href="https://stackblitz.com/fork/angular-split-demo" target="_blank">StackBlitz</a> demo showing it.
       </p>
     </div>
   </div>`,
@@ -67,7 +67,7 @@ export class HomeComponent {
   code1: string = `npm install angular-split`
 
   code2: string = `import { AngularSplitModule } from 'angular-split';
-  
+
 @NgModule({
   imports: [
     AngularSplitModule.forRoot(),
@@ -76,12 +76,4 @@ export class HomeComponent {
   ...
 })
 export class AppModule {}`
-
-  code3: string = `System.config({
-  map: {
-    'angular-split': 'node_modules/angular-split/bundles/angular-split.umd.js',
-    ...
-  },
-  ...
-});`
 }
