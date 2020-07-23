@@ -66,23 +66,23 @@ import { AComponent } from './AComponent'
       <div>
         <button
           class="btn btn-warning"
-          (click)="splitEl.direction = splitEl.direction === 'horizontal' ? 'vertical' : 'horizontal'"
+          (click)="splitEl.direction = splitEl?.direction === 'horizontal' ? 'vertical' : 'horizontal'"
         >
-          {{ 'Toggle direction: "' + splitEl.direction + '"' }}
+          {{ 'Toggle direction: "' + splitEl?.direction + '"' }}
         </button>
       </div>
       <div>
         <button
           class="btn btn-warning"
-          [class.active]="!splitEl.disabled"
-          (click)="splitEl.disabled = !splitEl.disabled"
+          [class.active]="!splitEl?.disabled"
+          (click)="splitEl.disabled = !splitEl?.disabled"
         >
-          {{ 'splitEl.disabled: ' + splitEl.disabled }}
+          {{ 'splitEl.disabled: ' + splitEl?.disabled }}
         </button>
       </div>
       <div>
-        <button class="btn btn-warning" (click)="splitEl.dir = splitEl.dir === 'rtl' ? 'ltr' : 'rtl'">
-          {{ 'splitEl.dir: "' + splitEl.dir + '"' }}
+        <button class="btn btn-warning" (click)="splitEl.dir = splitEl?.dir === 'rtl' ? 'ltr' : 'rtl'">
+          {{ 'splitEl.dir: "' + splitEl?.dir + '"' }}
         </button>
       </div>
       <div>
@@ -91,19 +91,19 @@ import { AComponent } from './AComponent'
           <label
             class="btn btn-warning btn-sm"
             (click)="splitEl.gutterSize = null"
-            [class.active]="splitEl.gutterSize === 11"
+            [class.active]="splitEl?.gutterSize === 11"
             >null</label
           >
           <label
             class="btn btn-warning btn-sm"
             (click)="splitEl.gutterSize = 7"
-            [class.active]="splitEl.gutterSize === 7"
+            [class.active]="splitEl?.gutterSize === 7"
             >7</label
           >
           <label
             class="btn btn-warning btn-sm"
             (click)="splitEl.gutterSize = 22"
-            [class.active]="splitEl.gutterSize === 22"
+            [class.active]="splitEl?.gutterSize === 22"
             >22</label
           >
         </div>
