@@ -61,6 +61,6 @@
     "tslib": "1.13.0",
     "tslint": "5.11.0",
     "typescript": "3.5.3",
-    "webpack-bundle-analyzer": "3.1.0"
+    "webpack-bundle-analyzer": "3.3.2"
   }
 }
