@@ -22,14 +22,8 @@
             "main": "src_app/main.ts",
             "polyfills": "src_app/polyfills.ts",
             "tsConfig": "src_app/tsconfig.app.json",
-            "assets": [
-              "src_app/favicon.ico",
-              "src_app/assets"
-            ],
-            "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src_app/styles.scss"
-            ],
+            "assets": ["src_app/favicon.ico", "src_app/assets"],
+            "styles": ["./node_modules/bootstrap/dist/css/bootstrap.min.css", "src_app/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -91,13 +85,8 @@
             "main": "src_lazy_app/main.ts",
             "polyfills": "src_lazy_app/polyfills.ts",
             "tsConfig": "src_lazy_app/tsconfig.app.json",
-            "assets": [
-              "src_lazy_app/favicon.ico",
-              "src_lazy_app/assets"
-            ],
-            "styles": [
-              "src_lazy_app/styles.scss"
-            ],
+            "assets": ["src_lazy_app/favicon.ico", "src_lazy_app/assets"],
+            "styles": ["src_lazy_app/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -159,13 +148,8 @@
             "main": "src_lazy_app2/main.ts",
             "polyfills": "src_lazy_app2/polyfills.ts",
             "tsConfig": "src_lazy_app2/tsconfig.app.json",
-            "assets": [
-              "src_lazy_app2/favicon.ico",
-              "src_lazy_app2/assets"
-            ],
-            "styles": [
-              "src_lazy_app2/styles.scss"
-            ],
+            "assets": ["src_lazy_app2/favicon.ico", "src_lazy_app2/assets"],
+            "styles": ["src_lazy_app2/styles.scss"],
             "scripts": []
           },
           "configurations": {
