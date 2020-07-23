@@ -1,19 +1,21 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
 @Component({
   selector: 'lazy-loaded-comp',
-  styles: [`
-    :host {
-      display: block;
-      margin: 10px;
-      padding: 10px;
-      border: 1px solid #000000;
-    }
-  `],
+  styles: [
+    `
+      :host {
+        display: block;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #000000;
+      }
+    `,
+  ],
   template: `
     <h1>LazyLoadedComponent from LazyLoadedModule using a split</h1>
     <p><code>angular-split</code> module is only inside LazyLoadedModule so not loaded before needed.</p>
-    <hr>
+    <hr />
     <div style="height: 200px; background: red;">
       <as-split>
         <as-split-area size="30">A</as-split-area>

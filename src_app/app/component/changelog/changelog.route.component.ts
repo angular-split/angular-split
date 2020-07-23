@@ -1,28 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core'
+import { Observable } from 'rxjs'
 
-import { ChangelogService } from '../../service/changelog.service';
+import { ChangelogService } from '../../service/changelog.service'
 
 @Component({
-    selector: 'sp-ex-changelog',
-    styles: [`
-        :host {
-            display: block;
-            width: 100%;
-            margin: 50px 0;
-        }
-    `],
-    template: `
-        <div class="container">
-            <div [innerHTML]="changelogHtml$ | async"></div>
-        </div>`
+  selector: 'sp-ex-changelog',
+  styles: [
+    `
+      :host {
+        display: block;
+        width: 100%;
+        margin: 50px 0;
+      }
+    `,
+  ],
+  template: ` <div class="container">
+    <div [innerHTML]="changelogHtml$ | async"></div>
+  </div>`,
 })
 export class ChangelogComponent implements OnInit {
-    changelogHtml$: Observable<string>
+  changelogHtml$: Observable<string>
 
-    constructor(private changelogService: ChangelogService) {}
+  constructor(private changelogService: ChangelogService) {}
 
-    ngOnInit() {
-        this.changelogHtml$ = this.changelogService.getHtml();
-    }
+  ngOnInit() {
+    this.changelogHtml$ = this.changelogService.getHtml()
+  }
 }
