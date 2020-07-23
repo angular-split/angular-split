@@ -1,3 +1,15 @@
+<a name="4.0.0-beta.0"></a>
+
+# 4.0.0-beta.0 (2020-07-23)
+
+- **Fix** More precise type for AngularSplitModule [#204](https://github.com/bertrandg/angular-split/issues/204).
+- **Fix** export IOutputData and IOutputAreaSizes interfaces [#226](https://github.com/bertrandg/angular-split/issues/226).
+- **Fix** Wait for drag-end post-processing before starting next drag [#217](https://github.com/bertrandg/angular-split/issues/217).
+- **Fix** Fix styles lost when hosting application set to ViewEncapsulation.None [#177](https://github.com/bertrandg/angular-split/issues/177).
+- **Chore** Fix travis tests [#221](https://github.com/bertrandg/angular-split/issues/221).
+- **Chore** Configure prettier, husky and lint-staged [#243](https://github.com/bertrandg/angular-split/issues/243).
+- **Chore** Update docs, sort properties alphabetically, document 'order' property [#245](https://github.com/bertrandg/angular-split/issues/245).
+
 <a name="3.0.3"></a>
 
 # 3.0.3 (2020-02-13)
