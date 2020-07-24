@@ -40,9 +40,9 @@ import { Component } from '@angular/core'
             src="https://img.shields.io/npm/v/angular-split/next.svg?style=flat-square"
             alt="npm next version"
             height="18" /></a
-        >&nbsp;<a href="https://travis-ci.com/bertrandg/angular-split"
+        >&nbsp;<a href="https://travis-ci.com/angular-split/angular-split"
           ><img
-            src="https://img.shields.io/travis/com/bertrandg/angular-split/master.svg?style=flat-square&label=Cypress+E2E+tests"
+            src="https://img.shields.io/travis/com/angular-split/angular-split/master.svg?style=flat-square&label=Cypress+E2E+tests"
             alt="Build Status"
             height="18"
         /></a>
