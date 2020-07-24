@@ -14,7 +14,7 @@ import { WorkspaceLocalstorageComponent } from '../component/examples/workspaceL
 import { LazyComponent } from '../component/examples/lazy.route.component'
 import { ExampleEnum } from './enum'
 
-const srcUrlBase = 'https://github.com/bertrandg/angular-split/blob/master/'
+const srcUrlBase = 'https://github.com/angular-split/angular-split/blob/master/'
 const srcUrlBaseApp = `${srcUrlBase}src_app/app/component/examples/`
 const srcUrlBaseAppLazy = `${srcUrlBase}src_lazy_app`
 const srcUrlBaseAppLazy2 = `${srcUrlBase}src_lazy_app2`

@@ -63,6 +63,10 @@
               "browserTarget": "angular-split-app:build:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     },

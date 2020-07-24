@@ -5,10 +5,10 @@
   "author": "bertrandg",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bertrandg/angular-split.git"
+    "url": "https://github.com/angular-split/angular-split.git"
   },
   "bugs": {
-    "url": "https://github.com/bertrandg/angular-split/issues"
+    "url": "https://github.com/angular-split/angular-split/issues"
   },
   "maintainers": [
     {
@@ -17,7 +17,7 @@
       "url": "https://github.com/beeman"
     }
   ],
-  "homepage": "https://bertrandg.github.io/angular-split/",
+  "homepage": "https://angular-split.github.io",
   "keywords": [
     "angular",
     "split",

@@ -8,37 +8,37 @@
 
 # 4.0.0-beta.1 (2020-07-23)
 
-- **Fix** fix: undefined errors in access-from-class demo [#247](https://github.com/bertrandg/angular-split/issues/247).
+- **Fix** fix: undefined errors in access-from-class demo [#247](https://github.com/angular-split/angular-split/issues/247).
 
 <a name="4.0.0-beta.0"></a>
 
 # 4.0.0-beta.0 (2020-07-23)
 
-- **Fix** More precise type for AngularSplitModule [#204](https://github.com/bertrandg/angular-split/issues/204).
-- **Fix** export IOutputData and IOutputAreaSizes interfaces [#226](https://github.com/bertrandg/angular-split/issues/226).
-- **Fix** Wait for drag-end post-processing before starting next drag [#217](https://github.com/bertrandg/angular-split/issues/217).
-- **Fix** Fix styles lost when hosting application set to ViewEncapsulation.None [#177](https://github.com/bertrandg/angular-split/issues/177).
-- **Chore** Fix travis tests [#221](https://github.com/bertrandg/angular-split/issues/221).
-- **Chore** Configure prettier, husky and lint-staged [#243](https://github.com/bertrandg/angular-split/issues/243).
-- **Chore** Update docs, sort properties alphabetically, document 'order' property [#245](https://github.com/bertrandg/angular-split/issues/245).
+- **Fix** More precise type for AngularSplitModule [#204](https://github.com/angular-split/angular-split/issues/204).
+- **Fix** export IOutputData and IOutputAreaSizes interfaces [#226](https://github.com/angular-split/angular-split/issues/226).
+- **Fix** Wait for drag-end post-processing before starting next drag [#217](https://github.com/angular-split/angular-split/issues/217).
+- **Fix** Fix styles lost when hosting application set to ViewEncapsulation.None [#177](https://github.com/angular-split/angular-split/issues/177).
+- **Chore** Fix travis tests [#221](https://github.com/angular-split/angular-split/issues/221).
+- **Chore** Configure prettier, husky and lint-staged [#243](https://github.com/angular-split/angular-split/issues/243).
+- **Chore** Update docs, sort properties alphabetically, document 'order' property [#245](https://github.com/angular-split/angular-split/issues/245).
 
 <a name="3.0.3"></a>
 
 # 3.0.3 (2020-02-13)
 
-- **Angular version upgrade:** Update `package.json` peerDependancies versions to allow Angular 9 [#218](https://github.com/bertrandg/angular-split/issues/218).
+- **Angular version upgrade:** Update `package.json` peerDependancies versions to allow Angular 9 [#218](https://github.com/angular-split/angular-split/issues/218).
 
 <a name="3.0.2"></a>
 
 # 3.0.2 (2019-06-22)
 
-- **Angular version upgrade:** Add support for Angular 8 [#175](https://github.com/bertrandg/angular-split/issues/175).
+- **Angular version upgrade:** Add support for Angular 8 [#175](https://github.com/angular-split/angular-split/issues/175).
 
 <a name="3.0.1"></a>
 
 # 3.0.1 (2019-05-07)
 
-- **Bug:** Fix `(dragEnd)` event which was emitted outside zone [#172](https://github.com/bertrandg/angular-split/issues/171).
+- **Bug:** Fix `(dragEnd)` event which was emitted outside zone [#172](https://github.com/angular-split/angular-split/issues/171).
 
 <a name="3.0.0"></a>
 
@@ -121,34 +121,34 @@
 
 # 1.0.4 (2018-11-15)
 
-- **Bug:** Fix Edge first rendering issue with nested split by applying css flex-direction property differently on `<as-split>` [#125](https://github.com/bertrandg/angular-split/issues/125).
+- **Bug:** Fix Edge first rendering issue with nested split by applying css flex-direction property differently on `<as-split>` [#125](https://github.com/angular-split/angular-split/issues/125).
 
 <a name="1.0.3"></a>
 
 # 1.0.3 (2018-11-14)
 
-- **Critiqual bug:** Remove reference to `TouchEvent` which cause error on Firefox & IE/Edge. Introduced in `1.0.1` but was there [before](https://github.com/bertrandg/angular-split/blob/c71b7cf10a66a698820e91962d06cf35b726edc2/projects/angular-split/src/lib/component/split.component.ts#L478) on mobile browser other than chromium based.
+- **Critiqual bug:** Remove reference to `TouchEvent` which cause error on Firefox & IE/Edge. Introduced in `1.0.1` but was there [before](https://github.com/angular-split/angular-split/blob/c71b7cf10a66a698820e91962d06cf35b726edc2/projects/angular-split/src/lib/component/split.component.ts#L478) on mobile browser other than chromium based.
 
 <a name="1.0.2"></a>
 
 # 1.0.2 (2018-11-13)
 
-- **Bug:** Modify the way to emit gutterClick event which was buggy [#109](https://github.com/bertrandg/angular-split/issues/109).
+- **Bug:** Modify the way to emit gutterClick event which was buggy [#109](https://github.com/angular-split/angular-split/issues/109).
 
 <a name="1.0.1"></a>
 
 # 1.0.1 (2018-11-13)
 
-- **Bug:** Some events were emitted outside of Zone.js leading to errors like [#118](https://github.com/bertrandg/angular-split/issues/118) & [#109](https://github.com/bertrandg/angular-split/issues/109).
+- **Bug:** Some events were emitted outside of Zone.js leading to errors like [#118](https://github.com/angular-split/angular-split/issues/118) & [#109](https://github.com/angular-split/angular-split/issues/109).
 
 <a name="1.0.0"></a>
 
 # 1.0.0 (2018-11-10)
 
-- **Project organization:** Now follow `@angular/cli` library management way which is awesome: [Library status update 📢](https://github.com/bertrandg/angular-split/issues/122).
+- **Project organization:** Now follow `@angular/cli` library management way which is awesome: [Library status update 📢](https://github.com/angular-split/angular-split/issues/122).
 - **Dependencies:** `angular@^7` and `rxjs@^6` with pipe method (`rxjs-compat` not needed anymore).
 - **Breaking changes:** Prefix `as-` added to component/directive to follow best practises: `<as-split>` & `<as-split-area>`.
-- **Regression:** Revert change about `devicePixelRatio` added in `1.0.0-rc.3` because it was causing bad behavior on mobile [#85](https://github.com/bertrandg/angular-split/issues/85), need to investigate more to resolve [#81](https://github.com/bertrandg/angular-split/issues/81).
+- **Regression:** Revert change about `devicePixelRatio` added in `1.0.0-rc.3` because it was causing bad behavior on mobile [#85](https://github.com/angular-split/angular-split/issues/85), need to investigate more to resolve [#81](https://github.com/angular-split/angular-split/issues/81).
 
 <a name="1.0.0-rc.3"></a>
 
@@ -172,7 +172,7 @@
 
 # 1.0.0-beta.9 (2017-11-19)
 
-- **Feature:** Add RTL support. Previously on 'right to the left' pages, dragging went opposite side, [issue here](https://github.com/bertrandg/angular-split/issues/48). Now just add `dir="ltr"` on `<split>` component and that's fix.
+- **Feature:** Add RTL support. Previously on 'right to the left' pages, dragging went opposite side, [issue here](https://github.com/angular-split/angular-split/issues/48). Now just add `dir="ltr"` on `<split>` component and that's fix.
 - **Bug:** Fix small bug when updating `[gutterSize]` with `useTransition="true"`, now gutter's size got transition too and it's visually better.
 
 <a name="1.0.0-beta.8"></a>
@@ -186,7 +186,7 @@
 
 # 1.0.0-beta.7 (2017-11-16)
 
-- **gutterSize:** Default value from `10` to `11` because of a small discrepancy in the shown dots position pointed [there](https://github.com/bertrandg/angular-split/issues/46).
+- **gutterSize:** Default value from `10` to `11` because of a small discrepancy in the shown dots position pointed [there](https://github.com/angular-split/angular-split/issues/46).
 - **Custom gutters style:** You can now use properties `[gutterColor]="'#ff0000'"`, `[gutterImageH]="'url(xxx)'"` and `[gutterImageV]="'url(xxx)'"`.
 
 <a name="1.0.0-beta.6"></a>
@@ -260,7 +260,7 @@
 
 # 0.2.3 (2017-11-02)
 
-- **Update package.json:** Moves dependencies to peerDependencies to be compatible with angular 5.x [pr59](https://github.com/bertrandg/angular-split/pull/59).
+- **Update package.json:** Moves dependencies to peerDependencies to be compatible with angular 5.x [pr59](https://github.com/angular-split/angular-split/pull/59).
 
 <a name="0.2.2"></a>
 
@@ -289,7 +289,7 @@
 
 ### Feature
 
-- **visibility toggle transition:** add transition (optionnal: `<split [visibleTransition]="true">`) when toggling visibility and `visibleTransitionEnd` event ` [pr11](https://github.com/bertrandg/angular-split/pull/11).
+- **visibility toggle transition:** add transition (optionnal: `<split [visibleTransition]="true">`) when toggling visibility and `visibleTransitionEnd` event ` [pr11](https://github.com/angular-split/angular-split/pull/11).
 
 <a name="0.1.19"></a>
 
@@ -297,7 +297,7 @@
 
 ### Bug fix
 
-- **gutter height on Safari:** fix a weird bug about anormal gutter height when direction is 'vertical' on Safari only [issue5](https://github.com/bertrandg/angular-split/issues/5). Note that `angular-split` isn't working on browser without flexbox support, so not working on ios older than 9.
+- **gutter height on Safari:** fix a weird bug about anormal gutter height when direction is 'vertical' on Safari only [issue5](https://github.com/angular-split/angular-split/issues/5). Note that `angular-split` isn't working on browser without flexbox support, so not working on ios older than 9.
 
 <a name="0.1.18"></a>
 
@@ -305,7 +305,7 @@
 
 ### Bug fix
 
-- **visibility toggle:** fix a bug I introduced in 0.1.17 while merging [pr10](https://github.com/bertrandg/angular-split/pull/10).
+- **visibility toggle:** fix a bug I introduced in 0.1.17 while merging [pr10](https://github.com/angular-split/angular-split/pull/10).
 
 <a name="0.1.17"></a>
 
@@ -313,4 +313,4 @@
 
 ### Feature
 
-- **visibility toggle:** add possibility to show/hide areas using `<split-area [visible]="boolean">` without removing them from the DOM, useful for specific case [like with router](https://github.com/jitsmaster/angular-split/commit/c7c92b9a1d1c00623660aeb7bc048509255e763b). Thanks to [jitsmaster](https://github.com/jitsmaster) ([pr8](https://github.com/bertrandg/angular-split/pull/8) / [pr10](https://github.com/bertrandg/angular-split/pull/10))
+- **visibility toggle:** add possibility to show/hide areas using `<split-area [visible]="boolean">` without removing them from the DOM, useful for specific case [like with router](https://github.com/jitsmaster/angular-split/commit/c7c92b9a1d1c00623660aeb7bc048509255e763b). Thanks to [jitsmaster](https://github.com/jitsmaster) ([pr8](https://github.com/angular-split/angular-split/pull/8) / [pr10](https://github.com/angular-split/angular-split/pull/10))

@@ -40,23 +40,13 @@ import { AComponent } from './AComponent'
         >
           <as-split-area size="40">
             <div>
-              <iframe
-                src="https://bertrandg.github.io/angular-split"
-                frameborder="0"
-                width="100%"
-                height="100%"
-              ></iframe>
+              <iframe src="https://angular-split.github.io" frameborder="0" width="100%" height="100%"></iframe>
               <div [hidden]="showIframeHider === false" class="hack-iframe-hider"></div>
             </div>
           </as-split-area>
           <as-split-area size="60">
             <div>
-              <iframe
-                src="https://bertrandg.github.io/angular-split"
-                frameborder="0"
-                width="100%"
-                height="100%"
-              ></iframe>
+              <iframe src="https://angular-split.github.io" frameborder="0" width="100%" height="100%"></iframe>
               <div [hidden]="showIframeHider === false" class="hack-iframe-hider"></div>
             </div>
           </as-split-area>
@@ -81,7 +71,7 @@ export class IframeComponent extends AComponent {
   splitGutterClick({ gutterNum }: IOutputData) {
     // By default, clicking the gutter without changing position does not trigger the 'dragEnd' event
     // This can be fixed by manually notifying the component
-    // See issue: https://github.com/bertrandg/angular-split/issues/186
+    // See issue: https://github.com/angular-split/angular-split/issues/186
     // TODO: Create custom example for this, and document it
     this.split.notify('end', gutterNum)
   }
