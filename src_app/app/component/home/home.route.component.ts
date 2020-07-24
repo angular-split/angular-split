@@ -29,8 +29,10 @@ import { Component } from '@angular/core'
   template: `
     <div class="container">
       <div class="jumbotron">
-        <h1>
-          angular-split
+        <div class="text-center">
+          <img src="/assets/logo.svg" height="100" class="m-auto" alt="" />
+          <h1 class="mt-3">angular-split</h1>
+          <h4>Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.</h4>
           <a href="https://www.npmjs.com/package/angular-split"
             ><img
               src="https://img.shields.io/npm/v/angular-split/latest.svg?style=flat-square"
@@ -47,14 +49,16 @@ import { Component } from '@angular/core'
               alt="Build Status"
               height="18"
           /></a>
-        </h1>
-        <h4>Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.</h4>
+        </div>
         <br />
         <h5>Install npm module:</h5>
         <pre [innerText]="code1"></pre>
         <br />
         <h5>Add angular module to your app:</h5>
         <pre [innerText]="code2"></pre>
+        <br />
+        <h5>Define splits in your template:</h5>
+        <pre [innerText]="code3"></pre>
         <br />
         <h5>Bug report:</h5>
         <p>
@@ -71,9 +75,9 @@ import { Component } from '@angular/core'
   `,
 })
 export class HomeComponent {
-  code1: string = `npm install angular-split`
+  code1 = `npm install angular-split`
 
-  code2: string = `import { AngularSplitModule } from 'angular-split';
+  code2 = `import { AngularSplitModule } from 'angular-split';
 
 @NgModule({
   imports: [
@@ -83,4 +87,15 @@ export class HomeComponent {
   ...
 })
 export class AppModule {}`
+
+  code3 = `<div style="width: 500px; height: 500px; background: yellow;">
+  <as-split direction="horizontal">
+    <as-split-area [size]="40">
+      <p>LEFT</p>
+    </as-split-area>
+    <as-split-area [size]="60">
+      <p>RIGHT</p>
+    </as-split-area>
+  </as-split>
+</div>`
 }

@@ -34,7 +34,7 @@ import { examples } from '../data/listExamples'
 
       .navbar-toggler {
         float: right;
-        margin-right: 120px;
+        margin-right: 20px;
       }
 
       @media (max-width: 992px) {
@@ -50,10 +50,14 @@ import { examples } from '../data/listExamples'
   host: {
     class: 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark',
   },
-  template: ` <a class="navbar-brand" href="#">angular-split</a>
+  template: `
     <button class="navbar-toggler hidden-lg-up" (click)="isCollapsed = !isCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <span class="mr-auto">
+      <img src="/assets/logo.svg" height="28" class="mr-2" alt="" />
+      <a class="navbar-brand" routerLink="/">angular-split</a>
+    </span>
     <div class="collapse navbar-collapse" [collapse]="isCollapsed">
       <ul class="nav navbar-nav">
         <li class="nav-item" [class.active]="router.isActive('/', true)">
@@ -74,7 +78,8 @@ import { examples } from '../data/listExamples'
           </ul>
         </li>
       </ul>
-    </div>`,
+    </div>
+  `,
 })
 export class TopbarComponent {
   examples: Array<IExampleData>
