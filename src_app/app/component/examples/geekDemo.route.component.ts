@@ -166,7 +166,7 @@ import { AComponent } from './AComponent'
     </div>`,
 })
 export class GeekDemoComponent extends AComponent {
-  @ViewChild(SortableComponent, { static: false }) sortableComponent: SortableComponent
+  @ViewChild(SortableComponent) sortableComponent: SortableComponent
 
   d = {
     dir: 'horizontal',
