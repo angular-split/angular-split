@@ -56,7 +56,7 @@ import { AComponent } from './AComponent'
 })
 export class IframeComponent extends AComponent {
   showIframeHider = false
-  @ViewChild(SplitComponent, { static: false }) split: SplitComponent
+  @ViewChild(SplitComponent) split: SplitComponent
 
   dragStartHandler($event: IOutputData) {
     console.log('dragStartHandler', { event: $event })

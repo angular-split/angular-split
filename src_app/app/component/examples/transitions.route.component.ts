@@ -249,7 +249,7 @@ export class TransitionsComponent extends AComponent {
   }
   logMessages: Array<{ type: string; text: string }> = []
 
-  @ViewChild('logs', { static: false }) logsEl: ElementRef
+  @ViewChild('logs') logsEl: ElementRef
 
   log(e) {
     this.logMessages.push({ type: 'transitionEnd', text: `${formatDate(new Date())} > transitionEnd event > ${e}` })
