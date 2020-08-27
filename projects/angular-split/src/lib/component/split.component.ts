@@ -404,7 +404,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             if (wildcardSizeAreas.length === 0 && this.displayedAreas.length > 0) {
               this.displayedAreas.forEach((area, i) => {
                 area.size = i === 0 ? null : area.component.size
-                area.minSize = i === 0 ? null : getAreaMinSize(area)
+                area.minSize = i === 0 ? area.component.minSize : getAreaMinSize(area)
                 area.maxSize = i === 0 ? null : getAreaMaxSize(area)
               })
             }
