@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, VERSION } from '@angular/core'
 
 @Component({
   selector: 'sp-home',
@@ -33,6 +33,7 @@ import { Component } from '@angular/core'
           <img src="/assets/logo.svg" height="100" class="m-auto" alt="" />
           <h1 class="mt-3">angular-split</h1>
           <h4>Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.</h4>
+          <h5 class="mt-3 text-muted">Running on Angular v{{ version }}.</h5>
           <a href="https://www.npmjs.com/package/angular-split"
             ><img
               src="https://img.shields.io/npm/v/angular-split/latest.svg?style=flat-square"
@@ -75,6 +76,7 @@ import { Component } from '@angular/core'
   `,
 })
 export class HomeComponent {
+  version = VERSION.full
   code1 = `npm install angular-split`
 
   code2 = `import { AngularSplitModule } from 'angular-split';
