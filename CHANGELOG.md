@@ -1,3 +1,9 @@
+<a name="5.0.0-beta.0"></a>
+
+# 5.0.0-beta.0 (2020-08-30)
+
+- **Chore** Update project to Angular 10 [#256](https://github.com/angular-split/angular-split/issues/256) thanks to [greggbjensen](https://github.com/greggbjensen)!
+
 <a name="4.0.0"></a>
 
 # 4.0.0 (2020-07-24)
