@@ -60,6 +60,19 @@ import { Component } from '@angular/core'
         <h5>Define splits in your template:</h5>
         <pre [innerText]="code3"></pre>
         <br />
+        <h5>Support:</h5>
+        If you have an issue using the library, feel free to join our chat! We are part of the
+        <a href="https://discord.gg/Qm9MPCg">Angular Community</a> Discord and you can ask questions in the
+        <strong>#angular-chat</strong> room there.
+
+        <div class="text-center">
+          <a href="https://discord.gg/Qm9MPCg">
+            <img
+              src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=%23angular-split&logo=discord&logoColor=white&style=flat-square"
+            />
+          </a>
+        </div>
+
         <h5>Bug report:</h5>
         <p>
           If you find a bug, open an issue with a
