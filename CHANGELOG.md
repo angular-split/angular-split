@@ -1,3 +1,9 @@
+<a name="5.0.0-beta.1"></a>
+
+# 5.0.0-beta.1 (2020-09-06)
+
+- **Fix** Make type of gutterSize getter/setter consistent
+
 <a name="5.0.0-beta.0"></a>
 
 # 5.0.0-beta.0 (2020-08-30)
