@@ -29,6 +29,7 @@ import {
   getElementPixelSize,
   getGutterSideAbsorptionCapacity,
   updateAreaSize,
+  getKeyboardEndpoint
 } from '../utils'
 
 /**
@@ -68,19 +69,20 @@ import {
   styleUrls: [`./split.component.scss`],
   template: ` <ng-content></ng-content>
     <ng-template ngFor [ngForOf]="displayedAreas" let-index="index" let-last="last">
-      <div
+      <button
         *ngIf="last === false"
         #gutterEls
         class="as-split-gutter"
         [style.flex-basis.px]="gutterSize"
         [style.order]="index * 2 + 1"
-        (mousedown)="startDragging($event, index * 2 + 1, index + 1)"
-        (touchstart)="startDragging($event, index * 2 + 1, index + 1)"
+        (keydown)= "startKeyboardDrag($event, index * 2 + 1, index + 1)"
+        (mousedown)="startMouseDrag($event, index * 2 + 1, index + 1)"
+        (touchstart)="startMouseDrag($event, index * 2 + 1, index + 1)"
         (mouseup)="clickGutter($event, index + 1)"
         (touchend)="clickGutter($event, index + 1)"
       >
         <div class="as-split-gutter-icon"></div>
-      </div>
+      </button>
     </ng-template>`,
   encapsulation: ViewEncapsulation.Emulated,
 })
@@ -521,7 +523,38 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public startDragging(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
+  public startKeyboardDrag(event: KeyboardEvent, gutterOrder: number, gutterNum: number) {
+    switch (event.key) {
+      case 'ArrowLeft':
+      case 'ArrowRight':
+      case 'ArrowUp':
+      case 'ArrowDown':
+          break
+      default:
+          return
+    }
+
+    if (this.disabled === true || this.isWaitingClear === true) {
+      return
+    }
+
+    const endPoint = getKeyboardEndpoint(event, this.direction)
+    if (endPoint === null) {
+      return
+    }
+    this.endPoint = endPoint
+    this.startPoint = getPointFromEvent(event)
+
+    event.preventDefault()
+    event.stopPropagation()
+
+    this.setupForDragEvent(gutterOrder, gutterNum)
+    this.startDragging()
+    this.drag()
+    this.stopDragging()
+  }
+
+  public startMouseDrag(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
     event.preventDefault()
     event.stopPropagation()
 
@@ -530,6 +563,21 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return
     }
 
+    this.setupForDragEvent(gutterOrder, gutterNum)
+
+    this.dragListeners.push(this.renderer.listen('document', 'mouseup', this.stopDragging.bind(this)))
+    this.dragListeners.push(this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)))
+    this.dragListeners.push(this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)))
+
+    this.ngZone.runOutsideAngular(() => {
+      this.dragListeners.push(this.renderer.listen('document', 'mousemove', this.mouseDragEvent.bind(this)))
+      this.dragListeners.push(this.renderer.listen('document', 'touchmove', this.mouseDragEvent.bind(this)))
+    })
+
+    this.startDragging()
+  }
+
+  private setupForDragEvent(gutterOrder: number, gutterNum: number) {
     this.snapshot = {
       gutterNum,
       lastSteppedOffset: 0,
@@ -569,16 +617,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     if (this.snapshot.areasBeforeGutter.length === 0 || this.snapshot.areasAfterGutter.length === 0) {
       return
     }
+  }
 
-    this.dragListeners.push(this.renderer.listen('document', 'mouseup', this.stopDragging.bind(this)))
-    this.dragListeners.push(this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)))
-    this.dragListeners.push(this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)))
-
-    this.ngZone.runOutsideAngular(() => {
-      this.dragListeners.push(this.renderer.listen('document', 'mousemove', this.dragEvent.bind(this)))
-      this.dragListeners.push(this.renderer.listen('document', 'touchmove', this.dragEvent.bind(this)))
-    })
-
+  private startDragging() {
     this.displayedAreas.forEach((area) => area.component.lockEvents())
 
     this.isDragging = true
@@ -588,7 +629,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.notify('start', this.snapshot.gutterNum)
   }
 
-  private dragEvent(event: MouseEvent | TouchEvent): void {
+  private mouseDragEvent(event: MouseEvent | TouchEvent): void {
     event.preventDefault()
     event.stopPropagation()
 
@@ -602,10 +643,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     this.endPoint = getPointFromEvent(event)
-    if (this.endPoint === null) {
-      return
-    }
+    this.drag()
+  }
 
+  private drag() {
     // Calculate steppedOffset
 
     let offset =

@@ -2,7 +2,7 @@ import { ElementRef } from '@angular/core'
 
 import { IArea, IPoint, IAreaSnapshot, ISplitSideAbsorptionCapacity, IAreaAbsorptionCapacity } from './interface'
 
-export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
+export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent): IPoint {
   // TouchEvent
   if ((<TouchEvent>event).changedTouches !== undefined && (<TouchEvent>event).changedTouches.length > 0) {
     return {
@@ -17,7 +17,52 @@ export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
       y: (<MouseEvent>event).clientY,
     }
   }
+  // KeyboardEvent
+  else if ((<KeyboardEvent>event).currentTarget !== undefined) {
+    const gutterEl = event.currentTarget as HTMLElement;
+    return {
+      x: gutterEl.offsetLeft,
+      y: gutterEl.offsetTop
+    }
+  }
   return null
+}
+
+export function getKeyboardEndpoint(event: KeyboardEvent, direction: 'horizontal' | 'vertical'): IPoint | null {
+  // Return null if direction keys on the opposite axis were pressed
+  if (direction === 'horizontal') {
+    switch (event.key) {
+      case 'ArrowLeft':
+      case 'ArrowRight':
+          break
+      default:
+          return null
+    }
+  }
+  if (direction === 'vertical') {
+    switch (event.key) {
+      case 'ArrowUp':
+      case 'ArrowDown':
+          break
+      default:
+          return null
+    }
+  }
+
+  const gutterEl = event.currentTarget as HTMLElement
+  let offsetX = gutterEl.offsetLeft, offsetY = gutterEl.offsetTop
+  switch (event.key) {
+      case 'ArrowLeft': offsetX -= 50; break
+      case 'ArrowRight': offsetX += 50; break
+      case 'ArrowUp': offsetY -= 50; break
+      case 'ArrowDown': offsetY += 50; break
+      default: return null
+  }
+
+  return {
+    x: offsetX,
+    y: offsetY
+  }
 }
 
 export function getElementPixelSize(elRef: ElementRef, direction: 'horizontal' | 'vertical'): number {
