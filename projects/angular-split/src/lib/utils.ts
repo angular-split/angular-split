@@ -19,7 +19,7 @@ export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent
   }
   // KeyboardEvent
   else if ((<KeyboardEvent>event).currentTarget !== undefined) {
-    const gutterEl = event.currentTarget as HTMLElement;
+    const gutterEl = event.currentTarget as HTMLElement
     return {
       x: gutterEl.offsetLeft,
       y: gutterEl.offsetTop
@@ -50,12 +50,13 @@ export function getKeyboardEndpoint(event: KeyboardEvent, direction: 'horizontal
   }
 
   const gutterEl = event.currentTarget as HTMLElement
+  const offset = 50;
   let offsetX = gutterEl.offsetLeft, offsetY = gutterEl.offsetTop
   switch (event.key) {
-      case 'ArrowLeft': offsetX -= 50; break
-      case 'ArrowRight': offsetX += 50; break
-      case 'ArrowUp': offsetY -= 50; break
-      case 'ArrowDown': offsetY += 50; break
+      case 'ArrowLeft': offsetX -= offset; break
+      case 'ArrowRight': offsetX += offset; break
+      case 'ArrowUp': offsetY -= offset; break
+      case 'ArrowDown': offsetY += offset; break
       default: return null
   }
 

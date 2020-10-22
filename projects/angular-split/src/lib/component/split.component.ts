@@ -524,16 +524,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   }
 
   public startKeyboardDrag(event: KeyboardEvent, gutterOrder: number, gutterNum: number) {
-    switch (event.key) {
-      case 'ArrowLeft':
-      case 'ArrowRight':
-      case 'ArrowUp':
-      case 'ArrowDown':
-          break
-      default:
-          return
-    }
-
     if (this.disabled === true || this.isWaitingClear === true) {
       return
     }
