@@ -36,6 +36,7 @@ import { LazyComponent } from './component/examples/lazy.route.component'
 import { ChangelogService } from './service/changelog.service'
 
 import { examples } from './data/listExamples'
+import { CollapseExpandComponent } from './component/examples/collapseExpandArea.route.component'
 
 const routes = [
   { path: '', component: HomeComponent },
@@ -66,6 +67,7 @@ const routes = [
     DirRtlComponent,
     WorkspaceLocalstorageComponent,
     LazyComponent,
+    CollapseExpandComponent
   ],
   imports: [
     BrowserModule,
