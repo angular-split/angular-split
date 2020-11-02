@@ -39,10 +39,10 @@ import { AComponent } from './AComponent';
             </div>
 
           <br>
-          <list>
+          <ul>
             <li><b>collapse(newSize:number = 0)</b> will force the area the be the width given and its gutter disabled.</li>
             <li><b>expand()</b> will restore the area to its size before it was collapsed.</li>
-          </list>
+          </ul>
           <br><br>
 
             <div class="btns">
