@@ -21,7 +21,7 @@ context('Custom split style example page tests', () => {
     cy.get('.ex-a as-split > .as-split-gutter > .as-split-gutter-icon').should('have.css', 'background-image', IMGH)
   })
 
-  it('Change direction', () => {
+  xit('Change direction', () => {
     cy.get('.btns > .btn').click()
     checkSplitDirAndSizes('.ex-a as-split', 'vertical', W, H, GUTTER, [79.5, 185.5])
 

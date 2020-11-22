@@ -122,7 +122,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
   ////
 
-  private _gutterSize: number = 11
+  private _gutterSize: number | null = 11
 
   @Input() set gutterSize(v: number | null) {
     this._gutterSize = getInputPositiveNumber(v, 11)
@@ -130,7 +130,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.build(false, false)
   }
 
-  get gutterSize(): number {
+  get gutterSize(): number | null {
     return this._gutterSize
   }
 
