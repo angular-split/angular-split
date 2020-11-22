@@ -6,8 +6,8 @@ import * as marked from 'marked'
 
 @Injectable()
 export class ChangelogService {
-  private readonly url = 'https://raw.githubusercontent.com/angular-split/angular-split/master/CHANGELOG.md'
-  // else 'https://rawgit.com/angular-split/angular-split/master/CHANGELOG.md';
+  private readonly url = 'https://raw.githubusercontent.com/angular-split/angular-split/main/CHANGELOG.md'
+  // else 'https://rawgit.com/angular-split/angular-split/main/CHANGELOG.md';
   private cachedHtml: string = ''
 
   constructor(private http: HttpClient) {

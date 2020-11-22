@@ -9,7 +9,7 @@
     "app_lazy_build": "ng build angular-split-app-lazy --prod --base-href /angular-split/lazy --deploy-url /angular-split/lazy/",
     "app_lazy2_build": "ng build angular-split-app-lazy2 --prod --base-href /angular-split/lazy2 --deploy-url /angular-split/lazy2/",
     "app_analyze": "npm run lib_build && ng build --prod --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
-    "deploy": "ng deploy angular-split-app --branch master --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git",
+    "deploy": "ng deploy angular-split-app --branch main --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git",
     "lib_build": "ng build angular-split && npm run lib_copy_license && npm run lib_copy_readme",
     "lib_copy_license": "cpx ./LICENSE ./dist/angular-split",
     "lib_copy_readme": "cpx ./README.md ./dist/angular-split",
