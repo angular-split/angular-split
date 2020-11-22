@@ -41,7 +41,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "lodash": "4.17.19",
-    "marked": "0.6.1",
+    "marked": "0.7.0",
     "ngx-bootstrap": "3.2.0",
     "prettier": "^2.0.5",
     "rxjs": "6.6.0",
