@@ -13,4 +13,5 @@ export enum ExampleEnum {
   DIR = 'dir',
   WORKSPACE = 'workspace',
   LAZY = 'lazy',
+  COLLAPSE = 'collapse'
 }

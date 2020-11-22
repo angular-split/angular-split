@@ -10,14 +10,12 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { SortableModule } from 'ngx-bootstrap/sortable'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { AngularSplitModule } from 'angular-split'
-
 import { AppComponent } from './component/app.component'
 import { TopbarComponent } from './component/topbar.component'
 import { ExampleTitleComponent } from './component/exampleTitle.component'
 import { HomeComponent } from './component/home/home.route.component'
 import { ChangelogComponent } from './component/changelog/changelog.route.component'
 import { DocComponent } from './component/doc/doc.route.component'
-
 import { SimpleComponent } from './component/examples/simple.route.component'
 import { MinMaxComponent } from './component/examples/minMax.route.component'
 import { NestedComponent } from './component/examples/nested.route.component'
@@ -32,10 +30,9 @@ import { GeekDemoComponent } from './component/examples/geekDemo.route.component
 import { DirRtlComponent } from './component/examples/dirRtl.route.component'
 import { WorkspaceLocalstorageComponent } from './component/examples/workspaceLocalstorage.route.component'
 import { LazyComponent } from './component/examples/lazy.route.component'
-
 import { ChangelogService } from './service/changelog.service'
-
 import { examples } from './data/listExamples'
+import { CollapseExpandComponent } from './component/examples/collapseExpandArea.route.component'
 
 const routes = [
   { path: '', component: HomeComponent },
@@ -66,6 +63,7 @@ const routes = [
     DirRtlComponent,
     WorkspaceLocalstorageComponent,
     LazyComponent,
+    CollapseExpandComponent
   ],
   imports: [
     BrowserModule,
