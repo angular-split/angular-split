@@ -82,7 +82,7 @@ export const examples: Array<IExampleData> = [
     path: 'examples/collapse-expand',
     component: CollapseExpandComponent,
     label: 'Collapse/Expand a specific area',
-    srcUrl: `${ srcUrlBaseApp }collapseExpandArea.route.component.ts`,
+    srcUrl: `${srcUrlBaseApp}collapseExpandArea.route.component.ts`,
   },
   {
     type: ExampleEnum.CLICK,

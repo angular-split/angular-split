@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 
-import { ChangelogService } from '../../service/changelog.service'
+import { ChangelogService } from './changelog.service'
 
 @Component({
   selector: 'sp-ex-changelog',
@@ -14,9 +14,11 @@ import { ChangelogService } from '../../service/changelog.service'
       }
     `,
   ],
-  template: ` <div class="container">
-    <div [innerHTML]="changelogHtml$ | async"></div>
-  </div>`,
+  template: `
+    <div class="container">
+      <div [innerHTML]="changelogHtml$ | async"></div>
+    </div>
+  `,
 })
 export class ChangelogComponent implements OnInit {
   changelogHtml$: Observable<string>

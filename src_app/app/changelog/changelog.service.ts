@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Observable, merge, of } from 'rxjs'
-import { map, catchError } from 'rxjs/operators'
+import { Injectable } from '@angular/core'
 import * as marked from 'marked'
+import { merge, Observable, of } from 'rxjs'
+import { catchError, map } from 'rxjs/operators'
 
 @Injectable()
 export class ChangelogService {
   private readonly url = 'https://raw.githubusercontent.com/angular-split/angular-split/main/CHANGELOG.md'
-  // else 'https://rawgit.com/angular-split/angular-split/main/CHANGELOG.md';
-  private cachedHtml: string = ''
+  private cachedHtml = ''
 
   constructor(private http: HttpClient) {
     marked.setOptions({})
