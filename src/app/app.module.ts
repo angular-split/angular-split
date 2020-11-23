@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule, Routes } from '@angular/router'
 import { AppComponent } from './app.component'
 import { UiModule } from './ui/ui.module'
@@ -21,7 +22,14 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, UiModule, RouterModule.forRoot(routes), HttpClientModule, FormsModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    UiModule,
+    RouterModule.forRoot(routes),
+    HttpClientModule,
+    FormsModule,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
