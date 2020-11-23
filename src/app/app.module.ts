@@ -19,7 +19,6 @@ import { DirRtlComponent } from './component/examples/dirRtl.route.component'
 import { GeekDemoComponent } from './component/examples/geekDemo.route.component'
 import { GutterClickComponent } from './component/examples/gutterClick.route.component'
 import { IframeComponent } from './component/examples/iframe.route.component'
-import { LazyComponent } from './component/examples/lazy.route.component'
 import { MinMaxComponent } from './component/examples/minMax.route.component'
 import { NestedComponent } from './component/examples/nested.route.component'
 import { SimpleComponent } from './component/examples/simple.route.component'
@@ -59,7 +58,6 @@ const routes: Routes = [
     GeekDemoComponent,
     DirRtlComponent,
     WorkspaceLocalstorageComponent,
-    LazyComponent,
     CollapseExpandComponent,
   ],
   imports: [

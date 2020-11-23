@@ -1,24 +1,21 @@
-import { SimpleComponent } from '../component/examples/simple.route.component'
+import { ClassAccessComponent } from '../component/examples/classAccess.route.component'
+import { CollapseExpandComponent } from '../component/examples/collapseExpandArea.route.component'
+import { CustomGutterStyleComponent } from '../component/examples/customGutterStyle.route.component'
+import { DirRtlComponent } from '../component/examples/dirRtl.route.component'
+import { GeekDemoComponent } from '../component/examples/geekDemo.route.component'
+import { GutterClickComponent } from '../component/examples/gutterClick.route.component'
+import { IframeComponent } from '../component/examples/iframe.route.component'
 import { MinMaxComponent } from '../component/examples/minMax.route.component'
 import { NestedComponent } from '../component/examples/nested.route.component'
-import { IframeComponent } from '../component/examples/iframe.route.component'
-import { TransitionsComponent } from '../component/examples/transitions.route.component'
+import { SimpleComponent } from '../component/examples/simple.route.component'
 import { SyncComponent } from '../component/examples/sync.route.component'
-import { CustomGutterStyleComponent } from '../component/examples/customGutterStyle.route.component'
 import { TogglingDomAndVisibleComponent } from '../component/examples/togglingDomAndVisible.route.component'
-import { GutterClickComponent } from '../component/examples/gutterClick.route.component'
-import { ClassAccessComponent } from '../component/examples/classAccess.route.component'
-import { GeekDemoComponent } from '../component/examples/geekDemo.route.component'
-import { DirRtlComponent } from '../component/examples/dirRtl.route.component'
+import { TransitionsComponent } from '../component/examples/transitions.route.component'
 import { WorkspaceLocalstorageComponent } from '../component/examples/workspaceLocalstorage.route.component'
-import { LazyComponent } from '../component/examples/lazy.route.component'
 import { ExampleEnum } from './enum'
-import { CollapseExpandComponent } from '../component/examples/collapseExpandArea.route.component'
 
 const srcUrlBase = 'https://github.com/angular-split/angular-split/blob/main/'
-const srcUrlBaseApp = `${srcUrlBase}src_app/app/component/examples/`
-const srcUrlBaseAppLazy = `${srcUrlBase}src_lazy_app`
-const srcUrlBaseAppLazy2 = `${srcUrlBase}src_lazy_app2`
+const srcUrlBaseApp = `${srcUrlBase}src/app/component/examples/`
 
 export const examples: Array<IExampleData> = [
   {
@@ -118,13 +115,5 @@ export const examples: Array<IExampleData> = [
     component: WorkspaceLocalstorageComponent,
     label: 'Fullscreen workspace saved in localStorage',
     srcUrl: `${srcUrlBaseApp}workspaceLocalstorage.route.component.ts`,
-  },
-  {
-    type: ExampleEnum.LAZY,
-    path: 'examples/lazy-loaded-module',
-    component: LazyComponent,
-    label: 'Lazy loaded module examples',
-    srcUrl: srcUrlBaseAppLazy,
-    srcUrl2: srcUrlBaseAppLazy2,
   },
 ]
