@@ -2,5 +2,5 @@
   "baseUrl": "http://localhost:4242",
   "viewportWidth": 1200,
   "viewportHeight": 800,
-  "blacklistHosts": ["camo.githubusercontent.com"]
+  "blockHosts": ["camo.githubusercontent.com"]
 }
