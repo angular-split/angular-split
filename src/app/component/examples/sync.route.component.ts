@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators'
 import { SplitComponent } from 'angular-split'
 
 import { AComponent } from './AComponent'
-import { formatDate } from '../../service/utils'
+import { formatDate } from '../../utils/format-date'
 
 @Component({
   selector: 'sp-ex-sync',

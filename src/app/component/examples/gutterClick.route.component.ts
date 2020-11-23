@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs'
 import { SplitComponent } from 'angular-split'
 
 import { AComponent } from './AComponent'
-import { formatDate } from '../../service/utils'
+import { formatDate } from '../../utils/format-date'
 
 @Component({
   selector: 'sp-ex-gutter-click',
@@ -111,9 +111,9 @@ import { formatDate } from '../../service/utils'
     </div>`,
 })
 export class GutterClickComponent extends AComponent implements AfterViewInit, OnDestroy {
-  isDisabled: boolean = true
-  useTransition: boolean = true
-  dblClickTime: number = 0
+  isDisabled = true
+  useTransition = true
+  dblClickTime = 0
   logMessages: Array<{ type: string; text: string }> = []
   areas = [
     { size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg' },

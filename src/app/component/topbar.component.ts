@@ -83,7 +83,7 @@ import { examples } from '../data/listExamples'
 })
 export class TopbarComponent {
   examples: Array<IExampleData>
-  isCollapsed: boolean = true
+  isCollapsed = true
 
   constructor(private sanitizer: DomSanitizer, public router: Router) {
     this.examples = examples

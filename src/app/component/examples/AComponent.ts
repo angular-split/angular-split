@@ -1,5 +1,5 @@
 import { ExampleEnum } from '../../data/enum'
-import { formatDate } from '../../service/utils'
+import { formatDate } from '../../utils/format-date'
 
 export class AComponent {
   exampleEnum = ExampleEnum

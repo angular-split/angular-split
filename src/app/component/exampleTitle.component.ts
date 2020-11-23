@@ -19,7 +19,7 @@ import { ExampleEnum } from '../data/enum'
   ],
   template: ` <h4>
       <div [innerHTML]="label"></div>
-      <a *ngIf="_type !== exampleEnum.LAZY" class="btn btn-secondary" [href]="url" target="_blank">View code</a>
+      <a class="btn btn-secondary" [href]="url" target="_blank">View code</a>
     </h4>
     <hr />`,
 })
@@ -31,7 +31,9 @@ export class ExampleTitleComponent {
   _type: ExampleEnum
   @Input() set type(v: ExampleEnum) {
     const ex = examples.find((e) => e.type === v)
-    if (!ex) return
+    if (!ex) {
+      return
+    }
 
     this._type = v
     this.label = this.sanitizer.bypassSecurityTrustHtml(ex.label)

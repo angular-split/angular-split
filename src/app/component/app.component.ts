@@ -18,10 +18,12 @@ import { filter } from 'rxjs/operators'
       }
     `,
   ],
-  template: ` <sp-topbar></sp-topbar>
+  template: `
+    <sp-topbar></sp-topbar>
     <div>
       <router-outlet></router-outlet>
-    </div>`,
+    </div>
+  `,
 })
 export class AppComponent {
   constructor(public router: Router) {

@@ -83,11 +83,11 @@ export class CollapseExpandComponent extends AComponent implements AfterViewInit
     // console.log('Area Components: ', this.areasEl);
   }
 
-  onClose1(newSize: number = 0) {
+  onClose1(newSize = 0) {
     this.areasEl.first.collapse(newSize)
   }
 
-  onClose3(newSize: number = 0) {
+  onClose3(newSize = 0) {
     this.areasEl.last.collapse(newSize, 'left')
   }
 
