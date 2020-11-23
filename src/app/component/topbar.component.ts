@@ -60,19 +60,19 @@ import { examples } from '../data/listExamples'
     </span>
     <div class="collapse navbar-collapse" [collapse]="isCollapsed">
       <ul class="nav navbar-nav">
-        <li class="nav-item" [class.active]="router.isActive('/', true)">
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/">Home</a>
         </li>
-        <li class="nav-item" [class.active]="router.isActive('/changelog', true)">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/changelog">Changelog</a>
         </li>
-        <li class="nav-item" [class.active]="router.isActive('/documentation', true)">
+        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" routerLink="/documentation">Documentation</a>
         </li>
-        <li class="nav-item dropdown" dropdown>
+        <li class="nav-item dropdown" dropdown routerLinkActive="active">
           <a class="nav-link dropdown-toggle" dropdownToggle>Examples <span class="caret"></span></a>
           <ul *dropdownMenu class="dropdown-menu" role="menu">
-            <li *ngFor="let ex of examples" [class.active]="router.isActive(ex.path, true)">
+            <li *ngFor="let ex of examples" routerLinkActive="active">
               <a class="dropdown-item" [routerLink]="ex.path" [innerHTML]="transform(ex.label)"></a>
             </li>
           </ul>
@@ -85,7 +85,7 @@ export class TopbarComponent {
   examples: Array<IExampleData>
   isCollapsed = true
 
-  constructor(private sanitizer: DomSanitizer, public router: Router) {
+  constructor(private readonly sanitizer: DomSanitizer, private readonly router: Router) {
     this.examples = examples
 
     this.router.events.pipe(filter((e) => e instanceof NavigationStart)).subscribe((event) => {

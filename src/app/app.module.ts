@@ -1,4 +1,3 @@
-import { HashLocationStrategy, LocationStrategy } from '@angular/common'
 import { HttpClientModule } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
@@ -10,7 +9,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { SortableModule } from 'ngx-bootstrap/sortable'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
-import { AppComponent } from './component/app.component'
+import { AppComponent } from './app.component'
 import { ClassAccessComponent } from './component/examples/classAccess.route.component'
 import { CollapseExpandComponent } from './component/examples/collapseExpandArea.route.component'
 import { CustomGutterStyleComponent } from './component/examples/customGutterStyle.route.component'
@@ -26,12 +25,11 @@ import { TogglingDomAndVisibleComponent } from './component/examples/togglingDom
 import { TransitionsComponent } from './component/examples/transitions.route.component'
 import { WorkspaceLocalstorageComponent } from './component/examples/workspaceLocalstorage.route.component'
 import { ExampleTitleComponent } from './component/exampleTitle.component'
-import { HomeComponent } from './component/home/home.route.component'
 import { TopbarComponent } from './component/topbar.component'
 import { examples } from './data/listExamples'
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', loadChildren: () => import('./home/home.module').then((m) => m.HomeModule) },
   { path: 'changelog', loadChildren: () => import('./changelog/changelog.module').then((m) => m.ChangelogModule) },
   {
     path: 'documentation',
@@ -44,7 +42,6 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     TopbarComponent,
-    HomeComponent,
     ExampleTitleComponent,
     SimpleComponent,
     MinMaxComponent,
@@ -72,12 +69,6 @@ const routes: Routes = [
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
     AngularSplitModule.forRoot(),
-  ],
-  providers: [
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
-    },
   ],
   bootstrap: [AppComponent],
 })

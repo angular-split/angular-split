@@ -43,8 +43,14 @@ import { Component, VERSION } from '@angular/core'
             ><img
               src="https://img.shields.io/npm/v/angular-split/next.svg?style=flat-square"
               alt="npm next version"
+              height="18" /></a
+          >&nbsp;<a href="https://discord.gg/Qm9MPCg">
+            <img
+              src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=%23angular-split&logo=discord&logoColor=white&style=flat-square"
+              alt="angular-split on Angular Discord"
               height="18"
-          /></a>
+            />
+          </a>
         </div>
         <br />
         <h5>Install npm module:</h5>
