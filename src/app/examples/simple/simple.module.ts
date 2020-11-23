@@ -5,11 +5,7 @@ import { AngularSplitModule } from 'angular-split'
 import { SimpleComponent } from './simple.component'
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild([{ path: '', component: SimpleComponent }]),
-    AngularSplitModule.forChild(),
-  ],
+  imports: [CommonModule, RouterModule.forChild([{ path: '', component: SimpleComponent }]), AngularSplitModule],
   declarations: [SimpleComponent],
 })
 export class SimpleModule {}

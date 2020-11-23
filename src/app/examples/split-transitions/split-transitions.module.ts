@@ -10,7 +10,7 @@ import { SplitTransitionsComponent } from './split-transitions.component'
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: SplitTransitionsComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [SplitTransitionsComponent],
 })

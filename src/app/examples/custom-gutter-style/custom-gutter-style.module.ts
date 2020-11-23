@@ -10,7 +10,7 @@ import { CustomGutterStyleComponent } from './custom-gutter-style.component'
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: CustomGutterStyleComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [CustomGutterStyleComponent],
 })

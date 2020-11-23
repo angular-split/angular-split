@@ -10,7 +10,7 @@ import { GutterClickRollUnrollComponent } from './gutter-click-roll-unroll.compo
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: GutterClickRollUnrollComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [GutterClickRollUnrollComponent],
 })

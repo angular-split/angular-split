@@ -10,7 +10,7 @@ import { WorkspaceLocalstorageComponent } from './workspace-localstorage.compone
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: WorkspaceLocalstorageComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [WorkspaceLocalstorageComponent],
 })

@@ -9,7 +9,7 @@ import { AccessFromClassComponent } from './access-from-class.component'
   imports: [
     CommonModule,
     RouterModule.forChild([{ path: '', component: AccessFromClassComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
     UiModule,
   ],
   declarations: [AccessFromClassComponent],

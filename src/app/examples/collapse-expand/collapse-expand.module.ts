@@ -10,7 +10,7 @@ import { CollapseExpandComponent } from './collapse-expand.component'
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: CollapseExpandComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [CollapseExpandComponent],
 })

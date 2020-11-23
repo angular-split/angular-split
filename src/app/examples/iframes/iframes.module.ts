@@ -10,7 +10,7 @@ import { IframesComponent } from './iframes.component'
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: IframesComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [IframesComponent],
 })
