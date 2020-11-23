@@ -8,7 +8,7 @@ context('Simple split example page tests', () => {
   const GUTTER = 11
 
   beforeEach(() => {
-    cy.visit('/#/examples/simple-split')
+    cy.visit('/examples/simple-split')
   })
 
   it('Display initial state', () => {

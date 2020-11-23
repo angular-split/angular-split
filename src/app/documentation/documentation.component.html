@@ -1,0 +1,144 @@
+<div class="container">
+  <h4>
+    <b>SplitComponent</b>&nbsp;<span class="sel"
+      >(selector: '<span class="selContent">as-split</span>' / exportAs: '<span class="selContent">asSplit</span
+      >')</span
+    >
+  </h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>@Input()</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prop of splitDoc.inputs">
+        <td>{{ prop.name }}</td>
+        <td>{{ prop.type }}</td>
+        <td>
+          <code>{{ prop.default }}</code>
+        </td>
+        <td [innerHTML]="prop.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>@Output()</th>
+        <th>Value</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let event of splitDoc.outputs">
+        <td>{{ event.name }}</td>
+        <td>
+          <code>{{ event.value }}</code>
+        </td>
+        <td [innerHTML]="event.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Access from TS class</th>
+        <th>Type</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of splitDoc.class">
+        <td>{{ item.name }}</td>
+        <td>
+          <code>{{ item.type }}</code>
+        </td>
+        <td [innerHTML]="item.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <br /><br />
+
+  <h4>
+    <b>SplitAreaDirective</b>&nbsp;<span class="sel"
+      >(selector: '<span class="selContent">as-split-area, [as-split-area]</span>' / exportAs: '<span class="selContent"
+        >asSplitArea</span
+      >')</span
+    >
+  </h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>@Input()</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prop of splitAreaDoc.inputs">
+        <td>{{ prop.name }}</td>
+        <td>{{ prop.type }}</td>
+        <td>
+          <code>{{ prop.default }}</code>
+        </td>
+        <td [innerHTML]="prop.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <br /><br />
+
+  <h4><b>CSS classes</b></h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 40%">Split element classes</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of cssClasses.split">
+        <td>
+          <code>{{ x.name }}</code>
+        </td>
+        <td [innerHTML]="x.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 40%">Area element classes</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of cssClasses.area">
+        <td>
+          <code>{{ x.name }}</code>
+        </td>
+        <td [innerHTML]="x.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 40%">Gutter element classes</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of cssClasses.gutter">
+        <td>
+          <code>{{ x.name }}</code>
+        </td>
+        <td [innerHTML]="x.details"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

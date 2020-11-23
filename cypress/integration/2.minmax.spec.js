@@ -8,7 +8,7 @@ context('Min & max splits example page tests', () => {
   const GUTTER = 30
 
   beforeEach(() => {
-    cy.visit('/#/examples/min-max-split')
+    cy.visit('/examples/min-max-split')
   })
 
   it('Display initial state', () => {
