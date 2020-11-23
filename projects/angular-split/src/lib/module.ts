@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core'
 import { CommonModule } from '@angular/common'
 
 import { SplitComponent } from './component/split.component'
-import { SplitAreaDirective } from './directive/splitArea.directive'
+import { SplitAreaDirective } from './directive/split-area.directive'
 
 @NgModule({
   imports: [CommonModule],
