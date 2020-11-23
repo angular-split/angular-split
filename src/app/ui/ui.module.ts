@@ -19,7 +19,7 @@ import { TopbarComponent } from './components/topbar.component'
     BsDropdownModule.forRoot(),
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
-    AngularSplitModule.forRoot(),
+    AngularSplitModule,
   ],
   declarations: [ExampleTitleComponent, TopbarComponent],
   exports: [ExampleTitleComponent, TopbarComponent, ButtonsModule, SortableModule, TooltipModule],

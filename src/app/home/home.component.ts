@@ -97,7 +97,7 @@ export class HomeComponent {
 
 @NgModule({
   imports: [
-    AngularSplitModule.forRoot(),
+    AngularSplitModule,
     ...
   ],
   ...

@@ -8,7 +8,7 @@ import { NestedComponent } from './nested-split.component'
 @NgModule({
   imports: [
     CommonModule,
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
     RouterModule.forChild([{ path: '', component: NestedComponent }]),
     UiModule,
   ],

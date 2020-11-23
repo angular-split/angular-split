@@ -10,7 +10,7 @@ import { SyncSplitComponent } from './sync-split.component'
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: SyncSplitComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [SyncSplitComponent],
 })

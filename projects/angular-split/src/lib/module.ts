@@ -11,6 +11,7 @@ import { SplitAreaDirective } from './directive/split-area.directive'
 })
 export class AngularSplitModule {
   public static forRoot(): ModuleWithProviders<AngularSplitModule> {
+    console.warn(`AngularSplitModule.forRoot() is deprecated and will be removed in v6`)
     return {
       ngModule: AngularSplitModule,
       providers: [],
@@ -18,6 +19,7 @@ export class AngularSplitModule {
   }
 
   public static forChild(): ModuleWithProviders<AngularSplitModule> {
+    console.warn(`AngularSplitModule.forChild() is deprecated and will be removed in v6`)
     return {
       ngModule: AngularSplitModule,
       providers: [],

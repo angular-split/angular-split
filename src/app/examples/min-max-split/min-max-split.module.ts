@@ -8,7 +8,7 @@ import { MinMaxSplitComponent } from './min-max-split.component'
 @NgModule({
   imports: [
     CommonModule,
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
     RouterModule.forChild([{ path: '', component: MinMaxSplitComponent }]),
     UiModule,
   ],

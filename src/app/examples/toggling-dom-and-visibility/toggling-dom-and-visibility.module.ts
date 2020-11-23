@@ -10,7 +10,7 @@ import { TogglingDomAndVisibleComponent } from './toggling-dom-and-visibility.co
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: TogglingDomAndVisibleComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
   ],
   declarations: [TogglingDomAndVisibleComponent],
 })

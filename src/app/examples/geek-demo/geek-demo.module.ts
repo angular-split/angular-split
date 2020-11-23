@@ -11,7 +11,7 @@ import { GeekDemoComponent } from './geek-demo.component'
     CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: GeekDemoComponent }]),
-    AngularSplitModule.forChild(),
+    AngularSplitModule,
     FormsModule,
   ],
   declarations: [GeekDemoComponent],
