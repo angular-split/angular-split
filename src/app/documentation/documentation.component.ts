@@ -29,9 +29,9 @@ import { Component } from '@angular/core'
       }
     `,
   ],
-  templateUrl: './doc.route.component.html',
+  templateUrl: './documentation.component.html',
 })
-export class DocComponent {
+export class DocumentationComponent {
   readonly splitDoc = {
     inputs: [
       {

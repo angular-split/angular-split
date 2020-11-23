@@ -11,7 +11,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { SortableModule } from 'ngx-bootstrap/sortable'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { AppComponent } from './component/app.component'
-import { DocComponent } from './component/doc/doc.route.component'
 import { ClassAccessComponent } from './component/examples/classAccess.route.component'
 import { CollapseExpandComponent } from './component/examples/collapseExpandArea.route.component'
 import { CustomGutterStyleComponent } from './component/examples/customGutterStyle.route.component'
@@ -34,7 +33,10 @@ import { examples } from './data/listExamples'
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'changelog', loadChildren: () => import('./changelog/changelog.module').then((m) => m.ChangelogModule) },
-  { path: 'documentation', component: DocComponent },
+  {
+    path: 'documentation',
+    loadChildren: () => import('./documentation/documentation.module').then((m) => m.DocumentationModule),
+  },
   ...examples,
 ]
 
@@ -43,7 +45,6 @@ const routes: Routes = [
     AppComponent,
     TopbarComponent,
     HomeComponent,
-    DocComponent,
     ExampleTitleComponent,
     SimpleComponent,
     MinMaxComponent,
