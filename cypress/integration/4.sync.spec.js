@@ -8,7 +8,7 @@ context('Sync splits example page tests', () => {
   const GUTTER = 11
 
   beforeEach(() => {
-    cy.visit('/#/examples/sync-split')
+    cy.visit('/examples/sync-split')
   })
 
   it('Display initial state', () => {

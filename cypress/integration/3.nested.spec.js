@@ -8,7 +8,7 @@ context('Nested splits example page tests', () => {
   const GUTTER = 11
 
   beforeEach(() => {
-    cy.visit('/#/examples/nested-split')
+    cy.visit('/examples/nested-split')
   })
 
   it('Display initial state', () => {

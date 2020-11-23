@@ -8,7 +8,7 @@ context('Geek demo example page tests', () => {
   const GUTTER = 11
 
   beforeEach(() => {
-    cy.visit('/#/examples/geek-demo')
+    cy.visit('/examples/geek-demo')
   })
 
   it('Display initial state', () => {

@@ -8,7 +8,7 @@ context('Gutter click example page tests', () => {
   const GUTTER = 10
 
   beforeEach(() => {
-    cy.visit('/#/examples/gutter-click-roll-unroll')
+    cy.visit('/examples/gutter-click-roll-unroll')
   })
 
   it('Display initial state', () => {
