@@ -18,7 +18,7 @@ import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
 import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, IOutputData, IOutputAreaSizes } from '../interface'
-import { SplitAreaDirective } from '../directive/splitArea.directive'
+import { SplitAreaDirective } from '../directive/split-area.directive'
 import {
   getInputPositiveNumber,
   getInputBoolean,
@@ -85,8 +85,6 @@ import {
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {
-  private _direction: 'horizontal' | 'vertical' = 'horizontal'
-
   @Input() set direction(v: 'horizontal' | 'vertical') {
     this._direction = v === 'vertical' ? 'vertical' : 'horizontal'
 
@@ -103,10 +101,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._direction
   }
 
-  ////
-
-  private _unit: 'percent' | 'pixel' = 'percent'
-
   @Input() set unit(v: 'percent' | 'pixel') {
     this._unit = v === 'pixel' ? 'pixel' : 'percent'
 
@@ -120,10 +114,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._unit
   }
 
-  ////
-
-  private _gutterSize: number | null = 11
-
   @Input() set gutterSize(v: number | null) {
     this._gutterSize = getInputPositiveNumber(v, 11)
 
@@ -134,10 +124,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._gutterSize
   }
 
-  ////
-
-  private _gutterStep: number = 1
-
   @Input() set gutterStep(v: number) {
     this._gutterStep = getInputPositiveNumber(v, 1)
   }
@@ -145,10 +131,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   get gutterStep(): number {
     return this._gutterStep
   }
-
-  ////
-
-  private _restrictMove: boolean = false
 
   @Input() set restrictMove(v: boolean) {
     this._restrictMove = getInputBoolean(v)
@@ -158,39 +140,33 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._restrictMove
   }
 
-  ////
-
-  private _useTransition: boolean = false
-
   @Input() set useTransition(v: boolean) {
     this._useTransition = getInputBoolean(v)
 
-    if (this._useTransition) this.renderer.addClass(this.elRef.nativeElement, 'as-transition')
-    else this.renderer.removeClass(this.elRef.nativeElement, 'as-transition')
+    if (this._useTransition) {
+      this.renderer.addClass(this.elRef.nativeElement, 'as-transition')
+    } else {
+      this.renderer.removeClass(this.elRef.nativeElement, 'as-transition')
+    }
   }
 
   get useTransition(): boolean {
     return this._useTransition
   }
 
-  ////
-
-  private _disabled: boolean = false
-
   @Input() set disabled(v: boolean) {
     this._disabled = getInputBoolean(v)
 
-    if (this._disabled) this.renderer.addClass(this.elRef.nativeElement, 'as-disabled')
-    else this.renderer.removeClass(this.elRef.nativeElement, 'as-disabled')
+    if (this._disabled) {
+      this.renderer.addClass(this.elRef.nativeElement, 'as-disabled')
+    } else {
+      this.renderer.removeClass(this.elRef.nativeElement, 'as-disabled')
+    }
   }
 
   get disabled(): boolean {
     return this._disabled
   }
-
-  ////
-
-  private _dir: 'ltr' | 'rtl' = 'ltr'
 
   @Input() set dir(v: 'ltr' | 'rtl') {
     this._dir = v === 'rtl' ? 'rtl' : 'ltr'
@@ -202,10 +178,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._dir
   }
 
-  ////
-
-  private _gutterDblClickDuration: number = 0
-
   @Input() set gutterDblClickDuration(v: number) {
     this._gutterDblClickDuration = getInputPositiveNumber(v, 0)
   }
@@ -213,37 +185,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   get gutterDblClickDuration(): number {
     return this._gutterDblClickDuration
   }
-
-  ////
-
-  @Output() dragStart = new EventEmitter<IOutputData>(false)
-  @Output() dragEnd = new EventEmitter<IOutputData>(false)
-  @Output() gutterClick = new EventEmitter<IOutputData>(false)
-  @Output() gutterDblClick = new EventEmitter<IOutputData>(false)
-
-  private transitionEndSubscriber: Subscriber<IOutputAreaSizes>
   @Output() get transitionEnd(): Observable<IOutputAreaSizes> {
     return new Observable((subscriber) => (this.transitionEndSubscriber = subscriber)).pipe(
       debounceTime<IOutputAreaSizes>(20),
     )
   }
-
-  private dragProgressSubject: Subject<IOutputData> = new Subject()
-  dragProgress$: Observable<IOutputData> = this.dragProgressSubject.asObservable()
-
-  ////
-
-  private isDragging: boolean = false
-  private isWaitingClear: boolean = false
-  private dragListeners: Array<Function> = []
-  private snapshot: ISplitSnapshot | null = null
-  private startPoint: IPoint | null = null
-  private endPoint: IPoint | null = null
-
-  public readonly displayedAreas: Array<IArea> = []
-  private readonly hidedAreas: Array<IArea> = []
-
-  @ViewChildren('gutterEls') private gutterEls: QueryList<ElementRef>
 
   constructor(
     private ngZone: NgZone,
@@ -254,6 +200,47 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     // To force adding default class, could be override by user @Input() or not
     this.direction = this._direction
   }
+  private _direction: 'horizontal' | 'vertical' = 'horizontal'
+
+  private _unit: 'percent' | 'pixel' = 'percent'
+
+  private _gutterSize: number | null = 11
+
+  private _gutterStep = 1
+
+  private _restrictMove = false
+
+  private _useTransition = false
+
+  private _disabled = false
+
+  private _dir: 'ltr' | 'rtl' = 'ltr'
+
+  private _gutterDblClickDuration = 0
+
+  @Output() dragStart = new EventEmitter<IOutputData>(false)
+  @Output() dragEnd = new EventEmitter<IOutputData>(false)
+  @Output() gutterClick = new EventEmitter<IOutputData>(false)
+  @Output() gutterDblClick = new EventEmitter<IOutputData>(false)
+
+  private transitionEndSubscriber: Subscriber<IOutputAreaSizes>
+
+  private dragProgressSubject: Subject<IOutputData> = new Subject()
+  dragProgress$: Observable<IOutputData> = this.dragProgressSubject.asObservable()
+
+  private isDragging = false
+  private isWaitingClear = false
+  private dragListeners: Array<Function> = []
+  private snapshot: ISplitSnapshot | null = null
+  private startPoint: IPoint | null = null
+  private endPoint: IPoint | null = null
+
+  public readonly displayedAreas: Array<IArea> = []
+  private readonly hiddenAreas: Array<IArea> = []
+
+  @ViewChildren('gutterEls') private gutterEls: QueryList<ElementRef>
+
+  _clickTimeout: number | null = null
 
   public ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
@@ -274,7 +261,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       minSize: null,
       maxSize: null,
       sizeBeforeCollapse: null,
-      gutterBeforeCollapse: 0
+      gutterBeforeCollapse: 0,
     }
 
     if (component.visible === true) {
@@ -282,7 +269,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
       this.build(true, true)
     } else {
-      this.hidedAreas.push(newArea)
+      this.hiddenAreas.push(newArea)
     }
   }
 
@@ -292,9 +279,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1)
 
       this.build(true, true)
-    } else if (this.hidedAreas.some((a) => a.component === component)) {
-      const area = this.hidedAreas.find((a) => a.component === component)
-      this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1)
+    } else if (this.hiddenAreas.some((a) => a.component === component)) {
+      const area = this.hiddenAreas.find((a) => a.component === component)
+      this.hiddenAreas.splice(this.hiddenAreas.indexOf(area), 1)
     }
   }
 
@@ -305,12 +292,12 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   }
 
   public showArea(component: SplitAreaDirective): void {
-    const area = this.hidedAreas.find((a) => a.component === component)
+    const area = this.hiddenAreas.find((a) => a.component === component)
     if (area === undefined) {
       return
     }
 
-    const areas = this.hidedAreas.splice(this.hidedAreas.indexOf(area), 1)
+    const areas = this.hiddenAreas.splice(this.hiddenAreas.indexOf(area), 1)
     this.displayedAreas.push(...areas)
 
     this.build(true, true)
@@ -323,11 +310,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     const areas = this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1)
-    areas.forEach((area) => {
-      area.order = 0
-      area.size = 0
+    areas.forEach((item) => {
+      item.order = 0
+      item.size = 0
     })
-    this.hidedAreas.push(...areas)
+    this.hiddenAreas.push(...areas)
 
     this.build(true, true)
   }
@@ -341,15 +328,15 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return false
     }
 
-    const formatedSizes = sizes.map((s) => getInputPositiveNumber(s, null))
-    const isValid = isUserSizesValid(this.unit, formatedSizes)
+    const formattedSizes = sizes.map((s) => getInputPositiveNumber(s, null))
+    const isValid = isUserSizesValid(this.unit, formattedSizes)
 
     if (isValid === false) {
       return false
     }
 
     // @ts-ignore
-    this.displayedAreas.forEach((area, i) => (area.component._size = formatedSizes[i]))
+    this.displayedAreas.forEach((area, i) => (area.component._size = formattedSizes[i]))
 
     this.build(false, true)
     return true
@@ -409,9 +396,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
                 area.minSize = i === 0 ? null : getAreaMinSize(area)
                 area.maxSize = i === 0 ? null : getAreaMaxSize(area)
               })
-            }
-            // More than one wildcard area > Need to keep only one arbitrarly > first
-            else if (wildcardSizeAreas.length > 1) {
+            } else if (wildcardSizeAreas.length > 1) {
+              // More than one wildcard area > Need to keep only one arbitrarily > first
               let alreadyGotOne = false
               this.displayedAreas.forEach((area) => {
                 if (area.component.size === null) {
@@ -449,9 +435,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       // Only one area > flex-basis 100%
       if (this.displayedAreas.length === 1) {
         this.displayedAreas[0].component.setStyleFlex(0, 0, `100%`, false, false)
-      }
-      // Multiple areas > use each percent basis
-      else {
+      } else {
+        // Multiple areas > use each percent basis
         const sumGutterSize = this.getNbGutters() * this.gutterSize
 
         this.displayedAreas.forEach((area) => {
@@ -459,15 +444,14 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             0,
             0,
             `calc( ${area.size}% - ${(<number>area.size / 100) * sumGutterSize}px )`,
-            area.minSize !== null && area.minSize === area.size ? true : false,
-            area.maxSize !== null && area.maxSize === area.size ? true : false,
+            area.minSize !== null && area.minSize === area.size,
+            area.maxSize !== null && area.maxSize === area.size,
           )
         })
       }
-    }
-    ///////////////////////////////////////////
-    // PIXEL MODE
-    else if (this.unit === 'pixel') {
+    } else if (this.unit === 'pixel') {
+      ///////////////////////////////////////////
+      // PIXEL MODE
       this.displayedAreas.forEach((area) => {
         // Area with wildcard size
         if (area.size === null) {
@@ -476,29 +460,25 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
           } else {
             area.component.setStyleFlex(1, 1, `auto`, false, false)
           }
-        }
-        // Area with pixel size
-        else {
+        } else {
+          // Area with pixel size
           // Only one area > flex-basis 100%
           if (this.displayedAreas.length === 1) {
             area.component.setStyleFlex(0, 0, `100%`, false, false)
-          }
-          // Multiple areas > use each pixel basis
-          else {
+          } else {
+            // Multiple areas > use each pixel basis
             area.component.setStyleFlex(
               0,
               0,
               `${area.size}px`,
-              area.minSize !== null && area.minSize === area.size ? true : false,
-              area.maxSize !== null && area.maxSize === area.size ? true : false,
+              area.minSize !== null && area.minSize === area.size,
+              area.maxSize !== null && area.maxSize === area.size,
             )
           }
         }
       })
     }
   }
-
-  _clickTimeout: number | null = null
 
   public clickGutter(event: MouseEvent | TouchEvent, gutterNum: number): void {
     const tempPoint = getPointFromEvent(event)
@@ -511,9 +491,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this._clickTimeout = null
         this.notify('dblclick', gutterNum)
         this.stopDragging()
-      }
-      // Else start timeout to call clickEvent at end
-      else {
+      } else {
+        // Else start timeout to call clickEvent at end
         this._clickTimeout = window.setTimeout(() => {
           this._clickTimeout = null
           this.notify('click', gutterNum)
@@ -556,7 +535,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         }
       } else if (area.order > gutterOrder) {
         if (this.restrictMove === true) {
-          if (this.snapshot.areasAfterGutter.length === 0) this.snapshot.areasAfterGutter = [areaSnapshot]
+          if (this.snapshot.areasAfterGutter.length === 0) {
+            this.snapshot.areasAfterGutter = [areaSnapshot]
+          }
         } else {
           this.snapshot.areasAfterGutter.push(areaSnapshot)
         }
@@ -656,18 +637,16 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
           this.snapshot.allAreasSizePixel,
         )
       }
-    }
-    // Areas before gutter can't absorbs all offset > need to recalculate sizes for areas after gutter.
-    else if (areasBefore.remain !== 0) {
+    } else if (areasBefore.remain !== 0) {
+      // Areas before gutter can't absorbs all offset > need to recalculate sizes for areas after gutter.
       areasAfter = getGutterSideAbsorptionCapacity(
         this.unit,
         this.snapshot.areasAfterGutter,
         steppedOffset + areasBefore.remain,
         this.snapshot.allAreasSizePixel,
       )
-    }
-    // Areas after gutter can't absorbs all offset > need to recalculate sizes for areas before gutter.
-    else if (areasAfter.remain !== 0) {
+    } else if (areasAfter.remain !== 0) {
+      // Areas after gutter can't absorbs all offset > need to recalculate sizes for areas before gutter.
       areasBefore = getGutterSideAbsorptionCapacity(
         this.unit,
         this.snapshot.areasBeforeGutter,
@@ -717,7 +696,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     while (this.dragListeners.length > 0) {
       const fct = this.dragListeners.pop()
-      if (fct) fct()
+      if (fct) {
+        fct()
+      }
     }
 
     // Warning: Have to be before "notify('end')"
@@ -769,40 +750,38 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.stopDragging()
   }
 
-  public collapseArea(comp: SplitAreaDirective, newSize: number, gutter: 'left'|'right'): void {
-
-    const area = this.displayedAreas.find(a => a.component === comp);
+  public collapseArea(comp: SplitAreaDirective, newSize: number, gutter: 'left' | 'right'): void {
+    const area = this.displayedAreas.find((a) => a.component === comp)
     if (area === undefined) {
-      return;
+      return
     }
-    const whichGutter = gutter === 'right' ? 1 : -1;
+    const whichGutter = gutter === 'right' ? 1 : -1
     if (!area.sizeBeforeCollapse) {
-      area.sizeBeforeCollapse = area.size;
-      area.gutterBeforeCollapse = whichGutter;
+      area.sizeBeforeCollapse = area.size
+      area.gutterBeforeCollapse = whichGutter
     }
-    area.size = newSize;
-    const gtr = this.gutterEls.find(f => f.nativeElement.style.order === `${area.order + whichGutter}`);
+    area.size = newSize
+    const gtr = this.gutterEls.find((f) => f.nativeElement.style.order === `${area.order + whichGutter}`)
     if (gtr) {
-      this.renderer.addClass(gtr.nativeElement, 'as-split-gutter-collapsed');
+      this.renderer.addClass(gtr.nativeElement, 'as-split-gutter-collapsed')
     }
-    this.updateArea(comp, false, false);
+    this.updateArea(comp, false, false)
   }
 
   public expandArea(comp: SplitAreaDirective): void {
-
-    const area = this.displayedAreas.find(a => a.component === comp);
+    const area = this.displayedAreas.find((a) => a.component === comp)
     if (area === undefined) {
-      return;
+      return
     }
     if (!area.sizeBeforeCollapse) {
-      return;
+      return
     }
-    area.size = area.sizeBeforeCollapse;
-    area.sizeBeforeCollapse = null;
-    const gtr = this.gutterEls.find(f => f.nativeElement.style.order === `${area.order + area.gutterBeforeCollapse}`);
+    area.size = area.sizeBeforeCollapse
+    area.sizeBeforeCollapse = null
+    const gtr = this.gutterEls.find((f) => f.nativeElement.style.order === `${area.order + area.gutterBeforeCollapse}`)
     if (gtr) {
-      this.renderer.removeClass(gtr.nativeElement, 'as-split-gutter-collapsed');
+      this.renderer.removeClass(gtr.nativeElement, 'as-split-gutter-collapsed')
     }
-    this.updateArea(comp, false, false);
+    this.updateArea(comp, false, false)
   }
 }

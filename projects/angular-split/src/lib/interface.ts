@@ -1,4 +1,4 @@
-import { SplitAreaDirective } from './directive/splitArea.directive'
+import { SplitAreaDirective } from './directive/split-area.directive'
 
 export interface IPoint {
   x: number
@@ -11,8 +11,8 @@ export interface IArea {
   size: number | null
   minSize: number | null
   maxSize: number | null
-  sizeBeforeCollapse: number | null;
-  gutterBeforeCollapse: number;
+  sizeBeforeCollapse: number | null
+  gutterBeforeCollapse: number
 }
 
 // CREATED ON DRAG START

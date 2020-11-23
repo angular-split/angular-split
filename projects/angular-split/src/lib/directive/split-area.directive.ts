@@ -1,7 +1,7 @@
-import { Directive, Input, ElementRef, Renderer2, OnInit, OnDestroy, NgZone } from '@angular/core'
+import { Directive, ElementRef, Input, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core'
 
 import { SplitComponent } from '../component/split.component'
-import { getInputPositiveNumber, getInputBoolean } from '../utils'
+import { getInputBoolean, getInputPositiveNumber } from '../utils'
 
 @Directive({
   selector: 'as-split-area, [as-split-area]',
@@ -20,8 +20,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._order
   }
 
-  ////
-
   private _size: number | null = null
 
   @Input() set size(v: number | null) {
@@ -33,8 +31,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
   get size(): number | null {
     return this._size
   }
-
-  ////
 
   private _minSize: number | null = null
 
@@ -48,8 +44,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._minSize
   }
 
-  ////
-
   private _maxSize: number | null = null
 
   @Input() set maxSize(v: number | null) {
@@ -62,9 +56,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._maxSize
   }
 
-  ////
-
-  private _lockSize: boolean = false
+  private _lockSize = false
 
   @Input() set lockSize(v: boolean) {
     this._lockSize = getInputBoolean(v)
@@ -76,9 +68,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._lockSize
   }
 
-  ////
-
-  private _visible: boolean = true
+  private _visible = true
 
   @Input() set visible(v: boolean) {
     this._visible = getInputBoolean(v)
@@ -95,8 +85,6 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
   get visible(): boolean {
     return this._visible
   }
-
-  ////
 
   private transitionListener: Function
   private readonly lockListeners: Array<Function> = []
@@ -137,24 +125,32 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', shrink)
     this.renderer.setStyle(this.elRef.nativeElement, 'flex-basis', basis)
 
-    if (isMin === true) this.renderer.addClass(this.elRef.nativeElement, 'as-min')
-    else this.renderer.removeClass(this.elRef.nativeElement, 'as-min')
+    if (isMin === true) {
+      this.renderer.addClass(this.elRef.nativeElement, 'as-min')
+    } else {
+      this.renderer.removeClass(this.elRef.nativeElement, 'as-min')
+    }
 
-    if (isMax === true) this.renderer.addClass(this.elRef.nativeElement, 'as-max')
-    else this.renderer.removeClass(this.elRef.nativeElement, 'as-max')
+    if (isMax === true) {
+      this.renderer.addClass(this.elRef.nativeElement, 'as-max')
+    } else {
+      this.renderer.removeClass(this.elRef.nativeElement, 'as-max')
+    }
   }
 
   public lockEvents(): void {
     this.ngZone.runOutsideAngular(() => {
-      this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'selectstart', (e: Event) => false))
-      this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'dragstart', (e: Event) => false))
+      this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'selectstart', () => false))
+      this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'dragstart', () => false))
     })
   }
 
   public unlockEvents(): void {
     while (this.lockListeners.length > 0) {
       const fct = this.lockListeners.pop()
-      if (fct) fct()
+      if (fct) {
+        fct()
+      }
     }
   }
 
@@ -168,11 +164,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     this.split.removeArea(this)
   }
 
-  public collapse(newSize: number = 0, gutter: 'left'|'right' = 'right'): void {
-    this.split.collapseArea(this, newSize, gutter);
+  public collapse(newSize = 0, gutter: 'left' | 'right' = 'right'): void {
+    this.split.collapseArea(this, newSize, gutter)
   }
 
   public expand(): void {
-    this.split.expandArea(this);
+    this.split.expandArea(this)
   }
 }
