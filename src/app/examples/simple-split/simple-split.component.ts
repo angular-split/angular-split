@@ -22,7 +22,7 @@ import { AComponent } from '../../ui/components/AComponent'
   template: `
     {{ testChangeDetectorRun() }}
     <div class="container">
-      <!--      <sp-example-title [type]="exampleEnum.SIMPLE"></sp-example-title>-->
+      <sp-example-title [type]="exampleEnum.SIMPLE"></sp-example-title>
       <h5>Percent mode:</h5>
       <div class="split-example ex-percent">
         <as-split unit="percent" [direction]="direction" (dragEnd)="dragEnd('percent', $event)" #split="asSplit">
@@ -105,7 +105,7 @@ import { AComponent } from '../../ui/components/AComponent'
     </div>
   `,
 })
-export class SimpleComponent extends AComponent {
+export class SimpleSplitComponent extends AComponent {
   @ViewChild('split') split: SplitComponent
   @ViewChild('area1') area1: SplitAreaDirective
   @ViewChild('area2') area2: SplitAreaDirective

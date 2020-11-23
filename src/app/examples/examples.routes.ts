@@ -13,7 +13,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/simple-split/simple-split.component.ts`,
     },
     path: 'simple-split',
-    loadChildren: () => import('./simple/simple.module').then((m) => m.SimpleModule),
+    loadChildren: () => import('./simple-split/simple-split.module').then((m) => m.SimpleSplitModule),
   },
   {
     data: {
@@ -37,7 +37,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.IFRAME,
       label: 'Split containing iframes',
-      srcUrl: `${srcUrlBaseApp}iframe.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/iframes/iframes.component.ts`,
     },
     path: 'iframes',
     loadChildren: () => import('./iframes/iframes.module').then((m) => m.IframesModule),
@@ -46,7 +46,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.TRANSITION,
       label: 'Split with transitions',
-      srcUrl: `${srcUrlBaseApp}transitions.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/split-transitions/split-transitions.component.ts`,
     },
     path: 'split-transitions',
     loadChildren: () => import('./split-transitions/split-transitions.module').then((m) => m.SplitTransitionsModule),
@@ -55,7 +55,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.SYNC,
       label: 'Split synchronized',
-      srcUrl: `${srcUrlBaseApp}sync.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/sync-split/sync-split.component.ts`,
     },
     path: 'sync-split',
     loadChildren: () => import('./sync-split/sync-split.module').then((m) => m.SyncSplitModule),
@@ -64,7 +64,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.STYLE,
       label: 'Split with custom gutter style',
-      srcUrl: `${srcUrlBaseApp}customGutterStyle.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/custom-gutter-style/custom-gutter-style.component.ts`,
     },
     path: 'custom-gutter-style',
     loadChildren: () =>
@@ -74,7 +74,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.TOGGLE,
       label: 'Toggling areas using <code>[visible]</code> and <code>*ngIf</code>',
-      srcUrl: `${srcUrlBaseApp}togglingDomAndVisible.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/toggling-dom-and-visibility/toggling-dom-and-visibility.component.ts`,
     },
     path: 'toggling-dom-and-visibility',
     loadChildren: () =>
@@ -86,7 +86,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.COLLAPSE,
       label: 'Collapse/Expand a specific area',
-      srcUrl: `${srcUrlBaseApp}collapseExpandArea.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/collapse-expand/collapse-expand.component.ts`,
     },
     path: 'collapse-expand',
     loadChildren: () => import('./collapse-expand/collapse-expand.module').then((m) => m.CollapseExpandModule),
@@ -95,7 +95,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.CLICK,
       label: 'Roll/unroll area on <code>(gutterClick)</code> event',
-      srcUrl: `${srcUrlBaseApp}gutterClick.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/gutter-click-roll-unroll/gutter-click-roll-unroll.component.ts`,
     },
     path: 'gutter-click-roll-unroll',
     loadChildren: () =>
@@ -105,7 +105,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.CODE,
       label: 'Access and interact <code>SplitComponent</code> from TS class',
-      srcUrl: `${srcUrlBaseApp}classAccess.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/access-from-class/access-from-class.component.ts`,
     },
     path: 'access-from-class',
     loadChildren: () => import('./access-from-class/access-from-class.module').then((m) => m.AccessFromClassModule),
@@ -114,7 +114,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.GEEK,
       label: 'Geek demo (100% dynamic)',
-      srcUrl: `${srcUrlBaseApp}geekDemo.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/geek-demo/geek-demo.component.ts`,
     },
     path: 'geek-demo',
     loadChildren: () => import('./geek-demo/geek-demo.module').then((m) => m.GeekDemoModule),
@@ -123,7 +123,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.DIR,
       label: 'Split inside right to left (RTL) page',
-      srcUrl: `${srcUrlBaseApp}dirRtl.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/dir-rtl/dir-rtl.component.ts`,
     },
     path: 'dir-rtl',
     loadChildren: () => import('./dir-rtl/dir-rtl.module').then((m) => m.DirRtlModule),
@@ -132,7 +132,7 @@ export const exampleRoutes: Routes = [
     data: {
       type: ExampleEnum.WORKSPACE,
       label: 'Fullscreen workspace saved in localStorage',
-      srcUrl: `${srcUrlBaseApp}workspaceLocalstorage.route.component.ts`,
+      srcUrl: `${srcUrlBaseApp}/workspace-localstorage/workspace-localstorage.component.ts`,
     },
     path: 'workspace-localstorage',
     loadChildren: () =>
