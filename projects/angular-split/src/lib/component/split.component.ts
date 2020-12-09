@@ -230,6 +230,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
   private isDragging = false
   private isWaitingClear = false
+  private isWaitingInitialMove = false
   private dragListeners: Array<Function> = []
   private snapshot: ISplitSnapshot | null = null
   private startPoint: IPoint | null = null
@@ -483,8 +484,13 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   public clickGutter(event: MouseEvent | TouchEvent, gutterNum: number): void {
     const tempPoint = getPointFromEvent(event)
 
-    // Be sure mouseup/touchend happened at same point as mousedown/touchstart to trigger click/dblclick
-    if (this.startPoint && this.startPoint.x === tempPoint.x && this.startPoint.y === tempPoint.y) {
+    // Be sure mouseup/touchend happened if touch/cursor is not moved.
+    if (
+      this.startPoint &&
+      this.startPoint.x === tempPoint.x &&
+      this.startPoint.y === tempPoint.y &&
+      (!this.isDragging || this.isWaitingInitialMove)
+    ) {
       // If timeout in progress and new click > clearTimeout & dblClickEvent
       if (this._clickTimeout !== null) {
         window.clearTimeout(this._clickTimeout)
@@ -565,10 +571,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.displayedAreas.forEach((area) => area.component.lockEvents())
 
     this.isDragging = true
-    this.renderer.addClass(this.elRef.nativeElement, 'as-dragging')
-    this.renderer.addClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged')
-
-    this.notify('start', this.snapshot.gutterNum)
+    this.isWaitingInitialMove = true
   }
 
   private dragEvent(event: MouseEvent | TouchEvent): void {
@@ -587,6 +590,21 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.endPoint = getPointFromEvent(event)
     if (this.endPoint === null) {
       return
+    }
+
+    if (this.isWaitingInitialMove) {
+      if (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
+        this.ngZone.run(() => {
+          this.isWaitingInitialMove = false
+
+          this.renderer.addClass(this.elRef.nativeElement, 'as-dragging')
+          this.renderer.addClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged')
+
+          this.notify('start', this.snapshot.gutterNum)
+        })
+      } else {
+        return
+      }
     }
 
     // Calculate steppedOffset
@@ -706,7 +724,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.isDragging = false
 
     // If moved from starting point, notify end
-    if (this.endPoint && (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y)) {
+    if (this.isWaitingInitialMove === false) {
       this.notify('end', this.snapshot.gutterNum)
     }
 

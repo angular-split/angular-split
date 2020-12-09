@@ -2,6 +2,24 @@
 
 import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
 
+function checkEventCount({ dragStartCount, dragEndCount, gutterClickCount, gutterDblClickCount, transitionEndCount }) {
+  if (dragStartCount !== undefined) {
+    cy.get('.logs ul li').filter('.dragStart').should('have.length', dragStartCount)
+  }
+  if (dragEndCount !== undefined) {
+    cy.get('.logs ul li').filter('.dragEnd').should('have.length', dragEndCount)
+  }
+  if (gutterClickCount !== undefined) {
+    cy.get('.logs ul li').filter('.gutterClick').should('have.length', gutterClickCount)
+  }
+  if (gutterDblClickCount !== undefined) {
+    cy.get('.logs ul li').filter('.gutterDblClick').should('have.length', gutterDblClickCount)
+  }
+  if (transitionEndCount !== undefined) {
+    cy.get('.logs ul li').filter('.transitionEnd').should('have.length', transitionEndCount)
+  }
+}
+
 context('Gutter click example page tests', () => {
   const W = 1070
   const H = 300
@@ -53,8 +71,8 @@ context('Gutter click example page tests', () => {
   it('Mix gutter click and dragging', () => {
     // Try move gutter event if disabled
     moveGutter('.as-split-gutter', 0, -100, 0)
+    // gutterClick should be fired same as normal click event since dragging is disabled.
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5])
-    cy.get('.logs ul li').should('have.length', 0)
 
     // Enable gutters
     cy.get('.btns button').eq(1).click()
@@ -64,8 +82,7 @@ context('Gutter click example page tests', () => {
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [162.5, 625, 262.5])
     cy.wait(10)
 
-    cy.get('.logs ul li').filter('.dragStart').should('have.length', 1)
-    cy.get('.logs ul li').filter('.dragEnd').should('have.length', 1)
+    checkEventCount({ dragStartCount: 1, dragEndCount: 1, gutterClickCount: 0, transitionEndCount: 0 })
 
     // Click gutter1 to close area1
     cy.get('.as-split-gutter').eq(0).click()
@@ -73,10 +90,7 @@ context('Gutter click example page tests', () => {
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5])
     cy.wait(10)
 
-    cy.get('.logs ul li').filter('.dragStart').should('have.length', 2)
-    cy.get('.logs ul li').filter('.dragEnd').should('have.length', 1)
-    cy.get('.logs ul li').filter('.gutterClick').should('have.length', 1)
-    cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 1)
+    checkEventCount({ dragStartCount: 1, dragEndCount: 1, gutterClickCount: 1, transitionEndCount: 1 })
 
     // Click gutter2 to close area3
     cy.get('.as-split-gutter').eq(1).click()
@@ -84,19 +98,13 @@ context('Gutter click example page tests', () => {
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0])
     cy.wait(10)
 
-    cy.get('.logs ul li').filter('.dragStart').should('have.length', 3)
-    cy.get('.logs ul li').filter('.dragEnd').should('have.length', 1)
-    cy.get('.logs ul li').filter('.gutterClick').should('have.length', 2)
-    cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 2)
+    checkEventCount({ dragStartCount: 1, dragEndCount: 1, gutterClickCount: 2, transitionEndCount: 2 })
 
     // Move gutter2 to enlarge area3
     moveGutter('.as-split-gutter', 1, -20, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1030, 20])
 
-    cy.get('.logs ul li').filter('.dragStart').should('have.length', 4)
-    cy.get('.logs ul li').filter('.dragEnd').should('have.length', 2)
-    cy.get('.logs ul li').filter('.gutterClick').should('have.length', 2)
-    cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 2)
+    checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 2, transitionEndCount: 2 })
 
     // Click gutter2 to close area3
     cy.get('.as-split-gutter').eq(1).click()
@@ -104,10 +112,7 @@ context('Gutter click example page tests', () => {
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0])
     cy.wait(10)
 
-    cy.get('.logs ul li').filter('.dragStart').should('have.length', 5)
-    cy.get('.logs ul li').filter('.dragEnd').should('have.length', 2)
-    cy.get('.logs ul li').filter('.gutterClick').should('have.length', 3)
-    cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 3)
+    checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 3, transitionEndCount: 3 })
 
     // Click gutter1 to display area1
     cy.get('.as-split-gutter').eq(0).click()
@@ -115,10 +120,27 @@ context('Gutter click example page tests', () => {
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 787.5, 0])
     cy.wait(10)
 
-    cy.get('.logs ul li').filter('.dragStart').should('have.length', 6)
-    cy.get('.logs ul li').filter('.dragEnd').should('have.length', 2)
-    cy.get('.logs ul li').filter('.gutterClick').should('have.length', 4)
-    cy.get('.logs ul li').filter('.transitionEnd').should('have.length', 4)
+    checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 4, transitionEndCount: 4 })
+
+    // It should fire Click Event on mouseup if the mouse cursor is not moved.
+    cy.get('.as-split-gutter').eq(0).trigger('mousedown', { which: 1, clientX: 0, clientY: 0 })
+    cy.get('.as-split-gutter').eq(0).trigger('mousemove', { which: 1, clientX: 0, clientY: 0 })
+    cy.wait(10)
+    checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 4, transitionEndCount: 4 })
+
+    cy.get('.as-split-gutter').eq(0).trigger('mouseup', { which: 1, clientX: 0, clientY: 0 })
+    cy.wait(2000)
+    checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 5, transitionEndCount: 5 })
+
+    // It should fire dragStart and should not fire Click Event on mousemove if the mouse cursor is moved.
+    cy.get('.as-split-gutter').eq(0).trigger('mousedown', { which: 1, clientX: 0, clientY: 0 })
+    cy.get('.as-split-gutter').eq(0).trigger('mousemove', { which: 1, clientX: 1, clientY: 0 })
+    cy.wait(10)
+    checkEventCount({ dragStartCount: 3, dragEndCount: 2, gutterClickCount: 5, transitionEndCount: 5 })
+
+    cy.get('.as-split-gutter').eq(0).trigger('mouseup', { which: 1, clientX: 0, clientY: 0 })
+    cy.wait(20)
+    checkEventCount({ dragStartCount: 3, dragEndCount: 3, gutterClickCount: 5, transitionEndCount: 5 })
   })
 
   it('Test double click event', () => {
