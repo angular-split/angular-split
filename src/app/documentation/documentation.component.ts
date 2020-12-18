@@ -152,13 +152,13 @@ export class DocumentationComponent {
         name: 'maxSize',
         type: 'number',
         default: 'null',
-        details: `Maximum pixel or percent size, can't be bigger than provided <code>size</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`,
+        details: `Maximum pixel or percent size, should be equal to or larger than provided <code>[size]</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`,
       },
       {
         name: 'minSize',
         type: 'number',
         default: 'null',
-        details: `Minimum pixel or percent size, can't be smaller than provided <code>size</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`,
+        details: `Minimum pixel or percent size, should be equal to or smaller than provided <code>[size]</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`,
       },
       {
         name: 'order',
