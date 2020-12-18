@@ -1,11 +1,17 @@
+<a name="5.0.0"></a>
+
+# 5.0.0 (2020-12-18)
+
+- **Fix** fire dragStart event only when a cursor is moved [#283](https://github.com/angular-split/angular-split/issues/283) thanks to [nomeaning777](https://github.com/nomeaning777)!
+
 <a name="5.0.0-beta.2"></a>
 
-# 5.0.0-beta.2 (2020-09-06)
+# 5.0.0-beta.2 (2020-11-23)
 
 - **Feat** Add Expand/Collapse functionality [#276](https://github.com/angular-split/angular-split/issues/276) thanks to [Shemesh](https://github.com/Shemesh)!
 - **Chore** Update project to Angular 11 [#278](https://github.com/angular-split/angular-split/issues/278)
 
-  <a name="5.0.0-beta.1"></a>
+<a name="5.0.0-beta.1"></a>
 
 # 5.0.0-beta.1 (2020-09-06)
 
