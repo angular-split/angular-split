@@ -1,6 +1,7 @@
 import { Directive, ElementRef, Input, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core'
 
 import { SplitComponent } from '../component/split.component'
+import { IAreaSize } from '../interface'
 import { getInputBoolean, getInputPositiveNumber } from '../utils'
 
 @Directive({
@@ -20,15 +21,15 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._order
   }
 
-  private _size: number | null = null
+  private _size: IAreaSize = null
 
-  @Input() set size(v: number | null) {
+  @Input() set size(v: IAreaSize) {
     this._size = getInputPositiveNumber(v, null)
 
     this.split.updateArea(this, false, true)
   }
 
-  get size(): number | null {
+  get size(): IAreaSize {
     return this._size
   }
 

@@ -81,18 +81,18 @@ import { AComponent } from '../../ui/components/AComponent'
       <h5>Percent mode:</h5>
       <div class="split-example ex-percent">
         <as-split unit="percent" [restrictMove]="restrictMove" gutterSize="30" (dragEnd)="log($event)">
-          <as-split-area size="30" minSize="20" maxSize="30">
-            <p>size="30"<br />minSize="20"<br />maxSize="30"</p>
+          <as-split-area [size]="30" minSize="20" maxSize="30">
+            <p>[size]="30"<br />minSize="20"<br />maxSize="30"</p>
             <div class="txt-min"><p>MIN</p></div>
             <div class="txt-max"><p>MAX</p></div>
           </as-split-area>
-          <as-split-area size="40" minSize="30" maxSize="50">
-            <p>size="40"<br />minSize="30"<br />maxSize="50"</p>
+          <as-split-area [size]="40" minSize="30" maxSize="50">
+            <p>[size]="40"<br />minSize="30"<br />maxSize="50"</p>
             <div class="txt-min"><p>MIN</p></div>
             <div class="txt-max"><p>MAX</p></div>
           </as-split-area>
-          <as-split-area size="30" minSize="20" maxSize="50">
-            <p>size="30"<br />minSize="20"<br />maxSize="50"</p>
+          <as-split-area [size]="30" minSize="20" maxSize="50">
+            <p>[size]="30"<br />minSize="20"<br />maxSize="50"</p>
             <div class="txt-min"><p>MIN</p></div>
             <div class="txt-max"><p>MAX</p></div>
           </as-split-area>
@@ -101,8 +101,8 @@ import { AComponent } from '../../ui/components/AComponent'
       <h5>Pixel mode:</h5>
       <div class="split-example ex-pixel">
         <as-split unit="pixel" [restrictMove]="restrictMove" gutterSize="30" (dragEnd)="log($event)">
-          <as-split-area size="200" minSize="100" maxSize="200">
-            <p>size="200"<br />minSize="100"<br />maxSize="200"</p>
+          <as-split-area [size]="200" minSize="100" maxSize="200">
+            <p>[size]="200"<br />minSize="100"<br />maxSize="200"</p>
             <div class="txt-min"><p>MIN</p></div>
             <div class="txt-max"><p>MAX</p></div>
           </as-split-area>
@@ -111,14 +111,14 @@ import { AComponent } from '../../ui/components/AComponent'
             <div class="txt-min"><p>MIN</p></div>
             <div class="txt-max"><p>MAX</p></div>
           </as-split-area>
-          <as-split-area size="150" lockSize="true">
-            <p>size="150"<br />lockSize="true"<br /><br />Same as<br />minSize="150"<br />maxSize="150"</p>
+          <as-split-area [size]="150" lockSize="true">
+            <p>[size]="150"<br />lockSize="true"<br /><br />Same as<br />minSize="150"<br />maxSize="150"</p>
             <div class="txt-minmax">
               <p>MIN<br />&<br />MAX</p>
             </div>
           </as-split-area>
-          <as-split-area size="250" minSize="250" maxSize="400">
-            <p>size="250"<br />minSize="250"<br />maxSize="400"</p>
+          <as-split-area size="*" minSize="250" maxSize="400">
+            <p>size="*"<br />minSize="250"<br />maxSize="400"</p>
             <div class="txt-min"><p>MIN</p></div>
             <div class="txt-max"><p>MAX</p></div>
           </as-split-area>

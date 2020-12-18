@@ -166,7 +166,7 @@ import { formatDate } from '../../utils/format-date'
       <br />
       <div class="split-example ex2" style="height: 150px;">
         <as-split useTransition="true" unit="pixel">
-          <as-split-area size="200" minSize="200" order="1" [visible]="only === 1 || only === 0">
+          <as-split-area [size]="200" minSize="200" order="1" [visible]="only === 1 || only === 0">
             <button (click)="left()" class="btn btn-warning">{{ only === 1 ? 'LEFT ⬅️' : 'LEFT ➡' }}</button>
             <p>size: 200px<br />minSize: 200px</p>
           </as-split-area>
@@ -176,7 +176,7 @@ import { formatDate } from '../../utils/format-date'
             </button>
             <p>size: *</p>
           </as-split-area>
-          <as-split-area size="200" minSize="200" order="3" [visible]="only === 3 || only === 0">
+          <as-split-area [size]="200" minSize="200" order="3" [visible]="only === 3 || only === 0">
             <button (click)="right()" class="btn btn-warning">{{ only === 3 ? '➡ RIGHT' : '⬅️ RIGHT' }}</button>
             <p>size: 200px<br />minSize: 200px</p>
           </as-split-area>
@@ -184,17 +184,17 @@ import { formatDate } from '../../utils/format-date'
       </div>
       <div class="split-example ex2" style="height: 150px;">
         <as-split useTransition="true" unit="percent">
-          <as-split-area size="30" minSize="30" order="1" [visible]="only === 1 || only === 0">
+          <as-split-area [size]="30" minSize="30" order="1" [visible]="only === 1 || only === 0">
             <button (click)="left()" class="btn btn-warning">{{ only === 1 ? 'LEFT ⬅️' : 'LEFT ➡' }}</button>
             <p>size: 30%<br />minSize: 30%</p>
           </as-split-area>
-          <as-split-area size="40" order="2" [visible]="only === 2 || only === 0">
+          <as-split-area [size]="40" order="2" [visible]="only === 2 || only === 0">
             <button (click)="center()" class="btn btn-warning">
               {{ only === 2 ? '➡ ️CENTER ⬅' : '️⬅ ️CENTER ➡' }}
             </button>
             <p>size: 40%</p>
           </as-split-area>
-          <as-split-area size="30" minSize="30" order="3" [visible]="only === 3 || only === 0">
+          <as-split-area [size]="30" minSize="30" order="3" [visible]="only === 3 || only === 0">
             <button (click)="right()" class="btn btn-warning">{{ only === 3 ? '➡ RIGHT' : '⬅️ RIGHT' }}</button>
             <p>size: 30%<br />minSize: 30%</p>
           </as-split-area>
@@ -212,26 +212,26 @@ import { formatDate } from '../../utils/format-date'
       </div>
       <div class="split-example ex2" style="height: 150px;">
         <as-split useTransition="true" unit="pixel">
-          <as-split-area size="200" minSize="200" order="1" [visible]="keepA">
+          <as-split-area [size]="200" minSize="200" order="1" [visible]="keepA">
             <p>A<br />size: 200px<br />minSize: 200px</p>
           </as-split-area>
           <as-split-area size="*" order="2" [visible]="keepB">
             <p>B<br />size: *</p>
           </as-split-area>
-          <as-split-area size="200" minSize="200" order="3" [visible]="keepC">
+          <as-split-area [size]="200" minSize="200" order="3" [visible]="keepC">
             <p>C<br />size: 200px<br />minSize: 200px</p>
           </as-split-area>
         </as-split>
       </div>
       <div class="split-example ex2" style="height: 150px;">
         <as-split useTransition="true" unit="percent">
-          <as-split-area size="30" minSize="30" order="1" [visible]="keepA">
+          <as-split-area [size]="30" minSize="30" order="1" [visible]="keepA">
             <p>A<br />size: 30%<br />minSize: 30%</p>
           </as-split-area>
-          <as-split-area size="40" order="2" [visible]="keepB">
+          <as-split-area [size]="40" order="2" [visible]="keepB">
             <p>B<br />size: 40%</p>
           </as-split-area>
-          <as-split-area size="30" minSize="30" order="3" [visible]="keepC">
+          <as-split-area [size]="30" minSize="30" order="3" [visible]="keepC">
             <p>C<br />size: 30%<br />minSize: 30%</p>
           </as-split-area>
         </as-split>

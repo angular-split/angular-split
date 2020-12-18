@@ -26,7 +26,7 @@ import { AComponent } from '../../ui/components/AComponent'
       <h5>Percent mode:</h5>
       <div class="split-example ex-percent">
         <as-split unit="percent" [direction]="direction" (dragEnd)="dragEnd('percent', $event)" #split="asSplit">
-          <as-split-area size="30" #area1="asSplitArea">
+          <as-split-area [size]="30" #area1="asSplitArea">
             <h5>Initial size: <b>30%</b></h5>
             <h5>
               Current size: <b>{{ sizes.percent.area1 }}%</b>
@@ -37,7 +37,7 @@ import { AComponent } from '../../ui/components/AComponent'
               voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             </p>
           </as-split-area>
-          <as-split-area size="70" #area2="asSplitArea">
+          <as-split-area [size]="70" #area2="asSplitArea">
             <h5>Initial size: <b>70%</b></h5>
             <h5>
               Current size: <b>{{ sizes.percent.area2 }}%</b>
@@ -58,7 +58,7 @@ import { AComponent } from '../../ui/components/AComponent'
       <h5>Pixel mode:</h5>
       <div class="split-example ex-pixel">
         <as-split unit="pixel" [direction]="direction" (dragEnd)="dragEnd('pixel', $event)">
-          <as-split-area size="120">
+          <as-split-area [size]="120">
             <h5>Initial size: <b>120px</b></h5>
             <h5>
               Current size: <b>{{ sizes.pixel.area1 }}px</b>
@@ -84,7 +84,7 @@ import { AComponent } from '../../ui/components/AComponent'
               illum qui dolorem eum fugiat quo voluptas nulla pariatur?
             </p>
           </as-split-area>
-          <as-split-area size="160">
+          <as-split-area [size]="160">
             <h5>Initial size: <b>160px</b></h5>
             <h5>
               Current size: <b>{{ sizes.pixel.area3 }}px</b>

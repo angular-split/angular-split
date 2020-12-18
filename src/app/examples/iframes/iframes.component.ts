@@ -39,13 +39,13 @@ import { AComponent } from '../../ui/components/AComponent'
           (dragEnd)="dragEndHandler($event)"
           (gutterClick)="splitGutterClick($event)"
         >
-          <as-split-area size="40">
+          <as-split-area [size]="40">
             <div>
               <iframe src="https://angular-split.github.io" frameborder="0" width="100%" height="100%"></iframe>
               <div [hidden]="showIframeHider === false" class="hack-iframe-hider"></div>
             </div>
           </as-split-area>
-          <as-split-area size="60">
+          <as-split-area [size]="60">
             <div>
               <iframe src="https://angular-split.github.io" frameborder="0" width="100%" height="100%"></iframe>
               <div [hidden]="showIframeHider === false" class="hack-iframe-hider"></div>

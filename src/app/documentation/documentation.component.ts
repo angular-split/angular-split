@@ -168,7 +168,7 @@ export class DocumentationComponent {
       },
       {
         name: 'size',
-        type: "number|'*'",
+        type: `number|'*'`,
         default: '-',
         details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br><u>Percent mode:</u> All areas sizes should equal to 100, If not, all areas will have the same size.<br><u>Pixel mode:</u> An area with  wildcard size (<code>[size]="'*'"</code>) is mandatory (only one) and can't have <code>[visible]="false"</code> or <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code> properties.`,
       },
