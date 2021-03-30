@@ -9,7 +9,7 @@
     "app_analyze": "yarn lib_build && ng build --prod --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
     "deploy": "ng deploy angular-split-app --branch main --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git",
     "lib_build": "ng build angular-split && yarn lib_copy",
-    "lib_copy": "cp ./LICENSE ./README.md ./dist/angular-split",
+    "lib_copy": "copy ./LICENSE ./README.md ./dist/angular-split",
     "lib_tgz": "yarn lib_build && cd dist/angular-split && npm pack",
     "lib_pub_next": "yarn lib_build && npm publish --tag next ./dist/angular-split",
     "lib_pub_latest": "yarn lib_build && npm publish --tag latest ./dist/angular-split",
@@ -20,7 +20,8 @@
     "cypress_serve": "serve -s -l 4242 ./dist/angular-split-app",
     "cypress_open": "cypress open --config baseUrl=http://localhost:4242/",
     "cypress_run": "cypress run --config baseUrl=http://localhost:4242/",
-    "format": "prettier --write '**/*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}'"
+    "format": "prettier --write '**/*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}'",
+    "symlink": "symlink --angular"
   },
   "private": true,
   "dependencies": {
