@@ -72,6 +72,16 @@ export const exampleRoutes: Routes = [
   },
   {
     data: {
+      type: ExampleEnum.CONTENT,
+      label: 'Split with custom gutter content',
+      srcUrl: `${srcUrlBaseApp}/custom-gutter-content/custom-gutter-content.component.ts`,
+    },
+    path: 'custom-gutter-content',
+    loadChildren: () =>
+      import('./custom-gutter-content/custom-gutter-content.module').then((m) => m.CustomGutterContentModule),
+  },
+  {
+    data: {
       type: ExampleEnum.TOGGLE,
       label: 'Toggling areas using <code>[visible]</code> and <code>*ngIf</code>',
       srcUrl: `${srcUrlBaseApp}/toggling-dom-and-visibility/toggling-dom-and-visibility.component.ts`,

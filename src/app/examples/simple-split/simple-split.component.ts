@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, ViewChildren, QueryList } from '@angular/core'
+import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core'
 import { SplitComponent, SplitAreaDirective } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
@@ -26,13 +26,7 @@ import { AComponent } from '../../ui/components/AComponent'
       <h5>Percent mode:</h5>
       <div class="split-example ex-percent">
         <as-split unit="percent" [direction]="direction" (dragEnd)="dragEnd('percent', $event)" #split="asSplit">
-          <as-split-area #area1="asSplitArea" [size]="sizes.percent.area1">
-            <ng-template #toolbarTemplate>
-              <div style="writing-mode:vertical-rl">
-                <h5>communication</h5>
-                <input type="button" value="n" (click)="onClick()" />
-              </div>
-            </ng-template>
+          <as-split-area size="30" #area1="asSplitArea">
             <h5>Initial size: <b>30%</b></h5>
             <h5>
               Current size: <b>{{ sizes.percent.area1 }}%</b>
@@ -116,10 +110,6 @@ export class SimpleSplitComponent extends AComponent {
   @ViewChild('area1') area1: SplitAreaDirective
   @ViewChild('area2') area2: SplitAreaDirective
 
-  @ViewChildren(SplitAreaDirective) areasEl: QueryList<SplitAreaDirective>
-
-  sizeArea = '4'
-
   direction = 'horizontal'
   sizes = {
     percent: {
@@ -143,26 +133,14 @@ export class SimpleSplitComponent extends AComponent {
     }, 1000)
   }
 
-  onClick() {
-    // this.sizeArea = this.sizeArea === "4" ? "50" : "4";
-    // this.sizes.percent.area1 = this.sizes.percent.area1 === 30 ? 5 : 30;
-    // if (this.areasEl.first.size === 10){
-    //   this.areasEl.first.expand();
-    // }else{
-    // this.areasEl.first.collapse(10, "right");
-    // }
-
-    this.areasEl.first.size = 10
+  dragEnd(unit, { sizes }) {
+    if (unit === 'percent') {
+      this.sizes.percent.area1 = sizes[0]
+      this.sizes.percent.area2 = sizes[1]
+    } else if (unit === 'pixel') {
+      this.sizes.pixel.area1 = sizes[0]
+      this.sizes.pixel.area2 = sizes[1]
+      this.sizes.pixel.area3 = sizes[2]
+    }
   }
-
-  // dragEnd(unit, { sizes }) {
-  //   if (unit === 'percent') {
-  //     this.sizes.percent.area1 = sizes[0]
-  //     this.sizes.percent.area2 = sizes[1]
-  //   } else if (unit === 'pixel') {
-  //     this.sizes.pixel.area1 = sizes[0]
-  //     this.sizes.pixel.area2 = sizes[1]
-  //     this.sizes.pixel.area3 = sizes[2]
-  //   }
-  // }
 }

@@ -9,6 +9,7 @@ export enum ExampleEnum {
   NESTED = 'nested',
   SIMPLE = 'simple',
   STYLE = 'style',
+  CONTENT = 'content',
   SYNC = 'sync',
   TOGGLE = 'toggle',
   TRANSITION = 'transition',
