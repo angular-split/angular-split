@@ -82,13 +82,13 @@ import {
         (touchend)="clickGutter($event, index + 1)"
       >
         <div class="as-split-gutter-icon"></div>
-        <ng-container [ngTemplateOutlet]="toolbarTemplate"></ng-container>
+        <ng-container [ngTemplateOutlet]="gutterTemplate"></ng-container>
       </div>
     </ng-template>`,
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {
-  @ContentChild('toolbarTemplate') toolbarTemplate: TemplateRef<any>
+  @ContentChild('gutterTemplate') gutterTemplate: TemplateRef<any>
 
   @Input() set direction(v: 'horizontal' | 'vertical') {
     this._direction = v === 'vertical' ? 'vertical' : 'horizontal'

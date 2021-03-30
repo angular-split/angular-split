@@ -15,7 +15,7 @@ import { AComponent } from '../../ui/components/AComponent'
       <div class="split-example ex-percent">
         <as-split unit="percent" #split="asSplit">
           <as-split-area #area1="asSplitArea" [size]="70">
-            <ng-template #toolbarTemplate>
+            <ng-template #gutterTemplate>
               <div class="custom-gutter-container">
                 <div class="custom-gutter-content">
                   <span>{{ customLabel }} </span>
