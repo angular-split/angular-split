@@ -18,7 +18,7 @@ import { AComponent } from '../../ui/components/AComponent'
             <ng-template #gutterTemplate>
               <div class="custom-gutter-container">
                 <div class="custom-gutter-content">
-                  <span>{{ customLabel }} </span>
+                  <span>{{ customLabel }}</span>
                   <input type="button" value="button" (click)="onClick()" />
                 </div>
               </div>
