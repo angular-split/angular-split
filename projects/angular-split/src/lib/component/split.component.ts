@@ -22,12 +22,13 @@ import { SplitAreaDirective } from '../directive/split-area.directive'
 import {
   getInputPositiveNumber,
   getInputBoolean,
-  isUserSizesValid,
   getAreaMinSize,
   getAreaMaxSize,
   getPointFromEvent,
   getElementPixelSize,
   getGutterSideAbsorptionCapacity,
+  isUserSizesValid,
+  pointDeltaEquals,
   updateAreaSize,
 } from '../utils'
 
@@ -181,6 +182,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   @Input() set gutterDblClickDuration(v: number) {
     this._gutterDblClickDuration = getInputPositiveNumber(v, 0)
   }
+
+  @Input() gutterClickDeltaPx = 2;
 
   get gutterDblClickDuration(): number {
     return this._gutterDblClickDuration
@@ -487,8 +490,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     // Be sure mouseup/touchend happened if touch/cursor is not moved.
     if (
       this.startPoint &&
-      this.startPoint.x === tempPoint.x &&
-      this.startPoint.y === tempPoint.y &&
+      pointDeltaEquals(this.startPoint, tempPoint, this.gutterClickDeltaPx) &&
       (!this.isDragging || this.isWaitingInitialMove)
     ) {
       // If timeout in progress and new click > clearTimeout & dblClickEvent
@@ -578,7 +580,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     event.preventDefault()
     event.stopPropagation()
 
-    if (this._clickTimeout !== null) {
+    const tempPoint = getPointFromEvent(event);
+    if (this._clickTimeout !== null && !pointDeltaEquals(this.startPoint, tempPoint, this.gutterClickDeltaPx)) {
       window.clearTimeout(this._clickTimeout)
       this._clickTimeout = null
     }
