@@ -20,6 +20,10 @@ export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
   return null
 }
 
+export function pointDeltaEquals(lhs: IPoint, rhs: IPoint, deltaPx: number) {
+  return Math.abs(lhs.x - rhs.x) <= deltaPx && Math.abs(lhs.y - rhs.y) <= deltaPx;
+}
+
 export function getElementPixelSize(elRef: ElementRef, direction: 'horizontal' | 'vertical'): number {
   const rect = (<HTMLElement>elRef.nativeElement).getBoundingClientRect()
 
