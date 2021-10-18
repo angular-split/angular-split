@@ -199,7 +199,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     )
   }
 
-  private readonly _config: IDefaultOptions = {
+  private _config: IDefaultOptions = {
     direction: 'horizontal',
     unit: 'percent',
     gutterSize: 11,
