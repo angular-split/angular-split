@@ -13,6 +13,7 @@ import {
   QueryList,
   EventEmitter,
   ViewEncapsulation,
+  Inject,
 } from '@angular/core'
 import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
@@ -31,6 +32,7 @@ import {
   pointDeltaEquals,
   updateAreaSize,
 } from '../utils'
+import { ANGULAR_SPLIT_DEFAULT_OPTIONS, DefaultOptions } from '../angular-split-config.token'
 
 /**
  * angular-split
@@ -183,15 +185,30 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this._gutterDblClickDuration = getInputPositiveNumber(v, 0)
   }
 
-  @Input() gutterClickDeltaPx = 2;
+  @Input() gutterClickDeltaPx = 2
 
   get gutterDblClickDuration(): number {
     return this._gutterDblClickDuration
   }
   @Output() get transitionEnd(): Observable<IOutputAreaSizes> {
-    return new Observable((subscriber) => (this.transitionEndSubscriber = subscriber)).pipe(
+    return new Observable<IOutputAreaSizes>(
+      (subscriber: Subscriber<IOutputAreaSizes>) => (this.transitionEndSubscriber = subscriber),
+    ).pipe(
+      // @ts-ignore
       debounceTime<IOutputAreaSizes>(20),
     )
+  }
+
+  public _config: DefaultOptions = {
+    direction: 'horizontal',
+    unit: 'percent',
+    gutterSize: 11,
+    gutterStep: 1,
+    restrictMove: false,
+    useTransition: false,
+    disabled: false,
+    dir: 'ltr',
+    gutterDblClickDuration: 0,
   }
 
   constructor(
@@ -199,27 +216,32 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private elRef: ElementRef,
     private cdRef: ChangeDetectorRef,
     private renderer: Renderer2,
+    @Inject(ANGULAR_SPLIT_DEFAULT_OPTIONS) globalConfig: DefaultOptions,
   ) {
     // To force adding default class, could be override by user @Input() or not
     this.direction = this._direction
+    this._config = globalConfig ? Object.assign(this._config, globalConfig) : this._config
+    Object.keys(this._config).forEach((property) => {
+      this[property] = this._config[property]
+    })
   }
-  private _direction: 'horizontal' | 'vertical' = 'horizontal'
+  private _direction: 'horizontal' | 'vertical'
 
-  private _unit: 'percent' | 'pixel' = 'percent'
+  private _unit: 'percent' | 'pixel'
 
-  private _gutterSize: number | null = 11
+  private _gutterSize: number | null
 
-  private _gutterStep = 1
+  private _gutterStep: number
 
-  private _restrictMove = false
+  private _restrictMove: boolean
 
-  private _useTransition = false
+  private _useTransition: boolean
 
-  private _disabled = false
+  private _disabled: boolean
 
-  private _dir: 'ltr' | 'rtl' = 'ltr'
+  private _dir: 'ltr' | 'rtl'
 
-  private _gutterDblClickDuration = 0
+  private _gutterDblClickDuration: number
 
   @Output() dragStart = new EventEmitter<IOutputData>(false)
   @Output() dragEnd = new EventEmitter<IOutputData>(false)
@@ -580,7 +602,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     event.preventDefault()
     event.stopPropagation()
 
-    const tempPoint = getPointFromEvent(event);
+    const tempPoint = getPointFromEvent(event)
     if (this._clickTimeout !== null && !pointDeltaEquals(this.startPoint, tempPoint, this.gutterClickDeltaPx)) {
       window.clearTimeout(this._clickTimeout)
       this._clickTimeout = null
