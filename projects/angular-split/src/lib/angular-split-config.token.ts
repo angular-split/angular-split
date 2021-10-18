@@ -1,8 +1,8 @@
 import { InjectionToken } from '@angular/core'
 
-export const ANGULAR_SPLIT_DEFAULT_OPTIONS = new InjectionToken<Partial<DefaultOptions>>('angular-split-global-config')
+export const ANGULAR_SPLIT_DEFAULT_OPTIONS = new InjectionToken<Partial<IDefaultOptions>>('angular-split-global-config')
 
-export interface DefaultOptions {
+export interface IDefaultOptions {
   dir: 'ltr' | 'rtl'
   direction: 'horizontal' | 'vertical'
   disabled: boolean

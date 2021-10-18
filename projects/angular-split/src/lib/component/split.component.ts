@@ -32,7 +32,7 @@ import {
   pointDeltaEquals,
   updateAreaSize,
 } from '../utils'
-import { ANGULAR_SPLIT_DEFAULT_OPTIONS, DefaultOptions } from '../angular-split-config.token'
+import { ANGULAR_SPLIT_DEFAULT_OPTIONS, IDefaultOptions } from '../angular-split-config.token'
 
 /**
  * angular-split
@@ -199,7 +199,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     )
   }
 
-  public _config: DefaultOptions = {
+  private readonly _config: IDefaultOptions = {
     direction: 'horizontal',
     unit: 'percent',
     gutterSize: 11,
@@ -216,7 +216,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private elRef: ElementRef,
     private cdRef: ChangeDetectorRef,
     private renderer: Renderer2,
-    @Inject(ANGULAR_SPLIT_DEFAULT_OPTIONS) globalConfig: DefaultOptions,
+    @Inject(ANGULAR_SPLIT_DEFAULT_OPTIONS) globalConfig: IDefaultOptions,
   ) {
     // To force adding default class, could be override by user @Input() or not
     this.direction = this._direction
