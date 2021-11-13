@@ -1,4 +1,10 @@
-<a name="5.0.0"></a>
+<a name="5.1.0-beta.1"></a>
+
+# 5.1.0-beta.1 (2021-11-13)
+
+- **Feat** global config settings [#309](https://github.com/angular-split/angular-split/issues/309) thanks to [pawelwojkiewicz](https://github.com/ pawelwojkiewicz)!
+
+- <a name="5.0.0"></a>
 
 # 5.0.0 (2020-12-18)
 
