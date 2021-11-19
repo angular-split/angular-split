@@ -59,29 +59,25 @@ context('Geek demo example page tests', () => {
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [124.125, 124.125, 124.125, 124.125, 124.125, 124.125, 124.125, 124.125],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 8)
 
     cy.get('.opts-prop .btn').contains('vertical').click()
-    checkSplitDirAndSizes('.split-example > as-split', 'vertical', W, H, GUTTER, [
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'vertical',
+      W,
+      H,
+      GUTTER,
+      [27.875, 27.875, 27.875, 27.875, 27.875, 27.875, 27.875, 27.875],
+    )
 
     moveGutter('.as-split-gutter', 0, 0, -200)
     moveGutter('.as-split-gutter', 1, 0, -200)
@@ -111,70 +107,62 @@ context('Geek demo example page tests', () => {
 
     cy.get('.opts-prop .btn').contains('horizontal').click()
     cy.get('.opts-prop .btn').contains('200').click()
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, GUTTER, [
-      445.28125,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      547.703125,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      GUTTER,
+      [445.28125, 0, 0, 0, 0, 0, 0, 547.703125],
+    )
 
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, GUTTER, [
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      GUTTER,
+      [
+        87.265625, 87.265625, 87.265625, 87.265625, 87.265625, 87.265625, 87.265625, 87.265625, 87.265625, 87.265625,
+        87.265625,
+      ],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 11)
 
     cy.get('.opts-prop .btn').contains('22').click()
     cy.wait(1000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, 22, [
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      22,
+      [
+        77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625,
+        77.265625,
+      ],
+    )
 
     cy.get('.opts-prop .btn').contains('vertical').click()
     checkSplitDirAndSizes('.split-example > as-split', 'vertical', W, 200, 22, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     cy.get('.opts-prop .btn').contains('horizontal').click()
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, 22, [
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      22,
+      [
+        77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625, 77.265625,
+        77.265625,
+      ],
+    )
   })
 
   it('Add areas, check order, move them and check order', () => {
@@ -185,16 +173,14 @@ context('Geek demo example page tests', () => {
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [124.125, 124.125, 124.125, 124.125, 124.125, 124.125, 124.125, 124.125],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 8)
     checkAreaOrder()
 
@@ -220,14 +206,14 @@ context('Geek demo example page tests', () => {
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [169.15625, 169.15625, 169.15625, 169.15625, 169.15625, 169.15625],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 6)
     checkAreaOrder()
 
@@ -244,14 +230,14 @@ context('Geek demo example page tests', () => {
     checkAreaOrder()
 
     cy.wait(1000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [169.15625, 169.15625, 169.15625, 169.15625, 169.15625, 169.15625],
+    )
   })
 
   it('Use gutterStep null / 10 / 50', () => {

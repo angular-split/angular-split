@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import * as marked from 'marked'
+import { marked } from 'marked'
 import { merge, Observable, of } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 
