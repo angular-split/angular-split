@@ -12,7 +12,7 @@ context('Min & max splits example page tests', () => {
   })
 
   it('Display initial state', () => {
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [303, 404, 303])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [304.796875, 406.390625, 304.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
@@ -20,7 +20,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
     ])
 
-    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [200, 380, 150, 250])
+    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [200, 386, 150, 250])
 
     checkAreasClasses('.ex-pixel > as-split > .as-split-area', [
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
@@ -32,7 +32,7 @@ context('Min & max splits example page tests', () => {
 
   it('Move gutters having restrictMove off [PERCENT MODE]', () => {
     moveGutter('.ex-percent > as-split > .as-split-gutter', 0, 200, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [303, 404, 303])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [304.796875, 406.390625, 304.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
@@ -41,7 +41,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-percent > as-split > .as-split-gutter', 0, -100, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [203, 504, 303])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [204.796875, 506.390625, 304.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
@@ -50,7 +50,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-percent > as-split > .as-split-gutter', 0, -100, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [202, 505, 303])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [203.1875, 508, 304.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: ['as-min'], notHaveTo: ['as-max'] },
@@ -59,7 +59,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-percent > as-split > .as-split-gutter', 1, 100, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [302, 505, 203])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [303.203125, 508, 204.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
@@ -68,7 +68,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-percent > as-split > .as-split-gutter', 1, -100, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [302, 405, 303])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [303.203125, 408, 304.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
@@ -77,7 +77,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-percent > as-split > .as-split-gutter', 1, -100, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [302, 305, 403])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [303.203125, 308, 404.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
@@ -86,7 +86,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-percent > as-split > .as-split-gutter', 1, -100, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [204, 303, 502.984375])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [206.390625, 304.796875, 504.796875])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
@@ -95,7 +95,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-percent > as-split > .as-split-gutter', 1, -100, 0)
-    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [202, 303, 505])
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [203.1875, 304.796875, 508])
 
     checkAreasClasses('.ex-percent > as-split > .as-split-area', [
       { haveTo: ['as-min'], notHaveTo: ['as-max'] },
@@ -106,7 +106,7 @@ context('Min & max splits example page tests', () => {
 
   it('Move gutters having restrictMove off [PIXEL MODE]', () => {
     moveGutter('.ex-pixel > as-split > .as-split-gutter', 0, 200, 0)
-    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [200, 380, 150, 250])
+    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [200, 386, 150, 250])
 
     checkAreasClasses('.ex-pixel > as-split > .as-split-area', [
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
@@ -116,7 +116,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-pixel > as-split > .as-split-gutter', 0, -100, 0)
-    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 480, 150, 250])
+    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 486, 150, 250])
 
     checkAreasClasses('.ex-pixel > as-split > .as-split-area', [
       { haveTo: ['as-min'], notHaveTo: ['as-max'] },
@@ -126,7 +126,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-pixel > as-split > .as-split-gutter', 1, 100, 0)
-    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 480, 150, 250])
+    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 486, 150, 250])
 
     checkAreasClasses('.ex-pixel > as-split > .as-split-area', [
       { haveTo: ['as-min'], notHaveTo: ['as-max'] },
@@ -136,7 +136,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-pixel > as-split > .as-split-gutter', 1, -100, 0)
-    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 380, 150, 350])
+    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 386, 150, 350])
 
     checkAreasClasses('.ex-pixel > as-split > .as-split-area', [
       { haveTo: ['as-min'], notHaveTo: ['as-max'] },
@@ -146,7 +146,7 @@ context('Min & max splits example page tests', () => {
     ])
 
     moveGutter('.ex-pixel > as-split > .as-split-gutter', 2, -100, 0)
-    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 330, 150, 400])
+    checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [100, 336, 150, 400])
 
     checkAreasClasses('.ex-pixel > as-split > .as-split-area', [
       { haveTo: ['as-min'], notHaveTo: ['as-max'] },
