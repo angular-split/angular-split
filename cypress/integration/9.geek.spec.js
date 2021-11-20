@@ -3,7 +3,7 @@
 import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
 
 context('Geek demo example page tests', () => {
-  const W = 1070
+  const W = 1076
   const H = 300
   const GUTTER = 11
 
@@ -12,7 +12,7 @@ context('Geek demo example page tests', () => {
   })
 
   it('Display initial state', () => {
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262, 524, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263.5, 527, 263.5])
     cy.get('.opts-area div[draggable="true"]').should('have.length', 3)
   })
 
@@ -48,7 +48,7 @@ context('Geek demo example page tests', () => {
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', 600, 350, 22, [139, 278, 139])
 
     cy.get('.opts-prop').contains('Width:').parent().contains('null').click()
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 350, 22, [256.5, 513, 256.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 350, 22, [258, 516, 258])
   })
 
   it('Add areas, move all to limit and change direction / gutter size', () => {
@@ -59,29 +59,25 @@ context('Geek demo example page tests', () => {
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [124.875, 124.875, 124.875, 124.875, 124.875, 124.875, 124.875, 124.875],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 8)
 
     cy.get('.opts-prop .btn').contains('vertical').click()
-    checkSplitDirAndSizes('.split-example > as-split', 'vertical', W, H, GUTTER, [
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-      27.875,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'vertical',
+      W,
+      H,
+      GUTTER,
+      [27.875, 27.875, 27.875, 27.875, 27.875, 27.875, 27.875, 27.875],
+    )
 
     moveGutter('.as-split-gutter', 0, 0, -200)
     moveGutter('.as-split-gutter', 1, 0, -200)
@@ -111,70 +107,53 @@ context('Geek demo example page tests', () => {
 
     cy.get('.opts-prop .btn').contains('horizontal').click()
     cy.get('.opts-prop .btn').contains('200').click()
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, GUTTER, [
-      445.28125,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      547.703125,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      GUTTER,
+      [447.96875, 0, 0, 0, 0, 0, 0, 551.015625],
+    )
 
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, GUTTER, [
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-      87.265625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      GUTTER,
+      [87.8125, 87.8125, 87.8125, 87.8125, 87.8125, 87.8125, 87.8125, 87.8125, 87.8125, 87.8125, 87.8125],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 11)
 
     cy.get('.opts-prop .btn').contains('22').click()
     cy.wait(1000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, 22, [
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      22,
+      [77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125],
+    )
 
     cy.get('.opts-prop .btn').contains('vertical').click()
     checkSplitDirAndSizes('.split-example > as-split', 'vertical', W, 200, 22, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     cy.get('.opts-prop .btn').contains('horizontal').click()
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, 200, 22, [
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-      77.265625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      200,
+      22,
+      [77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125, 77.8125],
+    )
   })
 
   it('Add areas, check order, move them and check order', () => {
@@ -185,16 +164,14 @@ context('Geek demo example page tests', () => {
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-      124.125,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [124.875, 124.875, 124.875, 124.875, 124.875, 124.875, 124.875, 124.875],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 8)
     checkAreaOrder()
 
@@ -220,14 +197,14 @@ context('Geek demo example page tests', () => {
     cy.get('.opts-area .btn').contains('Add area').click()
     cy.wait(1000)
 
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [170.15625, 170.15625, 170.15625, 170.15625, 170.15625, 170.15625],
+    )
     cy.get('.opts-area div[draggable="true"]').should('have.length', 6)
     checkAreaOrder()
 
@@ -244,22 +221,22 @@ context('Geek demo example page tests', () => {
     checkAreaOrder()
 
     cy.wait(1000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-      169.15625,
-    ])
+    checkSplitDirAndSizes(
+      '.split-example > as-split',
+      'horizontal',
+      W,
+      H,
+      GUTTER,
+      [170.15625, 170.15625, 170.15625, 170.15625, 170.15625, 170.15625],
+    )
   })
 
   it('Use gutterStep null / 10 / 50', () => {
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262, 524, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [263.5, 527, 263.5])
 
     // Move gutter 5px > move 5px
     moveGutter('.split-example .as-split-gutter', 0, 5, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [267, 519, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [268.484375, 522, 263.5])
 
     ///////////////////////////////////
     // SET gutterStep to 10px
@@ -267,19 +244,19 @@ context('Geek demo example page tests', () => {
 
     // Move gutter 5px > no move
     moveGutter('.split-example .as-split-gutter', 0, 5, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [267, 519, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [268.484375, 522, 263.5])
 
     // Move gutter 6px > move 10px
     moveGutter('.split-example .as-split-gutter', 0, 6, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [277, 509, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [278.5, 511.984375, 263.5])
 
     // Move gutter 15px > move 10px
     moveGutter('.split-example .as-split-gutter', 0, 15, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [287, 499, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [288.515625, 501.984375, 263.5])
 
     // Move gutter 16px > move 20px
     moveGutter('.split-example .as-split-gutter', 0, 16, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [307, 479, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [308.515625, 481.984375, 263.5])
 
     ///////////////////////////////////
     // SET gutterStep to 50px
@@ -287,15 +264,15 @@ context('Geek demo example page tests', () => {
 
     // Move gutter 20px > nomove
     moveGutter('.split-example .as-split-gutter', 0, 20, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [307, 479, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [308.515625, 481.984375, 263.5])
 
     // Move gutter 25px > nomove
     moveGutter('.split-example .as-split-gutter', 0, 25, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [307, 479, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [308.515625, 481.984375, 263.5])
 
     // Move gutter 26px > move 50px
     moveGutter('.split-example .as-split-gutter', 0, 26, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [357, 429, 262])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [358.515625, 431.96875, 263.5])
   })
 })
 

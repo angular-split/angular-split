@@ -15,7 +15,7 @@ context('Custom split style example page tests', () => {
   })
 
   it('Verify gutter size color and horizontal image', () => {
-    checkSplitDirAndSizes('.ex-a as-split', 'horizontal', W, H, GUTTER, [310.5, 724.5])
+    checkSplitDirAndSizes('.ex-a as-split', 'horizontal', W, H, GUTTER, [312.296875, 728.6875])
 
     cy.get('.ex-a as-split > .as-split-gutter').should('have.css', 'background-color', COLOR)
     cy.get('.ex-a as-split > .as-split-gutter > .as-split-gutter-icon').should('have.css', 'background-image', IMGH)
