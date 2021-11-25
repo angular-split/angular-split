@@ -194,10 +194,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   @Output() get transitionEnd(): Observable<IOutputAreaSizes> {
     return new Observable<IOutputAreaSizes>(
       (subscriber: Subscriber<IOutputAreaSizes>) => (this.transitionEndSubscriber = subscriber),
-    ).pipe(
-      // @ts-ignore
-      debounceTime<IOutputAreaSizes>(20),
-    )
+    ).pipe(debounceTime<IOutputAreaSizes>(20))
   }
 
   private _config: IDefaultOptions = {
