@@ -14,6 +14,7 @@ import {
   EventEmitter,
   ViewEncapsulation,
   Inject,
+  Optional,
 } from '@angular/core'
 import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
@@ -216,7 +217,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     private elRef: ElementRef,
     private cdRef: ChangeDetectorRef,
     private renderer: Renderer2,
-    @Inject(ANGULAR_SPLIT_DEFAULT_OPTIONS) globalConfig: IDefaultOptions,
+    @Optional() @Inject(ANGULAR_SPLIT_DEFAULT_OPTIONS) globalConfig: IDefaultOptions,
   ) {
     // To force adding default class, could be override by user @Input() or not
     this.direction = this._direction
