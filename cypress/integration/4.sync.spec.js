@@ -3,7 +3,7 @@
 import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
 
 context('Sync splits example page tests', () => {
-  const W = 1070
+  const W = 1076
   const H = 300
   const GUTTER = 11
 
@@ -19,7 +19,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [264.75, 794.25],
+      [266.25, 798.75],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
@@ -27,7 +27,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [264.75, 794.25],
+      [266.25, 798.75],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(3) > as-split',
@@ -35,7 +35,7 @@ context('Sync splits example page tests', () => {
       W,
       166.796875,
       GUTTER,
-      [264.75, 794.25],
+      [266.25, 798.75],
     )
   })
 
@@ -47,7 +47,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [544.75, 514.25],
+      [546.25, 518.75],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
@@ -55,7 +55,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [544.75, 514.25],
+      [546.25, 518.75],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(3) > as-split',
@@ -63,7 +63,7 @@ context('Sync splits example page tests', () => {
       W,
       166.796875,
       GUTTER,
-      [544.75, 514.25],
+      [546.25, 518.75],
     )
 
     moveGutter('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, 600, 0)
@@ -73,7 +73,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [1059, 0],
+      [1065, 0],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
@@ -81,7 +81,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [1059, 0],
+      [1065, 0],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(3) > as-split',
@@ -89,7 +89,7 @@ context('Sync splits example page tests', () => {
       W,
       166.796875,
       GUTTER,
-      [1059, 0],
+      [1065, 0],
     )
 
     moveGutter('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, -1500, 0)
@@ -99,7 +99,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [0, 1059],
+      [0, 1065],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
@@ -107,7 +107,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [0, 1059],
+      [0, 1065],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(3) > as-split',
@@ -115,7 +115,7 @@ context('Sync splits example page tests', () => {
       W,
       166.796875,
       GUTTER,
-      [0, 1059],
+      [0, 1065],
     )
   })
 
@@ -127,7 +127,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [544.75, 514.25],
+      [546.25, 518.75],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
@@ -135,7 +135,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [544.75, 514.25],
+      [546.25, 518.75],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(3) > as-split',
@@ -143,7 +143,7 @@ context('Sync splits example page tests', () => {
       W,
       166.796875,
       GUTTER,
-      [544.75, 514.25],
+      [546.25, 518.75],
     )
 
     moveGutter('.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, 600, 0)
@@ -153,7 +153,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [1059, 0],
+      [1065, 0],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
@@ -161,7 +161,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [1059, 0],
+      [1065, 0],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(3) > as-split',
@@ -169,7 +169,7 @@ context('Sync splits example page tests', () => {
       W,
       166.796875,
       GUTTER,
-      [1059, 0],
+      [1065, 0],
     )
 
     moveGutter('.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, -1500, 0)
@@ -179,7 +179,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [0, 1059],
+      [0, 1065],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
@@ -187,7 +187,7 @@ context('Sync splits example page tests', () => {
       W,
       55.59375,
       GUTTER,
-      [0, 1059],
+      [0, 1065],
     )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(3) > as-split',
@@ -195,7 +195,7 @@ context('Sync splits example page tests', () => {
       W,
       166.796875,
       GUTTER,
-      [0, 1059],
+      [0, 1065],
     )
   })
 })

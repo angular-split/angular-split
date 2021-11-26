@@ -30,38 +30,38 @@ context('Gutter click example page tests', () => {
   })
 
   it('Display initial state', () => {
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [264, 528, 264])
   })
 
   it('Click gutters to switch area sizes between 0 and X', () => {
     cy.get('.as-split-gutter').eq(0).click()
     cy.wait(1500)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 792, 264])
     cy.wait(10)
 
     cy.get('.as-split-gutter').eq(0).click()
     cy.wait(1500)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [264, 528, 264])
     cy.wait(10)
 
     cy.get('.as-split-gutter').eq(0).click()
     cy.wait(1500)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 792, 264])
     cy.wait(10)
 
     cy.get('.as-split-gutter').eq(1).click()
     cy.wait(1500)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1056, 0])
     cy.wait(10)
 
     cy.get('.as-split-gutter').eq(0).click()
     cy.wait(1500)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 787.5, 0])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [264, 792, 0])
     cy.wait(10)
 
     cy.get('.as-split-gutter').eq(1).click()
     cy.wait(1500)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [264, 528, 264])
     cy.wait(10)
 
     cy.get('.logs ul li').filter('.gutterClick').should('have.length', 6)
@@ -72,14 +72,14 @@ context('Gutter click example page tests', () => {
     // Try move gutter event if disabled
     moveGutter('.as-split-gutter', 0, -100, 0)
     // gutterClick should be fired same as normal click event since dragging is disabled.
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 525, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [264, 528, 264])
 
     // Enable gutters
     cy.get('.btns button').eq(1).click()
 
     // Move gutter1
     moveGutter('.as-split-gutter', 0, -100, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [162.5, 625, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [164, 628, 264])
     cy.wait(10)
 
     checkEventCount({ dragStartCount: 1, dragEndCount: 1, gutterClickCount: 0, transitionEndCount: 0 })
@@ -87,7 +87,7 @@ context('Gutter click example page tests', () => {
     // Click gutter1 to close area1
     cy.get('.as-split-gutter').eq(0).click()
     cy.wait(2000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 787.5, 262.5])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 792, 264])
     cy.wait(10)
 
     checkEventCount({ dragStartCount: 1, dragEndCount: 1, gutterClickCount: 1, transitionEndCount: 1 })
@@ -95,21 +95,21 @@ context('Gutter click example page tests', () => {
     // Click gutter2 to close area3
     cy.get('.as-split-gutter').eq(1).click()
     cy.wait(2000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1056, 0])
     cy.wait(10)
 
     checkEventCount({ dragStartCount: 1, dragEndCount: 1, gutterClickCount: 2, transitionEndCount: 2 })
 
     // Move gutter2 to enlarge area3
     moveGutter('.as-split-gutter', 1, -20, 0)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1030, 20])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1036, 20])
 
     checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 2, transitionEndCount: 2 })
 
     // Click gutter2 to close area3
     cy.get('.as-split-gutter').eq(1).click()
     cy.wait(2000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1050, 0])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1056, 0])
     cy.wait(10)
 
     checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 3, transitionEndCount: 3 })
@@ -117,7 +117,7 @@ context('Gutter click example page tests', () => {
     // Click gutter1 to display area1
     cy.get('.as-split-gutter').eq(0).click()
     cy.wait(2000)
-    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [262.5, 787.5, 0])
+    checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [264, 792, 0])
     cy.wait(10)
 
     checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 4, transitionEndCount: 4 })

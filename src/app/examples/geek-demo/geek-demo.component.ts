@@ -34,7 +34,7 @@ import { AComponent } from '../../ui/components/AComponent'
         align-items: center;
         justify-content: space-between;
         padding: 10px;
-  o      background-color: #e8e8e8;
+        background-color: #e8e8e8;
       }
 
       .area-item {

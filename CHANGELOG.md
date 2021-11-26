@@ -1,3 +1,15 @@
+<a name="13.0.1"></a>
+
+# 13.0.1 (2021-11-20)
+
+- **Fix** export internal interfaces (issue [#307](https://github.com/angular-split/angular-split/issues/307)).
+
+<a name="13.0.0"></a>
+
+# 13.0.0 (2021-11-20)
+
+- **Chore** add support for Angular 13
+
 <a name="5.0.0"></a>
 
 # 5.0.0 (2020-12-18)
