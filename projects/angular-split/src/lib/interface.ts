@@ -46,6 +46,18 @@ export interface IAreaAbsorptionCapacity {
   pixelRemain: number
 }
 
+export interface IDefaultOptions {
+  dir: 'ltr' | 'rtl'
+  direction: 'horizontal' | 'vertical'
+  disabled: boolean
+  gutterDblClickDuration: number
+  gutterSize: number | null
+  gutterStep: number
+  restrictMove: boolean
+  unit: 'percent' | 'pixel'
+  useTransition: boolean
+}
+
 // CREATED TO SEND OUTSIDE
 
 export interface IOutputData {
