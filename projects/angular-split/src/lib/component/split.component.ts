@@ -19,7 +19,7 @@ import {
 import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
-import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, IOutputData, IOutputAreaSizes } from '../interface'
+import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, IOutputData, IOutputAreaSizes, IDefaultOptions } from '../interface'
 import { SplitAreaDirective } from '../directive/split-area.directive'
 import {
   getInputPositiveNumber,
@@ -33,7 +33,7 @@ import {
   pointDeltaEquals,
   updateAreaSize,
 } from '../utils'
-import { ANGULAR_SPLIT_DEFAULT_OPTIONS, IDefaultOptions } from '../angular-split-config.token'
+import { ANGULAR_SPLIT_DEFAULT_OPTIONS} from '../angular-split-config.token'
 
 /**
  * angular-split
