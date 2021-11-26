@@ -138,4 +138,13 @@ export const exampleRoutes: Routes = [
     loadChildren: () =>
       import('./workspace-localstorage/workspace-localstorage.module').then((m) => m.WorkspaceLocalstorageModule),
   },
+  {
+    data: {
+      type: ExampleEnum.GLOBAL,
+      label: 'Split with global settings',
+      srcUrl: `${srcUrlBaseApp}/global-options/global-options.component.ts`,
+    },
+    path: 'global-options',
+    loadChildren: () => import('./global-options/global-options.module').then((m) => m.GlobalOptionsModule),
+  },
 ]

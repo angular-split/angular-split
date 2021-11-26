@@ -13,4 +13,5 @@ export enum ExampleEnum {
   TOGGLE = 'toggle',
   TRANSITION = 'transition',
   WORKSPACE = 'workspace',
+  GLOBAL = 'global',
 }
