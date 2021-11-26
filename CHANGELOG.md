@@ -1,3 +1,9 @@
+<a name="13.1.0"></a>
+
+# 13.1.0 (2021-11-26)
+
+- **Feat** allow for setting global config (issue [#166](https://github.com/angular-split/angular-split/issues/166) / PR [#309](https://github.com/angular-split/angular-split/pull/309)) thanks to [pawelwojkiewicz](https://github.com/pawelwojkiewicz).
+
 <a name="13.0.1"></a>
 
 # 13.0.1 (2021-11-20)
