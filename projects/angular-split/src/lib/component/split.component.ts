@@ -19,7 +19,15 @@ import {
 import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 
-import { IArea, IPoint, ISplitSnapshot, IAreaSnapshot, IOutputData, IOutputAreaSizes, IDefaultOptions } from '../interface'
+import {
+  IArea,
+  IPoint,
+  ISplitSnapshot,
+  IAreaSnapshot,
+  IOutputData,
+  IOutputAreaSizes,
+  IDefaultOptions,
+} from '../interface'
 import { SplitAreaDirective } from '../directive/split-area.directive'
 import {
   getInputPositiveNumber,
@@ -32,8 +40,9 @@ import {
   isUserSizesValid,
   pointDeltaEquals,
   updateAreaSize,
+  getKeyboardEndpoint,
 } from '../utils'
-import { ANGULAR_SPLIT_DEFAULT_OPTIONS} from '../angular-split-config.token'
+import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
 
 /**
  * angular-split
@@ -71,17 +80,26 @@ import { ANGULAR_SPLIT_DEFAULT_OPTIONS} from '../angular-split-config.token'
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: [`./split.component.scss`],
   template: ` <ng-content></ng-content>
-    <ng-template ngFor [ngForOf]="displayedAreas" let-index="index" let-last="last">
+    <ng-template ngFor [ngForOf]="displayedAreas" let-area="$implicit" let-index="index" let-last="last">
       <div
+        role="slider"
+        tabindex="0"
         *ngIf="last === false"
         #gutterEls
         class="as-split-gutter"
         [style.flex-basis.px]="gutterSize"
         [style.order]="index * 2 + 1"
-        (mousedown)="startDragging($event, index * 2 + 1, index + 1)"
-        (touchstart)="startDragging($event, index * 2 + 1, index + 1)"
+        (keydown)="startKeyboardDrag($event, index * 2 + 1, index + 1)"
+        (mousedown)="startMouseDrag($event, index * 2 + 1, index + 1)"
+        (touchstart)="startMouseDrag($event, index * 2 + 1, index + 1)"
         (mouseup)="clickGutter($event, index + 1)"
         (touchend)="clickGutter($event, index + 1)"
+        [attr.aria-label]="gutterAriaLabel"
+        [attr.aria-orientation]="direction"
+        [attr.aria-valuemin]="area.minSize"
+        [attr.aria-valuemax]="area.maxSize"
+        [attr.aria-valuenow]="area.size"
+        [attr.aria-valuetext]="getAriaAreaSizeText(area.size)"
       >
         <div class="as-split-gutter-icon"></div>
       </div>
@@ -187,6 +205,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   }
 
   @Input() gutterClickDeltaPx = 2
+
+  @Input() gutterAriaLabel: string
 
   get gutterDblClickDuration(): number {
     return this._gutterDblClickDuration
@@ -530,7 +550,28 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public startDragging(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
+  public startKeyboardDrag(event: KeyboardEvent, gutterOrder: number, gutterNum: number) {
+    if (this.disabled === true || this.isWaitingClear === true) {
+      return
+    }
+
+    const endPoint = getKeyboardEndpoint(event, this.direction, this.gutterStep)
+    if (endPoint === null) {
+      return
+    }
+    this.endPoint = endPoint
+    this.startPoint = getPointFromEvent(event)
+
+    event.preventDefault()
+    event.stopPropagation()
+
+    this.setupForDragEvent(gutterOrder, gutterNum)
+    this.startDragging()
+    this.drag()
+    this.stopDragging()
+  }
+
+  public startMouseDrag(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
     event.preventDefault()
     event.stopPropagation()
 
@@ -539,6 +580,21 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return
     }
 
+    this.setupForDragEvent(gutterOrder, gutterNum)
+
+    this.dragListeners.push(this.renderer.listen('document', 'mouseup', this.stopDragging.bind(this)))
+    this.dragListeners.push(this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)))
+    this.dragListeners.push(this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)))
+
+    this.ngZone.runOutsideAngular(() => {
+      this.dragListeners.push(this.renderer.listen('document', 'mousemove', this.mouseDragEvent.bind(this)))
+      this.dragListeners.push(this.renderer.listen('document', 'touchmove', this.mouseDragEvent.bind(this)))
+    })
+
+    this.startDragging()
+  }
+
+  private setupForDragEvent(gutterOrder: number, gutterNum: number) {
     this.snapshot = {
       gutterNum,
       lastSteppedOffset: 0,
@@ -580,23 +636,16 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     if (this.snapshot.areasBeforeGutter.length === 0 || this.snapshot.areasAfterGutter.length === 0) {
       return
     }
+  }
 
-    this.dragListeners.push(this.renderer.listen('document', 'mouseup', this.stopDragging.bind(this)))
-    this.dragListeners.push(this.renderer.listen('document', 'touchend', this.stopDragging.bind(this)))
-    this.dragListeners.push(this.renderer.listen('document', 'touchcancel', this.stopDragging.bind(this)))
-
-    this.ngZone.runOutsideAngular(() => {
-      this.dragListeners.push(this.renderer.listen('document', 'mousemove', this.dragEvent.bind(this)))
-      this.dragListeners.push(this.renderer.listen('document', 'touchmove', this.dragEvent.bind(this)))
-    })
-
+  private startDragging() {
     this.displayedAreas.forEach((area) => area.component.lockEvents())
 
     this.isDragging = true
     this.isWaitingInitialMove = true
   }
 
-  private dragEvent(event: MouseEvent | TouchEvent): void {
+  private mouseDragEvent(event: MouseEvent | TouchEvent): void {
     event.preventDefault()
     event.stopPropagation()
 
@@ -615,6 +664,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return
     }
 
+    this.drag()
+  }
+
+  private drag() {
     if (this.isWaitingInitialMove) {
       if (this.startPoint.x !== this.endPoint.x || this.startPoint.y !== this.endPoint.y) {
         this.ngZone.run(() => {
@@ -824,5 +877,13 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       this.renderer.removeClass(gtr.nativeElement, 'as-split-gutter-collapsed')
     }
     this.updateArea(comp, false, false)
+  }
+
+  public getAriaAreaSizeText(size: number | null): string {
+    if (!size) {
+      return null
+    }
+
+    return size.toFixed(2) + ' ' + this.unit
   }
 }

@@ -25,7 +25,13 @@ import { AComponent } from '../../ui/components/AComponent'
       <sp-example-title [type]="exampleEnum.SIMPLE"></sp-example-title>
       <h5>Percent mode:</h5>
       <div class="split-example ex-percent">
-        <as-split unit="percent" [direction]="direction" (dragEnd)="dragEnd('percent', $event)" #split="asSplit">
+        <as-split
+          unit="percent"
+          [direction]="direction"
+          gutterAriaLabel="adjustable divider between two views"
+          (dragEnd)="dragEnd('percent', $event)"
+          #split="asSplit"
+        >
           <as-split-area size="30" #area1="asSplitArea">
             <h5>Initial size: <b>30%</b></h5>
             <h5>
