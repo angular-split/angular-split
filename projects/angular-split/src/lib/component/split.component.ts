@@ -555,7 +555,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return
     }
 
-    const endPoint = getKeyboardEndpoint(event, this.direction, this.gutterStep)
+    const endPoint = getKeyboardEndpoint(event, this.direction)
     if (endPoint === null) {
       return
     }
@@ -884,6 +884,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return null
     }
 
-    return size.toFixed(2) + ' ' + this.unit
+    return size.toFixed(0) + ' ' + this.unit
   }
 }

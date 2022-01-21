@@ -32,11 +32,7 @@ export function pointDeltaEquals(lhs: IPoint, rhs: IPoint, deltaPx: number) {
   return Math.abs(lhs.x - rhs.x) <= deltaPx && Math.abs(lhs.y - rhs.y) <= deltaPx
 }
 
-export function getKeyboardEndpoint(
-  event: KeyboardEvent,
-  direction: 'horizontal' | 'vertical',
-  gutterStep: number,
-): IPoint | null {
+export function getKeyboardEndpoint(event: KeyboardEvent, direction: 'horizontal' | 'vertical'): IPoint | null {
   // Return null if direction keys on the opposite axis were pressed
   if (direction === 'horizontal') {
     switch (event.key) {
@@ -62,7 +58,7 @@ export function getKeyboardEndpoint(
   }
 
   const gutterEl = event.currentTarget as HTMLElement
-  const offset = event.key === 'PageUp' || event.key === 'PageDown' ? gutterStep * 10 : gutterStep
+  const offset = event.key === 'PageUp' || event.key === 'PageDown' ? 50 * 10 : 50
   let offsetX = gutterEl.offsetLeft,
     offsetY = gutterEl.offsetTop
   switch (event.key) {
