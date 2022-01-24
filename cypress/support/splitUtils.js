@@ -30,7 +30,7 @@ export function checkGutterAriaLabel(gutters, num, ariaLabel) {
     .and('equal', ariaLabel)
 }
 
-export function checkGutterAriaValueTexts(gutters, ariaValueTexts) {
+export function checkGuttersAriaValueTexts(gutters, ariaValueTexts) {
   cy.get(gutters)
     .each(($gutter, index) => {
       const ariaValueText = ariaValueTexts[index]

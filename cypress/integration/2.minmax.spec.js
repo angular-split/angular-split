@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-import { moveGutterByMouse, checkSplitDirAndSizes, moveGutterByKeyboard, checkGutterAriaValueTexts } from '../support/splitUtils'
+import { moveGutterByMouse, checkSplitDirAndSizes, moveGutterByKeyboard, checkGuttersAriaValueTexts } from '../support/splitUtils'
 
 context('Min & max splits example page tests', () => {
   const W = 1070
@@ -168,7 +168,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
     ])
-    checkGutterAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['25 percent', '45 percent'])
+    checkGuttersAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['25 percent', '45 percent'])
 
     moveGutterByKeyboard('.ex-percent > as-split > .as-split-gutter', 0, 1, 'pagedown')
     checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [203.1875, 508, 304.796875])
@@ -177,7 +177,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
     ])
-    checkGutterAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['20 percent', '50 percent'])
+    checkGuttersAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['20 percent', '50 percent'])
 
     moveGutterByKeyboard('.ex-percent > as-split > .as-split-gutter', 0, 1, 'pageup')
     checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [304.796875, 406.390625, 304.796875])
@@ -186,7 +186,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
     ])
-    checkGutterAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['30 percent', '40 percent'])
+    checkGuttersAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['30 percent', '40 percent'])
 
     moveGutterByKeyboard('.ex-percent > as-split > .as-split-gutter', 1, 1, 'leftarrow')
     checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [304.796875, 356.390625, 354.796875])
@@ -195,7 +195,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
     ])
-    checkGutterAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['30 percent', '35 percent'])
+    checkGuttersAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['30 percent', '35 percent'])
 
     moveGutterByKeyboard('.ex-percent > as-split > .as-split-gutter', 1, 1, 'pagedown')
     checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [203.1875, 304.796875, 508])
@@ -204,7 +204,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-min'], notHaveTo: ['as-max'] },
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
     ])
-    checkGutterAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['20 percent', '30 percent'])
+    checkGuttersAriaValueTexts('.ex-percent > as-split > .as-split-gutter', ['20 percent', '30 percent'])
   })
 
   it('Move gutters having restrictMove off by keyboard [PIXEL MODE]', () => {
@@ -216,7 +216,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
       { haveTo: ['as-min'], notHaveTo: ['as-max'] }
     ])
-    checkGutterAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['150 pixel', null, '150 pixel'])
+    checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['150 pixel', null, '150 pixel'])
 
     moveGutterByKeyboard('.ex-pixel > as-split > .as-split-gutter', 0, 1, 'pageup')
     checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [200, 386, 150, 250])
@@ -226,7 +226,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
       { haveTo: ['as-min'], notHaveTo: ['as-max'] }
     ])
-    checkGutterAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
+    checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
 
     moveGutterByKeyboard('.ex-pixel > as-split > .as-split-gutter', 1, 2, 'leftarrow')
     checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [200, 286, 150, 350])
@@ -236,7 +236,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] }
     ])
-    checkGutterAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
+    checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
 
     moveGutterByKeyboard('.ex-pixel > as-split > .as-split-gutter', 2, 1, 'pageup')
     checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [200, 386, 150, 250])
@@ -246,7 +246,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
       { haveTo: ['as-min'], notHaveTo: ['as-max'] }
     ])
-    checkGutterAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
+    checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
   })
 })
 
