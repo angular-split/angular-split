@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
+import { moveGutter, checkSplitDirAndSizes, moveGutterByKeyboard, checkGutterAriaLabel } from '../support/splitUtils'
 
 context('Simple split example page tests', () => {
   const W = 1076
@@ -14,6 +14,7 @@ context('Simple split example page tests', () => {
   it('Display initial state', () => {
     checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [319.5, 745.5])
     checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [120, 774, 160])
+    checkGutterAriaLabel('.ex-percent .as-split-gutter', 0, 'adjustable divider between two views')
   })
 
   it('Change direction', () => {
@@ -74,5 +75,35 @@ context('Simple split example page tests', () => {
 
     checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [1065, 0])
     checkSplitDirAndSizes('.ex-pixel > as-split', 'horizontal', W, H, GUTTER, [278, 776, 0])
+  })
+
+  it('Move gutter horizontally by using keyboard', () => {
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'leftarrow')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [269.5, 795.5])
+
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'rightarrow')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [319.5, 745.5])
+
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'pagedown')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [0, 1065])
+
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'pageup')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'horizontal', W, H, GUTTER, [500, 565])
+  })
+
+  it('Move gutter vertically by using keyboard', () => {
+    cy.get('.btns > .btn').click()
+
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'downarrow')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'vertical', W, H, GUTTER, [136.703125, 152.296875])
+
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'uparrow')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'vertical', W, H, GUTTER, [86.703125, 202.28125])
+
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'pagedown')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'vertical', W, H, GUTTER, [289, 0])
+
+    moveGutterByKeyboard('.ex-percent .as-split-gutter', 0, 1, 'pageup')
+    checkSplitDirAndSizes('.ex-percent > as-split', 'vertical', W, H, GUTTER, [0, 289])
   })
 })

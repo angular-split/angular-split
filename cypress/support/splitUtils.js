@@ -13,6 +13,23 @@ export function moveGutter(gutters, num, x, y) {
   cy.wait(10)
 }
 
+export function moveGutterByKeyboard(gutters, num, keyPressTimes, keySequence) {
+  for (let i = 0; i < keyPressTimes; i++) {
+    cy.get(gutters)
+      .eq(num)
+      .focus()
+      .type(`{${keySequence}}`)
+    cy.wait(10)
+  }
+}
+
+export function checkGutterAriaLabel(gutters, num, ariaLabel) {
+  cy.get(gutters)
+    .eq(num)
+    .should('have.attr', 'aria-label')
+    .and('equal', ariaLabel)
+}
+
 //////////////////////////////////////////
 
 export function checkSplitDirAndCalcSizes(el, dir, w, h, gutter, sizes) {
