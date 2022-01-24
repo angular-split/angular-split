@@ -1,4 +1,4 @@
-export function moveGutter(gutters, num, x, y) {
+export function moveGutterByMouse(gutters, num, x, y) {
   cy.get(gutters)
     .eq(num)
     .trigger('mousedown', { which: 1, clientX: 0, clientY: 0 })
@@ -13,8 +13,8 @@ export function moveGutter(gutters, num, x, y) {
   cy.wait(10)
 }
 
-export function moveGutterByKeyboard(gutters, num, keyPressTimes, keySequence) {
-  for (let i = 0; i < keyPressTimes; i++) {
+export function moveGutterByKeyboard(gutters, num, numKeyPresses, keySequence) {
+  for (let i = 0; i < numKeyPresses; i++) {
     cy.get(gutters)
       .eq(num)
       .focus()
@@ -28,6 +28,21 @@ export function checkGutterAriaLabel(gutters, num, ariaLabel) {
     .eq(num)
     .should('have.attr', 'aria-label')
     .and('equal', ariaLabel)
+}
+
+export function checkGutterAriaValueTexts(gutters, ariaValueTexts) {
+  cy.get(gutters)
+    .each(($gutter, index) => {
+      const ariaValueText = ariaValueTexts[index]
+      if (ariaValueText === null) {
+        cy.wrap($gutter)
+          .should('not.have.attr', 'aria-valuetext')
+      } else {
+        cy.wrap($gutter)
+          .should('have.attr', 'aria-valuetext')
+          .and('equal', ariaValueTexts[index])
+      }
+    })
 }
 
 //////////////////////////////////////////

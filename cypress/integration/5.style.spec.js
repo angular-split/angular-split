@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
+import { moveGutterByMouse, checkSplitDirAndSizes } from '../support/splitUtils'
 
 context('Custom split style example page tests', () => {
   const W = 1070

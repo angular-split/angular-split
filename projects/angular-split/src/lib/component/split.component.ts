@@ -880,7 +880,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   }
 
   public getAriaAreaSizeText(size: number | null): string {
-    if (!size) {
+    if (size === null) {
       return null
     }
 

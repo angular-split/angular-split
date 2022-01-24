@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-import { moveGutter, checkSplitDirAndSizes } from '../support/splitUtils'
+import { moveGutterByMouse, checkSplitDirAndSizes } from '../support/splitUtils'
 
 function checkEventCount({ dragStartCount, dragEndCount, gutterClickCount, gutterDblClickCount, transitionEndCount }) {
   if (dragStartCount !== undefined) {
@@ -70,7 +70,7 @@ context('Gutter click example page tests', () => {
 
   it('Mix gutter click and dragging', () => {
     // Try move gutter event if disabled
-    moveGutter('.as-split-gutter', 0, -100, 0)
+    moveGutterByMouse('.as-split-gutter', 0, -100, 0)
     // gutterClick should be fired same as normal click event since dragging is disabled.
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [264, 528, 264])
 
@@ -78,7 +78,7 @@ context('Gutter click example page tests', () => {
     cy.get('.btns button').eq(1).click()
 
     // Move gutter1
-    moveGutter('.as-split-gutter', 0, -100, 0)
+    moveGutterByMouse('.as-split-gutter', 0, -100, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [164, 628, 264])
     cy.wait(10)
 
@@ -101,7 +101,7 @@ context('Gutter click example page tests', () => {
     checkEventCount({ dragStartCount: 1, dragEndCount: 1, gutterClickCount: 2, transitionEndCount: 2 })
 
     // Move gutter2 to enlarge area3
-    moveGutter('.as-split-gutter', 1, -20, 0)
+    moveGutterByMouse('.as-split-gutter', 1, -20, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [0, 1036, 20])
 
     checkEventCount({ dragStartCount: 2, dragEndCount: 2, gutterClickCount: 2, transitionEndCount: 2 })
