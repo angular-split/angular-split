@@ -1,3 +1,9 @@
+<a name="13.2.0"></a>
+
+# 13.2.0 (2022-02-13)
+
+- **Feat** add keyboard accessibility [#317](https://github.com/angular-split/angular-split/pull/317) thanks to [dxbrandon](https://github.com/dxbrandon)!
+
 <a name="13.1.0"></a>
 
 # 13.1.0 (2021-11-26)
