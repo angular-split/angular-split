@@ -2,7 +2,7 @@ import { ElementRef } from '@angular/core'
 
 import { IArea, IPoint, IAreaSnapshot, ISplitSideAbsorptionCapacity, IAreaAbsorptionCapacity } from './interface'
 
-export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
+export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent): IPoint {
   // TouchEvent
   if ((<TouchEvent>event).changedTouches !== undefined && (<TouchEvent>event).changedTouches.length > 0) {
     return {
@@ -17,11 +17,85 @@ export function getPointFromEvent(event: MouseEvent | TouchEvent): IPoint {
       y: (<MouseEvent>event).clientY,
     }
   }
+  // KeyboardEvent
+  else if ((<KeyboardEvent>event).currentTarget !== undefined) {
+    const gutterEl = event.currentTarget as HTMLElement
+    return {
+      x: gutterEl.offsetLeft,
+      y: gutterEl.offsetTop,
+    }
+  }
   return null
 }
 
 export function pointDeltaEquals(lhs: IPoint, rhs: IPoint, deltaPx: number) {
   return Math.abs(lhs.x - rhs.x) <= deltaPx && Math.abs(lhs.y - rhs.y) <= deltaPx
+}
+
+export function getKeyboardEndpoint(event: KeyboardEvent, direction: 'horizontal' | 'vertical'): IPoint | null {
+  // Return null if direction keys on the opposite axis were pressed
+  if (direction === 'horizontal') {
+    switch (event.key) {
+      case 'ArrowLeft':
+      case 'ArrowRight':
+      case 'PageUp':
+      case 'PageDown':
+        break
+      default:
+        return null
+    }
+  }
+  if (direction === 'vertical') {
+    switch (event.key) {
+      case 'ArrowUp':
+      case 'ArrowDown':
+      case 'PageUp':
+      case 'PageDown':
+        break
+      default:
+        return null
+    }
+  }
+
+  const gutterEl = event.currentTarget as HTMLElement
+  const offset = event.key === 'PageUp' || event.key === 'PageDown' ? 50 * 10 : 50
+  let offsetX = gutterEl.offsetLeft,
+    offsetY = gutterEl.offsetTop
+  switch (event.key) {
+    case 'ArrowLeft':
+      offsetX -= offset
+      break
+    case 'ArrowRight':
+      offsetX += offset
+      break
+    case 'ArrowUp':
+      offsetY -= offset
+      break
+    case 'ArrowDown':
+      offsetY += offset
+      break
+    case 'PageUp':
+      if (direction === 'vertical') {
+        offsetY -= offset
+      } else {
+        offsetX += offset
+      }
+      break
+    case 'PageDown':
+      if (direction === 'vertical') {
+        offsetY += offset
+      } else {
+        offsetX -= offset
+      }
+      break
+    default:
+      return null
+  }
+
+  return {
+    x: offsetX,
+    y: offsetY,
+  }
 }
 
 export function getElementPixelSize(elRef: ElementRef, direction: 'horizontal' | 'vertical'): number {
