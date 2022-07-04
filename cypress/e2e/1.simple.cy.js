@@ -1,6 +1,12 @@
 /// <reference types="Cypress" />
 
-import { moveGutterByMouse, checkSplitDirAndSizes, moveGutterByKeyboard, checkGutterAriaLabel, checkGuttersAriaValueTexts } from '../support/splitUtils'
+import {
+  moveGutterByMouse,
+  checkSplitDirAndSizes,
+  moveGutterByKeyboard,
+  checkGutterAriaLabel,
+  checkGuttersAriaValueTexts,
+} from '../support/splitUtils'
 
 context('Simple split example page tests', () => {
   const W = 1076

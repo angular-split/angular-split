@@ -1,6 +1,0 @@
-{
-  "baseUrl": "http://localhost:4242",
-  "viewportWidth": 1200,
-  "viewportHeight": 800,
-  "blockHosts": ["camo.githubusercontent.com"]
-}

@@ -1,6 +1,11 @@
 /// <reference types="Cypress" />
 
-import { moveGutterByMouse, checkSplitDirAndSizes, moveGutterByKeyboard, checkGuttersAriaValueTexts } from '../support/splitUtils'
+import {
+  moveGutterByMouse,
+  checkSplitDirAndSizes,
+  moveGutterByKeyboard,
+  checkGuttersAriaValueTexts,
+} from '../support/splitUtils'
 
 context('Min & max splits example page tests', () => {
   const W = 1070
@@ -214,7 +219,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
-      { haveTo: ['as-min'], notHaveTo: ['as-max'] }
+      { haveTo: ['as-min'], notHaveTo: ['as-max'] },
     ])
     checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['150 pixel', null, '150 pixel'])
 
@@ -224,7 +229,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
-      { haveTo: ['as-min'], notHaveTo: ['as-max'] }
+      { haveTo: ['as-min'], notHaveTo: ['as-max'] },
     ])
     checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
 
@@ -234,7 +239,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
-      { haveTo: [], notHaveTo: ['as-min', 'as-max'] }
+      { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
     ])
     checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
 
@@ -244,7 +249,7 @@ context('Min & max splits example page tests', () => {
       { haveTo: ['as-max'], notHaveTo: ['as-min'] },
       { haveTo: [], notHaveTo: ['as-min', 'as-max'] },
       { haveTo: ['as-min', 'as-max'], notHaveTo: [] },
-      { haveTo: ['as-min'], notHaveTo: ['as-max'] }
+      { haveTo: ['as-min'], notHaveTo: ['as-max'] },
     ])
     checkGuttersAriaValueTexts('.ex-pixel > as-split > .as-split-gutter', ['200 pixel', null, '150 pixel'])
   })

@@ -57,7 +57,12 @@ context('Nested splits example page tests', () => {
       [186.015625, 65.984375, 125.984375],
     )
 
-    moveGutterByMouse('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 1, 0, -300)
+    moveGutterByMouse(
+      '.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter',
+      1,
+      0,
+      -300,
+    )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(1) > as-split',
       'vertical',
@@ -68,7 +73,12 @@ context('Nested splits example page tests', () => {
     )
 
     // Move space smaller than gutter > move
-    moveGutterByMouse('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, 0, -10)
+    moveGutterByMouse(
+      '.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter',
+      0,
+      0,
+      -10,
+    )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(1) > as-split',
       'vertical',
@@ -79,7 +89,12 @@ context('Nested splits example page tests', () => {
     )
 
     // Move space same as gutter > move
-    moveGutterByMouse('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, 0, -GUTTER)
+    moveGutterByMouse(
+      '.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter',
+      0,
+      0,
+      -GUTTER,
+    )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(1) > as-split',
       'vertical',
@@ -90,7 +105,12 @@ context('Nested splits example page tests', () => {
     )
 
     // Move space bigger than gutter > move
-    moveGutterByMouse('.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter', 0, 0, -20)
+    moveGutterByMouse(
+      '.split-example > as-split > .as-split-area:nth-child(1) > as-split > .as-split-gutter',
+      0,
+      0,
+      -20,
+    )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(1) > as-split',
       'vertical',
@@ -102,7 +122,12 @@ context('Nested splits example page tests', () => {
   })
 
   it('Move nested split 2 multiple times', () => {
-    moveGutterByMouse('.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, 0, 600)
+    moveGutterByMouse(
+      '.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter',
+      0,
+      0,
+      600,
+    )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
       'vertical',
@@ -112,7 +137,12 @@ context('Nested splits example page tests', () => {
       [389, 0],
     )
 
-    moveGutterByMouse('.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter', 0, 0, -600)
+    moveGutterByMouse(
+      '.split-example > as-split > .as-split-area:nth-child(2) > as-split > .as-split-gutter',
+      0,
+      0,
+      -600,
+    )
     checkSplitDirAndSizes(
       '.split-example > as-split > .as-split-area:nth-child(2) > as-split',
       'vertical',
