@@ -2539,10 +2539,10 @@ ajv@^8.0.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-angular-cli-ghpages@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/angular-cli-ghpages/-/angular-cli-ghpages-1.0.0.tgz#b03de99b4355ad3d668d8749cfbcc6a9a4c7c07d"
-  integrity sha512-TUmAPOP/a8dzOC0D5juBnxeWQzx7DXz1WNvoOijDpbPGYFcQJKSsnsjk+Wx5aydbXvzS4YuE7Nh2VvfEKlLa+Q==
+angular-cli-ghpages@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/angular-cli-ghpages/-/angular-cli-ghpages-1.0.3.tgz#e94e2ec6b904ad3b7278bdb78cf697918253b8ec"
+  integrity sha512-jNVCUFQmcpkG8af4qF3fDwZuH5EX5sWR0Hxk2iXvC5qNR/2RfVgxdYGkN6ZV/qlZQOJ3aKzoG7Na0LKwrg3k7g==
   dependencies:
     commander "^3.0.0-0"
     fs-extra "^9.0.1"
@@ -6482,12 +6482,12 @@ ng-packagr@^14.0.2:
   optionalDependencies:
     esbuild "^0.14.29"
 
-ngx-bootstrap@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-8.0.0.tgz#a1d222e626a1f5e13acdaafd754bb18874a1d561"
-  integrity sha512-UjJ/57Pr7ctdI2L113QX1IqJPYtOMrp5Qq/RLvUT1TOwPQWPi9LXTQ/7BtipkptQjer7Fk9yueITH3Y8vD+Dmg==
+ngx-bootstrap@9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-9.0.0.tgz#8524958cdd479aefcc9549788694fe08789f2f52"
+  integrity sha512-wVwKs1jIASzJrKSPUhOcHY8f39MKyG31SruJdVQ3S/v/PdBVmVuFUJL86Awc8F60di2xD9C4DzzGObkvsHbirw==
   dependencies:
-    tslib "^2.0.0"
+    tslib "^2.3.0"
 
 nice-napi@^1.0.2:
   version "1.0.2"

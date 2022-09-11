@@ -1,3 +1,9 @@
+<a name="14.1.0"></a>
+
+# 14.1.0 (2022-09-11)
+
+- **fix** spurious network call due to empty background image [#322](https://github.com/angular-split/angular-split/pull/322) thanks to [rahuldimri](https://github.com/rahuldimri)!
+
 <a name="14.0.0"></a>
 
 # 14.0.0 (2022-07-18)
