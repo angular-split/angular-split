@@ -687,9 +687,13 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     let offset =
       this.direction === 'horizontal' ? this.startPoint.x - this.endPoint.x : this.startPoint.y - this.endPoint.y
-    if (this.dir === 'rtl') {
+
+    // RTL requires negative offset only in horizontal mode as in vertical
+    // RTL has no effect on drag direction.
+    if (this.dir === 'rtl' && this.direction === 'horizontal') {
       offset = -offset
     }
+
     const steppedOffset = Math.round(offset / this.gutterStep) * this.gutterStep
 
     if (steppedOffset === this.snapshot.lastSteppedOffset) {
