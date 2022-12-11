@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "lib-start": "ng build angular-split --watch",
     "lint": "ng lint",
     "app_build": "yarn lib_build && ng build --configuration production --base-href /angular-split/",
     "app_analyze": "yarn lib_build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",

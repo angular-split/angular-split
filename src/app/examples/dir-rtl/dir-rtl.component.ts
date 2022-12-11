@@ -16,6 +16,10 @@ import { AComponent } from '../../ui/components/AComponent'
         align-items: center;
         flex-wrap: wrap;
       }
+
+      .btns > button:not(:last-child) {
+        margin-right: 10px;
+      }
     `,
   ],
   template: `
@@ -23,7 +27,7 @@ import { AComponent } from '../../ui/components/AComponent'
     <div class="container">
       <sp-example-title [type]="exampleEnum.DIR"></sp-example-title>
       <div class="split-example">
-        <as-split [dir]="dir">
+        <as-split [dir]="dir" [direction]="direction">
           <as-split-area size="20">
             <p>
               1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation
@@ -62,10 +66,14 @@ import { AComponent } from '../../ui/components/AComponent'
         <button class="btn btn-warning" (click)="dir = dir === 'rtl' ? 'ltr' : 'rtl'">
           {{ 'Toggle dir: "' + dir + '"' }}
         </button>
+        <button class="btn btn-warning" (click)="direction = direction === 'vertical' ? 'horizontal' : 'vertical'">
+          {{ 'Toggle direction: "' + direction + '"' }}
+        </button>
       </div>
     </div>
   `,
 })
 export class DirRtlComponent extends AComponent {
   dir = 'rtl'
+  direction = 'horizontal'
 }
