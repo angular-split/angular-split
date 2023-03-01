@@ -1,3 +1,9 @@
+<a name="15.0.0"></a>
+
+# 15.0.0 (2023-03-01)
+
+- **Chore** add support for Angular 15 [#341](https://github.com/angular-split/angular-split/pull/341) thanks to [kufuntu](https://github.com/kufuntu)!
+
 <a name="14.1.0"></a>
 
 # 14.1.0 (2022-09-11)
