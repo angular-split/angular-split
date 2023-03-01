@@ -46,8 +46,8 @@ import { Component, VERSION } from '@angular/core'
               height="18" /></a
           >&nbsp;<a href="https://discord.gg/Qm9MPCg">
             <img
-              src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=%23angular-split&logo=discord&logoColor=white&style=flat-square"
-              alt="angular-split on Angular Discord"
+              src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=Angular%20Discord&logo=discord&logoColor=white&style=flat-square"
+              alt="Angular Discord"
               height="18"
             />
           </a>
@@ -65,12 +65,12 @@ import { Component, VERSION } from '@angular/core'
         <h5>Support:</h5>
         If you have an issue using the library, feel free to join our chat! We are part of the
         <a href="https://discord.gg/Qm9MPCg">Angular Community</a> Discord and you can ask questions in the
-        <strong>#angular-chat</strong> room there.
+        <strong>#questions</strong> channel or <strong>Help</strong> forum there.
 
         <div class="text-center">
           <a href="https://discord.gg/Qm9MPCg">
             <img
-              src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=%23angular-split&logo=discord&logoColor=white&style=flat-square"
+              src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=Angular%20Discord&logo=discord&logoColor=white&style=flat-square"
             />
           </a>
         </div>
