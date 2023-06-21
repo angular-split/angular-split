@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core'
-
+import { Subscription } from 'rxjs'
 import { SplitComponent } from '../component/split.component'
 import { getInputBoolean, getInputPositiveNumber } from '../utils'
 
@@ -87,6 +87,8 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
   }
 
   private transitionListener: Function
+  private dragStartSubscription: Subscription
+  private dragEndSubscription: Subscription
   private readonly lockListeners: Array<Function> = []
 
   constructor(
@@ -112,6 +114,19 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
           }
         },
       )
+    })
+
+    const iframeFixDiv = this.renderer.createElement('div')
+    this.renderer.addClass(iframeFixDiv, 'iframe-fix')
+
+    this.dragStartSubscription = this.split.dragStart.subscribe(() => {
+      this.renderer.setStyle(this.elRef.nativeElement, 'position', 'relative')
+      this.renderer.appendChild(this.elRef.nativeElement, iframeFixDiv)
+    })
+
+    this.dragEndSubscription = this.split.dragEnd.subscribe(() => {
+      this.renderer.removeStyle(this.elRef.nativeElement, 'position')
+      this.renderer.removeChild(this.elRef.nativeElement, iframeFixDiv)
     })
   }
 
@@ -160,6 +175,9 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     if (this.transitionListener) {
       this.transitionListener()
     }
+
+    this.dragStartSubscription?.unsubscribe()
+    this.dragEndSubscription?.unsubscribe()
 
     this.split.removeArea(this)
   }
