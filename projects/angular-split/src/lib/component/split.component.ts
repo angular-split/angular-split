@@ -82,7 +82,7 @@ import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
   template: ` <ng-content></ng-content>
     <ng-template ngFor [ngForOf]="displayedAreas" let-area="$implicit" let-index="index" let-last="last">
       <div
-        role="slider"
+        role="separator"
         tabindex="0"
         *ngIf="last === false"
         #gutterEls
