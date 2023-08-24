@@ -1,3 +1,11 @@
+<a name="16.0.0"></a>
+
+# 16.0.0 (2023-08-24)
+
+- **Feat** integrate iframe fix [#346](https://github.com/angular-split/angular-split/pull/346) thanks to [Harpush](https://github.com/Harpush)!
+- **Fix** role should be separator and not slider [#350](https://github.com/angular-split/angular-split/pull/350) thanks to [kmmccafferty96](https://github.com/kmmccafferty96)!
+- **Chore** add support for Angular 16 [#351](https://github.com/angular-split/angular-split/pull/351)
+
 <a name="15.0.0"></a>
 
 # 15.0.0 (2023-03-01)
