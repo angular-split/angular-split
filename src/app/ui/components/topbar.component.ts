@@ -89,7 +89,10 @@ export class TopbarComponent {
   examples: Routes
   isCollapsed = true
 
-  constructor(private readonly sanitizer: DomSanitizer, private readonly router: Router) {
+  constructor(
+    private readonly sanitizer: DomSanitizer,
+    private readonly router: Router,
+  ) {
     this.examples = exampleRoutes
 
     this.router.events.pipe(filter((e) => e instanceof NavigationStart)).subscribe((event) => {

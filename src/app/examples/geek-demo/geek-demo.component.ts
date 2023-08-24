@@ -15,8 +15,15 @@ import { AComponent } from '../../ui/components/AComponent'
         display: flex;
         justify-content: center;
         align-items: center;
-        text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff,
-          1px -1px 0 #fff, -1px 1px 0 #fff;
+        text-shadow:
+          2px 0 0 #fff,
+          -2px 0 0 #fff,
+          0 2px 0 #fff,
+          0 -2px 0 #fff,
+          1px 1px #fff,
+          -1px -1px 0 #fff,
+          1px -1px 0 #fff,
+          -1px 1px 0 #fff;
       }
 
       .opts-prop {
@@ -50,8 +57,15 @@ import { AComponent } from '../../ui/components/AComponent'
 
       .num {
         color: #000000;
-        text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff,
-          1px -1px 0 #fff, -1px 1px 0 #fff;
+        text-shadow:
+          2px 0 0 #fff,
+          -2px 0 0 #fff,
+          0 2px 0 #fff,
+          0 -2px 0 #fff,
+          1px 1px #fff,
+          -1px -1px 0 #fff,
+          1px -1px 0 #fff,
+          -1px 1px 0 #fff;
       }
       label {
         margin: 0;
