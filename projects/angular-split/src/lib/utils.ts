@@ -116,10 +116,22 @@ export function getInputPositiveNumber<T>(v: any, defaultValue: T): number | T {
 }
 
 export function isUserSizesValid(unit: 'percent' | 'pixel', sizes: Array<number | null>): boolean {
-  // All sizes have to be not null and total should be 100
+  // All sizes total must be 100 unless there are wildcards.
+  // While having wildcards all other sizes sum should be less than 100.
+  // There should be maximum one wildcard.
   if (unit === 'percent') {
     const total = sizes.reduce((total, s) => (s !== null ? total + s : total), 0)
-    return sizes.every((s) => s !== null) && total > 99.9 && total < 100.1
+    const wildcardSizeAreas = sizes.filter((size) => size === null)
+
+    if (wildcardSizeAreas.length > 1) {
+      return false
+    }
+
+    if (wildcardSizeAreas.length === 1) {
+      return total < 100.1
+    }
+
+    return total > 99.9 && total < 100.1
   }
 
   // A size at null is mandatory but only one.
@@ -339,11 +351,11 @@ function getAreaAbsorptionCapacityPixel(
 }
 
 export function updateAreaSize(unit: 'percent' | 'pixel', item: IAreaAbsorptionCapacity) {
-  if (unit === 'percent') {
-    item.areaSnapshot.area.size = item.percentAfterAbsorption
-  } else if (unit === 'pixel') {
-    // Update size except for the wildcard size area
-    if (item.areaSnapshot.area.size !== null) {
+  // Update size except for the wildcard size area
+  if (item.areaSnapshot.area.size !== null) {
+    if (unit === 'percent') {
+      item.areaSnapshot.area.size = item.percentAfterAbsorption
+    } else if (unit === 'pixel') {
       item.areaSnapshot.area.size = item.areaSnapshot.sizePixelAtStart + item.pixelAbsorb
     }
   }

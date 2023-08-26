@@ -484,13 +484,22 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         const sumGutterSize = this.getNbGutters() * this.gutterSize
 
         this.displayedAreas.forEach((area) => {
-          area.component.setStyleFlex(
-            0,
-            0,
-            `calc( ${area.size}% - ${(<number>area.size / 100) * sumGutterSize}px )`,
-            area.minSize !== null && area.minSize === area.size,
-            area.maxSize !== null && area.maxSize === area.size,
-          )
+          // Area with wildcard size
+          if (area.size === null) {
+            if (this.displayedAreas.length === 1) {
+              area.component.setStyleFlex(1, 1, `100%`, false, false)
+            } else {
+              area.component.setStyleFlex(1, 1, `auto`, false, false)
+            }
+          } else {
+            area.component.setStyleFlex(
+              0,
+              0,
+              `calc( ${area.size}% - ${(<number>area.size / 100) * sumGutterSize}px )`,
+              area.minSize !== null && area.minSize === area.size,
+              area.maxSize !== null && area.maxSize === area.size,
+            )
+          }
         })
       }
     } else if (this.unit === 'pixel') {
@@ -628,10 +637,33 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       }
     })
 
-    this.snapshot.allInvolvedAreasSizePercent = [
-      ...this.snapshot.areasBeforeGutter,
-      ...this.snapshot.areasAfterGutter,
-    ].reduce((t, a) => t + a.sizePercentAtStart, 0)
+    // allInvolvedAreasSizePercent is only relevant if there is restrictMove as otherwise the sum
+    // is always 100.
+    // Pixel mode doesn't have browser % problem which is the origin of allInvolvedAreasSizePercent.
+    if (this.restrictMove && this.unit === 'percent') {
+      const areaSnapshotBefore = this.snapshot.areasBeforeGutter[0]
+      const areaSnapshotAfter = this.snapshot.areasAfterGutter[0]
+
+      // We have a wildcard size area beside the dragged gutter.
+      // In this case we can only calculate the size based on the move restricted areas.
+      if (areaSnapshotBefore.area.size === null || areaSnapshotAfter.area.size === null) {
+        const notInvolvedAreasSizesPercent = this.displayedAreas.reduce((accum, area) => {
+          if (areaSnapshotBefore.area !== area && areaSnapshotAfter.area !== area) {
+            return accum + area.size
+          }
+
+          return accum
+        }, 0)
+
+        this.snapshot.allInvolvedAreasSizePercent = 100 - notInvolvedAreasSizesPercent
+      } else {
+        // No wildcard or not beside the gutter - we can just sum the areas beside gutter percents.
+        this.snapshot.allInvolvedAreasSizePercent = [
+          ...this.snapshot.areasBeforeGutter,
+          ...this.snapshot.areasAfterGutter,
+        ].reduce((t, a) => t + a.sizePercentAtStart, 0)
+      }
+    }
 
     if (this.snapshot.areasBeforeGutter.length === 0 || this.snapshot.areasAfterGutter.length === 0) {
       return
@@ -757,12 +789,16 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       // Hack because of browser messing up with sizes using calc(X% - Ypx) -> el.getBoundingClientRect()
       // If not there, playing with gutters makes total going down to 99.99875% then 99.99286%, 99.98986%,..
       const all = [...areasBefore.list, ...areasAfter.list]
-      const areaToReset = all.find(
-        (a) =>
-          a.percentAfterAbsorption !== 0 &&
-          a.percentAfterAbsorption !== a.areaSnapshot.area.minSize &&
-          a.percentAfterAbsorption !== a.areaSnapshot.area.maxSize,
-      )
+      const wildcardArea = all.find((a) => a.percentAfterAbsorption == null)
+      // In case we have a wildcard area - always align the percents on the wildcard area.
+      const areaToReset =
+        wildcardArea ??
+        all.find(
+          (a) =>
+            a.percentAfterAbsorption !== 0 &&
+            a.percentAfterAbsorption !== a.areaSnapshot.area.minSize &&
+            a.percentAfterAbsorption !== a.areaSnapshot.area.maxSize,
+        )
 
       if (areaToReset) {
         areaToReset.percentAfterAbsorption =
