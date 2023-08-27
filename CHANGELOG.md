@@ -1,3 +1,9 @@
+<a name="16.1.1"></a>
+
+# 16.1.1 (2023-08-27)
+
+- **Fix** remove deprecated forRoot and forChild [#352](https://github.com/angular-split/angular-split/pull/352) thanks to [Harpush](https://github.com/Harpush)!
+
 <a name="16.1.0"></a>
 
 # 16.1.0 (2023-08-27)
