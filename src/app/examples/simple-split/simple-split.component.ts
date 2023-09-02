@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core'
-import { SplitComponent, SplitAreaDirective } from 'angular-split'
-
+import { SplitComponent, SplitAreaDirective, ISplitDirection } from 'angular-split'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
@@ -169,7 +168,7 @@ export class SimpleSplitComponent extends AComponent {
   @ViewChild('area1') area1: SplitAreaDirective
   @ViewChild('area2') area2: SplitAreaDirective
 
-  direction = 'horizontal'
+  direction: ISplitDirection = 'horizontal'
   sizes = {
     percentWithoutWildcards: {
       area1: 30,

@@ -18,5 +18,8 @@
       "angular-split/*": ["dist/angular-split/*"]
     },
     "useDefineForClassFields": false
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
   }
 }

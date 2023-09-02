@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core'
-
 import { AComponent } from '../../ui/components/AComponent'
+import { ISplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-custom-gutter-style',
@@ -65,5 +65,5 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class CustomGutterStyleComponent extends AComponent {
-  direction = 'horizontal'
+  direction: ISplitDirection = 'horizontal'
 }

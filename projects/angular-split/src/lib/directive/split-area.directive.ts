@@ -2,6 +2,7 @@ import { Directive, ElementRef, Input, NgZone, OnDestroy, OnInit, Renderer2 } fr
 import { Subscription } from 'rxjs'
 import { SplitComponent } from '../component/split.component'
 import { getInputBoolean, getInputPositiveNumber } from '../utils'
+import { IAreaSize } from '../interface'
 
 @Directive({
   selector: 'as-split-area, [as-split-area]',
@@ -10,7 +11,7 @@ import { getInputBoolean, getInputPositiveNumber } from '../utils'
 export class SplitAreaDirective implements OnInit, OnDestroy {
   private _order: number | null = null
 
-  @Input() set order(v: number | null) {
+  @Input() set order(v: number | `${number}` | null | undefined) {
     this._order = getInputPositiveNumber(v, null)
 
     this.split.updateArea(this, true, false)
@@ -20,21 +21,21 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._order
   }
 
-  private _size: number | null = null
+  private _size: IAreaSize = null
 
-  @Input() set size(v: number | null) {
-    this._size = getInputPositiveNumber(v, null)
+  @Input() set size(v: IAreaSize | `${number}` | null | undefined) {
+    this._size = getInputPositiveNumber(v, '*')
 
     this.split.updateArea(this, false, true)
   }
 
-  get size(): number | null {
+  get size(): IAreaSize {
     return this._size
   }
 
   private _minSize: number | null = null
 
-  @Input() set minSize(v: number | null) {
+  @Input() set minSize(v: number | `${number}` | null | undefined) {
     this._minSize = getInputPositiveNumber(v, null)
 
     this.split.updateArea(this, false, true)
@@ -46,7 +47,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
   private _maxSize: number | null = null
 
-  @Input() set maxSize(v: number | null) {
+  @Input() set maxSize(v: number | `${number}` | null | undefined) {
     this._maxSize = getInputPositiveNumber(v, null)
 
     this.split.updateArea(this, false, true)
@@ -58,7 +59,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
   private _lockSize = false
 
-  @Input() set lockSize(v: boolean) {
+  @Input() set lockSize(v: boolean | `${boolean}`) {
     this._lockSize = getInputBoolean(v)
 
     this.split.updateArea(this, false, true)
@@ -70,7 +71,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
   private _visible = true
 
-  @Input() set visible(v: boolean) {
+  @Input() set visible(v: boolean | `${boolean}`) {
     this._visible = getInputBoolean(v)
 
     if (this._visible) {

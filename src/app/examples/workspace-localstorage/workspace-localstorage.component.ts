@@ -1,15 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { cloneDeep } from 'lodash'
-
 import { AComponent } from '../../ui/components/AComponent'
+import { IAreaSize, IOutputData } from 'angular-split'
 
 interface IConfig {
   columns: Array<{
     visible: boolean
-    size: number
+    size: IAreaSize
     rows: Array<{
       visible: boolean
-      size: number
+      size: IAreaSize
       type: string
     }>
   }>
@@ -147,7 +147,7 @@ export class WorkspaceLocalstorageComponent extends AComponent implements OnInit
     localStorage.removeItem(this.localStorageName)
   }
 
-  onDragEnd(columnindex: number, e: { gutterNum: number; sizes: Array<number> }) {
+  onDragEnd(columnindex: number, e: IOutputData) {
     // Column dragged
     if (columnindex === -1) {
       // Set size for all visible columns

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core'
-
 import { AComponent } from '../../ui/components/AComponent'
+import { ISplitDir, ISplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-dir_rtl',
@@ -74,6 +74,6 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class DirRtlComponent extends AComponent {
-  dir = 'rtl'
-  direction = 'horizontal'
+  dir: ISplitDir = 'rtl'
+  direction: ISplitDirection = 'horizontal'
 }
