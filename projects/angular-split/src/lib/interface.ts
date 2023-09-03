@@ -1,5 +1,13 @@
 import { SplitAreaDirective } from './directive/split-area.directive'
 
+export type ISplitDirection = 'horizontal' | 'vertical'
+
+export type ISplitDir = 'ltr' | 'rtl'
+
+export type IAreaSize = number | '*'
+
+export type ISplitUnit = 'percent' | 'pixel'
+
 export interface IPoint {
   x: number
   y: number
@@ -8,10 +16,10 @@ export interface IPoint {
 export interface IArea {
   component: SplitAreaDirective
   order: number
-  size: number | null
+  size: IAreaSize
   minSize: number | null
   maxSize: number | null
-  sizeBeforeCollapse: number | null
+  sizeBeforeCollapse: IAreaSize | null
   gutterBeforeCollapse: number
 }
 
@@ -29,7 +37,7 @@ export interface ISplitSnapshot {
 export interface IAreaSnapshot {
   area: IArea
   sizePixelAtStart: number
-  sizePercentAtStart: number
+  sizePercentAtStart: IAreaSize
 }
 
 // CREATED ON DRAG PROGRESS
@@ -42,19 +50,19 @@ export interface ISplitSideAbsorptionCapacity {
 export interface IAreaAbsorptionCapacity {
   areaSnapshot: IAreaSnapshot
   pixelAbsorb: number
-  percentAfterAbsorption: number
+  percentAfterAbsorption: IAreaSize
   pixelRemain: number
 }
 
 export interface IDefaultOptions {
-  dir: 'ltr' | 'rtl'
-  direction: 'horizontal' | 'vertical'
+  dir: ISplitDir
+  direction: ISplitDirection
   disabled: boolean
   gutterDblClickDuration: number
   gutterSize: number | null
   gutterStep: number
   restrictMove: boolean
-  unit: 'percent' | 'pixel'
+  unit: ISplitUnit
   useTransition: boolean
 }
 
@@ -65,4 +73,4 @@ export interface IOutputData {
   sizes: IOutputAreaSizes
 }
 
-export interface IOutputAreaSizes extends Array<number | '*'> {}
+export interface IOutputAreaSizes extends Array<IAreaSize> {}

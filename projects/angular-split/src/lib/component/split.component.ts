@@ -18,7 +18,6 @@ import {
 } from '@angular/core'
 import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
-
 import {
   IArea,
   IPoint,
@@ -27,6 +26,10 @@ import {
   IOutputData,
   IOutputAreaSizes,
   IDefaultOptions,
+  IAreaSize,
+  ISplitDirection,
+  ISplitDir,
+  ISplitUnit,
 } from '../interface'
 import { SplitAreaDirective } from '../directive/split-area.directive'
 import {
@@ -107,7 +110,7 @@ import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {
-  @Input() set direction(v: 'horizontal' | 'vertical') {
+  @Input() set direction(v: ISplitDirection) {
     this._direction = v === 'vertical' ? 'vertical' : 'horizontal'
 
     this.renderer.addClass(this.elRef.nativeElement, `as-${this._direction}`)
@@ -119,11 +122,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.build(false, false)
   }
 
-  get direction(): 'horizontal' | 'vertical' {
+  get direction(): ISplitDirection {
     return this._direction
   }
 
-  @Input() set unit(v: 'percent' | 'pixel') {
+  @Input() set unit(v: ISplitUnit) {
     this._unit = v === 'pixel' ? 'pixel' : 'percent'
 
     this.renderer.addClass(this.elRef.nativeElement, `as-${this._unit}`)
@@ -132,21 +135,21 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.build(false, true)
   }
 
-  get unit(): 'percent' | 'pixel' {
+  get unit(): ISplitUnit {
     return this._unit
   }
 
-  @Input() set gutterSize(v: number | null) {
+  @Input() set gutterSize(v: number | `${number}` | null | undefined) {
     this._gutterSize = getInputPositiveNumber(v, 11)
 
     this.build(false, false)
   }
 
-  get gutterSize(): number | null {
+  get gutterSize(): number {
     return this._gutterSize
   }
 
-  @Input() set gutterStep(v: number) {
+  @Input() set gutterStep(v: number | `${number}`) {
     this._gutterStep = getInputPositiveNumber(v, 1)
   }
 
@@ -154,7 +157,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._gutterStep
   }
 
-  @Input() set restrictMove(v: boolean) {
+  @Input() set restrictMove(v: boolean | `${boolean}`) {
     this._restrictMove = getInputBoolean(v)
   }
 
@@ -162,7 +165,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._restrictMove
   }
 
-  @Input() set useTransition(v: boolean) {
+  @Input() set useTransition(v: boolean | `${boolean}`) {
     this._useTransition = getInputBoolean(v)
 
     if (this._useTransition) {
@@ -176,7 +179,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._useTransition
   }
 
-  @Input() set disabled(v: boolean) {
+  @Input() set disabled(v: boolean | `${boolean}`) {
     this._disabled = getInputBoolean(v)
 
     if (this._disabled) {
@@ -190,17 +193,17 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this._disabled
   }
 
-  @Input() set dir(v: 'ltr' | 'rtl') {
+  @Input() set dir(v: ISplitDir) {
     this._dir = v === 'rtl' ? 'rtl' : 'ltr'
 
     this.renderer.setAttribute(this.elRef.nativeElement, 'dir', this._dir)
   }
 
-  get dir(): 'ltr' | 'rtl' {
+  get dir(): ISplitDir {
     return this._dir
   }
 
-  @Input() set gutterDblClickDuration(v: number) {
+  @Input() set gutterDblClickDuration(v: number | `${number}`) {
     this._gutterDblClickDuration = getInputPositiveNumber(v, 0)
   }
 
@@ -243,11 +246,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       this[property] = this._config[property]
     })
   }
-  private _direction: 'horizontal' | 'vertical'
+  private _direction: ISplitDirection
 
-  private _unit: 'percent' | 'pixel'
+  private _unit: ISplitUnit
 
-  private _gutterSize: number | null
+  private _gutterSize: number
 
   private _gutterStep: number
 
@@ -257,7 +260,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
   private _disabled: boolean
 
-  private _dir: 'ltr' | 'rtl'
+  private _dir: ISplitDir
 
   private _gutterDblClickDuration: number
 
@@ -268,8 +271,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
   private transitionEndSubscriber: Subscriber<IOutputAreaSizes>
 
-  private dragProgressSubject: Subject<IOutputData> = new Subject()
-  dragProgress$: Observable<IOutputData> = this.dragProgressSubject.asObservable()
+  private dragProgressSubject = new Subject<IOutputData>()
+  dragProgress$ = this.dragProgressSubject.asObservable()
 
   private isDragging = false
   private isWaitingClear = false
@@ -364,7 +367,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   }
 
   public getVisibleAreaSizes(): IOutputAreaSizes {
-    return this.displayedAreas.map((a) => (a.size === null ? '*' : a.size))
+    return this.displayedAreas.map((a) => a.size)
   }
 
   public setVisibleAreaSizes(sizes: IOutputAreaSizes): boolean {
@@ -372,7 +375,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return false
     }
 
-    const formattedSizes = sizes.map((s) => getInputPositiveNumber(s, null))
+    const formattedSizes = sizes.map((s) => getInputPositiveNumber(s, '*'))
     const isValid = isUserSizesValid(this.unit, formattedSizes)
 
     if (isValid === false) {
@@ -394,7 +397,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     if (resetOrders === true) {
       // If user provided 'order' for each area, use it to sort them.
       if (this.displayedAreas.every((a) => a.component.order !== null)) {
-        this.displayedAreas.sort((a, b) => <number>a.component.order - <number>b.component.order)
+        this.displayedAreas.sort((a, b) => a.component.order - b.component.order)
       }
 
       // Then set real order with multiples of 2, numbers between will be used by gutters.
@@ -417,7 +420,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
           const defaultSize = 100 / this.displayedAreas.length
 
           this.displayedAreas.forEach((area) => {
-            area.size = useUserSizes ? <number>area.component.size : defaultSize
+            area.size = useUserSizes ? area.component.size : defaultSize
             area.minSize = getAreaMinSize(area)
             area.maxSize = getAreaMaxSize(area)
           })
@@ -431,12 +434,12 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
               area.maxSize = getAreaMaxSize(area)
             })
           } else {
-            const wildcardSizeAreas = this.displayedAreas.filter((a) => a.component.size === null)
+            const wildcardSizeAreas = this.displayedAreas.filter((a) => a.component.size === '*')
 
             // No wildcard area > Need to select one arbitrarily > first
             if (wildcardSizeAreas.length === 0 && this.displayedAreas.length > 0) {
               this.displayedAreas.forEach((area, i) => {
-                area.size = i === 0 ? null : area.component.size
+                area.size = i === 0 ? '*' : area.component.size
                 area.minSize = i === 0 ? null : getAreaMinSize(area)
                 area.maxSize = i === 0 ? null : getAreaMaxSize(area)
               })
@@ -444,9 +447,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
               // More than one wildcard area > Need to keep only one arbitrarily > first
               let alreadyGotOne = false
               this.displayedAreas.forEach((area) => {
-                if (area.component.size === null) {
+                if (area.component.size === '*') {
                   if (alreadyGotOne === false) {
-                    area.size = null
+                    area.size = '*'
                     area.minSize = null
                     area.maxSize = null
                     alreadyGotOne = true
@@ -485,7 +488,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
         this.displayedAreas.forEach((area) => {
           // Area with wildcard size
-          if (area.size === null) {
+          if (area.size === '*') {
             if (this.displayedAreas.length === 1) {
               area.component.setStyleFlex(1, 1, `100%`, false, false)
             } else {
@@ -495,7 +498,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
             area.component.setStyleFlex(
               0,
               0,
-              `calc( ${area.size}% - ${(<number>area.size / 100) * sumGutterSize}px )`,
+              `calc( ${area.size}% - ${(area.size / 100) * sumGutterSize}px )`,
               area.minSize !== null && area.minSize === area.size,
               area.maxSize !== null && area.maxSize === area.size,
             )
@@ -507,7 +510,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       // PIXEL MODE
       this.displayedAreas.forEach((area) => {
         // Area with wildcard size
-        if (area.size === null) {
+        if (area.size === '*') {
           if (this.displayedAreas.length === 1) {
             area.component.setStyleFlex(1, 1, `100%`, false, false)
           } else {
@@ -646,10 +649,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
       // We have a wildcard size area beside the dragged gutter.
       // In this case we can only calculate the size based on the move restricted areas.
-      if (areaSnapshotBefore.area.size === null || areaSnapshotAfter.area.size === null) {
+      if (areaSnapshotBefore.area.size === '*' || areaSnapshotAfter.area.size === '*') {
         const notInvolvedAreasSizesPercent = this.displayedAreas.reduce((accum, area) => {
           if (areaSnapshotBefore.area !== area && areaSnapshotAfter.area !== area) {
-            return accum + area.size
+            return accum + (area.size as number)
           }
 
           return accum
@@ -661,7 +664,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
         this.snapshot.allInvolvedAreasSizePercent = [
           ...this.snapshot.areasBeforeGutter,
           ...this.snapshot.areasAfterGutter,
-        ].reduce((t, a) => t + a.sizePercentAtStart, 0)
+        ].reduce((t, a) => t + (a.sizePercentAtStart as number), 0)
       }
     }
 
@@ -789,7 +792,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       // Hack because of browser messing up with sizes using calc(X% - Ypx) -> el.getBoundingClientRect()
       // If not there, playing with gutters makes total going down to 99.99875% then 99.99286%, 99.98986%,..
       const all = [...areasBefore.list, ...areasAfter.list]
-      const wildcardArea = all.find((a) => a.percentAfterAbsorption == null)
+      const wildcardArea = all.find((a) => a.percentAfterAbsorption == '*')
       // In case we have a wildcard area - always align the percents on the wildcard area.
       const areaToReset =
         wildcardArea ??
@@ -803,7 +806,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       if (areaToReset) {
         areaToReset.percentAfterAbsorption =
           this.snapshot.allInvolvedAreasSizePercent -
-          all.filter((a) => a !== areaToReset).reduce((total, a) => total + a.percentAfterAbsorption, 0)
+          all.filter((a) => a !== areaToReset).reduce((total, a) => total + (a.percentAfterAbsorption as number), 0)
       }
     }
 
@@ -919,8 +922,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.updateArea(comp, false, false)
   }
 
-  public getAriaAreaSizeText(size: number | null): string {
-    if (size === null) {
+  public getAriaAreaSizeText(size: IAreaSize): string {
+    if (size === '*') {
       return null
     }
 

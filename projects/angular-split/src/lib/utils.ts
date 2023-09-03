@@ -1,6 +1,14 @@
 import { ElementRef } from '@angular/core'
-
-import { IArea, IPoint, IAreaSnapshot, ISplitSideAbsorptionCapacity, IAreaAbsorptionCapacity } from './interface'
+import {
+  IArea,
+  IPoint,
+  IAreaSnapshot,
+  ISplitSideAbsorptionCapacity,
+  IAreaAbsorptionCapacity,
+  IAreaSize,
+  ISplitDirection,
+  ISplitUnit,
+} from './interface'
 
 export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent): IPoint {
   // TouchEvent
@@ -32,7 +40,7 @@ export function pointDeltaEquals(lhs: IPoint, rhs: IPoint, deltaPx: number) {
   return Math.abs(lhs.x - rhs.x) <= deltaPx && Math.abs(lhs.y - rhs.y) <= deltaPx
 }
 
-export function getKeyboardEndpoint(event: KeyboardEvent, direction: 'horizontal' | 'vertical'): IPoint | null {
+export function getKeyboardEndpoint(event: KeyboardEvent, direction: ISplitDirection): IPoint | null {
   // Return null if direction keys on the opposite axis were pressed
   if (direction === 'horizontal') {
     switch (event.key) {
@@ -98,7 +106,7 @@ export function getKeyboardEndpoint(event: KeyboardEvent, direction: 'horizontal
   }
 }
 
-export function getElementPixelSize(elRef: ElementRef, direction: 'horizontal' | 'vertical'): number {
+export function getElementPixelSize(elRef: ElementRef, direction: ISplitDirection): number {
   const rect = (<HTMLElement>elRef.nativeElement).getBoundingClientRect()
 
   return direction === 'horizontal' ? rect.width : rect.height
@@ -115,13 +123,13 @@ export function getInputPositiveNumber<T>(v: any, defaultValue: T): number | T {
   return !isNaN(v) && v >= 0 ? v : defaultValue
 }
 
-export function isUserSizesValid(unit: 'percent' | 'pixel', sizes: Array<number | null>): boolean {
+export function isUserSizesValid(unit: ISplitUnit, sizes: Array<IAreaSize>): boolean {
   // All sizes total must be 100 unless there are wildcards.
   // While having wildcards all other sizes sum should be less than 100.
   // There should be maximum one wildcard.
   if (unit === 'percent') {
-    const total = sizes.reduce((total, s) => (s !== null ? total + s : total), 0)
-    const wildcardSizeAreas = sizes.filter((size) => size === null)
+    const total = sizes.reduce<number>((total, s) => (s !== '*' ? total + s : total), 0)
+    const wildcardSizeAreas = sizes.filter((size) => size === '*')
 
     if (wildcardSizeAreas.length > 1) {
       return false
@@ -136,12 +144,12 @@ export function isUserSizesValid(unit: 'percent' | 'pixel', sizes: Array<number 
 
   // A size at null is mandatory but only one.
   if (unit === 'pixel') {
-    return sizes.filter((s) => s === null).length === 1
+    return sizes.filter((s) => s === '*').length === 1
   }
 }
 
-export function getAreaMinSize(a: IArea): null | number {
-  if (a.size === null) {
+export function getAreaMinSize(a: IArea): number | null {
+  if (a.size === '*') {
     return null
   }
 
@@ -160,8 +168,8 @@ export function getAreaMinSize(a: IArea): null | number {
   return a.component.minSize
 }
 
-export function getAreaMaxSize(a: IArea): null | number {
-  if (a.size === null) {
+export function getAreaMaxSize(a: IArea): number | null {
+  if (a.size === '*') {
     return null
   }
 
@@ -181,12 +189,12 @@ export function getAreaMaxSize(a: IArea): null | number {
 }
 
 export function getGutterSideAbsorptionCapacity(
-  unit: 'percent' | 'pixel',
+  unit: ISplitUnit,
   sideAreas: Array<IAreaSnapshot>,
   pixels: number,
   allAreasSizePixel: number,
 ): ISplitSideAbsorptionCapacity {
-  return sideAreas.reduce(
+  return sideAreas.reduce<ISplitSideAbsorptionCapacity>(
     (acc, area) => {
       const res = getAreaAbsorptionCapacity(unit, area, acc.remain, allAreasSizePixel)
       acc.list.push(res)
@@ -198,7 +206,7 @@ export function getGutterSideAbsorptionCapacity(
 }
 
 function getAreaAbsorptionCapacity(
-  unit: 'percent' | 'pixel',
+  unit: ISplitUnit,
   areaSnapshot: IAreaSnapshot,
   pixels: number,
   allAreasSizePixel: number,
@@ -350,9 +358,9 @@ function getAreaAbsorptionCapacityPixel(
   }
 }
 
-export function updateAreaSize(unit: 'percent' | 'pixel', item: IAreaAbsorptionCapacity) {
+export function updateAreaSize(unit: ISplitUnit, item: IAreaAbsorptionCapacity) {
   // Update size except for the wildcard size area
-  if (item.areaSnapshot.area.size !== null) {
+  if (item.areaSnapshot.area.size !== '*') {
     if (unit === 'percent') {
       item.areaSnapshot.area.size = item.percentAfterAbsorption
     } else if (unit === 'pixel') {

@@ -25,7 +25,7 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["./node_modules/bootstrap/dist/css/bootstrap.min.css", "src/styles.scss"],
             "scripts": [],
-            "aot": false,
+            "aot": true,
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -35,13 +35,7 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
+              "budgets": [],
               "outputHashing": "all"
             },
             "development": {

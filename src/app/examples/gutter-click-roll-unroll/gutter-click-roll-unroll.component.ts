@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core'
-import { SplitComponent } from 'angular-split'
+import { IAreaSize, IOutputAreaSizes, IOutputData, SplitComponent } from 'angular-split'
 import { Subscription } from 'rxjs'
-
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
 
@@ -117,9 +116,9 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
   useTransition = true
   dblClickTime = 0
   logMessages: Array<{ type: string; text: string }> = []
-  areas = [
+  areas: { size: IAreaSize; order: number; content: string }[] = [
     { size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg' },
-    { size: 50, order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg' },
+    { size: '*', order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg' },
     { size: 25, order: 3, content: 'sd jslfd ijgil dfhlt jkgvbnhj fl bhjgflh jfglhj fl h fg' },
   ]
   sub: Subscription
@@ -138,7 +137,11 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
     })
   }
 
-  log(type: string, e: { gutterNum: number; sizes: Array<number> }) {
+  log(
+    ...[type, e]:
+      | [type: 'dragStart' | 'dragEnd' | 'gutterClick' | 'gutterDblClick', e: IOutputData]
+      | [type: 'transitionEnd', e: IOutputAreaSizes]
+  ) {
     this.logMessages.push({ type, text: `${formatDate(new Date())} > ${type} event > ${JSON.stringify(e)}` })
 
     setTimeout(() => {
@@ -156,29 +159,17 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
     }
   }
 
-  gutterClick(e: { gutterNum: number; sizes: Array<number> }) {
+  gutterClick(e: IOutputData) {
     if (e.gutterNum === 1) {
-      if (this.areas[0].size > 0) {
-        this.areas[1].size += this.areas[0].size
+      if ((this.areas[0].size as number) > 0) {
         this.areas[0].size = 0
-      } else if (this.areas[1].size > 25) {
-        this.areas[1].size -= 25
-        this.areas[0].size = 25
       } else {
         this.areas[0].size = 25
-        this.areas[1].size = 50
-        this.areas[2].size = 25
       }
     } else if (e.gutterNum === 2) {
-      if (this.areas[2].size > 0) {
-        this.areas[1].size += this.areas[2].size
+      if ((this.areas[2].size as number) > 0) {
         this.areas[2].size = 0
-      } else if (this.areas[1].size > 25) {
-        this.areas[1].size -= 25
-        this.areas[2].size = 25
       } else {
-        this.areas[0].size = 25
-        this.areas[1].size = 50
         this.areas[2].size = 25
       }
     }

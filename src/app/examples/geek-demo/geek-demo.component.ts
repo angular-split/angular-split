@@ -1,7 +1,7 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core'
 import { SortableComponent } from 'ngx-bootstrap/sortable'
-
 import { AComponent } from '../../ui/components/AComponent'
+import { IAreaSize, ISplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-geek-demo',
@@ -184,7 +184,16 @@ import { AComponent } from '../../ui/components/AComponent'
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent
 
-  d = {
+  d: {
+    dir: ISplitDirection
+    restrictMove: boolean
+    useTransition: boolean
+    gutterSize: number | null
+    gutterStep: number | null
+    width: number | null
+    height: number | null
+    areas: { id: number; color: string; size: IAreaSize; present: boolean; visible: boolean }[]
+  } = {
     dir: 'horizontal',
     restrictMove: true,
     useTransition: true,
