@@ -1,3 +1,9 @@
+<a name="16.2.0"></a>
+
+# 16.2.0 (2023-09-03)
+
+- **Feat** support angular compiler strict templates [#353](https://github.com/angular-split/angular-split/pull/353) thanks to [Harpush](https://github.com/Harpush)!
+
 <a name="16.1.1"></a>
 
 # 16.1.1 (2023-08-27)
@@ -9,7 +15,6 @@
 # 16.1.0 (2023-08-27)
 
 - **Feat** add wildcard support for percent mode [#336](https://github.com/angular-split/angular-split/pull/336) thanks to [Harpush](https://github.com/Harpush)!
-
 
 <a name="16.0.0"></a>
 
