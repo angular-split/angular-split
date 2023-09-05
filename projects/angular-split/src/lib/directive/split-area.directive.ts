@@ -21,7 +21,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._order
   }
 
-  private _size: IAreaSize = null
+  private _size: IAreaSize = '*'
 
   @Input() set size(v: IAreaSize | `${number}` | null | undefined) {
     this._size = getInputPositiveNumber(v, '*')
