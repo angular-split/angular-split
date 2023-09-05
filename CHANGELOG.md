@@ -1,3 +1,12 @@
+<a name="16.2.1"></a>
+
+# 16.2.1 (2023-09-05)
+
+- **Fix** change default area size from null to `*` [#358](https://github.com/angular-split/angular-split/pull/358) thanks to [Harpush](https://github.com/Harpush)!
+- **Fix** use correct peerDependencies versions [#355](https://github.com/angular-split/angular-split/pull/355) thanks to [beeman](https://github.com/beeman)!
+- **Chore** remove lodash dependency [#356](https://github.com/angular-split/angular-split/pull/356) thanks to [beeman](https://github.com/beeman)!
+- **Chore** update angular.json to modern standards [#357](https://github.com/angular-split/angular-split/pull/357) thanks to [beeman](https://github.com/beeman)!
+
 <a name="16.2.0"></a>
 
 # 16.2.0 (2023-09-03)
