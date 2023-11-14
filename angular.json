@@ -45,14 +45,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-split-app:build"
+            "buildTarget": "angular-split-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-split-app:build:production"
+              "buildTarget": "angular-split-app:build:production"
             },
             "development": {
-              "browserTarget": "angular-split-app:build:development"
+              "buildTarget": "angular-split-app:build:development"
             }
           },
           "defaultConfiguration": "development"
