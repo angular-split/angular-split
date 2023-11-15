@@ -55,6 +55,12 @@ export class DocumentationComponent {
           'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code>/<code>(gutterDblClick)</code> still emits.',
       },
       {
+        name: 'gutterAriaLabel',
+        type: 'string',
+        default: 'null',
+        details: 'Aria label for the gutter.',
+      },
+      {
         name: 'gutterDblClickDuration',
         type: 'number',
         default: '0',
