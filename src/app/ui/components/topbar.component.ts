@@ -55,7 +55,7 @@ import { exampleRoutes } from '../../examples/examples.routes'
       <span class="navbar-toggler-icon"></span>
     </button>
     <span class="mr-auto">
-      <img src="/assets/logo.svg" height="28" class="mr-2" alt="" />
+      <img src="/assets/logo.svg" height="28" class="mx-2" alt="" />
       <a class="navbar-brand" routerLink="/">angular-split</a>
     </span>
     <div class="collapse navbar-collapse" [collapse]="isCollapsed">
