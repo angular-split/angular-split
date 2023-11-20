@@ -1,4 +1,4 @@
-import { SplitAreaDirective } from './directive/split-area.directive'
+import type { SplitAreaDirective } from './directive/split-area.directive'
 
 export type ISplitDirection = 'horizontal' | 'vertical'
 

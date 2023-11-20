@@ -187,6 +187,42 @@ export class DocumentationComponent {
     ],
   }
 
+  readonly splitGutterDoc = {
+    templateContext: [
+      {
+        name: 'areaBefore',
+        type: 'IArea',
+        details: 'The area before the gutter. In RTL the right area and in LTR the left area',
+      },
+      {
+        name: 'areaAfter',
+        type: 'IArea',
+        details: 'The area after the gutter. In RTL the left area and in LTR the right area',
+      },
+      {
+        name: 'gutterNum',
+        type: 'number',
+        details:
+          'The absolute number of the gutter based on direction (RTL and LTR). First gutter is 1, second is 2, etc...',
+      },
+      {
+        name: 'first',
+        type: 'boolean',
+        details: 'Whether this is the first gutter. In RTL the most right area and in LTR the most left area',
+      },
+      {
+        name: 'last',
+        type: 'boolean',
+        details: 'Whether this is the last gutter. In RTL the most left area and in LTR the most right area',
+      },
+      {
+        name: 'isDragged',
+        type: 'boolean',
+        details: 'Whether the gutter is being dragged now',
+      },
+    ],
+  }
+
   readonly cssClasses = {
     split: [
       { name: 'as-init', details: 'Added after component initialization.' },
