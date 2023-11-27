@@ -8,7 +8,8 @@
 
 # 17.0.0 (2023-11-15)
 
-- **Feat** support custom gutter template [#364](https://github.com/angular-split/angular-split/pull/364) thanks to [Harpush](https://github.com/Harpush)!
+- **Docs** add gutterAriaLabel to documentation [#364](https://github.com/angular-split/angular-split/pull/364) thanks to [jakubmank2](https://github.com/jakubmank2)!
+- **Chore** add support for Angular 17 [#365](https://github.com/angular-split/angular-split/pull/365)
 
 <a name="16.2.1"></a>
 
