@@ -111,7 +111,7 @@ import { SplitGutterDirective } from '../gutter/split-gutter.directive'
         [attr.aria-orientation]="direction"
         [attr.aria-valuemin]="area.minSize"
         [attr.aria-valuemax]="area.maxSize"
-        [attr.aria-valuenow]="area.size"
+        [attr.aria-valuenow]="area.size === '*' ? null : area.size"
         [attr.aria-valuetext]="getAriaAreaSizeText(area.size)"
       >
         <ng-container *ngIf="customGutter?.template; else defaultGutterTpl">
