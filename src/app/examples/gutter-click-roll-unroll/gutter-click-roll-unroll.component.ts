@@ -12,12 +12,9 @@ import { formatDate } from '../../utils/format-date'
   },
   styles: [
     `
-      as-split.as-transition.as-init:not(.as-dragging) ::ng-deep > .as-split-gutter,
-      as-split.as-transition.as-init:not(.as-dragging) > .as-split-area {
-        transition: flex-basis 1.5s !important;
-      }
-      as-split.as-disabled ::ng-deep > .as-split-gutter {
-        cursor: pointer !important;
+      as-split {
+        --as-transition-duration: 1.5s;
+        --as-gutter-disabled-cursor: pointer;
       }
 
       .btns {

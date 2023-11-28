@@ -252,4 +252,31 @@ export class DocumentationComponent {
       { name: 'as-dragged', details: 'Added on gutter while dragged.' },
     ],
   }
+
+  readonly themeInfo = [
+    {
+      name: 'gutter-background-color',
+      details: 'The gutter background color',
+    },
+    {
+      name: 'gutter-icon-horizontal-bg-image-url',
+      details: 'Gutter icon in horizontal mode',
+    },
+    {
+      name: 'gutter-icon-vertical-bg-image-url',
+      details: 'Gutter icon in vertical mode',
+    },
+    {
+      name: 'gutter-icon-disabled-bg-image-url',
+      details: 'Gutter icon when gutter is disabled',
+    },
+    {
+      name: 'transition-duration',
+      details: 'Size change transition duration for animation',
+    },
+    {
+      name: 'gutter-disabled-cursor',
+      details: 'Gutter cursor when gutter is disabled',
+    },
+  ]
 }

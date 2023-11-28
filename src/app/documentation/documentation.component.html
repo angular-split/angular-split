@@ -135,6 +135,28 @@
     excluded.</p>
   <br /><br />
 
+  <h4><b>Theme</b></h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 40%">Theme SCSS property</th>
+        <th>CSS variable</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of themeInfo">
+        <td>
+          <code>{{ x.name }}</code>
+        </td>
+        <td>
+          <code>--as-{{ x.name }}</code>
+        </td>
+        <td [innerHTML]="x.details"></td>
+      </tr>
+    </tbody>
+  </table>
+
   <h4><b>CSS classes</b></h4>
   <table class="table table-striped">
     <thead>

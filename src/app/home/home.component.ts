@@ -59,8 +59,11 @@ import { Component, VERSION } from '@angular/core'
         <h5>Add angular module to your app:</h5>
         <pre [innerText]="code2"></pre>
         <br />
-        <h5>Define splits in your template:</h5>
+        <h5>Add theme to styles.scss:</h5>
         <pre [innerText]="code3"></pre>
+        <br />
+        <h5>Define splits in your template:</h5>
+        <pre [innerText]="code4"></pre>
         <br />
         <h5>Support:</h5>
         If you have an issue using the library, feel free to join our chat! We are part of the
@@ -103,8 +106,10 @@ export class HomeComponent {
   ...
 })
 export class AppModule {}`
+  code3 = `@use 'angular-split/theme' as asSplit;
+@include asSplit.theme(/* Can customize theme */);`
 
-  code3 = `<div style="width: 500px; height: 500px; background: yellow;">
+  code4 = `<div style="width: 500px; height: 500px; background: yellow;">
   <as-split direction="horizontal">
     <as-split-area [size]="40">
       <p>LEFT</p>

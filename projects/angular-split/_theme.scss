@@ -1,0 +1,132 @@
+@use 'sass:map';
+
+$_defaultConfig: (
+  gutter-background-color: #eeeeee,
+  gutter-icon-horizontal-bg-image-url:
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg=='),
+  gutter-icon-vertical-bg-image-url:
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC'),
+  gutter-icon-disabled-bg-image-url:
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg=='),
+  transition-duration: 0.3s,
+  gutter-disabled-cursor: default,
+);
+
+@function var-or-map-default($name, $map) {
+  @return var(--as-#{$name}, map.get($map, $name));
+}
+
+@mixin theme($config: ()) {
+  $mergedConfig: map.merge($_defaultConfig, $config);
+
+  as-split {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    &.as-horizontal {
+      flex-direction: row;
+    }
+
+    &.as-vertical {
+      flex-direction: column;
+    }
+
+    // Add transition only when transition enabled + split initialized + not currently dragging.
+    &.as-transition.as-init:not(.as-dragging) {
+      & > .as-split-gutter,
+      & > .as-split-area {
+        transition: flex-basis var-or-map-default('transition-duration', $mergedConfig);
+      }
+    }
+  }
+
+  .as-split-gutter {
+    border: none;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: var-or-map-default('gutter-background-color', $mergedConfig);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.as-split-gutter-collapsed {
+      flex-basis: 1px !important;
+      pointer-events: none;
+    }
+
+    .as-horizontal > & {
+      flex-direction: row;
+      cursor: col-resize;
+      // Fix safari bug about gutter height when direction is horizontal.
+      height: 100%;
+    }
+
+    .as-vertical > & {
+      flex-direction: column;
+      cursor: row-resize;
+      width: 100%;
+    }
+
+    .as-disabled > & {
+      cursor: var-or-map-default('gutter-disabled-cursor', $mergedConfig);
+    }
+  }
+
+  .as-split-gutter-icon {
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    .as-horizontal & {
+      background-image: var-or-map-default('gutter-icon-horizontal-bg-image-url', $mergedConfig);
+    }
+
+    .as-vertical & {
+      background-image: var-or-map-default('gutter-icon-vertical-bg-image-url', $mergedConfig);
+    }
+
+    .as-disabled & {
+      background-image: var-or-map-default('gutter-icon-disabled-bg-image-url', $mergedConfig);
+    }
+  }
+
+  .as-split-area {
+    flex-grow: 0;
+    flex-shrink: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &.as-hidden {
+      // When <as-split-area [visible]="false"> force size to 0.
+      flex: 0 1 0px !important;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    .as-iframe-fix {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .as-horizontal & {
+      height: 100%;
+    }
+
+    .as-vertical & {
+      width: 100%;
+
+      &.as-hidden {
+        max-width: 0;
+      }
+    }
+  }
+}

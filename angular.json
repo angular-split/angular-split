@@ -24,6 +24,9 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["./node_modules/bootstrap/dist/css/bootstrap.min.css", "src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["dist"]
+            },
             "scripts": []
           },
           "configurations": {
