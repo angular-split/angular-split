@@ -1,3 +1,9 @@
+<a name="17.1.1"></a>
+
+# 17.1.1 (2023-11-29)
+
+- **Fix** aria-valuenow incorrectly set to wildcard [#368](https://github.com/angular-split/angular-split/pull/368) thanks to [Harpush](https://github.com/Harpush)!
+
 <a name="17.1.0"></a>
 
 # 17.1.0 (2023-11-27)
