@@ -30,4 +30,4 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run tests
-        run: yarn cypress_ci
+        run: yarn test_ci
