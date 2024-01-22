@@ -24,14 +24,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["./node_modules/bootstrap/dist/css/bootstrap.min.css", "src/styles.scss"],
-            "scripts": [],
-            "aot": true,
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -52,13 +45,17 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-split-app:build"
+            "buildTarget": "angular-split-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-split-app:build:production"
+              "buildTarget": "angular-split-app:build:production"
+            },
+            "development": {
+              "buildTarget": "angular-split-app:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
@@ -81,5 +78,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "4af3d67b-15ea-40d9-8c3a-998fb02958b9"
   }
 }

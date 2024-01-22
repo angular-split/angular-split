@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="188px" height="200px" viewBox="0 0 188 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
     <title>angular-split</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="angular-split" fill-rule="nonzero">
-            <polygon id="Shape" fill="#FFC71F" points="94 0 0.9 33.2 15.1 156.3 94 200 172.9 156.3 187.1 33.2"></polygon>
-            <polygon id="Shape" fill="#D6A102" points="94 22.2 94 123.4 94 200 172.9 156.3 187.1 33.2 94 0"></polygon>
-            <path d="M94,22.1 L35.8,152.6 L57.5,152.6 L69.2,123.4 L118.6,123.4 L130.3,152.6 L152,152.6 L94,22.1 Z M111,105.4 L77,105.4 L94,64.5 L111,105.4 Z" id="Shape" fill="#FFFFFF"></path>
+        <g id="angular-split-space" transform="translate(-16, -10)" fill="#FFC71F" fill-rule="nonzero">
+            <g id="angular-split" transform="translate(16, 10)">
+                <polygon id="Path" points="116.316934 0 181.251144 140.459459 188 33.3243243"></polygon>
+                <polygon id="Path" points="133.068078 147.594595 54.9319222 147.594595 44.9565217 171.891892 94 200 143.043478 171.891892"></polygon>
+                <polygon id="Path" points="68.3220824 116.081081 119.704805 116.081081 94 53.2972973"></polygon>
+                <polygon id="Path" points="71.6830664 0 0 33.3243243 6.74885584 140.459459"></polygon>
+            </g>
         </g>
     </g>
 </svg>

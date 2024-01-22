@@ -55,6 +55,12 @@ export class DocumentationComponent {
           'Disable the dragging feature (remove cursor/image on gutters). <code>(gutterClick)</code>/<code>(gutterDblClick)</code> still emits.',
       },
       {
+        name: 'gutterAriaLabel',
+        type: 'string',
+        default: 'null',
+        details: 'Aria label for the gutter.',
+      },
+      {
         name: 'gutterDblClickDuration',
         type: 'number',
         default: '0',
@@ -177,6 +183,42 @@ export class DocumentationComponent {
         type: 'boolean',
         default: 'true',
         details: `Hide area visually but still present in the DOM, use <code>ngIf</code> to completely remove it.<br><u>Not working when <code>[size]="'*'"</code></u>`,
+      },
+    ],
+  }
+
+  readonly splitGutterDoc = {
+    templateContext: [
+      {
+        name: 'areaBefore',
+        type: 'IArea',
+        details: 'The area before the gutter. In RTL the right area and in LTR the left area',
+      },
+      {
+        name: 'areaAfter',
+        type: 'IArea',
+        details: 'The area after the gutter. In RTL the left area and in LTR the right area',
+      },
+      {
+        name: 'gutterNum',
+        type: 'number',
+        details:
+          'The absolute number of the gutter based on direction (RTL and LTR). First gutter is 1, second is 2, etc...',
+      },
+      {
+        name: 'first',
+        type: 'boolean',
+        details: 'Whether this is the first gutter. In RTL the most right area and in LTR the most left area',
+      },
+      {
+        name: 'last',
+        type: 'boolean',
+        details: 'Whether this is the last gutter. In RTL the most left area and in LTR the most right area',
+      },
+      {
+        name: 'isDragged',
+        type: 'boolean',
+        details: 'Whether the gutter is being dragged now',
       },
     ],
   }

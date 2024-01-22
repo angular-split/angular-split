@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
-import { cloneDeep } from 'lodash'
 import { AComponent } from '../../ui/components/AComponent'
 import { IAreaSize, IOutputData } from 'angular-split'
 
@@ -142,7 +141,7 @@ export class WorkspaceLocalstorageComponent extends AComponent implements OnInit
   }
 
   resetConfig() {
-    this.config = cloneDeep(defaultConfig)
+    this.config = structuredClone(defaultConfig)
 
     localStorage.removeItem(this.localStorageName)
   }

@@ -15,6 +15,7 @@ import {
   ViewEncapsulation,
   Inject,
   Optional,
+  ContentChild,
 } from '@angular/core'
 import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
@@ -46,6 +47,7 @@ import {
   getKeyboardEndpoint,
 } from '../utils'
 import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
+import { SplitGutterDirective } from '../gutter/split-gutter.directive'
 
 /**
  * angular-split
@@ -83,13 +85,21 @@ import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: [`./split.component.scss`],
   template: ` <ng-content></ng-content>
-    <ng-template ngFor [ngForOf]="displayedAreas" let-area="$implicit" let-index="index" let-last="last">
+    <ng-template
+      ngFor
+      [ngForOf]="displayedAreas"
+      let-area="$implicit"
+      let-index="index"
+      let-first="first"
+      let-last="last"
+    >
       <div
         role="separator"
         tabindex="0"
         *ngIf="last === false"
         #gutterEls
         class="as-split-gutter"
+        [class.as-dragged]="draggedGutterNum === index + 1"
         [style.flex-basis.px]="gutterSize"
         [style.order]="index * 2 + 1"
         (keydown)="startKeyboardDrag($event, index * 2 + 1, index + 1)"
@@ -101,15 +111,36 @@ import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
         [attr.aria-orientation]="direction"
         [attr.aria-valuemin]="area.minSize"
         [attr.aria-valuemax]="area.maxSize"
-        [attr.aria-valuenow]="area.size"
+        [attr.aria-valuenow]="area.size === '*' ? null : area.size"
         [attr.aria-valuetext]="getAriaAreaSizeText(area.size)"
       >
-        <div class="as-split-gutter-icon"></div>
+        <ng-container *ngIf="customGutter?.template; else defaultGutterTpl">
+          <ng-container *asSplitGutterDynamicInjector="index + 1; let injector">
+            <ng-container
+              *ngTemplateOutlet="
+                customGutter.template;
+                context: {
+                  areaBefore: area,
+                  areaAfter: displayedAreas[index + 1],
+                  gutterNum: index + 1,
+                  first,
+                  last: index === displayedAreas.length - 2,
+                  isDragged: draggedGutterNum === index + 1
+                };
+                injector: injector
+              "
+            ></ng-container>
+          </ng-container>
+        </ng-container>
+        <ng-template #defaultGutterTpl>
+          <div class="as-split-gutter-icon"></div>
+        </ng-template>
       </div>
     </ng-template>`,
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {
+  @ContentChild(SplitGutterDirective) customGutter: SplitGutterDirective
   @Input() set direction(v: ISplitDirection) {
     this._direction = v === 'vertical' ? 'vertical' : 'horizontal'
 
@@ -288,6 +319,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   @ViewChildren('gutterEls') private gutterEls: QueryList<ElementRef>
 
   _clickTimeout: number | null = null
+  draggedGutterNum: number = undefined
 
   ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
@@ -584,6 +616,10 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   }
 
   startMouseDrag(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
+    if (this.customGutter && !this.customGutter.canStartDragging(event.target as HTMLElement, gutterNum)) {
+      return
+    }
+
     event.preventDefault()
     event.stopPropagation()
 
@@ -709,7 +745,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
           this.isWaitingInitialMove = false
 
           this.renderer.addClass(this.elRef.nativeElement, 'as-dragging')
-          this.renderer.addClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged')
+          this.draggedGutterNum = this.snapshot.gutterNum
+          this.cdRef.markForCheck()
 
           this.notify('start', this.snapshot.gutterNum)
         })
@@ -848,7 +885,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     this.renderer.removeClass(this.elRef.nativeElement, 'as-dragging')
-    this.renderer.removeClass(this.gutterEls.toArray()[this.snapshot.gutterNum - 1].nativeElement, 'as-dragged')
+    this.draggedGutterNum = undefined
+    this.cdRef.markForCheck()
+
     this.snapshot = null
     this.isWaitingClear = true
 
