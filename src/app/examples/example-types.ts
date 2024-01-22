@@ -1,0 +1,17 @@
+export enum ExampleEnum {
+  CLICK = 'click',
+  CODE = 'code',
+  COLLAPSE = 'collapse',
+  DIR = 'dir',
+  GEEK = 'geek',
+  IFRAME = 'iframe',
+  MINMAX = 'minmax',
+  NESTED = 'nested',
+  SIMPLE = 'simple',
+  STYLE = 'style',
+  SYNC = 'sync',
+  TOGGLE = 'toggle',
+  TRANSITION = 'transition',
+  WORKSPACE = 'workspace',
+  GLOBAL = 'global',
+}

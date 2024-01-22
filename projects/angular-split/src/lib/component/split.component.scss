@@ -8,12 +8,18 @@
   height: 100%;
 
   & > .as-split-gutter {
+    border: none;
     flex-grow: 0;
     flex-shrink: 0;
     background-color: #eeeeee;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.as-split-gutter-collapsed {
+      flex-basis: 1px !important;
+      pointer-events: none;
+    }
 
     & > .as-split-gutter-icon {
       width: 100%;
@@ -35,6 +41,14 @@
       flex: 0 1 0px !important;
       overflow-x: hidden;
       overflow-y: hidden;
+    }
+
+    .iframe-fix {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -85,7 +99,7 @@
       cursor: default;
 
       .as-split-gutter-icon {
-        background-image: url('');
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
       }
     }
   }

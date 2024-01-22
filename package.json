@@ -2,81 +2,163 @@
   "name": "angular-split-app",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
+    "app_analyze": "yarn build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
+    "build": "wireit",
+    "test_live": "wireit",
+    "test_prod": "wireit",
+    "test_ci": "wireit",
+    "deploy": "ng deploy angular-split-app --branch main --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git",
+    "format": "prettier --write '**/*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}'",
+    "lib_pub_latest": "wireit",
+    "lib_pub_next": "wireit",
+    "lib_tgz": "wireit",
     "lint": "ng lint",
-    "app_build": "npm run lib_build && ng build --prod --base-href /angular-split/ && npm run app_lazy_build && npm run app_lazy2_build",
-    "app_lazy_build": "ng build angular-split-app-lazy --prod --base-href /angular-split/lazy --deploy-url /angular-split/lazy/",
-    "app_lazy2_build": "ng build angular-split-app-lazy2 --prod --base-href /angular-split/lazy2 --deploy-url /angular-split/lazy2/",
-    "app_analyze": "npm run lib_build && ng build --prod --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
-    "deploy": "ng deploy angular-split-app --branch master --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git",
-    "lib_build": "ng build angular-split && npm run lib_copy_license && npm run lib_copy_readme",
-    "lib_copy_license": "cpx ./LICENSE ./dist/angular-split",
-    "lib_copy_readme": "cpx ./README.md ./dist/angular-split",
-    "lib_tgz": "npm run lib_build && cd dist/angular-split && npm pack",
-    "lib_pub_next": "npm run lib_build && npm publish --tag next ./dist/angular-split",
-    "lib_pub_latest": "npm run lib_build && npm publish --tag latest ./dist/angular-split",
-    "cypress_dev": "npm run lib_build && ng build --prod && concurrently \"ng serve --port 4242\" \"cypress open\"",
-    "cypress_prod": "npm run cypress_build && run-p --race cypress_serve cypress_open",
-    "cypress_ci": "npm run cypress_build && run-p --race cypress_serve cypress_run",
-    "cypress_build": "npm run lib_build && ng build angular-split-app --prod --base-href /angular-split-app/ && ng build angular-split-app-lazy --prod --base-href /angular-split-app/lazy --deploy-url /angular-split-app/lazy/ && ng build angular-split-app-lazy2 --prod --base-href /angular-split-app/lazy2 --deploy-url /angular-split-app/lazy2/",
-    "cypress_serve": "http-server ./dist -a localhost -p 4242 -c-1",
-    "cypress_open": "cypress open --config baseUrl=http://localhost:4242/angular-split-app/",
-    "cypress_run": "cypress run --config baseUrl=http://localhost:4242/angular-split-app/",
-    "format": "prettier --write '**/*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}'"
+    "ng": "ng",
+    "start": "wireit"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "8.2.14",
-    "@angular/common": "8.2.14",
-    "@angular/compiler": "8.2.14",
-    "@angular/core": "8.2.14",
-    "@angular/forms": "8.2.14",
-    "@angular/http": "7.2.9",
-    "@angular/platform-browser": "8.2.14",
-    "@angular/platform-browser-dynamic": "8.2.14",
-    "@angular/router": "8.2.14",
-    "angular-cli-ghpages": "^0.6.2",
-    "bootstrap": "4.3.1",
-    "core-js": "2.6.5",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
-    "lodash": "4.17.19",
-    "marked": "0.6.1",
-    "ngx-bootstrap": "3.2.0",
-    "prettier": "^2.0.5",
-    "rxjs": "6.6.0",
-    "zone.js": "0.9.1"
+    "@angular/animations": "^17.1.0",
+    "@angular/common": "^17.1.0",
+    "@angular/compiler": "^17.1.0",
+    "@angular/core": "^17.1.0",
+    "@angular/forms": "^17.1.0",
+    "@angular/platform-browser": "^17.1.0",
+    "@angular/platform-browser-dynamic": "^17.1.0",
+    "@angular/router": "^17.1.0",
+    "angular-cli-ghpages": "^1.0.6",
+    "bootstrap": "5.3.1",
+    "core-js": "3.32.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "marked": "7.0.4",
+    "ngx-bootstrap": "11.0.2",
+    "prettier": "^3.0.2",
+    "rxjs": "7.8.1",
+    "tsickle": "^0.46.3",
+    "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.803.29",
-    "@angular-devkit/build-ng-packagr": "0.803.29",
-    "@angular/cli": "8.3.29",
-    "@angular/compiler-cli": "8.2.14",
-    "@angular/language-service": "8.2.14",
-    "@types/node": "10.12.3",
-    "codelyzer": "4.5.0",
-    "concurrently": "4.0.1",
-    "cpx": "1.5.0",
-    "cypress": "3.2.0",
-    "http-server": "0.11.1",
-    "ng-packagr": "5.7.1",
-    "npm-run-all": "4.1.3",
-    "ts-node": "7.0.1",
-    "tsickle": "0.35.0",
-    "tslib": "1.13.0",
-    "tslint": "5.11.0",
-    "typescript": "3.5.3",
-    "webpack-bundle-analyzer": "3.3.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "@angular-devkit/architect": "^0.1701.0",
+    "@angular-devkit/build-angular": "^17.1.0",
+    "@angular-devkit/core": "^17.1.0",
+    "@angular-devkit/schematics": "^17.1.0",
+    "@angular/cli": "^17.1.0",
+    "@angular/compiler-cli": "^17.1.0",
+    "@angular/language-service": "^17.1.0",
+    "@types/marked": "^5.0.1",
+    "@types/node": "20.5.4",
+    "codelyzer": "^6.0.2",
+    "concurrently": "8.2.1",
+    "cypress": "12.17.4",
+    "ng-packagr": "^17.0.0",
+    "npm-run-all": "4.1.5",
+    "postcss": "8.4.28",
+    "serve": "^14.2.1",
+    "ts-node": "10.9.1",
+    "tslib": "^2.6.2",
+    "tslint": "~6.1.3",
+    "typescript": "5.2.2",
+    "webpack-bundle-analyzer": "4.9.0",
+    "wireit": "^0.14.3"
   },
   "lint-staged": {
     "*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}": [
       "prettier --write"
     ]
+  },
+  "wireit": {
+    "app_build_dev": {
+      "command": "yarn app_build -- --base-href /angular-split/"
+    },
+    "app_build": {
+      "command": "ng build angular-split-app --configuration production",
+      "dependencies": [
+        "lib_build"
+      ],
+      "files": [
+        "src/"
+      ],
+      "output": [
+        "dist/angular-split-app"
+      ]
+    },
+    "build": {
+      "dependencies": [
+        "app_build",
+        "lib_build"
+      ]
+    },
+    "test_ci": {
+      "dependencies": [
+        "cypress_run",
+        "cypress_serve"
+      ]
+    },
+    "ng_serve": {
+      "command": "ng serve --port 4242",
+      "service": true
+    },
+    "test_live": {
+      "command": "cypress open --config baseUrl=http://localhost:4242/",
+      "dependencies": [
+        "ng_serve"
+      ],
+      "service": true
+    },
+    "test_prod": {
+      "command": "cypress open --config baseUrl=http://localhost:4242/",
+      "dependencies": [
+        "build",
+        "cypress_serve"
+      ],
+      "service": true
+    },
+    "cypress_run": {
+      "command": "cypress run --config baseUrl=http://localhost:4242/",
+      "dependencies": [
+        "cypress_serve"
+      ]
+    },
+    "cypress_serve": {
+      "command": "serve -s -l 4242 ./dist/angular-split-app",
+      "service": true,
+      "dependencies": [
+        "build"
+      ]
+    },
+    "lib_build": {
+      "command": "ng build angular-split && cp ./LICENSE ./README.md ./dist/angular-split",
+      "files": [
+        "projects/angular-split/"
+      ],
+      "output": [
+        "dist/angular-split"
+      ]
+    },
+    "lib_pub_latest": {
+      "command": "npm publish --tag latest ./dist/angular-split",
+      "dependencies": [
+        "lib_build"
+      ]
+    },
+    "lib_pub_next": {
+      "command": "npm publish --tag next ./dist/angular-split",
+      "dependencies": [
+        "lib_build"
+      ]
+    },
+    "lib_tgz": {
+      "command": "cd dist/angular-split && npm pack",
+      "dependencies": [
+        "lib_build"
+      ]
+    },
+    "start": {
+      "command": "ng serve",
+      "dependencies": [
+        "lib_build"
+      ]
+    }
   }
 }

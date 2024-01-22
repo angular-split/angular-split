@@ -1,3 +1,124 @@
+<a name="17.1.1"></a>
+
+# 17.1.1 (2023-11-29)
+
+- **Fix** aria-valuenow incorrectly set to wildcard [#368](https://github.com/angular-split/angular-split/pull/368) thanks to [Harpush](https://github.com/Harpush)!
+
+<a name="17.1.0"></a>
+
+# 17.1.0 (2023-11-27)
+
+- **Feat** support custom gutter template [#364](https://github.com/angular-split/angular-split/pull/364) thanks to [Harpush](https://github.com/Harpush)!
+
+<a name="17.0.0"></a>
+
+# 17.0.0 (2023-11-15)
+
+- **Docs** add gutterAriaLabel to documentation [#364](https://github.com/angular-split/angular-split/pull/364) thanks to [jakubmank2](https://github.com/jakubmank2)!
+- **Chore** add support for Angular 17 [#365](https://github.com/angular-split/angular-split/pull/365)
+
+<a name="16.2.1"></a>
+
+# 16.2.1 (2023-09-05)
+
+- **Fix** change default area size from null to `*` [#358](https://github.com/angular-split/angular-split/pull/358) thanks to [Harpush](https://github.com/Harpush)!
+- **Fix** use correct peerDependencies versions [#355](https://github.com/angular-split/angular-split/pull/355) thanks to [beeman](https://github.com/beeman)!
+- **Chore** remove lodash dependency [#356](https://github.com/angular-split/angular-split/pull/356) thanks to [beeman](https://github.com/beeman)!
+- **Chore** update angular.json to modern standards [#357](https://github.com/angular-split/angular-split/pull/357) thanks to [beeman](https://github.com/beeman)!
+
+<a name="16.2.0"></a>
+
+# 16.2.0 (2023-09-03)
+
+- **Feat** support angular compiler strict templates [#353](https://github.com/angular-split/angular-split/pull/353) thanks to [Harpush](https://github.com/Harpush)!
+
+<a name="16.1.1"></a>
+
+# 16.1.1 (2023-08-27)
+
+- **Fix** remove deprecated forRoot and forChild [#352](https://github.com/angular-split/angular-split/pull/352) thanks to [Harpush](https://github.com/Harpush)!
+
+<a name="16.1.0"></a>
+
+# 16.1.0 (2023-08-27)
+
+- **Feat** add wildcard support for percent mode [#336](https://github.com/angular-split/angular-split/pull/336) thanks to [Harpush](https://github.com/Harpush)!
+
+<a name="16.0.0"></a>
+
+# 16.0.0 (2023-08-24)
+
+- **Feat** integrate iframe fix [#346](https://github.com/angular-split/angular-split/pull/346) thanks to [Harpush](https://github.com/Harpush)!
+- **Fix** role should be separator and not slider [#350](https://github.com/angular-split/angular-split/pull/350) thanks to [kmmccafferty96](https://github.com/kmmccafferty96)!
+- **Chore** add support for Angular 16 [#351](https://github.com/angular-split/angular-split/pull/351)
+
+<a name="15.0.0"></a>
+
+# 15.0.0 (2023-03-01)
+
+- **Chore** add support for Angular 15 [#341](https://github.com/angular-split/angular-split/pull/341) thanks to [kufuntu](https://github.com/kufuntu)!
+
+<a name="14.1.0"></a>
+
+# 14.1.0 (2022-09-11)
+
+- **fix** spurious network call due to empty background image [#322](https://github.com/angular-split/angular-split/pull/322) thanks to [rahuldimri](https://github.com/rahuldimri)!
+
+<a name="14.0.0"></a>
+
+# 14.0.0 (2022-07-18)
+
+- **Chore** add support for Angular 14
+
+<a name="13.2.0"></a>
+
+# 13.2.0 (2022-02-13)
+
+- **Feat** add keyboard accessibility [#317](https://github.com/angular-split/angular-split/pull/317) thanks to [dxbrandon](https://github.com/dxbrandon)!
+
+<a name="13.1.0"></a>
+
+# 13.1.0 (2021-11-26)
+
+- **Feat** allow for setting global config (issue [#166](https://github.com/angular-split/angular-split/issues/166) / PR [#309](https://github.com/angular-split/angular-split/pull/309)) thanks to [pawelwojkiewicz](https://github.com/pawelwojkiewicz).
+
+<a name="13.0.1"></a>
+
+# 13.0.1 (2021-11-20)
+
+- **Fix** export internal interfaces (issue [#307](https://github.com/angular-split/angular-split/issues/307)).
+
+<a name="13.0.0"></a>
+
+# 13.0.0 (2021-11-20)
+
+- **Chore** add support for Angular 13
+
+<a name="5.0.0"></a>
+
+# 5.0.0 (2020-12-18)
+
+- **Fix** fire dragStart event only when a cursor is moved [#283](https://github.com/angular-split/angular-split/issues/283) thanks to [nomeaning777](https://github.com/nomeaning777)!
+
+<a name="5.0.0-beta.2"></a>
+
+# 5.0.0-beta.2 (2020-11-23)
+
+- **Feat** Add Expand/Collapse functionality [#276](https://github.com/angular-split/angular-split/issues/276) thanks to [Shemesh](https://github.com/Shemesh)!
+- **Chore** Update project to Angular 11 [#278](https://github.com/angular-split/angular-split/issues/278)
+
+<a name="5.0.0-beta.1"></a>
+
+# 5.0.0-beta.1 (2020-09-06)
+
+- **Fix** Make type of gutterSize getter/setter consistent
+
+<a name="5.0.0-beta.0"></a>
+
+# 5.0.0-beta.0 (2020-08-30)
+
+- **Chore** Update project to Angular 10 [#256](https://github.com/angular-split/angular-split/issues/256) thanks to [greggbjensen](https://github.com/greggbjensen)!
+
 <a name="4.0.0"></a>
 
 # 4.0.0 (2020-07-24)

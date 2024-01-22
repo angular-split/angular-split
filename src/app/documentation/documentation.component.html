@@ -1,0 +1,187 @@
+<div class="container">
+  <h4>
+    <b>SplitComponent</b>&nbsp;<span class="sel">(selector: '<span class="selContent">as-split</span>' / exportAs:
+      '<span class="selContent">asSplit</span>')</span>
+  </h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>&#64;Input()</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prop of splitDoc.inputs">
+        <td>{{ prop.name }}</td>
+        <td>{{ prop.type }}</td>
+        <td>
+          <code>{{ prop.default }}</code>
+        </td>
+        <td [innerHTML]="prop.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>&#64;Output()</th>
+        <th>Value</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let event of splitDoc.outputs">
+        <td>{{ event.name }}</td>
+        <td>
+          <code>{{ event.value }}</code>
+        </td>
+        <td [innerHTML]="event.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Access from TS class</th>
+        <th>Type</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of splitDoc.class">
+        <td>{{ item.name }}</td>
+        <td>
+          <code>{{ item.type }}</code>
+        </td>
+        <td [innerHTML]="item.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <br /><br />
+
+  <h4>
+    <b>SplitAreaDirective</b>&nbsp;<span class="sel">(selector: '<span class="selContent">as-split-area,
+        [as-split-area]</span>' / exportAs: '<span class="selContent">asSplitArea</span>')</span>
+  </h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>&#64;Input()</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prop of splitAreaDoc.inputs">
+        <td>{{ prop.name }}</td>
+        <td>{{ prop.type }}</td>
+        <td>
+          <code>{{ prop.default }}</code>
+        </td>
+        <td [innerHTML]="prop.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <br /><br />
+
+  <h4>
+    <b>SplitGutterDirective</b>&nbsp;<span class="sel">(selector: '<span class="selContent">[asSplitGutter]</span>
+      ')</span>
+  </h4>
+  <p>Used as structural directive (*asSplitGutter) to customize the gutter.</p>
+  <p>Mostly requires width: 100% and height: 100% in order to fill the whole gutter.</p>
+  <p>If the custom gutter is wider than the declared gutter size (using gutterSize input) the areas will overflow too.
+    So attention is required to match the size of the gutter.</p>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Template context property</th>
+        <th>Type</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prop of splitGutterDoc.templateContext">
+        <td>{{ prop.name }}</td>
+        <td>{{ prop.type }}</td>
+        <td [innerHTML]="prop.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <br /><br />
+
+  <h4>
+    <b>SplitGutterDragHandleDirective</b>&nbsp;<span class="sel">(selector: '<span
+            class="selContent">[asSplitGutterDragHandle]</span>
+      ')</span>
+  </h4>
+  <p>Used to declare an area inside asSplitGutter to be a drag handle</p>
+  <p>Can be declared on multiple elements which means all of them are drag handles.</p>
+  <br /><br />
+
+  <h4>
+    <b>SplitGutterExcludeFromDragDirective</b>&nbsp;<span class="sel">(selector: '<span
+            class="selContent">[asSplitGutterExcludeFromDrag]</span>
+      ')</span>
+  </h4>
+  <p>Used to declare an area inside asSplitGutter to be excluded from drag</p>
+  <p>Can be declared on multiple elements which means all of them are excluded from drag.</p>
+  <p>asSplitGutterExcludeFromDrag inside asSplitGutterDragHandle works as expected (all of the element is a handle
+    except the excluded area)</p>
+  <p>asSplitGutterDragHandle inside asSplitGutterExcludeFromDrag is ignored and the whole element marked with exclude is
+    excluded.</p>
+  <br /><br />
+
+  <h4><b>CSS classes</b></h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 40%">Split element classes</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of cssClasses.split">
+        <td>
+          <code>{{ x.name }}</code>
+        </td>
+        <td [innerHTML]="x.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 40%">Area element classes</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of cssClasses.area">
+        <td>
+          <code>{{ x.name }}</code>
+        </td>
+        <td [innerHTML]="x.details"></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 40%">Gutter element classes</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of cssClasses.gutter">
+        <td>
+          <code>{{ x.name }}</code>
+        </td>
+        <td [innerHTML]="x.details"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
