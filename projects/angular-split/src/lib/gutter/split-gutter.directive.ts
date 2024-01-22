@@ -41,16 +41,16 @@ export class SplitGutterDirective {
    * The map holds reference to the drag handle elements inside instances
    * of the provided template.
    */
-  public gutterToHandleElementMap = new Map<number, ElementRef<HTMLElement>[]>()
+  gutterToHandleElementMap = new Map<number, ElementRef<HTMLElement>[]>()
   /**
    * The map holds reference to the excluded drag elements inside instances
    * of the provided template.
    */
-  public gutterToExcludeDragElementMap = new Map<number, ElementRef<HTMLElement>[]>()
+  gutterToExcludeDragElementMap = new Map<number, ElementRef<HTMLElement>[]>()
 
   constructor(public template: TemplateRef<SplitGutterTemplateContext>) {}
 
-  public canStartDragging(originElement: HTMLElement, gutterNum: number) {
+  canStartDragging(originElement: HTMLElement, gutterNum: number) {
     if (this.gutterToExcludeDragElementMap.has(gutterNum)) {
       const isInsideExclude = this.gutterToExcludeDragElementMap
         .get(gutterNum)
@@ -70,7 +70,7 @@ export class SplitGutterDirective {
     return true
   }
 
-  public addToMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+  addToMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
     if (map.has(gutterNum)) {
       map.get(gutterNum).push(elementRef)
     } else {
@@ -78,7 +78,7 @@ export class SplitGutterDirective {
     }
   }
 
-  public removedFromMap(
+  removedFromMap(
     map: Map<number, ElementRef<HTMLElement>[]>,
     gutterNum: number,
     elementRef: ElementRef<HTMLElement>,

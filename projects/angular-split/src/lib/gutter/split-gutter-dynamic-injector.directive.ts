@@ -14,7 +14,7 @@ interface SplitGutterDynamicInjectorTemplateContext {
 })
 export class SplitGutterDynamicInjectorDirective {
   @Input('asSplitGutterDynamicInjector')
-  public set gutterNum(value: number) {
+  set gutterNum(value: number) {
     this.vcr.clear()
 
     const injector = Injector.create({
