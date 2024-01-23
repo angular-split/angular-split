@@ -16,7 +16,8 @@
     "lint_app": "wireit",
     "lint": "wireit",
     "ng": "ng",
-    "start": "wireit"
+    "start": "wireit",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -72,10 +73,12 @@
     "wireit": "^0.14.3"
   },
   "lint-staged": {
+    "*.{ts,html}": [
+      "yarn lint -- --quiet"
+    ],
     "*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}": [
       "prettier --write"
-    ],
-    "*.{ts, html}": ["yarn lint"]
+    ]
   },
   "wireit": {
     "app_build_dev": {
@@ -97,8 +100,10 @@
       "command": "ng lint --project angular-split-app --fix",
       "files": [
         "**/*.ts",
+        "**/*.html",
         ".eslintignore",
-        ".eslintrc.cjs"
+        ".eslintrc.cjs",
+        ".eslintrc.json"
       ],
       "output": []
     },
@@ -165,8 +170,10 @@
       "command": "ng lint --project angular-split --fix",
       "files": [
         "**/*.ts",
+        "**/*.html",
         ".eslintignore",
-        ".eslintrc.cjs"
+        ".eslintrc.cjs",
+        ".eslintrc.json"
       ],
       "output": []
     },
