@@ -33,14 +33,24 @@
       "name": "Sander Elias",
       "avatar_url": "https://avatars.githubusercontent.com/u/1249083?v=4",
       "profile": "https://github.com/SanderElias",
-            "contributions": [
+      "contributions": [
         "code"
       ]
-    },{
+    },
+    {
       "login": "Jefiozie",
       "name": "Jeffrey Bosch",
       "avatar_url": "https://avatars.githubusercontent.com/u/17835373?v=4",
       "profile": "https://jefiozie.github.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Harpush",
+      "name": "Harpush",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30085989?v=4",
+      "profile": "https://github.com/Harpush",
       "contributions": [
         "code"
       ]
