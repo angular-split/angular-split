@@ -30,6 +30,12 @@
             "prefix": "sp",
             "style": "kebab-case"
           }
+        ],
+        "@typescript-eslint/explicit-member-accessibility": [
+          "error",
+          {
+            "accessibility": "no-public"
+          }
         ]
       }
     },
