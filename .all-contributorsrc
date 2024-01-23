@@ -1,32 +1,43 @@
 {
-    "projectName": "angular-split",
-    "projectOwner": "angular-split",
-    "repoType": "github",
-    "repoHost": "https://github.com",
-    "files": [
-        "README.md"
-    ],
-    "imageSize": 100,
-    "commit": true,
-    "commitConvention": "angular",
-    "contributors": [
-        {
-            "login": "bertrandg",
-            "name": "Bertrand Gaillard",
-            "avatar_url": "https://avatars.githubusercontent.com/u/7031941?v=4",
-            "profile": "https://github.com/bertrandg",
-            "contributions": [
-                "code"
-            ]
-        },
-        {
-            "login": "beeman",
-            "name": "Bram Borggreve",
-            "avatar_url": "https://avatars.githubusercontent.com/u/36491?v=4",
-            "profile": "https://beeman.dev/",
-            "contributions": [
-                "code"
-            ]
-        }
-    ]
+  "projectName": "angular-split",
+  "projectOwner": "angular-split",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "bertrandg",
+      "name": "Bertrand Gaillard",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7031941?v=4",
+      "profile": "https://github.com/bertrandg",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "beeman",
+      "name": "Bram Borggreve",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36491?v=4",
+      "profile": "https://beeman.dev/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Jefiozie",
+      "name": "Jeffrey Bosch",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17835373?v=4",
+      "profile": "https://jefiozie.github.io",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "commitType": "docs",
+  "contributorsPerLine": 7
 }
