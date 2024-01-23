@@ -95,14 +95,14 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
 
   constructor(
     private ngZone: NgZone,
-    public elRef: ElementRef,
     private renderer: Renderer2,
     private split: SplitComponent,
+    readonly elRef: ElementRef,
   ) {
     this.renderer.addClass(this.elRef.nativeElement, 'as-split-area')
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.split.addArea(this)
 
     this.ngZone.runOutsideAngular(() => {
@@ -132,11 +132,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     })
   }
 
-  public setStyleOrder(value: number): void {
+  setStyleOrder(value: number): void {
     this.renderer.setStyle(this.elRef.nativeElement, 'order', value)
   }
 
-  public setStyleFlex(grow: number, shrink: number, basis: string, isMin: boolean, isMax: boolean): void {
+  setStyleFlex(grow: number, shrink: number, basis: string, isMin: boolean, isMax: boolean): void {
     // Need 3 separated properties to work on IE11 (https://github.com/angular/flex-layout/issues/323)
     this.renderer.setStyle(this.elRef.nativeElement, 'flex-grow', grow)
     this.renderer.setStyle(this.elRef.nativeElement, 'flex-shrink', shrink)
@@ -155,14 +155,14 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     }
   }
 
-  public lockEvents(): void {
+  lockEvents(): void {
     this.ngZone.runOutsideAngular(() => {
       this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'selectstart', () => false))
       this.lockListeners.push(this.renderer.listen(this.elRef.nativeElement, 'dragstart', () => false))
     })
   }
 
-  public unlockEvents(): void {
+  unlockEvents(): void {
     while (this.lockListeners.length > 0) {
       const fct = this.lockListeners.pop()
       if (fct) {
@@ -171,7 +171,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.unlockEvents()
 
     if (this.transitionListener) {
@@ -184,11 +184,11 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     this.split.removeArea(this)
   }
 
-  public collapse(newSize = 0, gutter: 'left' | 'right' = 'right'): void {
+  collapse(newSize = 0, gutter: 'left' | 'right' = 'right'): void {
     this.split.collapseArea(this, newSize, gutter)
   }
 
-  public expand(): void {
+  expand(): void {
     this.split.expandArea(this)
   }
 }
