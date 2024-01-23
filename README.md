@@ -18,6 +18,15 @@ Documentation and examples:
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bertrandg"><img src="https://avatars.githubusercontent.com/u/7031941?v=4?s=100" width="100px;" alt="Bertrand Gaillard"/><br /><sub><b>Bertrand Gaillard</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=bertrandg" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://beeman.dev/"><img src="https://avatars.githubusercontent.com/u/36491?v=4?s=100" width="100px;" alt="Bram Borggreve"/><br /><sub><b>Bram Borggreve</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=beeman" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SanderElias"><img src="https://avatars.githubusercontent.com/u/1249083?v=4?s=100" width="100px;" alt="Sander Elias"/><br /><sub><b>Sander Elias</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=SanderElias" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
