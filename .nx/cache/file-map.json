@@ -1,0 +1,531 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.2.8",
+  "deps": {
+    "@angular/animations": "^17.0.2",
+    "@angular/common": "^17.0.2",
+    "@angular/compiler": "^17.0.2",
+    "@angular/core": "^17.0.2",
+    "@angular/forms": "^17.0.2",
+    "@angular/platform-browser": "^17.0.2",
+    "@angular/platform-browser-dynamic": "^17.0.2",
+    "@angular/router": "^17.0.2",
+    "angular-cli-ghpages": "^1.0.6",
+    "bootstrap": "5.3.1",
+    "core-js": "3.32.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "marked": "7.0.4",
+    "ngx-bootstrap": "11.0.2",
+    "prettier": "^3.0.2",
+    "rxjs": "7.8.1",
+    "tsickle": "^0.46.3",
+    "zone.js": "~0.14.2",
+    "@angular-devkit/architect": "^0.1700.0",
+    "@angular-devkit/build-angular": "^17.0.0",
+    "@angular-devkit/core": "^17.0.0",
+    "@angular-devkit/schematics": "^17.0.0",
+    "@angular-eslint/builder": "17.2.1",
+    "@angular-eslint/eslint-plugin": "17.2.1",
+    "@angular-eslint/eslint-plugin-template": "17.2.1",
+    "@angular-eslint/schematics": "17.2.1",
+    "@angular-eslint/template-parser": "17.2.1",
+    "@angular/cli": "^17.0.0",
+    "@angular/compiler-cli": "^17.0.2",
+    "@angular/language-service": "^17.0.2",
+    "@types/marked": "^5.0.1",
+    "@types/node": "20.5.4",
+    "@typescript-eslint/eslint-plugin": "6.19.0",
+    "@typescript-eslint/parser": "6.19.0",
+    "codelyzer": "^6.0.2",
+    "concurrently": "8.2.1",
+    "cypress": "12.17.4",
+    "eslint": "^8.56.0",
+    "ng-packagr": "^17.0.0",
+    "npm-run-all": "4.1.5",
+    "postcss": "8.4.28",
+    "serve": "^14.2.1",
+    "ts-node": "10.9.1",
+    "tslib": "^2.6.2",
+    "typescript": "5.2.2",
+    "webpack-bundle-analyzer": "4.9.0"
+  },
+  "pathMappings": {
+    "angular-split": [
+      "dist/angular-split"
+    ],
+    "angular-split/*": [
+      "dist/angular-split/*"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "4003311316278930464"
+      },
+      {
+        "file": ".github/FUNDING.yml",
+        "hash": "5262534403523455878"
+      },
+      {
+        "file": ".github/ISSUE_TEMPLATE/bug_report.md",
+        "hash": "17184623851170885424"
+      },
+      {
+        "file": ".github/ISSUE_TEMPLATE/feature_request.md",
+        "hash": "3676202655972016833"
+      },
+      {
+        "file": ".github/workflows/tests.yml",
+        "hash": "15475332431309122219"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "1397420592934382821"
+      },
+      {
+        "file": ".husky/pre-commit",
+        "hash": "15389884770728222063"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "11099310956061394945"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "13615184068747764175"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "12461145776256189186"
+      },
+      {
+        "file": "CHANGELOG.md",
+        "hash": "7675049511339581889"
+      },
+      {
+        "file": "LICENSE",
+        "hash": "8846315326266925390"
+      },
+      {
+        "file": "README.md",
+        "hash": "5295047865730804910"
+      },
+      {
+        "file": "angular.json",
+        "hash": "8156550704175351784"
+      },
+      {
+        "file": "cypress.config.ts",
+        "hash": "10941222299758743406"
+      },
+      {
+        "file": "cypress/e2e/1.simple.cy.js",
+        "hash": "12384089036010074209"
+      },
+      {
+        "file": "cypress/e2e/2.minmax.cy.js",
+        "hash": "6466852316254718567"
+      },
+      {
+        "file": "cypress/e2e/3.nested.cy.js",
+        "hash": "2883368349537074394"
+      },
+      {
+        "file": "cypress/e2e/4.sync.cy.js",
+        "hash": "4146876546304925939"
+      },
+      {
+        "file": "cypress/e2e/5.style.cy.js",
+        "hash": "6743084369314675050"
+      },
+      {
+        "file": "cypress/e2e/7.click.cy.js",
+        "hash": "16299919074026742650"
+      },
+      {
+        "file": "cypress/e2e/9.geek.cy.js",
+        "hash": "10497897857420557356"
+      },
+      {
+        "file": "cypress/fixtures/example.json",
+        "hash": "11785586596216172004"
+      },
+      {
+        "file": "cypress/plugins/index.js",
+        "hash": "14346347794581942992"
+      },
+      {
+        "file": "cypress/support/commands.js",
+        "hash": "17070939878053520745"
+      },
+      {
+        "file": "cypress/support/e2e.js",
+        "hash": "11127209477976297836"
+      },
+      {
+        "file": "cypress/support/splitUtils.js",
+        "hash": "4166569031559432731"
+      },
+      {
+        "file": "logo/angular-split-space.png",
+        "hash": "14335035420078924401"
+      },
+      {
+        "file": "logo/angular-split.png",
+        "hash": "7202209163077046985"
+      },
+      {
+        "file": "logo/angular-split.sketch",
+        "hash": "2423920881051004893"
+      },
+      {
+        "file": "logo/angular-split.svg",
+        "hash": "2583350574578905737"
+      },
+      {
+        "file": "logo/angular-split@2x.png",
+        "hash": "16891109467299707528"
+      },
+      {
+        "file": "logo/angular-split@4x.png",
+        "hash": "2548995093473422099"
+      },
+      {
+        "file": "package.json",
+        "hash": "15991216734376792267"
+      },
+      {
+        "file": "projects/angular-split/.eslintrc.json",
+        "hash": "136666812514685802"
+      },
+      {
+        "file": "projects/angular-split/karma.conf.js",
+        "hash": "16442368449661365206"
+      },
+      {
+        "file": "projects/angular-split/ng-package.json",
+        "hash": "10035927130084485014"
+      },
+      {
+        "file": "projects/angular-split/package.json",
+        "hash": "3559088933172457413"
+      },
+      {
+        "file": "projects/angular-split/src/lib/angular-split-config.token.ts",
+        "hash": "13200678534018701773"
+      },
+      {
+        "file": "projects/angular-split/src/lib/component/split.component.scss",
+        "hash": "5783687595615720574"
+      },
+      {
+        "file": "projects/angular-split/src/lib/component/split.component.ts",
+        "hash": "11553439229677643881"
+      },
+      {
+        "file": "projects/angular-split/src/lib/directive/split-area.directive.ts",
+        "hash": "7792097191442131771"
+      },
+      {
+        "file": "projects/angular-split/src/lib/gutter/gutter-num-token.ts",
+        "hash": "1243946865425323139"
+      },
+      {
+        "file": "projects/angular-split/src/lib/gutter/split-gutter-drag-handle.directive.ts",
+        "hash": "134653064637205674"
+      },
+      {
+        "file": "projects/angular-split/src/lib/gutter/split-gutter-dynamic-injector.directive.ts",
+        "hash": "15101595953686480203"
+      },
+      {
+        "file": "projects/angular-split/src/lib/gutter/split-gutter-exclude-from-drag.directive.ts",
+        "hash": "12309925091102797307"
+      },
+      {
+        "file": "projects/angular-split/src/lib/gutter/split-gutter.directive.ts",
+        "hash": "809557469857882716"
+      },
+      {
+        "file": "projects/angular-split/src/lib/interface.ts",
+        "hash": "8961419924606094350"
+      },
+      {
+        "file": "projects/angular-split/src/lib/module.ts",
+        "hash": "6057096390493052691"
+      },
+      {
+        "file": "projects/angular-split/src/lib/utils.ts",
+        "hash": "9960594578610181441"
+      },
+      {
+        "file": "projects/angular-split/src/public_api.ts",
+        "hash": "11252521943785801862"
+      },
+      {
+        "file": "projects/angular-split/src/test.ts",
+        "hash": "5606275340439871297"
+      },
+      {
+        "file": "projects/angular-split/tsconfig.lib.json",
+        "hash": "8314913759684889939"
+      },
+      {
+        "file": "projects/angular-split/tsconfig.spec.json",
+        "hash": "9504807348533760050"
+      },
+      {
+        "file": "projects/angular-split/tslint.json",
+        "hash": "15997536669565126122"
+      },
+      {
+        "file": "src/.browserslistrc",
+        "hash": "568824818244017255"
+      },
+      {
+        "file": "src/app/app.component.ts",
+        "hash": "8827561345252793553"
+      },
+      {
+        "file": "src/app/app.module.ts",
+        "hash": "2305209285477016769"
+      },
+      {
+        "file": "src/app/changelog/changelog.component.ts",
+        "hash": "6580500495604321850"
+      },
+      {
+        "file": "src/app/changelog/changelog.module.ts",
+        "hash": "258579200634605886"
+      },
+      {
+        "file": "src/app/changelog/changelog.service.ts",
+        "hash": "15711998332595173101"
+      },
+      {
+        "file": "src/app/documentation/documentation.component.html",
+        "hash": "15570441453041780653"
+      },
+      {
+        "file": "src/app/documentation/documentation.component.ts",
+        "hash": "9906417253538751483"
+      },
+      {
+        "file": "src/app/documentation/documentation.module.ts",
+        "hash": "6289722919857022214"
+      },
+      {
+        "file": "src/app/examples/access-from-class/access-from-class.component.ts",
+        "hash": "7884217790123059340"
+      },
+      {
+        "file": "src/app/examples/access-from-class/access-from-class.module.ts",
+        "hash": "715346413117702457"
+      },
+      {
+        "file": "src/app/examples/collapse-expand/collapse-expand.component.ts",
+        "hash": "15438278742461244906"
+      },
+      {
+        "file": "src/app/examples/collapse-expand/collapse-expand.module.ts",
+        "hash": "4833333218124912832"
+      },
+      {
+        "file": "src/app/examples/custom-gutter-style/custom-gutter-style.component.scss",
+        "hash": "8562268078377302832"
+      },
+      {
+        "file": "src/app/examples/custom-gutter-style/custom-gutter-style.component.ts",
+        "hash": "8341094134679430820"
+      },
+      {
+        "file": "src/app/examples/custom-gutter-style/custom-gutter-style.module.ts",
+        "hash": "13792451976483321686"
+      },
+      {
+        "file": "src/app/examples/dir-rtl/dir-rtl.component.ts",
+        "hash": "5936432820300458161"
+      },
+      {
+        "file": "src/app/examples/dir-rtl/dir-rtl.module.ts",
+        "hash": "17963583612870664165"
+      },
+      {
+        "file": "src/app/examples/example-types.ts",
+        "hash": "12124284988206529175"
+      },
+      {
+        "file": "src/app/examples/examples.module.ts",
+        "hash": "10286484388299673618"
+      },
+      {
+        "file": "src/app/examples/examples.routes.ts",
+        "hash": "12950266699102856962"
+      },
+      {
+        "file": "src/app/examples/geek-demo/geek-demo.component.ts",
+        "hash": "11051321948393115128"
+      },
+      {
+        "file": "src/app/examples/geek-demo/geek-demo.module.ts",
+        "hash": "3949573888126826282"
+      },
+      {
+        "file": "src/app/examples/global-options/global-options.component.ts",
+        "hash": "1775897242399254306"
+      },
+      {
+        "file": "src/app/examples/global-options/global-options.module.ts",
+        "hash": "1092932897534204158"
+      },
+      {
+        "file": "src/app/examples/gutter-click-roll-unroll/gutter-click-roll-unroll.component.ts",
+        "hash": "7869431834773219901"
+      },
+      {
+        "file": "src/app/examples/gutter-click-roll-unroll/gutter-click-roll-unroll.module.ts",
+        "hash": "4372958644375962237"
+      },
+      {
+        "file": "src/app/examples/iframes/iframes.component.ts",
+        "hash": "6186051145782869691"
+      },
+      {
+        "file": "src/app/examples/iframes/iframes.module.ts",
+        "hash": "13792627414868758671"
+      },
+      {
+        "file": "src/app/examples/min-max-split/min-max-split.component.ts",
+        "hash": "1495361775041517099"
+      },
+      {
+        "file": "src/app/examples/min-max-split/min-max-split.module.ts",
+        "hash": "1289590093833844112"
+      },
+      {
+        "file": "src/app/examples/nested-split/nested-split.component.ts",
+        "hash": "11228400629716272008"
+      },
+      {
+        "file": "src/app/examples/nested-split/nested-split.module.ts",
+        "hash": "12765215184172021534"
+      },
+      {
+        "file": "src/app/examples/simple-split/simple-split.component.ts",
+        "hash": "4349726572505817037"
+      },
+      {
+        "file": "src/app/examples/simple-split/simple-split.module.ts",
+        "hash": "14122353456103692001"
+      },
+      {
+        "file": "src/app/examples/split-transitions/split-transitions.component.ts",
+        "hash": "465785376715194003"
+      },
+      {
+        "file": "src/app/examples/split-transitions/split-transitions.module.ts",
+        "hash": "2468847322120967259"
+      },
+      {
+        "file": "src/app/examples/sync-split/sync-split.component.ts",
+        "hash": "12437974164933048959"
+      },
+      {
+        "file": "src/app/examples/sync-split/sync-split.module.ts",
+        "hash": "12932970923133704366"
+      },
+      {
+        "file": "src/app/examples/toggling-dom-and-visibility/toggling-dom-and-visibility.component.ts",
+        "hash": "12581145379215664225"
+      },
+      {
+        "file": "src/app/examples/toggling-dom-and-visibility/toggling-dom-and-visibility.module.ts",
+        "hash": "8423871187763316449"
+      },
+      {
+        "file": "src/app/examples/workspace-localstorage/workspace-localstorage.component.ts",
+        "hash": "12182961368558269649"
+      },
+      {
+        "file": "src/app/examples/workspace-localstorage/workspace-localstorage.module.ts",
+        "hash": "15161991702271631568"
+      },
+      {
+        "file": "src/app/home/home.component.ts",
+        "hash": "633607458914163210"
+      },
+      {
+        "file": "src/app/home/home.module.ts",
+        "hash": "10801482573316497980"
+      },
+      {
+        "file": "src/app/ui/components/AComponent.ts",
+        "hash": "1676888076137891638"
+      },
+      {
+        "file": "src/app/ui/components/exampleTitle.component.ts",
+        "hash": "15897206137246922798"
+      },
+      {
+        "file": "src/app/ui/components/topbar.component.ts",
+        "hash": "17998462526219154000"
+      },
+      {
+        "file": "src/app/ui/ui.module.ts",
+        "hash": "7255856463668247089"
+      },
+      {
+        "file": "src/app/utils/format-date.ts",
+        "hash": "2397133409400732131"
+      },
+      {
+        "file": "src/assets/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/assets/logo.svg",
+        "hash": "2583350574578905737"
+      },
+      {
+        "file": "src/favicon.ico",
+        "hash": "10507831610489132402"
+      },
+      {
+        "file": "src/index.html",
+        "hash": "16870717461428938830"
+      },
+      {
+        "file": "src/karma.conf.js",
+        "hash": "6642202808823266205"
+      },
+      {
+        "file": "src/main.ts",
+        "hash": "17362762172905761913"
+      },
+      {
+        "file": "src/styles.scss",
+        "hash": "18416370478584275471"
+      },
+      {
+        "file": "src/tsconfig.app.json",
+        "hash": "2848024180356382149"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "1995613496346305603"
+      },
+      {
+        "file": "yarn.lock",
+        "hash": "18357113393831313554"
+      }
+    ]
+  }
+}

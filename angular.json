@@ -20,18 +20,10 @@
             "outputPath": "dist/angular-split-app",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "src/tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["./node_modules/bootstrap/dist/css/bootstrap.min.css", "src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -68,15 +60,6 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {}
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
-          }
         }
       }
     },
@@ -96,10 +79,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "projects/angular-split/**/*.ts",
-              "projects/angular-split/**/*.html"
-            ]
+            "lintFilePatterns": ["projects/angular-split/**/*.ts", "projects/angular-split/**/*.html"]
           }
         }
       }

@@ -5,6 +5,7 @@ import { getInputBoolean, getInputPositiveNumber } from '../utils'
 import { IAreaSize } from '../interface'
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'as-split-area, [as-split-area]',
   exportAs: 'asSplitArea',
 })
@@ -87,10 +88,10 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._visible
   }
 
-  private transitionListener: Function
+  private transitionListener: (event: TransitionEvent) => void
   private dragStartSubscription: Subscription
   private dragEndSubscription: Subscription
-  private readonly lockListeners: Array<Function> = []
+  private readonly lockListeners: Array<() => void> = []
 
   constructor(
     private ngZone: NgZone,

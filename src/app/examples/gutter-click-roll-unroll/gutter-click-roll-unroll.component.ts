@@ -146,7 +146,7 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
 
     setTimeout(() => {
       if (this.logsEl.nativeElement.scroll) {
-        ;(<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+        (<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
 

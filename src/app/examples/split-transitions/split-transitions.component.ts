@@ -265,7 +265,7 @@ export class SplitTransitionsComponent extends AComponent {
     this.logMessages.push({ type: 'transitionEnd', text: `${formatDate(new Date())} > transitionEnd event > ${e}` })
     setTimeout(() => {
       if (this.logsEl.nativeElement.scroll) {
-        ;(<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+        (<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
   }
