@@ -15,7 +15,7 @@ jobs:
 name: Compliance
 
 permissions:
-    pull-requests: write
+  pull-requests: write
 
 on:
   pull_request:
