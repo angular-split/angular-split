@@ -12,7 +12,9 @@
     "lib_pub_latest": "wireit",
     "lib_pub_next": "wireit",
     "lib_tgz": "wireit",
-    "lint": "ng lint",
+    "lint_lib": "wireit",
+    "lint_app": "wireit",
+    "lint": "wireit",
     "ng": "ng",
     "start": "wireit"
   },
@@ -90,10 +92,25 @@
         "dist/angular-split-app"
       ]
     },
+    "lint_app": {
+      "command": "ng lint --project angular-split-app --fix",
+      "files": [
+        "**/*.ts",
+        ".eslintignore",
+        ".eslintrc.cjs"
+      ],
+      "output": []
+    },
     "build": {
       "dependencies": [
         "app_build",
         "lib_build"
+      ]
+    },
+    "lint": {
+      "dependencies": [
+        "lint_app",
+        "lint_lib"
       ]
     },
     "test_ci": {
@@ -142,6 +159,15 @@
       "output": [
         "dist/angular-split"
       ]
+    },
+    "lint_lib": {
+      "command": "ng lint --project angular-split --fix",
+      "files": [
+        "**/*.ts",
+        ".eslintignore",
+        ".eslintrc.cjs"
+      ],
+      "output": []
     },
     "lib_pub_latest": {
       "command": "npm publish --tag latest ./dist/angular-split",
