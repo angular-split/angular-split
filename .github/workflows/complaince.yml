@@ -1,3 +1,6 @@
+permissions:
+ pull-requests: write
+
 jobs:
   compliance:
     runs-on: ubuntu-latest
@@ -14,9 +17,6 @@ jobs:
 
 name: Compliance
 
-permissions:
-  pull-requests: write
-
 on:
   pull_request:
     branches:
@@ -26,6 +26,3 @@ on:
       - opened
       - reopened
       - synchronize
-
-permissions:
-  pull-requests: write
