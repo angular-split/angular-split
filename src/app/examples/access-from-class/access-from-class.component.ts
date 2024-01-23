@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { SplitComponent, SplitAreaDirective } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
@@ -6,9 +6,6 @@ import { AComponent } from '../../ui/components/AComponent'
 @Component({
   selector: 'sp-ex-class-access',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       .btns {
@@ -114,6 +111,8 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class AccessFromClassComponent extends AComponent implements AfterViewInit {
+  @HostBinding('class') class = 'split-example-page';
+
   @ViewChild(SplitComponent) splitEl: SplitComponent
   @ViewChildren(SplitAreaDirective) areasEl: QueryList<SplitAreaDirective>
 

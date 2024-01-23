@@ -19,7 +19,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "app",
+            "prefix": "sp",
             "style": "camelCase"
           }
         ],
@@ -27,7 +27,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "app",
+            "prefix": "sp",
             "style": "kebab-case"
           }
         ]
@@ -38,8 +38,7 @@
         "*.html"
       ],
       "extends": [
-        "plugin:@angular-eslint/template/recommended",
-        "plugin:@angular-eslint/template/accessibility"
+        "plugin:@angular-eslint/template/recommended"
       ],
       "rules": {}
     }

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ViewChild, ElementRef, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
 import { IAreaSize } from 'angular-split'
@@ -6,9 +6,6 @@ import { IAreaSize } from 'angular-split'
 @Component({
   selector: 'sp-ex-transitions',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       button {
@@ -260,6 +257,7 @@ export class SplitTransitionsComponent extends AComponent {
   logMessages: Array<{ type: string; text: string }> = []
 
   @ViewChild('logs') logsEl: ElementRef
+  @HostBinding('class') class = 'split-example-page';
 
   log(e) {
     this.logMessages.push({ type: 'transitionEnd', text: `${formatDate(new Date())} > transitionEnd event > ${e}` })

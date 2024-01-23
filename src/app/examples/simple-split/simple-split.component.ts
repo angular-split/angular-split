@@ -1,13 +1,10 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core'
+import { Component, ChangeDetectionStrategy, ViewChild, HostBinding } from '@angular/core'
 import { SplitComponent, SplitAreaDirective, ISplitDirection } from 'angular-split'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-simple',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       .btns {
@@ -167,6 +164,7 @@ export class SimpleSplitComponent extends AComponent {
   @ViewChild('split') split: SplitComponent
   @ViewChild('area1') area1: SplitAreaDirective
   @ViewChild('area2') area2: SplitAreaDirective
+  @HostBinding('class') class = 'split-example-page';
 
   direction: ISplitDirection = 'horizontal'
   sizes = {
