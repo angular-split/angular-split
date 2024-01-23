@@ -74,7 +74,8 @@
   "lint-staged": {
     "*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}": [
       "prettier --write"
-    ]
+    ],
+    "*.{ts, html}": ["yarn lint"]
   },
   "wireit": {
     "app_build_dev": {
