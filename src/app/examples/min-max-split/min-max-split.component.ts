@@ -1,11 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       .btns {
@@ -134,6 +131,8 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class MinMaxSplitComponent extends AComponent {
+  @HostBinding('class') class = 'split-example-page';
+
   restrictMove = false
 
   log(x) {

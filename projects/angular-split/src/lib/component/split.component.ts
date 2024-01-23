@@ -308,7 +308,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   private isDragging = false
   private isWaitingClear = false
   private isWaitingInitialMove = false
-  private dragListeners: Array<Function> = []
+  private dragListeners: Array<() => void> = []
   private snapshot: ISplitSnapshot | null = null
   private startPoint: IPoint | null = null
   private endPoint: IPoint | null = null
@@ -414,8 +414,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return false
     }
 
-    // @ts-ignore
-    this.displayedAreas.forEach((area, i) => (area.component._size = formattedSizes[i]))
+    // @@ts-expect-error
+    this.displayedAreas.forEach((area, i) => (area.component.size = formattedSizes[i]))
 
     this.build(false, true)
     return true
@@ -791,7 +791,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     // Each gutter side areas can't absorb all offset
     if (areasBefore.remain !== 0 && areasAfter.remain !== 0) {
+      // TODO: fix this emty block
       if (Math.abs(areasBefore.remain) === Math.abs(areasAfter.remain)) {
+        /* empty */
       } else if (Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
         areasAfter = getGutterSideAbsorptionCapacity(
           this.unit,
