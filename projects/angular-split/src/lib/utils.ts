@@ -116,7 +116,7 @@ export function getInputBoolean(v: boolean | `${boolean}`): boolean {
   return typeof v === 'boolean' ? v : v !== 'false'
 }
 
-export function getInputPositiveNumber<T>(v: number | `${number}`, defaultValue: T): number | T {
+export function getInputPositiveNumber<T>(v: number | `${number}` | '*', defaultValue: T): number | T {
   if (v === null || v === undefined) return defaultValue
 
   v = Number(v)

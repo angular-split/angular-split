@@ -88,7 +88,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     return this._visible
   }
 
-  private transitionListener: (event: TransitionEvent) => void
+  private transitionListener: () => void
   private dragStartSubscription: Subscription
   private dragEndSubscription: Subscription
   private readonly lockListeners: Array<() => void> = []
