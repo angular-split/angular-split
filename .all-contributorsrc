@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jakubmank2",
+      "name": "Kuba Mank",
+      "avatar_url": "https://avatars.githubusercontent.com/u/124054100?v=4",
+      "profile": "https://github.com/jakubmank2",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
