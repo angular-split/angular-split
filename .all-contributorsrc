@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "cyrildurand",
+      "name": "Cyril DURAND",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2543836?v=4",
+      "profile": "http://www.cyrildurand.net",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
