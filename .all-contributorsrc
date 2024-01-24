@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dxbrandon",
+      "name": "Brandon Nguyen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84741633?v=4",
+      "profile": "https://github.com/dxbrandon",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
