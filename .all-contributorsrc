@@ -25,7 +25,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/36491?v=4",
       "profile": "https://beeman.dev/",
       "contributions": [
-        "code"
+        "code",
+        "maintenance"
       ]
     },
     {
@@ -34,7 +35,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/1249083?v=4",
       "profile": "https://github.com/SanderElias",
       "contributions": [
-        "code"
+        "code",
+        "maintenance"
       ]
     },
     {
@@ -43,7 +45,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/17835373?v=4",
       "profile": "https://jefiozie.github.io",
       "contributions": [
-        "code"
+        "maintenance"
       ]
     },
     {
@@ -51,6 +53,69 @@
       "name": "Harpush",
       "avatar_url": "https://avatars.githubusercontent.com/u/30085989?v=4",
       "profile": "https://github.com/Harpush",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lf-novelt",
+      "name": "Louis Frament",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46479127?v=4",
+      "profile": "http://www.novel-t.ch",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "shemesh",
+      "name": "Shemesh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2488980?v=4",
+      "profile": "https://github.com/Shemesh",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "nomeaning777",
+      "name": "nomeaning",
+      "avatar_url": "https://avatars.githubusercontent.com/u/979296?v=4",
+      "profile": "https://github.com/nomeaning777",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "rahuldimri",
+      "name": "rahuldimri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/107100022?v=4",
+      "profile": "https://github.com/rahuldimri",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kufuntu",
+      "name": "Andre Steudel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7403789?v=4",
+      "profile": "http://andre-steudel.de",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "benjamindobler",
+      "name": "Benjamin Dobler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2612377?v=4",
+      "profile": "http://www.richapps.de",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "cyrildurand",
+      "name": "Cyril DURAND",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2543836?v=4",
+      "profile": "http://www.cyrildurand.net",
       "contributions": [
         "code"
       ]
