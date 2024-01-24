@@ -28,6 +28,7 @@ Documentation and examples:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Harpush"><img src="https://avatars.githubusercontent.com/u/30085989?v=4?s=100" width="100px;" alt="Harpush"/><br /><sub><b>Harpush</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=Harpush" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://www.novel-t.ch"><img src="https://avatars.githubusercontent.com/u/46479127?v=4?s=100" width="100px;" alt="Louis Frament"/><br /><sub><b>Louis Frament</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=lf-novelt" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Shemesh"><img src="https://avatars.githubusercontent.com/u/2488980?v=4?s=100" width="100px;" alt="Shemesh"/><br /><sub><b>Shemesh</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=shemesh" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/nomeaning777"><img src="https://avatars.githubusercontent.com/u/979296?v=4?s=100" width="100px;" alt="nomeaning"/><br /><sub><b>nomeaning</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=nomeaning777" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
