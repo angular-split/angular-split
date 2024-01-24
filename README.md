@@ -32,6 +32,7 @@ Documentation and examples:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rahuldimri"><img src="https://avatars.githubusercontent.com/u/107100022?v=4?s=100" width="100px;" alt="rahuldimri"/><br /><sub><b>rahuldimri</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=rahuldimri" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://www.richapps.de"><img src="https://avatars.githubusercontent.com/u/2612377?v=4?s=100" width="100px;" alt="Benjamin Dobler"/><br /><sub><b>Benjamin Dobler</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=benjamindobler" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://www.cyrildurand.net"><img src="https://avatars.githubusercontent.com/u/2543836?v=4?s=100" width="100px;" alt="Cyril DURAND"/><br /><sub><b>Cyril DURAND</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=cyrildurand" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://andre-steudel.de"><img src="https://avatars.githubusercontent.com/u/7403789?v=4?s=100" width="100px;" alt="Andre Steudel"/><br /><sub><b>Andre Steudel</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=kufuntu" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
