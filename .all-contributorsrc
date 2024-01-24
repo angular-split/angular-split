@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "erik-seifert",
+      "name": "Erik Seifert",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4093180?v=4",
+      "profile": "https://github.com/erik-seifert",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
