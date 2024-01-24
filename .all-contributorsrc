@@ -25,7 +25,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/36491?v=4",
       "profile": "https://beeman.dev/",
       "contributions": [
-        "code"
+        "code",
+        "maintenance"
       ]
     },
     {
@@ -70,6 +71,15 @@
       "name": "Shemesh",
       "avatar_url": "https://avatars.githubusercontent.com/u/2488980?v=4",
       "profile": "https://github.com/Shemesh",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "nomeaning777",
+      "name": "nomeaning",
+      "avatar_url": "https://avatars.githubusercontent.com/u/979296?v=4",
+      "profile": "https://github.com/nomeaning777",
       "contributions": [
         "code"
       ]
