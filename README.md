@@ -44,6 +44,7 @@ Documentation and examples:
        <td align="center" valign="top" width="14.28%"><a href="https://github.com/erik-seifert"><img src="https://avatars.githubusercontent.com/u/4093180?v=4?s=100" width="100px;" alt="Erik Seifert"/><br /><sub><b>Erik Seifert</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=erik-seifert" title="Code">💻</a></td>
         <td align="center" valign="top" width="14.28%"><a href="https://github.com/ethankay"><img src="https://avatars.githubusercontent.com/u/15613563?v=4?s=100" width="100px;" alt="Ethan Kay"/><br /><sub><b>Ethan Kay</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=ethankay" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kmmccafferty96"><img src="https://avatars.githubusercontent.com/u/10471269?v=4?s=100" width="100px;" alt="Keegan McCafferty"/><br /><sub><b>Keegan McCafferty</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=kmmccafferty96" title="Code">💻</a></td>
+        <td align="center" valign="top" width="14.28%"><a href="https://github.com/aszechlicki"><img src="https://avatars.githubusercontent.com/u/9299507?v=4?s=100" width="100px;" alt="aszechlicki"/><br /><sub><b>aszechlicki</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=aszechlicki" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
