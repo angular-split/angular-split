@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "kufuntu",
+      "name": "Andre Steudel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7403789?v=4",
+      "profile": "http://andre-steudel.de",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
