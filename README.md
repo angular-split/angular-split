@@ -36,6 +36,7 @@ Documentation and examples:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jitsmaster"><img src="https://avatars.githubusercontent.com/u/15837601?v=4?s=100" width="100px;" alt="Arnold Wang"/><br /><sub><b>Arnold Wang</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=jitsmaster" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jakubmank2"><img src="https://avatars.githubusercontent.com/u/124054100?v=4?s=100" width="100px;" alt="Kuba Mank"/><br /><sub><b>Kuba Mank</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=jakubmank2" title="Code">💻</a></td>
        <td align="center" valign="top" width="14.28%"><a href="https://github.com/AlexanderBabchenko"><img src="https://avatars.githubusercontent.com/u/11957042?v=4?s=100" width="100px;" alt="alexanderbabchenko"/><br /><sub><b>alexanderbabchenko</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=alexanderbabchenko" title="Code">💻</a></td>
+        <td align="center" valign="top" width="14.28%"><a href="https://github.com/dxbrandon"><img src="https://avatars.githubusercontent.com/u/84741633?v=4?s=100" width="100px;" alt="Brandon Nguyen"/><br /><sub><b>Brandon Nguyen</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=dxbrandon" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
