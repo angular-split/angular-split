@@ -92,6 +92,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "benjamindobler",
+      "name": "Benjamin Dobler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2612377?v=4",
+      "profile": "http://www.richapps.de",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
