@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ViewChild, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { SortableComponent } from 'ngx-bootstrap/sortable'
 import { AComponent } from '../../ui/components/AComponent'
 import { IAreaSize, ISplitDirection } from 'angular-split'
@@ -6,9 +6,6 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
 @Component({
   selector: 'sp-ex-geek-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       .as-split-area {
@@ -183,6 +180,8 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
 })
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent
+  @HostBinding('class') class = 'split-example-page';
+
 
   d: {
     dir: ISplitDirection
@@ -224,7 +223,7 @@ export class GeekDemoComponent extends AComponent {
     this.sortableComponent.writeValue(this.d.areas)
   }
 
-  removeArea(area: any) {
+  removeArea(area: { id: number; color: string; size: IAreaSize; present: boolean; visible: boolean }) {
     this.d.areas.splice(this.d.areas.indexOf(area), 1)
 
     this.sortableComponent.writeValue(this.d.areas)

@@ -1,13 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-toggling-dom-and-visible',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       .btns {
@@ -91,6 +88,8 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class TogglingDomAndVisibleComponent extends AComponent {
+  @HostBinding('class') class = 'split-example-page';
+
   action = {
     isVisibleA: true,
     isVisibleB: true,

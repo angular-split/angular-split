@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList, AfterViewInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ViewChild, ViewChildren, QueryList, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { SplitComponent, SplitAreaDirective } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
@@ -6,9 +6,6 @@ import { AComponent } from '../../ui/components/AComponent'
 @Component({
   selector: 'sp-ex-class-collapse',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       .btns {
@@ -77,13 +74,11 @@ import { AComponent } from '../../ui/components/AComponent'
     </div>
   `,
 })
-export class CollapseExpandComponent extends AComponent implements AfterViewInit {
+export class CollapseExpandComponent extends AComponent {
+  @HostBinding('class') class = 'split-example-page';
+
   @ViewChild(SplitComponent) splitEl: SplitComponent
   @ViewChildren(SplitAreaDirective) areasEl: QueryList<SplitAreaDirective>
-
-  ngAfterViewInit() {
-    // console.log('Area Components: ', this.areasEl);
-  }
 
   onClose1(newSize = 0) {
     this.areasEl.first.collapse(newSize)

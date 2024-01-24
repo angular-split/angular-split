@@ -1,10 +1,10 @@
-name: Run tests
+name: Run lint
 
 on: [pull_request]
 
 jobs:
-  run_tests:
-    name: Run tests
+  lint:
+    name: Run lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,5 +29,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: yarn
-      - name: Run tests
-        run: yarn test_ci
+      - name: Run lint
+        run: yarn lint

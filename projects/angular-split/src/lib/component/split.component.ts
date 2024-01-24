@@ -308,12 +308,12 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   private isDragging = false
   private isWaitingClear = false
   private isWaitingInitialMove = false
-  private dragListeners: Array<Function> = []
+  private dragListeners: Array<() => void> = []
   private snapshot: ISplitSnapshot | null = null
   private startPoint: IPoint | null = null
   private endPoint: IPoint | null = null
 
-  public readonly displayedAreas: Array<IArea> = []
+  readonly displayedAreas: Array<IArea> = []
   private readonly hiddenAreas: Array<IArea> = []
 
   @ViewChildren('gutterEls') private gutterEls: QueryList<ElementRef>
@@ -321,7 +321,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   _clickTimeout: number | null = null
   draggedGutterNum: number = undefined
 
-  public ngAfterViewInit() {
+  ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
       // To avoid transition at first rendering
       setTimeout(() => this.renderer.addClass(this.elRef.nativeElement, 'as-init'))
@@ -332,7 +332,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     return this.displayedAreas.length === 0 ? 0 : this.displayedAreas.length - 1
   }
 
-  public addArea(component: SplitAreaDirective): void {
+  addArea(component: SplitAreaDirective): void {
     const newArea: IArea = {
       component,
       order: 0,
@@ -352,7 +352,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public removeArea(component: SplitAreaDirective): void {
+  removeArea(component: SplitAreaDirective): void {
     if (this.displayedAreas.some((a) => a.component === component)) {
       const area = this.displayedAreas.find((a) => a.component === component)
       this.displayedAreas.splice(this.displayedAreas.indexOf(area), 1)
@@ -364,13 +364,13 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public updateArea(component: SplitAreaDirective, resetOrders: boolean, resetSizes: boolean): void {
+  updateArea(component: SplitAreaDirective, resetOrders: boolean, resetSizes: boolean): void {
     if (component.visible === true) {
       this.build(resetOrders, resetSizes)
     }
   }
 
-  public showArea(component: SplitAreaDirective): void {
+  showArea(component: SplitAreaDirective): void {
     const area = this.hiddenAreas.find((a) => a.component === component)
     if (area === undefined) {
       return
@@ -382,7 +382,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.build(true, true)
   }
 
-  public hideArea(comp: SplitAreaDirective): void {
+  hideArea(comp: SplitAreaDirective): void {
     const area = this.displayedAreas.find((a) => a.component === comp)
     if (area === undefined) {
       return
@@ -398,11 +398,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.build(true, true)
   }
 
-  public getVisibleAreaSizes(): IOutputAreaSizes {
+  getVisibleAreaSizes(): IOutputAreaSizes {
     return this.displayedAreas.map((a) => a.size)
   }
 
-  public setVisibleAreaSizes(sizes: IOutputAreaSizes): boolean {
+  setVisibleAreaSizes(sizes: IOutputAreaSizes): boolean {
     if (sizes.length !== this.displayedAreas.length) {
       return false
     }
@@ -414,8 +414,8 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       return false
     }
 
-    // @ts-ignore
-    this.displayedAreas.forEach((area, i) => (area.component._size = formattedSizes[i]))
+    // @@ts-expect-error
+    this.displayedAreas.forEach((area, i) => (area.component.size = formattedSizes[i]))
 
     this.build(false, true)
     return true
@@ -568,7 +568,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public clickGutter(event: MouseEvent | TouchEvent, gutterNum: number): void {
+  clickGutter(event: MouseEvent | TouchEvent, gutterNum: number): void {
     const tempPoint = getPointFromEvent(event)
 
     // Be sure mouseup/touchend happened if touch/cursor is not moved.
@@ -594,7 +594,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public startKeyboardDrag(event: KeyboardEvent, gutterOrder: number, gutterNum: number) {
+  startKeyboardDrag(event: KeyboardEvent, gutterOrder: number, gutterNum: number) {
     if (this.disabled === true || this.isWaitingClear === true) {
       return
     }
@@ -615,7 +615,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.stopDragging()
   }
 
-  public startMouseDrag(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
+  startMouseDrag(event: MouseEvent | TouchEvent, gutterOrder: number, gutterNum: number): void {
     if (this.customGutter && !this.customGutter.canStartDragging(event.target as HTMLElement, gutterNum)) {
       return
     }
@@ -791,7 +791,9 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
 
     // Each gutter side areas can't absorb all offset
     if (areasBefore.remain !== 0 && areasAfter.remain !== 0) {
+      // TODO: fix this emty block
       if (Math.abs(areasBefore.remain) === Math.abs(areasAfter.remain)) {
+        /* empty */
       } else if (Math.abs(areasBefore.remain) > Math.abs(areasAfter.remain)) {
         areasAfter = getGutterSideAbsorptionCapacity(
           this.unit,
@@ -829,7 +831,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
       // Hack because of browser messing up with sizes using calc(X% - Ypx) -> el.getBoundingClientRect()
       // If not there, playing with gutters makes total going down to 99.99875% then 99.99286%, 99.98986%,..
       const all = [...areasBefore.list, ...areasAfter.list]
-      const wildcardArea = all.find((a) => a.percentAfterAbsorption == '*')
+      const wildcardArea = all.find((a) => a.percentAfterAbsorption === '*')
       // In case we have a wildcard area - always align the percents on the wildcard area.
       const areaToReset =
         wildcardArea ??
@@ -901,7 +903,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     })
   }
 
-  public notify(type: 'start' | 'progress' | 'end' | 'click' | 'dblclick' | 'transitionEnd', gutterNum: number): void {
+  notify(type: 'start' | 'progress' | 'end' | 'click' | 'dblclick' | 'transitionEnd', gutterNum: number): void {
     const sizes = this.getVisibleAreaSizes()
 
     if (type === 'start') {
@@ -922,11 +924,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.stopDragging()
   }
 
-  public collapseArea(comp: SplitAreaDirective, newSize: number, gutter: 'left' | 'right'): void {
+  collapseArea(comp: SplitAreaDirective, newSize: number, gutter: 'left' | 'right'): void {
     const area = this.displayedAreas.find((a) => a.component === comp)
     if (area === undefined) {
       return
@@ -944,7 +946,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.updateArea(comp, false, false)
   }
 
-  public expandArea(comp: SplitAreaDirective): void {
+  expandArea(comp: SplitAreaDirective): void {
     const area = this.displayedAreas.find((a) => a.component === comp)
     if (area === undefined) {
       return
@@ -961,7 +963,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     this.updateArea(comp, false, false)
   }
 
-  public getAriaAreaSizeText(size: IAreaSize): string {
+  getAriaAreaSizeText(size: IAreaSize): string {
     if (size === '*') {
       return null
     }

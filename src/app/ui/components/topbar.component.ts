@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { Router, NavigationStart, Routes } from '@angular/router'
 import { DomSanitizer } from '@angular/platform-browser'
 import { filter } from 'rxjs/operators'
@@ -47,9 +47,6 @@ import { exampleRoutes } from '../../examples/examples.routes'
       }
     `,
   ],
-  host: {
-    class: 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark',
-  },
   template: `
     <button class="navbar-toggler hidden-lg-up" (click)="isCollapsed = !isCollapsed">
       <span class="navbar-toggler-icon"></span>
@@ -89,13 +86,14 @@ export class TopbarComponent {
   examples: Routes
   isCollapsed = true
 
+  @HostBinding('class') class = 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark';
   constructor(
     private readonly sanitizer: DomSanitizer,
     private readonly router: Router,
   ) {
     this.examples = exampleRoutes
 
-    this.router.events.pipe(filter((e) => e instanceof NavigationStart)).subscribe((event) => {
+    this.router.events.pipe(filter((e) => e instanceof NavigationStart)).subscribe(() => {
       this.isCollapsed = true
     })
   }

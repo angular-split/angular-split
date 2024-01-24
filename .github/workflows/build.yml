@@ -1,10 +1,10 @@
-name: Run tests
+name: Build
 
 on: [pull_request]
 
 jobs:
-  run_tests:
-    name: Run tests
+  build:
+    name: Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,5 +29,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: yarn
-      - name: Run tests
-        run: yarn test_ci
+      - name: Run build
+        run: yarn build

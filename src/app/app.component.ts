@@ -27,7 +27,7 @@ import { filter } from 'rxjs/operators'
 })
 export class AppComponent {
   constructor(public router: Router) {
-    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe((event) => {
+    this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
       window.scrollTo(0, 0)
     })
   }

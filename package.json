@@ -12,9 +12,12 @@
     "lib_pub_latest": "wireit",
     "lib_pub_next": "wireit",
     "lib_tgz": "wireit",
-    "lint": "ng lint",
+    "lint_lib": "wireit",
+    "lint_app": "wireit",
+    "lint": "wireit",
     "ng": "ng",
-    "start": "wireit"
+    "start": "wireit",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -39,6 +42,11 @@
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
+    "@angular-eslint/builder": "17.2.1",
+    "@angular-eslint/eslint-plugin": "17.2.1",
+    "@angular-eslint/eslint-plugin-template": "17.2.1",
+    "@angular-eslint/schematics": "17.2.1",
+    "@angular-eslint/template-parser": "17.2.1",
     "@angular-devkit/architect": "^0.1701.0",
     "@angular-devkit/build-angular": "^17.1.0",
     "@angular-devkit/core": "^17.1.0",
@@ -46,23 +54,31 @@
     "@angular/cli": "^17.1.0",
     "@angular/compiler-cli": "^17.1.0",
     "@angular/language-service": "^17.1.0",
+    "@commitlint/cli": "^18.5.0",
+    "@commitlint/config-conventional": "^18.5.0",
+    "@commitlint/config-angular": "^18.5.0",
     "@types/marked": "^5.0.1",
     "@types/node": "20.5.4",
+    "@typescript-eslint/eslint-plugin": "6.19.0",
+    "@typescript-eslint/parser": "6.19.0",
     "codelyzer": "^6.0.2",
     "concurrently": "8.2.1",
     "cypress": "12.17.4",
+    "eslint": "^8.56.0",
     "ng-packagr": "^17.0.0",
     "npm-run-all": "4.1.5",
     "postcss": "8.4.28",
     "serve": "^14.2.1",
     "ts-node": "10.9.1",
     "tslib": "^2.6.2",
-    "tslint": "~6.1.3",
     "typescript": "5.2.2",
     "webpack-bundle-analyzer": "4.9.0",
     "wireit": "^0.14.3"
   },
   "lint-staged": {
+    "*.{ts,html}": [
+      "yarn lint -- --quiet"
+    ],
     "*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}": [
       "prettier --write"
     ]
@@ -83,10 +99,27 @@
         "dist/angular-split-app"
       ]
     },
+    "lint_app": {
+      "command": "ng lint --project angular-split-app --fix",
+      "files": [
+        "**/*.ts",
+        "**/*.html",
+        ".eslintignore",
+        ".eslintrc.cjs",
+        ".eslintrc.json"
+      ],
+      "output": []
+    },
     "build": {
       "dependencies": [
         "app_build",
         "lib_build"
+      ]
+    },
+    "lint": {
+      "dependencies": [
+        "lint_app",
+        "lint_lib"
       ]
     },
     "test_ci": {
@@ -135,6 +168,17 @@
       "output": [
         "dist/angular-split"
       ]
+    },
+    "lint_lib": {
+      "command": "ng lint --project angular-split --fix",
+      "files": [
+        "**/*.ts",
+        "**/*.html",
+        ".eslintignore",
+        ".eslintrc.cjs",
+        ".eslintrc.json"
+      ],
+      "output": []
     },
     "lib_pub_latest": {
       "command": "npm publish --tag latest ./dist/angular-split",

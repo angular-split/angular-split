@@ -1,12 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-nested',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   template: `
     {{ testChangeDetectorRun() }}
     <div class="container">
@@ -37,4 +34,7 @@ import { AComponent } from '../../ui/components/AComponent'
     </div>
   `,
 })
-export class IframesComponent extends AComponent {}
+export class IframesComponent extends AComponent {
+  @HostBinding('class') class = 'split-example-page';
+
+}

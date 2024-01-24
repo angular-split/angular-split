@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy } from '@angular/core'
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit, OnDestroy, HostBinding } from '@angular/core'
 import { Subscription, merge } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { SplitComponent } from 'angular-split'
@@ -9,9 +9,6 @@ import { formatDate } from '../../utils/format-date'
 @Component({
   selector: 'sp-ex-sync',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   template: `
     {{ testChangeDetectorRun() }}
     <div class="container">
@@ -49,6 +46,7 @@ export class SyncSplitComponent extends AComponent implements AfterViewInit, OnD
   @ViewChild('mySplitA') mySplitAEl: SplitComponent
   @ViewChild('mySplitB') mySplitBEl: SplitComponent
   @ViewChild('mySplitC') mySplitCEl: SplitComponent
+  @HostBinding('class') class = 'split-example-page';
 
   sizes = [25, 75]
   sub: Subscription
