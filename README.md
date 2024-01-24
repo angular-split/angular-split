@@ -26,6 +26,7 @@ Documentation and examples:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SanderElias"><img src="https://avatars.githubusercontent.com/u/1249083?v=4?s=100" width="100px;" alt="Sander Elias"/><br /><sub><b>Sander Elias</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=SanderElias" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://jefiozie.github.io"><img src="https://avatars.githubusercontent.com/u/17835373?v=4?s=100" width="100px;" alt="Jeffrey Bosch"/><br /><sub><b>Jeffrey Bosch</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=Jefiozie" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Harpush"><img src="https://avatars.githubusercontent.com/u/30085989?v=4?s=100" width="100px;" alt="Harpush"/><br /><sub><b>Harpush</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=Harpush" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://andre-steudel.de"><img src="https://avatars.githubusercontent.com/u/7403789?v=4?s=100" width="100px;" alt="Andre Steudel"/><br /><sub><b>Andre Steudel</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=kufuntu" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
