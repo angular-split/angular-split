@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "lf-novelt",
+      "name": "Louis Frament",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46479127?v=4",
+      "profile": "http://www.novel-t.ch",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
