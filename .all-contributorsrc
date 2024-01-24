@@ -201,6 +201,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ethankay",
+      "name": "Ethan Kay",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15613563?v=4",
+      "profile": "https://github.com/ethankay",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
