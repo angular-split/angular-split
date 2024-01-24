@@ -83,6 +83,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "rahuldimri",
+      "name": "rahuldimri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/107100022?v=4",
+      "profile": "https://github.com/rahuldimri",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
