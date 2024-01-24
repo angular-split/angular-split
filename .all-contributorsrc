@@ -34,7 +34,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/1249083?v=4",
       "profile": "https://github.com/SanderElias",
       "contributions": [
-        "code"
+        "code",
+        "maintenance"
       ]
     },
     {
@@ -60,6 +61,15 @@
       "name": "Louis Frament",
       "avatar_url": "https://avatars.githubusercontent.com/u/46479127?v=4",
       "profile": "http://www.novel-t.ch",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "shemesh",
+      "name": "Shemesh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2488980?v=4",
+      "profile": "https://github.com/Shemesh",
       "contributions": [
         "code"
       ]
