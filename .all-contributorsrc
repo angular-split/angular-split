@@ -119,6 +119,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jitsmaster",
+      "name": "Arnold Wang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15837601?v=4",
+      "profile": "https://github.com/jitsmaster",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
