@@ -38,6 +38,7 @@ Documentation and examples:
        <td align="center" valign="top" width="14.28%"><a href="https://github.com/AlexanderBabchenko"><img src="https://avatars.githubusercontent.com/u/11957042?v=4?s=100" width="100px;" alt="alexanderbabchenko"/><br /><sub><b>alexanderbabchenko</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=alexanderbabchenko" title="Code">💻</a></td>
         <td align="center" valign="top" width="14.28%"><a href="https://github.com/dxbrandon"><img src="https://avatars.githubusercontent.com/u/84741633?v=4?s=100" width="100px;" alt="Brandon Nguyen"/><br /><sub><b>Brandon Nguyen</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=dxbrandon" title="Code">💻</a></td>
            <td align="center" valign="top" width="14.28%"><a href="https://github.com/pawelwojkiewicz"><img src="https://avatars.githubusercontent.com/u/26307117?v=4?s=100" width="100px;" alt="pawel_wojkiewicz"/><br /><sub><b>pawel_wojkiewicz</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=pawelwojkiewicz" title="Code">💻</a></td>
+            <td align="center" valign="top" width="14.28%"><a href="http://pierremarcairoldi.com"><img src="https://avatars.githubusercontent.com/u/296718?v=4?s=100" width="100px;" alt="Pierre-Marc Airoldi"/><br /><sub><b>Pierre-Marc Airoldi</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=pmairoldi" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

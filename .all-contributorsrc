@@ -165,6 +165,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "pmairoldi",
+      "name": "Pierre-Marc Airoldi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/296718?v=4",
+      "profile": "http://pierremarcairoldi.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
