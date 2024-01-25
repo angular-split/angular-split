@@ -161,10 +161,6 @@ export function getAreaMinSize(a: IArea): number | null {
     return null
   }
 
-  if (a.component.minSize > a.size) {
-    return a.size
-  }
-
   return a.component.minSize
 }
 
