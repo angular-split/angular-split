@@ -73,6 +73,7 @@ import { Component, VERSION } from '@angular/core'
         <div class="text-center">
           <a href="https://discord.gg/Qm9MPCg">
             <img
+              alt="Angular Discord"
               src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=Angular%20Discord&logo=discord&logoColor=white&style=flat-square"
             />
           </a>

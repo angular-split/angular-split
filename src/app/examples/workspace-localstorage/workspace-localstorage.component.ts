@@ -171,7 +171,7 @@ export class WorkspaceLocalstorageComponent extends AComponent implements OnInit
 
   refreshColumnVisibility() {
     // Refresh columns visibility based on inside rows visibilities (If no row > hide column)
-    this.config.columns.forEach((column, index) => {
+    this.config.columns.forEach((column) => {
       column.visible = column.rows.some((row) => row.visible === true)
     })
 

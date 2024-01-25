@@ -25,7 +25,7 @@ export class ChangelogService {
           this.cachedHtml = marked(md)
           return this.cachedHtml
         }),
-        catchError((error) =>
+        catchError(() =>
           of(
             `Error:<br>Unable to retrieve CHANGELOG.md from github..<br>Please go to <a href="${this.url}">${this.url}</a> to view it.`,
           ),

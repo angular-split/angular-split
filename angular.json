@@ -63,6 +63,12 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {}
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
         }
       }
     },
@@ -78,8 +84,17 @@
             "tsConfig": "projects/angular-split/tsconfig.lib.json",
             "project": "projects/angular-split/ng-package.json"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/angular-split/**/*.ts", "projects/angular-split/**/*.html"]
+          }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "4af3d67b-15ea-40d9-8c3a-998fb02958b9"
   }
 }

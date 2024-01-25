@@ -27,6 +27,7 @@
 !.vscode/extensions.json
 
 # misc
+/.nx/*
 /.angular/cache
 /.sass-cache
 /connect.lock
@@ -40,3 +41,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+.wireit

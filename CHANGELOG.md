@@ -1,8 +1,14 @@
+<a name="17.1.1"></a>
+
+# 17.1.1 (2023-11-29)
+
+- **Fix** aria-valuenow incorrectly set to wildcard [#368](https://github.com/angular-split/angular-split/pull/368) thanks to [Harpush](https://github.com/Harpush)!
+
 <a name="17.1.0"></a>
 
 # 17.1.0 (2023-11-27)
 
-- **Feat** add gutterAriaLabel to documentation [#360](https://github.com/angular-split/angular-split/pull/360) thanks to [jakubmank2](https://github.com/jakubmank2)!
+- **Feat** support custom gutter template [#364](https://github.com/angular-split/angular-split/pull/364) thanks to [Harpush](https://github.com/Harpush)!
 
 <a name="17.0.0"></a>
 

@@ -1,12 +1,12 @@
 import { ElementRef } from '@angular/core'
 import {
   IArea,
-  IPoint,
-  IAreaSnapshot,
-  ISplitSideAbsorptionCapacity,
   IAreaAbsorptionCapacity,
   IAreaSize,
+  IAreaSnapshot,
+  IPoint,
   ISplitDirection,
+  ISplitSideAbsorptionCapacity,
   ISplitUnit,
 } from './interface'
 
@@ -112,11 +112,11 @@ export function getElementPixelSize(elRef: ElementRef, direction: ISplitDirectio
   return direction === 'horizontal' ? rect.width : rect.height
 }
 
-export function getInputBoolean(v: any): boolean {
-  return typeof v === 'boolean' ? v : v === 'false' ? false : true
+export function getInputBoolean(v: boolean | `${boolean}`): boolean {
+  return typeof v === 'boolean' ? v : v !== 'false'
 }
 
-export function getInputPositiveNumber<T>(v: any, defaultValue: T): number | T {
+export function getInputPositiveNumber<T>(v: number | `${number}` | '*', defaultValue: T): number | T {
   if (v === null || v === undefined) return defaultValue
 
   v = Number(v)
@@ -159,10 +159,6 @@ export function getAreaMinSize(a: IArea): number | null {
 
   if (a.component.minSize === null) {
     return null
-  }
-
-  if (a.component.minSize > a.size) {
-    return a.size
   }
 
   return a.component.minSize
@@ -236,7 +232,7 @@ function getAreaAbsorptionCapacity(
   }
 
   if (unit === 'pixel') {
-    return getAreaAbsorptionCapacityPixel(areaSnapshot, pixels, allAreasSizePixel)
+    return getAreaAbsorptionCapacityPixel(areaSnapshot, pixels)
   }
 }
 
@@ -302,11 +298,7 @@ function getAreaAbsorptionCapacityPercent(
   }
 }
 
-function getAreaAbsorptionCapacityPixel(
-  areaSnapshot: IAreaSnapshot,
-  pixels: number,
-  containerSizePixel: number,
-): IAreaAbsorptionCapacity {
+function getAreaAbsorptionCapacityPixel(areaSnapshot: IAreaSnapshot, pixels: number): IAreaAbsorptionCapacity {
   const tempPixelSize = areaSnapshot.sizePixelAtStart + pixels
 
   // ENLARGE AREA

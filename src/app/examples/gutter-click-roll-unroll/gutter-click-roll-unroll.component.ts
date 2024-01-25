@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core'
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core'
 import { IAreaSize, IOutputAreaSizes, IOutputData, SplitComponent } from 'angular-split'
 import { Subscription } from 'rxjs'
 import { AComponent } from '../../ui/components/AComponent'
@@ -7,9 +15,6 @@ import { formatDate } from '../../utils/format-date'
 @Component({
   selector: 'sp-ex-gutter-click',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styles: [
     `
       as-split {
@@ -109,6 +114,8 @@ import { formatDate } from '../../utils/format-date'
   `,
 })
 export class GutterClickRollUnrollComponent extends AComponent implements AfterViewInit, OnDestroy {
+  @HostBinding('class') class = 'split-example-page'
+
   isDisabled = true
   useTransition = true
   dblClickTime = 0
@@ -143,7 +150,7 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
 
     setTimeout(() => {
       if (this.logsEl.nativeElement.scroll) {
-        ;(<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+        (<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
 

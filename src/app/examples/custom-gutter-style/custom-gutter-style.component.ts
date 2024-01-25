@@ -1,13 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 import { IAreaSize, IOutputData, ISplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-custom-gutter-style',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'split-example-page',
-  },
   styleUrls: [`./custom-gutter-style.component.scss`],
   template: `
     {{ testChangeDetectorRun() }}
@@ -130,6 +127,8 @@ import { IAreaSize, IOutputData, ISplitDirection } from 'angular-split'
   `,
 })
 export class CustomGutterStyleComponent extends AComponent {
+  @HostBinding('class') class = 'split-example-page'
+
   direction: ISplitDirection = 'horizontal'
   exampleCSizes: IAreaSize[] = [30, 10, 40, 20]
 
