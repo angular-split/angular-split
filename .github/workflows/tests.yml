@@ -30,4 +30,4 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run tests
-        run: yarn test_ci
+        run: npm run test_ci

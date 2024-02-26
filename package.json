@@ -1,8 +1,11 @@
 {
   "name": "angular-split-app",
   "version": "0.0.0",
+  "engines": {
+    "node": "^18 || ^20"
+  },
   "scripts": {
-    "app_analyze": "yarn build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
+    "app_analyze": "npm run build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
     "build": "wireit",
     "test_live": "wireit",
     "test_prod": "wireit",
@@ -72,7 +75,7 @@
   },
   "lint-staged": {
     "*.{ts,html}": [
-      "yarn lint -- --quiet"
+      "npm run lint -- --quiet"
     ],
     "*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}": [
       "prettier --write"
@@ -80,7 +83,7 @@
   },
   "wireit": {
     "app_build_dev": {
-      "command": "yarn app_build -- --base-href /angular-split/"
+      "command": "npm run app_build -- --base-href /angular-split/"
     },
     "app_build": {
       "command": "ng build angular-split-app --configuration production",
