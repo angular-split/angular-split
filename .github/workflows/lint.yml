@@ -30,4 +30,4 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run lint
-        run: yarn lint
+        run: npm run lint
