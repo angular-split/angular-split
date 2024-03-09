@@ -119,7 +119,7 @@ export class SplitAreaDirective implements OnInit, OnDestroy {
     })
 
     const iframeFixDiv = this.renderer.createElement('div')
-    this.renderer.addClass(iframeFixDiv, 'iframe-fix')
+    this.renderer.addClass(iframeFixDiv, 'as-iframe-fix')
 
     this.dragStartSubscription = this.split.dragStart.subscribe(() => {
       this.renderer.setStyle(this.elRef.nativeElement, 'position', 'relative')

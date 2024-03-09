@@ -78,11 +78,7 @@ export class SplitGutterDirective {
     }
   }
 
-  removedFromMap(
-    map: Map<number, ElementRef<HTMLElement>[]>,
-    gutterNum: number,
-    elementRef: ElementRef<HTMLElement>,
-  ) {
+  removedFromMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
     const elements = map.get(gutterNum)
     elements.splice(elements.indexOf(elementRef), 1)
 

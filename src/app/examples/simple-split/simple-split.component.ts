@@ -164,7 +164,7 @@ export class SimpleSplitComponent extends AComponent {
   @ViewChild('split') split: SplitComponent
   @ViewChild('area1') area1: SplitAreaDirective
   @ViewChild('area2') area2: SplitAreaDirective
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   direction: ISplitDirection = 'horizontal'
   sizes = {

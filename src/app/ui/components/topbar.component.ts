@@ -86,7 +86,7 @@ export class TopbarComponent {
   examples: Routes
   isCollapsed = true
 
-  @HostBinding('class') class = 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark';
+  @HostBinding('class') class = 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark'
   constructor(
     private readonly sanitizer: DomSanitizer,
     private readonly router: Router,

@@ -71,7 +71,7 @@ import { ISplitDir, ISplitDirection } from 'angular-split'
   `,
 })
 export class DirRtlComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   dir: ISplitDir = 'rtl'
   direction: ISplitDirection = 'horizontal'

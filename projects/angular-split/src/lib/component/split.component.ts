@@ -12,7 +12,6 @@ import {
   ViewChildren,
   QueryList,
   EventEmitter,
-  ViewEncapsulation,
   Inject,
   Optional,
   ContentChild,
@@ -83,7 +82,6 @@ import { SplitGutterDirective } from '../gutter/split-gutter.directive'
   selector: 'as-split',
   exportAs: 'asSplit',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: [`./split.component.scss`],
   template: ` <ng-content></ng-content>
     <ng-template
       ngFor
@@ -137,7 +135,6 @@ import { SplitGutterDirective } from '../gutter/split-gutter.directive'
         </ng-template>
       </div>
     </ng-template>`,
-  encapsulation: ViewEncapsulation.Emulated,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {
   @ContentChild(SplitGutterDirective) customGutter: SplitGutterDirective

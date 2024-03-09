@@ -46,7 +46,7 @@ export class SyncSplitComponent extends AComponent implements AfterViewInit, OnD
   @ViewChild('mySplitA') mySplitAEl: SplitComponent
   @ViewChild('mySplitB') mySplitBEl: SplitComponent
   @ViewChild('mySplitC') mySplitCEl: SplitComponent
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   sizes = [25, 75]
   sub: Subscription

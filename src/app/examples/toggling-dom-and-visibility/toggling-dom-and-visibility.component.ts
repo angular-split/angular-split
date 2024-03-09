@@ -88,7 +88,7 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class TogglingDomAndVisibleComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   action = {
     isVisibleA: true,
