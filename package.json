@@ -1,8 +1,11 @@
 {
   "name": "angular-split-app",
   "version": "0.0.0",
+  "engines": {
+    "node": "^18 || ^20"
+  },
   "scripts": {
-    "app_analyze": "yarn build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
+    "app_analyze": "npm run build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
     "build": "wireit",
     "test_live": "wireit",
     "test_prod": "wireit",
@@ -29,44 +32,39 @@
     "@angular/platform-browser": "^17.1.0",
     "@angular/platform-browser-dynamic": "^17.1.0",
     "@angular/router": "^17.1.0",
-    "angular-cli-ghpages": "^1.0.6",
-    "bootstrap": "5.3.1",
-    "core-js": "3.32.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
+    "bootstrap": "^5.3.1",
     "marked": "7.0.4",
-    "ngx-bootstrap": "11.0.2",
-    "prettier": "^3.0.2",
-    "rxjs": "7.8.1",
-    "tsickle": "^0.46.3",
+    "ngx-bootstrap": "^12.0.0",
+    "rxjs": "~7.8.0",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
+    "lint-staged": "^14.0.1",
+    "angular-cli-ghpages": "^2.0.0-beta.2",
+    "husky": "^8.0.3",
+    "prettier": "^3.0.2",
+    "@angular-devkit/architect": "^0.1701.0",
+    "@angular-devkit/build-angular": "^17.1.0",
+    "@angular-devkit/core": "^17.1.0",
+    "@angular-devkit/schematics": "^17.1.0",
     "@angular-eslint/builder": "17.2.1",
     "@angular-eslint/eslint-plugin": "17.2.1",
     "@angular-eslint/eslint-plugin-template": "17.2.1",
     "@angular-eslint/schematics": "17.2.1",
     "@angular-eslint/template-parser": "17.2.1",
-    "@angular-devkit/architect": "^0.1701.0",
-    "@angular-devkit/build-angular": "^17.1.0",
-    "@angular-devkit/core": "^17.1.0",
-    "@angular-devkit/schematics": "^17.1.0",
     "@angular/cli": "^17.1.0",
     "@angular/compiler-cli": "^17.1.0",
     "@angular/language-service": "^17.1.0",
     "@commitlint/cli": "^18.5.0",
-    "@commitlint/config-conventional": "^18.5.0",
     "@commitlint/config-angular": "^18.5.0",
+    "@commitlint/config-conventional": "^18.5.0",
     "@types/marked": "^5.0.1",
     "@types/node": "20.5.4",
     "@typescript-eslint/eslint-plugin": "6.19.0",
     "@typescript-eslint/parser": "6.19.0",
-    "codelyzer": "^6.0.2",
-    "concurrently": "8.2.1",
     "cypress": "12.17.4",
     "eslint": "^8.56.0",
     "ng-packagr": "^17.0.0",
-    "npm-run-all": "4.1.5",
     "postcss": "8.4.28",
     "serve": "^14.2.1",
     "ts-node": "10.9.1",
@@ -77,7 +75,7 @@
   },
   "lint-staged": {
     "*.{ts,html}": [
-      "yarn lint -- --quiet"
+      "npm run lint -- --quiet"
     ],
     "*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}": [
       "prettier --write"
@@ -85,7 +83,7 @@
   },
   "wireit": {
     "app_build_dev": {
-      "command": "yarn app_build -- --base-href /angular-split/"
+      "command": "npm run app_build -- --base-href /angular-split/"
     },
     "app_build": {
       "command": "ng build angular-split-app --configuration production",
