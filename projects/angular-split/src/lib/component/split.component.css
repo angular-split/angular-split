@@ -60,7 +60,7 @@ as-split {
       cursor: col-resize;
       height: 100%;
 
-      // <- Fix safari bug about gutter height when direction is horizontal.
+      /* <- Fix safari bug about gutter height when direction is horizontal. */
 
       & > .as-split-gutter-icon {
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
