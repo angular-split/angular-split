@@ -1,5 +1,3 @@
-@use 'angular-split/theme' as asSplit;
-
 html,
 body {
   margin: 0;
@@ -52,5 +50,3 @@ split-area > p {
 code {
   color: #bb7a00;
 }
-
-@include asSplit.theme();
