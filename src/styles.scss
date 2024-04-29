@@ -50,3 +50,11 @@ split-area > p {
 code {
   color: #bb7a00;
 }
+
+:where(as-split) {
+  --as-split-padding: 1rem;
+  --as-split-margin-top-bottom: 0.25rem;
+  --as-split-margin-left-right: 0.25rem;
+  --as-split-whatever_we_need:  
+;
+}

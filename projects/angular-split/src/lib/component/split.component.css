@@ -1,4 +1,4 @@
-:host {
+as-split {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -58,7 +58,9 @@
     & > .as-split-gutter {
       flex-direction: row;
       cursor: col-resize;
-      height: 100%; // <- Fix safari bug about gutter height when direction is horizontal.
+      height: 100%;
+
+      // <- Fix safari bug about gutter height when direction is horizontal.
 
       & > .as-split-gutter-icon {
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
