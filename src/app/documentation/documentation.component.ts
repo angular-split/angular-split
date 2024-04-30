@@ -259,15 +259,15 @@ export class DocumentationComponent {
       details: 'The gutter background color',
     },
     {
-      name: 'gutter-icon-horizontal-bg-image-url',
+      name: 'gutter-icon-horizontal',
       details: 'Gutter icon in horizontal mode',
     },
     {
-      name: 'gutter-icon-vertical-bg-image-url',
+      name: 'gutter-icon-vertical',
       details: 'Gutter icon in vertical mode',
     },
     {
-      name: 'gutter-icon-disabled-bg-image-url',
+      name: 'gutter-icon-disabled',
       details: 'Gutter icon when gutter is disabled',
     },
     {

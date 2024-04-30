@@ -1,23 +1,19 @@
-$defaults: (
-  gutter-background-color: #eeeeee,
-  gutter-icon-horizontal-bg-image-url:
-    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg=='),
-  gutter-icon-vertical-bg-image-url:
-    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC'),
-  gutter-icon-disabled-bg-image-url:
-    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg=='),
-  transition-duration: 0.3s,
-  gutter-disabled-cursor: default,
-);
-
 as-split {
-  @each $name, $defaultValue in $defaults {
-    --_as-#{$name}: var(--as-#{$name}, #{$defaultValue});
-  }
-}
-
-@function get-var($name) {
-  @return var(--_as-#{$name});
+  --_as-gutter-background-color: var(--as-gutter-background-color, #eeeeee);
+  --_as-gutter-icon-horizontal: var(
+    --as-gutter-icon-horizontal,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+  );
+  --_as-gutter-icon-vertical: var(
+    --as-gutter-icon-vertical,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC')
+  );
+  --_as-gutter-icon-disabled: var(
+    --as-gutter-icon-disabled,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+  );
+  --_as-transition-duration: var(--as-transition-duration, 0.3s);
+  --_as-gutter-disabled-cursor: var(--as-gutter-disabled-cursor, default);
 }
 
 as-split {
@@ -29,11 +25,11 @@ as-split {
   width: 100%;
   height: 100%;
 
-  // Add transition only when transition enabled + split initialized + not currently dragging.
+  /* Add transition only when transition enabled + split initialized + not currently dragging. */
   &.as-transition.as-init:not(.as-dragging) {
     & > .as-split-gutter,
     & > .as-split-area {
-      transition: flex-basis get-var('transition-duration');
+      transition: flex-basis var(--_as-transition-duration);
     }
   }
 
@@ -41,7 +37,7 @@ as-split {
     border: none;
     flex-grow: 0;
     flex-shrink: 0;
-    background-color: get-var('gutter-background-color');
+    background-color: var(--_as-gutter-background-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,7 +62,7 @@ as-split {
     overflow-y: auto;
 
     &.as-hidden {
-      // When <as-split-area [visible]="false"> force size to 0.
+      /* When <as-split-area [visible]="false"> force size to 0. */
       flex: 0 1 0px !important;
       overflow-x: hidden;
       overflow-y: hidden;
@@ -87,11 +83,11 @@ as-split {
     & > .as-split-gutter {
       flex-direction: row;
       cursor: col-resize;
-      // Fix safari bug about gutter height when direction is horizontal.
+      /* Fix safari bug about gutter height when direction is horizontal. */
       height: 100%;
 
       & > .as-split-gutter-icon {
-        background-image: get-var('gutter-icon-horizontal-bg-image-url');
+        background-image: var(--_as-gutter-icon-horizontal);
       }
     }
 
@@ -109,7 +105,7 @@ as-split {
       width: 100%;
 
       & > .as-split-gutter-icon {
-        background-image: get-var('gutter-icon-vertical-bg-image-url');
+        background-image: var(--_as-gutter-icon-vertical);
       }
     }
 
@@ -124,10 +120,10 @@ as-split {
 
   &.as-disabled {
     & > .as-split-gutter {
-      cursor: get-var('gutter-disabled-cursor');
+      cursor: var(--_as-gutter-disabled-cursor);
 
       & > .as-split-gutter-icon {
-        background-image: get-var('gutter-icon-disabled-bg-image-url');
+        background-image: var(--_as-gutter-icon-disabled);
       }
     }
   }
