@@ -1,6 +1,24 @@
 @import '../../../_theme.css';
 
 as-split {
+  --_as-gutter-background-color: var(--as-gutter-background-color, #eeeeee);
+  --_as-gutter-icon-horizontal: var(
+    --as-gutter-icon-horizontal,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+  );
+  --_as-gutter-icon-vertical: var(
+    --as-gutter-icon-vertical,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC')
+  );
+  --_as-gutter-icon-disabled: var(
+    --as-gutter-icon-disabled,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+  );
+  --_as-transition-duration: var(--as-transition-duration, 0.3s);
+  --_as-gutter-disabled-cursor: var(--as-gutter-disabled-cursor, default);
+}
+
+as-split {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -13,7 +31,7 @@ as-split {
   &.as-transition.as-init:not(.as-dragging) {
     & > .as-split-gutter,
     & > .as-split-area {
-      transition: flex-basis var(--as-transition-duration);
+      transition: flex-basis var(--_as-transition-duration);
     }
   }
 
@@ -21,7 +39,7 @@ as-split {
     border: none;
     flex-grow: 0;
     flex-shrink: 0;
-    background-color: var(--as-gutter-background-color);
+    background-color: var(--_as-gutter-background-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,7 +89,7 @@ as-split {
       height: 100%;
 
       & > .as-split-gutter-icon {
-        background-image: var(--as-gutter-icon-horizontal);
+        background-image: var(--_as-gutter-icon-horizontal);
       }
     }
 
@@ -89,7 +107,7 @@ as-split {
       width: 100%;
 
       & > .as-split-gutter-icon {
-        background-image: var(--as-gutter-icon-vertical);
+        background-image: var(--_as-gutter-icon-vertical);
       }
     }
 
@@ -104,10 +122,10 @@ as-split {
 
   &.as-disabled {
     & > .as-split-gutter {
-      cursor: var(--as-gutter-disabled-cursor);
+      cursor: var(--_as-gutter-disabled-cursor);
 
       & > .as-split-gutter-icon {
-        background-image: var(--as-gutter-icon-disabled);
+        background-image: var(--_as-gutter-icon-disabled);
       }
     }
   }
