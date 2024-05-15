@@ -16,7 +16,6 @@ import {
   Inject,
   Optional,
   ContentChild,
-  numberAttribute,
 } from '@angular/core'
 import { Observable, Subscriber, Subject } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
@@ -96,7 +95,7 @@ import { SplitGutterDirective } from '../gutter/split-gutter.directive'
     >
       <div
         role="separator"
-        [tabindex]="tabindex"
+        tabindex="0"
         *ngIf="last === false"
         #gutterEls
         class="as-split-gutter"
@@ -157,8 +156,6 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
   get direction(): ISplitDirection {
     return this._direction
   }
-
-  @Input({ transform: numberAttribute }) tabindex: number = 0
 
   @Input() set unit(v: ISplitUnit) {
     this._unit = v === 'pixel' ? 'pixel' : 'percent'
