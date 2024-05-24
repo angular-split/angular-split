@@ -155,7 +155,9 @@ import { IAreaSize } from 'angular-split'
       <div class="logs">
         <p>Events <code>(transitionEnd)</code>:</p>
         <ul #logs>
-          <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
+          @for (l of logMessages; track l) {
+            <li [ngClass]="l.type">{{ l.text }}</li>
+          }
         </ul>
       </div>
       <br />
@@ -257,7 +259,7 @@ export class SplitTransitionsComponent extends AComponent {
   logMessages: Array<{ type: string; text: string }> = []
 
   @ViewChild('logs') logsEl: ElementRef
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   log(e) {
     this.logMessages.push({ type: 'transitionEnd', text: `${formatDate(new Date())} > transitionEnd event > ${e}` })

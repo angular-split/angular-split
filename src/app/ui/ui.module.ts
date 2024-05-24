@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { AngularSplitModule } from 'angular-split'
@@ -9,6 +8,7 @@ import { SortableModule } from 'ngx-bootstrap/sortable'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { ExampleTitleComponent } from './components/exampleTitle.component'
 import { TopbarComponent } from './components/topbar.component'
+import { CommonModule } from '@angular/common'
 
 @NgModule({
   imports: [

@@ -70,6 +70,5 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class NestedComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
-
+  @HostBinding('class') class = 'split-example-page'
 }

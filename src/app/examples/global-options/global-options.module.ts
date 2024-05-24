@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { GlobalOptionsComponent } from './global-options.component'
 import { AngularSplitModule } from 'angular-split'
@@ -8,12 +7,7 @@ import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from 'angular-split'
 
 @NgModule({
   declarations: [GlobalOptionsComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild([{ path: '', component: GlobalOptionsComponent }]),
-    AngularSplitModule,
-    UiModule,
-  ],
+  imports: [RouterModule.forChild([{ path: '', component: GlobalOptionsComponent }]), AngularSplitModule, UiModule],
   providers: [
     {
       provide: ANGULAR_SPLIT_DEFAULT_OPTIONS,

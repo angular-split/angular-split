@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { AngularSplitModule } from 'angular-split'
@@ -7,7 +6,6 @@ import { WorkspaceLocalstorageComponent } from './workspace-localstorage.compone
 
 @NgModule({
   imports: [
-    CommonModule,
     UiModule,
     RouterModule.forChild([{ path: '', component: WorkspaceLocalstorageComponent }]),
     AngularSplitModule,

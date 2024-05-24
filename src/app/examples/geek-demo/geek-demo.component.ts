@@ -84,16 +84,17 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
           [useTransition]="d.useTransition"
           style="background-color: #ffffff;"
         >
-          <ng-template ngFor let-area [ngForOf]="d.areas" [ngForTrackBy]="trackByFct" let-index="index">
-            <as-split-area
-              *ngIf="area.present"
-              [visible]="area.visible"
-              [order]="index"
-              [size]="area.size"
-              [style.background-color]="area.color"
-              >{{ area.id }}</as-split-area
-            >
-          </ng-template>
+          @for (area of d.areas; track area.id; let index = $index) {
+            @if (area.present) {
+              <as-split-area
+                [visible]="area.visible"
+                [order]="index"
+                [size]="area.size"
+                [style.background-color]="area.color"
+                >{{ area.id }}</as-split-area
+              >
+            }
+          }
         </as-split>
       </div>
       <div class="opts-prop">
@@ -161,7 +162,7 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
                 [class.active]="!item.value.present"
                 (click)="item.value.present = !item.value.present"
               >
-                {{ '*ngIf="' + item.value.present + '"' }}
+                {{ '*ngIf="' + item.value.present + '" or @if(' + item.value.present + ')' }}
               </button>
               <button
                 class="btn btn-warning btn-sm"
@@ -180,8 +181,7 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
 })
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent
-  @HostBinding('class') class = 'split-example-page';
-
+  @HostBinding('class') class = 'split-example-page'
 
   d: {
     dir: ISplitDirection
@@ -205,10 +205,6 @@ export class GeekDemoComponent extends AComponent {
       { id: getRandomNum(), color: getRandomColor(), size: 50, present: true, visible: true },
       { id: getRandomNum(), color: getRandomColor(), size: 25, present: true, visible: true },
     ],
-  }
-
-  trackByFct(index, area) {
-    return area.id
   }
 
   addArea() {

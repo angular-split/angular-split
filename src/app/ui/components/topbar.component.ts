@@ -69,13 +69,15 @@ import { exampleRoutes } from '../../examples/examples.routes'
         <li class="nav-item dropdown" dropdown routerLinkActive="active">
           <a class="nav-link dropdown-toggle" dropdownToggle>Examples <span class="caret"></span></a>
           <ul *dropdownMenu class="dropdown-menu" role="menu">
-            <li *ngFor="let ex of examples" routerLinkActive="active">
-              <a
-                class="dropdown-item"
-                [routerLink]="['/examples', ex.path]"
-                [innerHTML]="transform(ex?.data?.label)"
-              ></a>
-            </li>
+            @for (ex of examples; track ex.path) {
+              <li routerLinkActive="active">
+                <a
+                  class="dropdown-item"
+                  [routerLink]="['/examples', ex.path]"
+                  [innerHTML]="transform(ex?.data?.label)"
+                ></a>
+              </li>
+            }
           </ul>
         </li>
       </ul>
@@ -86,7 +88,7 @@ export class TopbarComponent {
   examples: Routes
   isCollapsed = true
 
-  @HostBinding('class') class = 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark';
+  @HostBinding('class') class = 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark'
   constructor(
     private readonly sanitizer: DomSanitizer,
     private readonly router: Router,

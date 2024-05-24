@@ -73,7 +73,7 @@ export const exampleRoutes: Routes = [
   {
     data: {
       type: ExampleEnum.TOGGLE,
-      label: 'Toggling areas using <code>[visible]</code> and <code>*ngIf</code>',
+      label: 'Toggling areas using <code>[visible]</code> and <code>*ngIf</code> or <code>@if</code>',
       srcUrl: `${srcUrlBaseApp}/toggling-dom-and-visibility/toggling-dom-and-visibility.component.ts`,
     },
     path: 'toggling-dom-and-visibility',

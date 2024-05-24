@@ -21,15 +21,21 @@ import { AComponent } from '../../ui/components/AComponent'
       <sp-example-title [type]="exampleEnum.TOGGLE"></sp-example-title>
       <div class="split-example ex1" style="height: 150px;">
         <as-split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
-          <as-split-area *ngIf="action.isPresentA" [visible]="action.isVisibleA" [order]="0">
-            <p>A</p>
-          </as-split-area>
-          <as-split-area *ngIf="action.isPresentB" [visible]="action.isVisibleB" [order]="1">
-            <p>B</p>
-          </as-split-area>
-          <as-split-area *ngIf="action.isPresentC" [visible]="action.isVisibleC" [order]="2">
-            <p>C</p>
-          </as-split-area>
+          @if (action.isPresentA) {
+            <as-split-area [visible]="action.isVisibleA" [order]="0">
+              <p>A</p>
+            </as-split-area>
+          }
+          @if (action.isPresentB) {
+            <as-split-area [visible]="action.isVisibleB" [order]="1">
+              <p>B</p>
+            </as-split-area>
+          }
+          @if (action.isPresentC) {
+            <as-split-area [visible]="action.isVisibleC" [order]="2">
+              <p>C</p>
+            </as-split-area>
+          }
         </as-split>
       </div>
       <p>Toggle <code>[visible]="boolean"</code> properties:</p>
@@ -55,7 +61,7 @@ import { AComponent } from '../../ui/components/AComponent'
           >
         </div>
       </div>
-      <p>Toggle <code>*ngIf="boolean"</code> properties:</p>
+      <p>Toggle <code>*ngIf="boolean"</code> or <code>&#64;if(boolean)</code> properties:</p>
       <div class="btns">
         <div class="btn-group">
           <label
@@ -81,14 +87,14 @@ import { AComponent } from '../../ui/components/AComponent'
       <br />
       <div class="alert alert-danger" role="alert">
         <b>Warning:</b><br /><code>[visible]="false"</code> only hides elements and don't remove it from the DOM, It
-        could lead to useless change detection processing.<br />Use of <code>*ngIf="false"</code> should be the default
-        option unless you have reasons to keep DOM elements.
+        could lead to useless change detection processing.<br />Use of <code>*ngIf="false"</code> or
+        <code>&#64;if(false)</code> should be the default option unless you have reasons to keep DOM elements.
       </div>
     </div>
   `,
 })
 export class TogglingDomAndVisibleComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   action = {
     isVisibleA: true,

@@ -84,48 +84,65 @@ const defaultConfig: IConfig = {
     `,
   ],
   template: `
-    <as-split *ngIf="config" direction="horizontal" [disabled]="config.disabled" (dragEnd)="onDragEnd(-1, $event)">
-      <ng-template ngFor let-column [ngForOf]="config.columns" let-icol="index">
-        <as-split-area *ngIf="column.visible" [order]="icol" [size]="column.size">
-          <as-split direction="vertical" [disabled]="config.disabled" (dragEnd)="onDragEnd(icol, $event)">
-            <ng-template ngFor let-row [ngForOf]="column.rows" let-irow="index">
-              <as-split-area *ngIf="row.visible" [order]="irow" [size]="row.size">
-                <div [ngSwitch]="row.type" class="bloc">
-                  <div *ngSwitchCase="'doc'" class="explanations">
-                    <sp-example-title [type]="exampleEnum.WORKSPACE"></sp-example-title>
-                    <p>
-                      All areas size and visibility are saved to localStorage.<br />
-                      Toggle areas visibility using following buttons:
-                    </p>
-                    <ng-template ngFor let-c [ngForOf]="config.columns">
-                      <ng-template ngFor let-r [ngForOf]="c.rows">
-                        <button
-                          *ngIf="r.type !== 'doc'"
-                          (click)="r.visible = !r.visible; refreshColumnVisibility()"
-                          [class.active]="!r.visible"
-                          class="btn btn-warning"
-                        >
-                          {{ r.type }}
-                        </button>
-                      </ng-template>
-                    </ng-template>
-                    <br />
-                    <button class="btn btn-warning" [class.active]="!config.disabled" (click)="toggleDisabled()">
-                      {{ 'isDisabled: ' + config.disabled }}
-                    </button>
-                    <br />
-                    <button (click)="resetConfig()" class="btn btn-warning">Reset localStorage</button>
-                  </div>
-                  <div *ngSwitchDefault class="panel">
-                    <p>{{ row.type }}</p>
-                  </div>
-                </div>
-              </as-split-area>
-            </ng-template>
-          </as-split>
-        </as-split-area>
-      </ng-template>
-    </as-split>
+    @if (config) {
+      <as-split direction="horizontal" [disabled]="config.disabled" (dragEnd)="onDragEnd(-1, $event)">
+        @for (column of config.columns; track column; let icol = $index) {
+          @if (column.visible) {
+            <as-split-area [order]="icol" [size]="column.size">
+              <as-split direction="vertical" [disabled]="config.disabled" (dragEnd)="onDragEnd(icol, $event)">
+                @for (row of column.rows; track row; let irow = $index) {
+                  @if (row.visible) {
+                    <as-split-area [order]="irow" [size]="row.size">
+                      <div class="bloc">
+                        @switch (row.type) {
+                          @case ('doc') {
+                            <div class="explanations">
+                              <sp-example-title [type]="exampleEnum.WORKSPACE"></sp-example-title>
+                              <p>
+                                All areas size and visibility are saved to localStorage.<br />
+                                Toggle areas visibility using following buttons:
+                              </p>
+                              @for (c of config.columns; track c) {
+                                @for (r of c.rows; track r) {
+                                  @if (r.type !== 'doc') {
+                                    <button
+                                      (click)="r.visible = !r.visible; refreshColumnVisibility()"
+                                      [class.active]="!r.visible"
+                                      class="btn btn-warning"
+                                    >
+                                      {{ r.type }}
+                                    </button>
+                                  }
+                                }
+                              }
+                              <br />
+                              <button
+                                class="btn btn-warning"
+                                [class.active]="!config.disabled"
+                                (click)="toggleDisabled()"
+                              >
+                                {{ 'isDisabled: ' + config.disabled }}
+                              </button>
+                              <br />
+                              <button (click)="resetConfig()" class="btn btn-warning">Reset localStorage</button>
+                            </div>
+                          }
+                          @default {
+                            <div class="panel">
+                              <p>{{ row.type }}</p>
+                            </div>
+                          }
+                        }
+                      </div>
+                    </as-split-area>
+                  }
+                }
+              </as-split>
+            </as-split-area>
+          }
+        }
+      </as-split>
+    }
   `,
 })
 export class WorkspaceLocalstorageComponent extends AComponent implements OnInit {

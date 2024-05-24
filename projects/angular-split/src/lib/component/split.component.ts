@@ -85,58 +85,59 @@ import { SplitGutterDirective } from '../gutter/split-gutter.directive'
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: [`./split.component.scss`],
   template: ` <ng-content></ng-content>
-    <ng-template
-      ngFor
-      [ngForOf]="displayedAreas"
-      let-area="$implicit"
-      let-index="index"
-      let-first="first"
-      let-last="last"
-    >
-      <div
-        role="separator"
-        tabindex="0"
-        *ngIf="last === false"
-        #gutterEls
-        class="as-split-gutter"
-        [class.as-dragged]="draggedGutterNum === index + 1"
-        [style.flex-basis.px]="gutterSize"
-        [style.order]="index * 2 + 1"
-        (keydown)="startKeyboardDrag($event, index * 2 + 1, index + 1)"
-        (mousedown)="startMouseDrag($event, index * 2 + 1, index + 1)"
-        (touchstart)="startMouseDrag($event, index * 2 + 1, index + 1)"
-        (mouseup)="clickGutter($event, index + 1)"
-        (touchend)="clickGutter($event, index + 1)"
-        [attr.aria-label]="gutterAriaLabel"
-        [attr.aria-orientation]="direction"
-        [attr.aria-valuemin]="area.minSize"
-        [attr.aria-valuemax]="area.maxSize"
-        [attr.aria-valuenow]="area.size === '*' ? null : area.size"
-        [attr.aria-valuetext]="getAriaAreaSizeText(area.size)"
-      >
-        <ng-container *ngIf="customGutter?.template; else defaultGutterTpl">
-          <ng-container *asSplitGutterDynamicInjector="index + 1; let injector">
-            <ng-container
-              *ngTemplateOutlet="
-                customGutter.template;
-                context: {
-                  areaBefore: area,
-                  areaAfter: displayedAreas[index + 1],
-                  gutterNum: index + 1,
-                  first,
-                  last: index === displayedAreas.length - 2,
-                  isDragged: draggedGutterNum === index + 1
-                };
-                injector: injector
-              "
-            ></ng-container>
-          </ng-container>
-        </ng-container>
-        <ng-template #defaultGutterTpl>
-          <div class="as-split-gutter-icon"></div>
-        </ng-template>
-      </div>
-    </ng-template>`,
+    @for (
+      displayedArea of displayedAreas;
+      track displayedArea;
+      let index = $index;
+      let first = $first;
+      let last = $last
+    ) {
+      <ng-template let-area="$implicit">
+        @if (!last) {
+          <div
+            role="separator"
+            tabindex="0"
+            #gutterEls
+            class="as-split-gutter"
+            [class.as-dragged]="draggedGutterNum === index + 1"
+            [style.flex-basis.px]="gutterSize"
+            [style.order]="index * 2 + 1"
+            (keydown)="startKeyboardDrag($event, index * 2 + 1, index + 1)"
+            (mousedown)="startMouseDrag($event, index * 2 + 1, index + 1)"
+            (touchstart)="startMouseDrag($event, index * 2 + 1, index + 1)"
+            (mouseup)="clickGutter($event, index + 1)"
+            (touchend)="clickGutter($event, index + 1)"
+            [attr.aria-label]="gutterAriaLabel"
+            [attr.aria-orientation]="direction"
+            [attr.aria-valuemin]="area.minSize"
+            [attr.aria-valuemax]="area.maxSize"
+            [attr.aria-valuenow]="area.size === '*' ? null : area.size"
+            [attr.aria-valuetext]="getAriaAreaSizeText(area.size)"
+          >
+            @if (customGutter?.template) {
+              <ng-container *asSplitGutterDynamicInjector="index + 1; let injector">
+                <ng-container
+                  *ngTemplateOutlet="
+                    customGutter.template;
+                    context: {
+                      areaBefore: area,
+                      areaAfter: displayedAreas[index + 1],
+                      gutterNum: index + 1,
+                      first,
+                      last: index === displayedAreas.length - 2,
+                      isDragged: draggedGutterNum === index + 1
+                    };
+                    injector: injector
+                  "
+                ></ng-container>
+              </ng-container>
+            } @else {
+              <div class="as-split-gutter-icon"></div>
+            }
+          </div>
+        }
+      </ng-template>
+    }`,
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class SplitComponent implements AfterViewInit, OnDestroy {

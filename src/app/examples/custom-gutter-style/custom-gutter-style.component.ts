@@ -72,12 +72,16 @@ import { IAreaSize, IOutputData, ISplitDirection } from 'angular-split'
             class="custom-collapse-gutter"
           >
             <div class="custom-collapse-gutter-header">
-              <div *ngIf="!last" asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
-                {{ direction === 'horizontal' ? '◀' : '🔼' }}
-              </div>
-              <div *ngIf="!first" asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
-                {{ direction === 'horizontal' ? '▶' : '🔽' }}
-              </div>
+              @if (!last) {
+                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
+                  {{ direction === 'horizontal' ? '◀' : '🔼' }}
+                </div>
+              }
+              @if (!first) {
+                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
+                  {{ direction === 'horizontal' ? '▶' : '🔽' }}
+                </div>
+              }
             </div>
             <div class="custom-collapse-gutter-icon"></div>
             <div class="custom-collapse-gutter-ghost"></div>
@@ -127,7 +131,7 @@ import { IAreaSize, IOutputData, ISplitDirection } from 'angular-split'
   `,
 })
 export class CustomGutterStyleComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   direction: ISplitDirection = 'horizontal'
   exampleCSizes: IAreaSize[] = [30, 10, 40, 20]

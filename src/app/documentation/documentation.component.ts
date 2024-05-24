@@ -182,7 +182,7 @@ export class DocumentationComponent {
         name: 'visible',
         type: 'boolean',
         default: 'true',
-        details: `Hide area visually but still present in the DOM, use <code>ngIf</code> to completely remove it.<br><u>Not working when <code>[size]="'*'"</code></u>`,
+        details: `Hide area visually but still present in the DOM, use <code>ngIf</code> or <code>@if</code> to completely remove it.<br><u>Not working when <code>[size]="'*'"</code></u>`,
       },
     ],
   }
