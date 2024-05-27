@@ -1,7 +1,7 @@
 import { Component, ViewChild, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { SortableComponent } from 'ngx-bootstrap/sortable'
 import { AComponent } from '../../ui/components/AComponent'
-import { IAreaSize, ISplitDirection } from 'angular-split'
+import { SplitAreaSize, SplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-geek-demo',
@@ -82,13 +82,13 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
           [style.width]="d.width"
           [style.height]="d.height"
           [useTransition]="d.useTransition"
+          gutterClickDeltaPx="0"
           style="background-color: #ffffff;"
         >
           <ng-template ngFor let-area [ngForOf]="d.areas" [ngForTrackBy]="trackByFct" let-index="index">
             <as-split-area
               *ngIf="area.present"
               [visible]="area.visible"
-              [order]="index"
               [size]="area.size"
               [style.background-color]="area.color"
               >{{ area.id }}</as-split-area
@@ -166,7 +166,7 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
               <button
                 class="btn btn-warning btn-sm"
                 [class.active]="!item.value.visible"
-                (click)="item.value.visible = !item.value.visible"
+                (click)="item.value.visible ? hideArea(item.value) : showArea(item.value)"
               >
                 {{ '[visible]="' + item.value.visible + '"' }}
               </button>
@@ -180,18 +180,17 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
 })
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent
-  @HostBinding('class') class = 'split-example-page';
-
+  @HostBinding('class') class = 'split-example-page'
 
   d: {
-    dir: ISplitDirection
+    dir: SplitDirection
     restrictMove: boolean
     useTransition: boolean
     gutterSize: number | null
     gutterStep: number | null
     width: number | null
     height: number | null
-    areas: { id: number; color: string; size: IAreaSize; present: boolean; visible: boolean }[]
+    areas: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }[]
   } = {
     dir: 'horizontal',
     restrictMove: true,
@@ -219,14 +218,30 @@ export class GeekDemoComponent extends AComponent {
       present: true,
       visible: true,
     })
+    this.alignAreaSizes()
 
     this.sortableComponent.writeValue(this.d.areas)
   }
 
-  removeArea(area: { id: number; color: string; size: IAreaSize; present: boolean; visible: boolean }) {
+  removeArea(area: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }) {
     this.d.areas.splice(this.d.areas.indexOf(area), 1)
+    this.alignAreaSizes()
 
     this.sortableComponent.writeValue(this.d.areas)
+  }
+
+  hideArea(area: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }) {
+    this.d.areas.find((a) => a === area).visible = false
+    this.alignAreaSizes()
+  }
+
+  showArea(area: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }) {
+    this.d.areas.find((a) => a === area).visible = true
+    this.alignAreaSizes()
+  }
+
+  private alignAreaSizes() {
+    this.d.areas.filter((area) => area.visible).forEach((area, _, arr) => (area.size = 100 / arr.length))
   }
 }
 

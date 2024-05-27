@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitComponent, SplitAreaDirective } from 'angular-split'
+import { SplitComponent, SplitAreaComponent } from 'angular-split'
 
 @Component({
   selector: 'sp-global-options',
@@ -38,11 +38,11 @@ import { SplitComponent, SplitAreaDirective } from 'angular-split'
   `,
 })
 export class GlobalOptionsComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   @ViewChild('split') split: SplitComponent
-  @ViewChild('area1') area1: SplitAreaDirective
-  @ViewChild('area2') area2: SplitAreaDirective
+  @ViewChild('area1') area1: SplitAreaComponent
+  @ViewChild('area2') area2: SplitAreaComponent
 
   constructor() {
     super()

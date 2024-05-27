@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
-import { IAreaSize } from 'angular-split'
+import { SplitAreaSize } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-transitions',
@@ -64,9 +64,8 @@ import { IAreaSize } from 'angular-split'
         width: 100%;
       }
 
-      :host .ex2 ::ng-deep .as-transition.as-init:not(.as-dragging) > .as-split-area,
-      :host ::ng-deep .as-transition.as-init:not(.as-dragging) > .as-split-gutter {
-        transition: flex-basis 1s !important;
+      :host .ex2 ::ng-deep .as-transition {
+        transition: grid-template 1s !important;
       }
     `,
   ],
@@ -238,9 +237,9 @@ import { IAreaSize } from 'angular-split'
 })
 export class SplitTransitionsComponent extends AComponent {
   action: {
-    a1s: IAreaSize
-    a2s: IAreaSize
-    a3s: IAreaSize
+    a1s: SplitAreaSize
+    a2s: SplitAreaSize
+    a3s: SplitAreaSize
     a1v: boolean
     a2v: boolean
     a3v: boolean
@@ -257,13 +256,13 @@ export class SplitTransitionsComponent extends AComponent {
   logMessages: Array<{ type: string; text: string }> = []
 
   @ViewChild('logs') logsEl: ElementRef
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   log(e) {
     this.logMessages.push({ type: 'transitionEnd', text: `${formatDate(new Date())} > transitionEnd event > ${e}` })
     setTimeout(() => {
       if (this.logsEl.nativeElement.scroll) {
-        (<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+        ;(<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
   }

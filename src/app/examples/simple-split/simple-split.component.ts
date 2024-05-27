@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, HostBinding } from '@angular/core'
-import { SplitComponent, SplitAreaDirective, ISplitDirection } from 'angular-split'
+import { SplitComponent, SplitAreaComponent, SplitDirection } from 'angular-split'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
@@ -162,11 +162,11 @@ import { AComponent } from '../../ui/components/AComponent'
 })
 export class SimpleSplitComponent extends AComponent {
   @ViewChild('split') split: SplitComponent
-  @ViewChild('area1') area1: SplitAreaDirective
-  @ViewChild('area2') area2: SplitAreaDirective
-  @HostBinding('class') class = 'split-example-page';
+  @ViewChild('area1') area1: SplitAreaComponent
+  @ViewChild('area2') area2: SplitAreaComponent
+  @HostBinding('class') class = 'split-example-page'
 
-  direction: ISplitDirection = 'horizontal'
+  direction: SplitDirection = 'horizontal'
   sizes = {
     percentWithoutWildcards: {
       area1: 30,

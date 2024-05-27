@@ -1,25 +1,21 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { SplitComponent } from './component/split.component'
-import { SplitAreaDirective } from './directive/split-area.directive'
+import { SplitAreaComponent } from './split-area/split-area.component'
+import { SplitComponent } from './split/split.component'
 import { SplitGutterDirective } from './gutter/split-gutter.directive'
 import { SplitGutterDragHandleDirective } from './gutter/split-gutter-drag-handle.directive'
-import { SplitGutterDynamicInjectorDirective } from './gutter/split-gutter-dynamic-injector.directive'
 import { SplitGutterExcludeFromDragDirective } from './gutter/split-gutter-exclude-from-drag.directive'
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [
+  imports: [
+    SplitAreaComponent,
     SplitComponent,
-    SplitAreaDirective,
     SplitGutterDirective,
     SplitGutterDragHandleDirective,
-    SplitGutterDynamicInjectorDirective,
     SplitGutterExcludeFromDragDirective,
   ],
   exports: [
     SplitComponent,
-    SplitAreaDirective,
+    SplitAreaComponent,
     SplitGutterDirective,
     SplitGutterDragHandleDirective,
     SplitGutterExcludeFromDragDirective,

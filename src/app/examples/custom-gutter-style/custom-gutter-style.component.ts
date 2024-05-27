@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
-import { IAreaSize, IOutputData, ISplitDirection } from 'angular-split'
+import { SplitAreaSize, SplitGutterInteractionEvent, SplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-custom-gutter-style',
@@ -127,12 +127,12 @@ import { IAreaSize, IOutputData, ISplitDirection } from 'angular-split'
   `,
 })
 export class CustomGutterStyleComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
-  direction: ISplitDirection = 'horizontal'
-  exampleCSizes: IAreaSize[] = [30, 10, 40, 20]
+  direction: SplitDirection = 'horizontal'
+  exampleCSizes: SplitAreaSize[] = [30, 10, 40, 20]
 
-  exampleCDragEnd(e: IOutputData) {
+  exampleCDragEnd(e: SplitGutterInteractionEvent) {
     this.exampleCSizes = e.sizes
   }
 
