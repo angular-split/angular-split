@@ -1,3 +1,4 @@
 {
-  "projects/angular-split": "17.2.0"
+  "projects/angular-split": "17.2.0",
+  ".": "15.1.0"
 }
