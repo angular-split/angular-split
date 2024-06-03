@@ -35,6 +35,5 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class IframesComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
-
+  @HostBinding('class') class = 'split-example-page'
 }

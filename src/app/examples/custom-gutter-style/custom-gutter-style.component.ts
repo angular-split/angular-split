@@ -127,7 +127,7 @@ import { IAreaSize, IOutputData, ISplitDirection } from 'angular-split'
   `,
 })
 export class CustomGutterStyleComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   direction: ISplitDirection = 'horizontal'
   exampleCSizes: IAreaSize[] = [30, 10, 40, 20]

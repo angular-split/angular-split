@@ -38,7 +38,7 @@ import { SplitComponent, SplitAreaDirective } from 'angular-split'
   `,
 })
 export class GlobalOptionsComponent extends AComponent {
-  @HostBinding('class') class = 'split-example-page';
+  @HostBinding('class') class = 'split-example-page'
 
   @ViewChild('split') split: SplitComponent
   @ViewChild('area1') area1: SplitAreaDirective

@@ -1,0 +1,132 @@
+@import '../../../_theme.css';
+
+as-split {
+  --_as-gutter-background-color: var(--as-gutter-background-color, #eeeeee);
+  --_as-gutter-icon-horizontal: var(
+    --as-gutter-icon-horizontal,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+  );
+  --_as-gutter-icon-vertical: var(
+    --as-gutter-icon-vertical,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC')
+  );
+  --_as-gutter-icon-disabled: var(
+    --as-gutter-icon-disabled,
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+  );
+  --_as-transition-duration: var(--as-transition-duration, 0.3s);
+  --_as-gutter-disabled-cursor: var(--as-gutter-disabled-cursor, default);
+}
+
+as-split {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+
+  /* Add transition only when transition enabled + split initialized + not currently dragging. */
+  &.as-transition.as-init:not(.as-dragging) {
+    & > .as-split-gutter,
+    & > .as-split-area {
+      transition: flex-basis var(--_as-transition-duration);
+    }
+  }
+
+  & > .as-split-gutter {
+    border: none;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: var(--_as-gutter-background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.as-split-gutter-collapsed {
+      flex-basis: 1px !important;
+      pointer-events: none;
+    }
+
+    & > .as-split-gutter-icon {
+      width: 100%;
+      height: 100%;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  & > .as-split-area {
+    flex-grow: 0;
+    flex-shrink: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &.as-hidden {
+      /* When <as-split-area [visible]="false"> force size to 0. */
+      flex: 0 1 0px !important;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    & > .as-iframe-fix {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.as-horizontal {
+    flex-direction: row;
+
+    & > .as-split-gutter {
+      flex-direction: row;
+      cursor: col-resize;
+      /* Fix safari bug about gutter height when direction is horizontal. */
+      height: 100%;
+
+      & > .as-split-gutter-icon {
+        background-image: var(--_as-gutter-icon-horizontal);
+      }
+    }
+
+    & > .as-split-area {
+      height: 100%;
+    }
+  }
+
+  &.as-vertical {
+    flex-direction: column;
+
+    & > .as-split-gutter {
+      flex-direction: column;
+      cursor: row-resize;
+      width: 100%;
+
+      & > .as-split-gutter-icon {
+        background-image: var(--_as-gutter-icon-vertical);
+      }
+    }
+
+    & > .as-split-area {
+      width: 100%;
+
+      &.as-hidden {
+        max-width: 0;
+      }
+    }
+  }
+
+  &.as-disabled {
+    & > .as-split-gutter {
+      cursor: var(--_as-gutter-disabled-cursor);
+
+      & > .as-split-gutter-icon {
+        background-image: var(--_as-gutter-icon-disabled);
+      }
+    }
+  }
+}

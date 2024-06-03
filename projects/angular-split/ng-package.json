@@ -3,5 +3,6 @@
   "dest": "../../dist/angular-split",
   "lib": {
     "entryFile": "src/public_api.ts"
-  }
+  },
+  "assets": ["_theme.css"]
 }

@@ -62,6 +62,9 @@ import { Component, VERSION } from '@angular/core'
         <h5>Define splits in your template:</h5>
         <pre [innerText]="code3"></pre>
         <br />
+        <h5>Add css theme in styles.css/scss for variables type hints (optional):</h5>
+        <pre [innerText]="code4"></pre>
+        <br />
         <h5>Support:</h5>
         If you have an issue using the library, feel free to join our chat! We are part of the
         <a href="https://discord.gg/Qm9MPCg">Angular Community</a> Discord and you can ask questions in the
@@ -70,7 +73,7 @@ import { Component, VERSION } from '@angular/core'
         <div class="text-center">
           <a href="https://discord.gg/Qm9MPCg">
             <img
-            alt="Angular Discord"
+              alt="Angular Discord"
               src="https://img.shields.io/discord/748677963142135818?color=7289DA&label=Angular%20Discord&logo=discord&logoColor=white&style=flat-square"
             />
           </a>
@@ -115,4 +118,5 @@ export class AppModule {}`
     </as-split-area>
   </as-split>
 </div>`
+  code4 = `@use/@import 'angular-split/theme';`
 }

@@ -180,8 +180,7 @@ import { IAreaSize, ISplitDirection } from 'angular-split'
 })
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent
-  @HostBinding('class') class = 'split-example-page';
-
+  @HostBinding('class') class = 'split-example-page'
 
   d: {
     dir: ISplitDirection
