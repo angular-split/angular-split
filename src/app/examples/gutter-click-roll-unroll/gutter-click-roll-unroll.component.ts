@@ -17,11 +17,9 @@ import { formatDate } from '../../utils/format-date'
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
-      as-split.as-transition {
-        transition: grid-template 1.5s !important;
-      }
-      as-split.as-disabled ::ng-deep > .as-split-gutter {
-        cursor: pointer !important;
+      as-split {
+        --as-transition-duration: 1.5s;
+        --as-gutter-disabled-cursor: pointer;
       }
 
       .btns {

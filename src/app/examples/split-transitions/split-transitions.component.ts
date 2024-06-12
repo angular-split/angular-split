@@ -64,8 +64,8 @@ import { SplitAreaSize } from 'angular-split'
         width: 100%;
       }
 
-      :host .ex2 ::ng-deep .as-transition {
-        transition: grid-template 1s !important;
+      .ex2 {
+        --as-transition-duration: 1s;
       }
     `,
   ],

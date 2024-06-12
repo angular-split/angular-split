@@ -80,7 +80,7 @@ interface DragStartContext {
   imports: [NgStyle, SplitCustomEventsBehaviorDirective, SplitGutterDynamicInjectorDirective, NgTemplateOutlet],
   exportAs: 'asSplit',
   templateUrl: './split.component.html',
-  styleUrl: './split.component.scss',
+  styleUrl: './split.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitComponent {

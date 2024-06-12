@@ -1,0 +1,35 @@
+@property --as-gutter-background-color {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #eeeeee;
+}
+
+@property --as-gutter-icon-horizontal {
+  syntax: '<url>';
+  inherits: true;
+  initial-value: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+}
+
+@property --as-gutter-icon-vertical {
+  syntax: '<url>';
+  inherits: true;
+  initial-value: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAMAAABl/6zIAAAABlBMVEUAAADMzMzIT8AyAAAAAXRSTlMAQObYZgAAABRJREFUeAFjYGRkwIMJSeMHlBkOABP7AEGzSuPKAAAAAElFTkSuQmCC');
+}
+
+@property --as-gutter-icon-disabled {
+  syntax: '<url>';
+  inherits: true;
+  initial-value: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+}
+
+@property --as-transition-duration {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0.3s;
+}
+
+@property --as-gutter-disabled-cursor {
+  syntax: '*';
+  inherits: true;
+  initial-value: default;
+}

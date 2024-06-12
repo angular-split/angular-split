@@ -19,7 +19,7 @@ import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../
   standalone: true,
   exportAs: 'asSplitArea',
   templateUrl: './split-area.component.html',
-  styleUrl: './split-area.component.scss',
+  styleUrl: './split-area.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitAreaComponent {
