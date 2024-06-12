@@ -34,7 +34,7 @@ import {
 import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common'
 import { SplitGutterInteractionEvent, SplitAreaSize } from '../models'
 import { SplitCustomEventsBehaviorDirective } from '../split-custom-events-behavior.directive'
-import { areaAreasValid } from '../validations'
+import { areAreasValid } from '../validations'
 import { SplitGutterDirective } from '../gutter/split-gutter.directive'
 import { SplitGutterDynamicInjectorDirective } from '../gutter/split-gutter-dynamic-injector.directive'
 import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
@@ -198,7 +198,7 @@ export class SplitComponent {
 
           visibleAreas.forEach((area) => area._internalSize.reset())
 
-          const isValid = areaAreasValid(visibleAreas, unit)
+          const isValid = areAreasValid(visibleAreas, unit)
 
           if (isValid) {
             return
@@ -308,11 +308,6 @@ export class SplitComponent {
     areaBeforeGutterIndex: number,
     areaAfterGutterIndex: number,
   ) {
-    // Only left clicks
-    if (e instanceof MouseEvent && e.button !== 0) {
-      return
-    }
-
     if (this.disabled()) {
       return
     }

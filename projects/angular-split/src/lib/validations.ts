@@ -3,7 +3,7 @@ import { SplitUnit } from './models'
 import { SplitAreaComponent } from './split-area/split-area.component'
 import { sum } from './utils'
 
-export function areaAreasValid(areas: readonly SplitAreaComponent[], unit: SplitUnit): boolean {
+export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitUnit): boolean {
   if (areas.length === 0) {
     return true
   }
