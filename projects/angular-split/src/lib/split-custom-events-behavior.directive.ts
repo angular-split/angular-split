@@ -25,7 +25,7 @@ import { SplitComponent } from './split/split.component'
  *
  * Emulates browser behavior of click and double click with new features:
  * 1. Supports touch events (tap and double tap)
- * 2. Ignores the first click in a double click with the side effect of a bit slower emission of fast click event
+ * 2. Ignores the first click in a double click with the side effect of a bit slower emission of the click event
  * 3. Allow customizing the delay after mouse down to count another mouse down as a double click
  */
 @Directive({
