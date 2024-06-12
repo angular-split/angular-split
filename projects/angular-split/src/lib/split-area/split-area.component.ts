@@ -85,10 +85,15 @@ export class SplitAreaComponent {
 
   private normalizeMinSize() {
     const defaultMinSize = 0
-    const minSize = this.normalizeSizeBoundary(this.minSize, defaultMinSize)
-    const size = this._internalSize()
 
-    if (size !== '*' && size < minSize) {
+    if (!this.visible()) {
+      return defaultMinSize
+    }
+
+    const minSize = this.normalizeSizeBoundary(this.minSize, defaultMinSize)
+    const size = this.size()
+
+    if (size !== '*' && size !== 'auto' && size < minSize) {
       if (isDevMode()) {
         console.warn('as-split: size cannot be smaller than minSize')
       }
@@ -101,10 +106,15 @@ export class SplitAreaComponent {
 
   private normalizeMaxSize() {
     const defaultMaxSize = Infinity
-    const maxSize = this.normalizeSizeBoundary(this.maxSize, defaultMaxSize)
-    const size = this._internalSize()
 
-    if (size !== '*' && size > maxSize) {
+    if (!this.visible()) {
+      return defaultMaxSize
+    }
+
+    const maxSize = this.normalizeSizeBoundary(this.maxSize, defaultMaxSize)
+    const size = this.size()
+
+    if (size !== '*' && size !== 'auto' && size > maxSize) {
       if (isDevMode()) {
         console.warn('as-split: size cannot be larger than maxSize')
       }
@@ -115,8 +125,8 @@ export class SplitAreaComponent {
     return maxSize
   }
 
-  private normalizeSizeBoundary(sizeBoundarySignal: Signal<SplitAreaSize>, defaultNum: number): number {
-    const size = this._internalSize()
+  private normalizeSizeBoundary(sizeBoundarySignal: Signal<SplitAreaSize>, defaultBoundarySize: number): number {
+    const size = this.size()
     const lockSize = this.lockSize()
     const boundarySize = sizeBoundarySignal()
 
@@ -125,27 +135,27 @@ export class SplitAreaComponent {
         console.warn('as-split: lockSize overwrites maxSize/minSize')
       }
 
-      if (size === '*') {
+      if (size === '*' || size === 'auto') {
         if (isDevMode()) {
           console.warn(`as-split: lockSize isn't supported on area with * size or without size`)
         }
 
-        return defaultNum
+        return defaultBoundarySize
       }
 
       return size
     }
 
     if (boundarySize === '*') {
-      return defaultNum
+      return defaultBoundarySize
     }
 
-    if (size === '*') {
+    if (size === '*' || size === 'auto') {
       if (isDevMode()) {
-        console.warn('as-split: maxSize/minSize not allowed on *')
+        console.warn('as-split: maxSize/minSize not allowed on * or without size')
       }
 
-      return defaultNum
+      return defaultBoundarySize
     }
 
     return boundarySize
