@@ -11,7 +11,6 @@ import {
   filter,
   fromEvent,
   map,
-  merge,
   mergeMap,
   of,
   repeat,
@@ -24,7 +23,6 @@ import {
 } from 'rxjs'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { DOCUMENT } from '@angular/common'
-import { SplitComponent } from './split/split.component'
 
 /**
  * Emits mousedown, click, double click and keydown out of zone
@@ -39,7 +37,6 @@ import { SplitComponent } from './split/split.component'
   standalone: true,
 })
 export class SplitCustomEventsBehaviorDirective {
-  private readonly split = inject(SplitComponent)
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly document = inject(DOCUMENT)
 
@@ -95,8 +92,8 @@ export class SplitCustomEventsBehaviorDirective {
                 ),
           ),
         ),
-        // Discard everything once drag started or force cancel and listen again (repeat) to mouse down
-        takeUntil(merge(dragStarted$, this.split._forceCancelGutterEvents$)),
+        // Discard everything once drag started and listen again (repeat) to mouse down
+        takeUntil(dragStarted$),
         repeat(),
         leaveNgZone(),
         takeUntilDestroyed(),
