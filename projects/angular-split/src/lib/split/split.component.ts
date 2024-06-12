@@ -269,7 +269,7 @@ export class SplitComponent {
               eventsEqualWithDelta(mouseDownContext.mouseDownEvent, currMoveEvent, this.gutterClickDeltaPx()),
             ),
             take(1),
-            takeUntil(fromMouseUpEvent(this.document, true).pipe(take(1))),
+            takeUntil(fromMouseUpEvent(this.document, true)),
             tap(() => {
               this.ngZone.run(() => {
                 this.dragStart.emit(this.createDragInteractionEvent(mouseDownContext.gutterIndex))
@@ -286,7 +286,7 @@ export class SplitComponent {
             switchMap((dragStartContext) =>
               fromMouseMoveEvent(this.document).pipe(
                 tap((moveEvent) => this.mouseDragMove(moveEvent, dragStartContext)),
-                takeUntil(fromMouseUpEvent(this.document, true).pipe(take(1))),
+                takeUntil(fromMouseUpEvent(this.document, true)),
                 tap({
                   complete: () => {
                     this.ngZone.run(() => {
