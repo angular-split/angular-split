@@ -1,5 +1,11 @@
 import { Directive, ElementRef, inject, input, output } from '@angular/core'
-import { eventsEqualWithDelta, fromMouseDownEvent, fromMouseMoveEvent, fromMouseUpEvent, leaveNgZone } from './utils'
+import {
+  gutterEventsEqualWithDelta,
+  fromMouseDownEvent,
+  fromMouseMoveEvent,
+  fromMouseUpEvent,
+  leaveNgZone,
+} from './utils'
 import {
   delay,
   filter,
@@ -53,7 +59,9 @@ export class SplitCustomEventsBehaviorDirective {
     const dragStarted$ = fromMouseDownEvent(this.elementRef.nativeElement).pipe(
       switchMap((mouseDownEvent) =>
         fromMouseMoveEvent(this.document).pipe(
-          filter((e) => !eventsEqualWithDelta(mouseDownEvent, e, this.deltaInPx())),
+          filter(
+            (e) => !gutterEventsEqualWithDelta(mouseDownEvent, e, this.deltaInPx(), this.elementRef.nativeElement),
+          ),
           take(1),
           map(() => true),
           takeUntil(fromMouseUpEvent(this.document)),

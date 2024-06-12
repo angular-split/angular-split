@@ -19,7 +19,7 @@
       [asSplitCustomClickDeltaInPx]="gutterClickDeltaPx()"
       (asSplitCustomClick)="gutterClicked($index)"
       (asSplitCustomDblClick)="gutterDoubleClicked($index)"
-      (asSplitCustomMouseDown)="gutterMouseDown($event, $index, $index, $index + 1)"
+      (asSplitCustomMouseDown)="gutterMouseDown($event, gutter, $index, $index, $index + 1)"
       (asSplitCustomKeyDown)="gutterKeyDown($event, $index, $index, $index + 1)"
     >
       @if (customGutter()?.template) {

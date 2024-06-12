@@ -35,7 +35,7 @@ import {
 import {
   ClientPoint,
   createClassesString,
-  eventsEqualWithDelta,
+  gutterEventsEqualWithDelta,
   fromMouseMoveEvent,
   fromMouseUpEvent,
   getPointFromEvent,
@@ -55,6 +55,7 @@ import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
 interface MouseDownContext {
   mouseDownEvent: MouseEvent | TouchEvent
   gutterIndex: number
+  gutterElement: HTMLElement
   areaBeforeGutterIndex: number
   areaAfterGutterIndex: number
 }
@@ -266,7 +267,12 @@ export class SplitComponent {
             startWith(mouseDownContext.mouseDownEvent),
             pairwise(),
             skipWhile(([, currMoveEvent]) =>
-              eventsEqualWithDelta(mouseDownContext.mouseDownEvent, currMoveEvent, this.gutterClickDeltaPx()),
+              gutterEventsEqualWithDelta(
+                mouseDownContext.mouseDownEvent,
+                currMoveEvent,
+                this.gutterClickDeltaPx(),
+                mouseDownContext.gutterElement,
+              ),
             ),
             take(1),
             takeUntil(fromMouseUpEvent(this.document, true)),
@@ -324,6 +330,7 @@ export class SplitComponent {
 
   protected gutterMouseDown(
     e: MouseEvent | TouchEvent,
+    gutterElement: HTMLElement,
     gutterIndex: number,
     areaBeforeGutterIndex: number,
     areaAfterGutterIndex: number,
@@ -337,6 +344,7 @@ export class SplitComponent {
 
     this.gutterMouseDown$.next({
       mouseDownEvent: e,
+      gutterElement,
       gutterIndex,
       areaBeforeGutterIndex,
       areaAfterGutterIndex,

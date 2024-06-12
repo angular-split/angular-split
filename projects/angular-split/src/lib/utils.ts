@@ -39,12 +39,16 @@ export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent
   }
 }
 
-export function eventsEqualWithDelta(
+export function gutterEventsEqualWithDelta(
   startEvent: MouseEvent | TouchEvent,
   endEvent: MouseEvent | TouchEvent,
   deltaInPx: number,
+  gutterElement: HTMLElement,
 ) {
-  if (startEvent.target !== endEvent.target) {
+  if (
+    !gutterElement.contains(startEvent.target as HTMLElement) ||
+    !gutterElement.contains(endEvent.target as HTMLElement)
+  ) {
     return false
   }
 
