@@ -18,7 +18,20 @@ import {
 } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { SplitAreaComponent } from '../split-area/split-area.component'
-import { Subject, filter, fromEvent, map, pairwise, skipWhile, startWith, switchMap, take, takeUntil, tap } from 'rxjs'
+import {
+  Subject,
+  filter,
+  fromEvent,
+  map,
+  pairwise,
+  repeat,
+  skipWhile,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs'
 import {
   ClientPoint,
   createClassesString,
@@ -76,6 +89,10 @@ export class SplitComponent {
   private readonly ngZone = inject(NgZone)
   private readonly defaultOptions = inject(ANGULAR_SPLIT_DEFAULT_OPTIONS)
 
+  /**
+   * @internal
+   */
+  readonly _forceCancelGutterEvents$ = new Subject<void>()
   private readonly gutterMouseDown$ = new Subject<MouseDownContext>()
   private readonly dragProgressSubject = new Subject<SplitGutterInteractionEvent>()
 
@@ -196,6 +213,7 @@ export class SplitComponent {
             return
           }
 
+          this._forceCancelGutterEvents$.next()
           visibleAreas.forEach((area) => area._internalSize.reset())
 
           const isValid = areAreasValid(visibleAreas, unit)
@@ -281,6 +299,8 @@ export class SplitComponent {
             ),
           ),
         ),
+        takeUntil(this._forceCancelGutterEvents$),
+        repeat(),
         takeUntilDestroyed(),
       )
       .subscribe()
