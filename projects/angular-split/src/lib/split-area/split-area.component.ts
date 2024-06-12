@@ -64,8 +64,8 @@ export class SplitAreaComponent {
   private readonly hostClasses = computed(() =>
     createClassesString({
       ['as-split-area']: true,
-      ['as-min']: this._internalSize() === this._normalizedMinSize(),
-      ['as-max']: this._internalSize() === this._normalizedMaxSize(),
+      ['as-min']: this.visible() && this._internalSize() === this._normalizedMinSize(),
+      ['as-max']: this.visible() && this._internalSize() === this._normalizedMaxSize(),
       ['as-hidden']: !this.visible(),
     }),
   )
