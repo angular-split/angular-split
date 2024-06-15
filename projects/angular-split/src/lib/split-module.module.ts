@@ -7,8 +7,8 @@ import { SplitGutterExcludeFromDragDirective } from './gutter/split-gutter-exclu
 
 @NgModule({
   imports: [
-    SplitAreaComponent,
     SplitComponent,
+    SplitAreaComponent,
     SplitGutterDirective,
     SplitGutterDragHandleDirective,
     SplitGutterExcludeFromDragDirective,

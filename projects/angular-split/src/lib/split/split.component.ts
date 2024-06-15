@@ -54,7 +54,7 @@ interface AreaBoundary {
 
 interface DragStartContext {
   startEvent: MouseEvent | TouchEvent | KeyboardEvent
-  areaPixelsSize: number[]
+  areasPixelSizes: number[]
   totalAreasPixelSize: number
   areaIndexToBoundaries: Record<number, AreaBoundary>
   areaBeforeGutterIndex: number
@@ -77,7 +77,7 @@ export class SplitComponent {
   private readonly ngZone = inject(NgZone)
   private readonly defaultOptions = inject(ANGULAR_SPLIT_DEFAULT_OPTIONS)
 
-  private readonly gutterMouseDown$ = new Subject<MouseDownContext>()
+  private readonly gutterMouseDownSubject = new Subject<MouseDownContext>()
   private readonly dragProgressSubject = new Subject<SplitGutterInteractionEvent>()
 
   /**
@@ -101,7 +101,9 @@ export class SplitComponent {
   readonly gutterAriaLabel = input<string>()
   readonly restrictMove = input(this.defaultOptions.restrictMove, { transform: booleanAttribute })
   readonly useTransition = input(this.defaultOptions.useTransition, { transform: booleanAttribute })
-  readonly gutterDblClickDuration = input(this.defaultOptions.gutterDblClickDuration)
+  readonly gutterDblClickDuration = input(this.defaultOptions.gutterDblClickDuration, {
+    transform: numberAttributeWithFallback(this.defaultOptions.gutterDblClickDuration),
+  })
   readonly gutterClick = output<SplitGutterInteractionEvent>()
   readonly gutterDblClick = output<SplitGutterInteractionEvent>()
   readonly dragStart = output<SplitGutterInteractionEvent>()
@@ -232,7 +234,7 @@ export class SplitComponent {
       this.renderer.setStyle(this.elementRef.nativeElement, 'grid-template', gridTemplateColumnsStyle)
     })
 
-    this.gutterMouseDown$
+    this.gutterMouseDownSubject
       .pipe(
         filter(
           (context) =>
@@ -264,9 +266,9 @@ export class SplitComponent {
                 this.draggedGutterIndex.set(mouseDownContext.gutterIndex)
               })
             }),
-            map(([prevMoveEvent]) =>
+            map(([prevMouseEvent]) =>
               this.createDragStartContext(
-                prevMoveEvent,
+                prevMouseEvent,
                 mouseDownContext.areaBeforeGutterIndex,
                 mouseDownContext.areaAfterGutterIndex,
               ),
@@ -276,12 +278,11 @@ export class SplitComponent {
                 tap((moveEvent) => this.mouseDragMove(moveEvent, dragStartContext)),
                 takeUntil(fromMouseUpEvent(this.document, true)),
                 tap({
-                  complete: () => {
+                  complete: () =>
                     this.ngZone.run(() => {
                       this.dragEnd.emit(this.createDragInteractionEvent(this.draggedGutterIndex()))
                       this.draggedGutterIndex.set(undefined)
-                    })
-                  },
+                    }),
                 }),
               ),
             ),
@@ -322,7 +323,7 @@ export class SplitComponent {
     e.preventDefault()
     e.stopPropagation()
 
-    this.gutterMouseDown$.next({
+    this.gutterMouseDownSubject.next({
       mouseDownEvent: e,
       gutterElement,
       gutterIndex,
@@ -470,13 +471,13 @@ export class SplitComponent {
       0,
       totalAreasPixelSize - sum(areaPixelSizesWithWildcard, (size) => (size === '*' ? 0 : size)),
     )
-    const areaPixelsSize = areaPixelSizesWithWildcard.map((size) => (size === '*' ? remainingSize : size))
+    const areasPixelSizes = areaPixelSizesWithWildcard.map((size) => (size === '*' ? remainingSize : size))
 
     return {
       startEvent,
       areaBeforeGutterIndex,
       areaAfterGutterIndex,
-      areaPixelsSize,
+      areasPixelSizes,
       totalAreasPixelSize,
       areaIndexToBoundaries: toRecord(this._areas(), (area, index) => {
         const percentToPixels = (percent: number) => (percent / 100) * totalAreasPixelSize
@@ -514,11 +515,11 @@ export class SplitComponent {
     // Align offset with gutter step and abs it as we need absolute pixels movement
     const absSteppedOffset = Math.abs(Math.round(offset / this.gutterStep()) * this.gutterStep())
     // Copy as we don't want to edit the original array
-    const tempAreaPixelsSize = [...dragStartContext.areaPixelsSize]
+    const tempAreasPixelSizes = [...dragStartContext.areasPixelSizes]
     // As we are going to shuffle the areas order for easier iterations we should work with area indices array
     // instead of actual area sizes array.
     // We must also remove the invisible ones as we can't expand or shrink them.
-    const areasIndices = tempAreaPixelsSize.map((_, index) => index).filter((index) => this._areas()[index].visible())
+    const areasIndices = tempAreasPixelSizes.map((_, index) => index).filter((index) => this._areas()[index].visible())
     // The two variables below are ordered for iterations with real area indices inside.
     const areasIndicesBeforeGutter = this.restrictMove()
       ? [dragStartContext.areaBeforeGutterIndex]
@@ -543,28 +544,28 @@ export class SplitComponent {
     ) {
       const areaIndexToShrink = potentialAreasIndicesArrToShrink[potentialShrinkArrIndex]
       const areaIndexToExpand = potentialAreasIndicesArrToExpand[potentialExpandArrIndex]
-      const areaToShrinkSize = tempAreaPixelsSize[areaIndexToShrink]
-      const areaToExpandSize = tempAreaPixelsSize[areaIndexToExpand]
+      const areaToShrinkSize = tempAreasPixelSizes[areaIndexToShrink]
+      const areaToExpandSize = tempAreasPixelSizes[areaIndexToExpand]
       const areaToShrinkMinSize = dragStartContext.areaIndexToBoundaries[areaIndexToShrink].min
       const areaToExpandMaxSize = dragStartContext.areaIndexToBoundaries[areaIndexToExpand].max
       // We can only transfer pixels based on the shrinking area min size and the expanding area max size
-      // to avoid overflow. If any pixels left they will be handled by the next area in the next while iteration
+      // to avoid overflow. If any pixels left they will be handled by the next area in the next `while` iteration
       const maxPixelsToShrink = areaToShrinkSize - areaToShrinkMinSize
       const maxPixelsToExpand = areaToExpandMaxSize - areaToExpandSize
       const pixelsToTransfer = Math.min(maxPixelsToShrink, maxPixelsToExpand, remainingPixels)
 
       // Actual pixels transfer
-      tempAreaPixelsSize[areaIndexToShrink] -= pixelsToTransfer
-      tempAreaPixelsSize[areaIndexToExpand] += pixelsToTransfer
+      tempAreasPixelSizes[areaIndexToShrink] -= pixelsToTransfer
+      tempAreasPixelSizes[areaIndexToExpand] += pixelsToTransfer
       remainingPixels -= pixelsToTransfer
 
       // Once min threshold reached we need to move to the next area in turn
-      if (tempAreaPixelsSize[areaIndexToShrink] === areaToShrinkMinSize) {
+      if (tempAreasPixelSizes[areaIndexToShrink] === areaToShrinkMinSize) {
         potentialShrinkArrIndex++
       }
 
       // Once max threshold reached we need to move to the next area in turn
-      if (tempAreaPixelsSize[areaIndexToExpand] === areaToExpandMaxSize) {
+      if (tempAreasPixelSizes[areaIndexToExpand] === areaToExpandMaxSize) {
         potentialExpandArrIndex++
       }
     }
@@ -576,9 +577,9 @@ export class SplitComponent {
       }
 
       if (this.unit() === 'pixel') {
-        area._internalSize.set(tempAreaPixelsSize[index])
+        area._internalSize.set(tempAreasPixelSizes[index])
       } else {
-        const percentSize = (tempAreaPixelsSize[index] / dragStartContext.totalAreasPixelSize) * 100
+        const percentSize = (tempAreasPixelSizes[index] / dragStartContext.totalAreasPixelSize) * 100
         // Fix javascript only working with float numbers which are inaccurate compared to decimals
         area._internalSize.set(parseFloat(percentSize.toFixed(10)))
       }

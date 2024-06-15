@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   HostBinding,
   Signal,
   booleanAttribute,
@@ -24,10 +23,6 @@ import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../
 })
 export class SplitAreaComponent {
   protected readonly split = inject(SplitComponent)
-  /**
-   * @internal
-   */
-  readonly _elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
 
   readonly size = input('auto', { transform: areaSizeTransform })
   readonly minSize = input('*', { transform: boundaryAreaSizeTransform })
@@ -39,9 +34,9 @@ export class SplitAreaComponent {
    * @internal
    */
   readonly _internalSize = mirrorSignal(
+    // As size is an input and we can change the size without the outside
+    // listening to the change we need an intermediate writeable signal
     computed((): SplitAreaSize => {
-      // As size is an input and we can change the size without the outside
-      // listening to the change we need an intermediate writeable signal
       if (!this.visible()) {
         return 0
       }

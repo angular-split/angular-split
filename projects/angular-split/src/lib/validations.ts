@@ -24,7 +24,7 @@ export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitU
     }
 
     if (isDevMode()) {
-      console.warn('as-split: Pixel mode must have one * area')
+      console.warn('as-split: Pixel mode must have exactly one * area')
     }
 
     return false
