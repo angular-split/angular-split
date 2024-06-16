@@ -1,4 +1,4 @@
-import { InjectionToken, Provider } from '@angular/core'
+import { InjectionToken, Provider, inject } from '@angular/core'
 import { SplitDir, SplitDirection, SplitUnit } from './models'
 
 export interface AngularSplitDefaultOptions {
@@ -32,12 +32,16 @@ export const ANGULAR_SPLIT_DEFAULT_OPTIONS = new InjectionToken<AngularSplitDefa
   { providedIn: 'root', factory: () => defaultOptions },
 )
 
+/**
+ * Provides default options for the split. The options object has hierarchical inheritance
+ * which means only the declared properties will be overridden
+ */
 export function provideAngularSplitOptions(options: Partial<AngularSplitDefaultOptions>): Provider {
   return {
     provide: ANGULAR_SPLIT_DEFAULT_OPTIONS,
-    useValue: {
-      ...defaultOptions,
+    useFactory: (): AngularSplitDefaultOptions => ({
+      ...inject(ANGULAR_SPLIT_DEFAULT_OPTIONS, { skipSelf: true }),
       ...options,
-    },
+    }),
   }
 }
