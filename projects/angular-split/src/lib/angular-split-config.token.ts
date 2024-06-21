@@ -33,7 +33,7 @@ export const ANGULAR_SPLIT_DEFAULT_OPTIONS = new InjectionToken<AngularSplitDefa
 )
 
 /**
- * Provides default options for the split. The options object has hierarchical inheritance
+ * Provides default options for angular split. The options object has hierarchical inheritance
  * which means only the declared properties will be overridden
  */
 export function provideAngularSplitOptions(options: Partial<AngularSplitDefaultOptions>): Provider {
