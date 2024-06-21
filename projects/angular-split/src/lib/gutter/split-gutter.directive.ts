@@ -1,17 +1,17 @@
 import { Directive, ElementRef, TemplateRef } from '@angular/core'
-import { IArea } from '../interface'
+import { SplitAreaComponent } from '../split-area/split-area.component'
 
 export interface SplitGutterTemplateContext {
   /**
    * The area before the gutter.
    * In RTL the right area and in LTR the left area
    */
-  areaBefore: IArea
+  areaBefore: SplitAreaComponent
   /**
    * The area after the gutter.
    * In RTL the left area and in LTR the right area
    */
-  areaAfter: IArea
+  areaAfter: SplitAreaComponent
   /**
    * The absolute number of the gutter based on direction (RTL and LTR).
    * First gutter is 1, second is 2, etc...
@@ -35,6 +35,7 @@ export interface SplitGutterTemplateContext {
 
 @Directive({
   selector: '[asSplitGutter]',
+  standalone: true,
 })
 export class SplitGutterDirective {
   /**

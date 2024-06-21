@@ -1,14 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
-import { IAreaSize, IOutputData } from 'angular-split'
+import { SplitAreaSize, SplitGutterInteractionEvent } from 'angular-split'
 
 interface IConfig {
   columns: Array<{
     visible: boolean
-    size: IAreaSize
+    size: SplitAreaSize
     rows: Array<{
       visible: boolean
-      size: IAreaSize
+      size: SplitAreaSize
       type: string
     }>
   }>
@@ -86,10 +86,10 @@ const defaultConfig: IConfig = {
   template: `
     <as-split *ngIf="config" direction="horizontal" [disabled]="config.disabled" (dragEnd)="onDragEnd(-1, $event)">
       <ng-template ngFor let-column [ngForOf]="config.columns" let-icol="index">
-        <as-split-area *ngIf="column.visible" [order]="icol" [size]="column.size">
+        <as-split-area *ngIf="column.visible" [size]="column.size">
           <as-split direction="vertical" [disabled]="config.disabled" (dragEnd)="onDragEnd(icol, $event)">
             <ng-template ngFor let-row [ngForOf]="column.rows" let-irow="index">
-              <as-split-area *ngIf="row.visible" [order]="irow" [size]="row.size">
+              <as-split-area *ngIf="row.visible" [size]="row.size">
                 <div [ngSwitch]="row.type" class="bloc">
                   <div *ngSwitchCase="'doc'" class="explanations">
                     <sp-example-title [type]="exampleEnum.WORKSPACE"></sp-example-title>
@@ -101,7 +101,7 @@ const defaultConfig: IConfig = {
                       <ng-template ngFor let-r [ngForOf]="c.rows">
                         <button
                           *ngIf="r.type !== 'doc'"
-                          (click)="r.visible = !r.visible; refreshColumnVisibility()"
+                          (click)="r.visible = !r.visible; refreshColumnVisibility(c)"
                           [class.active]="!r.visible"
                           class="btn btn-warning"
                         >
@@ -146,7 +146,7 @@ export class WorkspaceLocalstorageComponent extends AComponent implements OnInit
     localStorage.removeItem(this.localStorageName)
   }
 
-  onDragEnd(columnindex: number, e: IOutputData) {
+  onDragEnd(columnindex: number, e: SplitGutterInteractionEvent) {
     // Column dragged
     if (columnindex === -1) {
       // Set size for all visible columns
@@ -169,11 +169,10 @@ export class WorkspaceLocalstorageComponent extends AComponent implements OnInit
     this.saveLocalStorage()
   }
 
-  refreshColumnVisibility() {
-    // Refresh columns visibility based on inside rows visibilities (If no row > hide column)
-    this.config.columns.forEach((column) => {
-      column.visible = column.rows.some((row) => row.visible === true)
-    })
+  refreshColumnVisibility(column: IConfig['columns'][number]) {
+    const visibleRows = column.rows.filter((row) => row.visible)
+    visibleRows.forEach((row) => (row.size = 100 / visibleRows.length))
+    column.visible = column.rows.some((row) => row.visible === true)
 
     this.saveLocalStorage()
   }

@@ -11,6 +11,7 @@ interface SplitGutterDynamicInjectorTemplateContext {
  */
 @Directive({
   selector: '[asSplitGutterDynamicInjector]',
+  standalone: true,
 })
 export class SplitGutterDynamicInjectorDirective {
   @Input('asSplitGutterDynamicInjector')

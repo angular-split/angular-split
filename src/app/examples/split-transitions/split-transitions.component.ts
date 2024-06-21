@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
-import { IAreaSize } from 'angular-split'
+import { SplitAreaSize } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-transitions',
@@ -237,9 +237,9 @@ import { IAreaSize } from 'angular-split'
 })
 export class SplitTransitionsComponent extends AComponent {
   action: {
-    a1s: IAreaSize
-    a2s: IAreaSize
-    a3s: IAreaSize
+    a1s: SplitAreaSize
+    a2s: SplitAreaSize
+    a3s: SplitAreaSize
     a1v: boolean
     a2v: boolean
     a3v: boolean

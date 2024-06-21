@@ -4,6 +4,7 @@ import { GUTTER_NUM_TOKEN } from './gutter-num-token'
 
 @Directive({
   selector: '[asSplitGutterDragHandle]',
+  standalone: true,
 })
 export class SplitGutterDragHandleDirective implements OnInit, OnDestroy {
   constructor(

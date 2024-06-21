@@ -1,7 +1,7 @@
 export function moveGutterByMouse(gutters, num, x, y) {
   cy.get(gutters)
     .eq(num)
-    .trigger('mousedown', { which: 1, clientX: 0, clientY: 0 })
+    .trigger('mousedown', { which: 1, clientX: 0, clientY: 0, button: 0 })
     .trigger('mousemove', { clientX: x * 0.25, clientY: y * 0.25 })
     .trigger('mousemove', { clientX: x * 0.5, clientY: y * 0.5 })
     .trigger('mousemove', { clientX: x * 0.75, clientY: y * 0.75 })
@@ -64,12 +64,14 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
   const total = sizes.reduce((acc, v) => acc + v, 0) + gutter * (sizes.length - 1)
   // expect(total).to.eq((dir === 'horizontal') ? w : h);
 
-  const propFlexDir = dir === 'horizontal' ? 'row' : 'column'
-  cy.get(el).should('have.css', 'flex-direction', propFlexDir)
+  const propGridDir = dir === 'vertical' ? 'grid-template-rows' : 'grid-template-columns'
+  cy.get(el).should('have.css', propGridDir).should('include', ' ')
 
   const propSize = dir === 'horizontal' ? 'width' : 'height'
   const propSize2 = propSize === 'width' ? 'height' : 'width'
   const propValue2 = propSize === 'width' ? h : w
+
+  const round = (value) => Math.round(value * 10) / 10
 
   cy.get(`${el} > .as-split-gutter`).should('have.length', sizes.length - 1)
 
@@ -77,7 +79,7 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
     const rect = $el[0].getBoundingClientRect()
 
     expect(rect[propSize]).to.be.eq(gutter)
-    expect(rect[propSize2]).to.be.eq(propValue2)
+    expect(round(rect[propSize2])).to.be.eq(round(propValue2))
   })
 
   cy.get(`${el} > .as-split-area`)
@@ -85,7 +87,7 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
     .each(($li, index) => {
       const rect = $li[0].getBoundingClientRect()
 
-      expect(rect[propSize]).to.be.eq(sizes[index])
-      expect(rect[propSize2]).to.be.eq(propValue2)
+      expect(round(rect[propSize])).to.be.eq(round(sizes[index]))
+      expect(round(rect[propSize2])).to.be.eq(round(propValue2))
     })
 }

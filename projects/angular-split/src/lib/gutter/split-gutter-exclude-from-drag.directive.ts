@@ -4,6 +4,7 @@ import { GUTTER_NUM_TOKEN } from './gutter-num-token'
 
 @Directive({
   selector: '[asSplitGutterExcludeFromDrag]',
+  standalone: true,
 })
 export class SplitGutterExcludeFromDragDirective implements OnInit, OnDestroy {
   constructor(

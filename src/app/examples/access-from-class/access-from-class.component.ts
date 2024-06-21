@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
   HostBinding,
 } from '@angular/core'
-import { SplitComponent, SplitAreaDirective } from 'angular-split'
+import { SplitComponent, SplitAreaComponent, SplitDirection, SplitDir } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
 
@@ -31,7 +31,7 @@ import { AComponent } from '../../ui/components/AComponent'
     <div class="container">
       <sp-example-title [type]="exampleEnum.CODE"></sp-example-title>
       <div class="split-example">
-        <as-split>
+        <as-split [gutterSize]="gutterSize" [direction]="direction" [dir]="dir" [disabled]="disabled">
           <as-split-area [size]="75">
             <p>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
@@ -44,14 +44,7 @@ import { AComponent } from '../../ui/components/AComponent'
               illum qui dolorem eum fugiat quo voluptas nulla pariatur?
             </p>
           </as-split-area>
-          <as-split-area [size]="3">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation
-              ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-              voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            </p>
-          </as-split-area>
-          <as-split-area [visible]="false" [size]="18">
+          <as-split-area [size]="21">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation
               ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
@@ -70,46 +63,28 @@ import { AComponent } from '../../ui/components/AComponent'
       <br />
       <div class="btns">
         <div>
-          <button
-            class="btn btn-warning"
-            (click)="splitEl.direction = splitEl?.direction === 'horizontal' ? 'vertical' : 'horizontal'"
-          >
-            {{ 'Toggle direction: "' + splitEl?.direction + '"' }}
+          <button class="btn btn-warning" (click)="direction = direction === 'horizontal' ? 'vertical' : 'horizontal'">
+            {{ 'Toggle direction: "' + direction + '"' }}
           </button>
         </div>
         <div>
-          <button
-            class="btn btn-warning"
-            [class.active]="!splitEl?.disabled"
-            (click)="splitEl.disabled = !splitEl?.disabled"
-          >
-            {{ 'splitEl.disabled: ' + splitEl?.disabled }}
+          <button class="btn btn-warning" [class.active]="!disabled" (click)="disabled = !disabled">
+            {{ 'disabled: ' + disabled }}
           </button>
         </div>
         <div>
-          <button class="btn btn-warning" (click)="splitEl.dir = splitEl?.dir === 'rtl' ? 'ltr' : 'rtl'">
-            {{ 'splitEl.dir: "' + splitEl?.dir + '"' }}
+          <button class="btn btn-warning" (click)="dir = dir === 'rtl' ? 'ltr' : 'rtl'">
+            {{ 'dir: "' + dir + '"' }}
           </button>
         </div>
         <div>
           <label>Gutter size: </label>
           <div class="btn-group">
-            <label
-              class="btn btn-warning btn-sm"
-              (click)="splitEl.gutterSize = null"
-              [class.active]="splitEl?.gutterSize === 11"
+            <label class="btn btn-warning btn-sm" (click)="gutterSize = null" [class.active]="gutterSize === 11"
               >null</label
             >
-            <label
-              class="btn btn-warning btn-sm"
-              (click)="splitEl.gutterSize = 7"
-              [class.active]="splitEl?.gutterSize === 7"
-              >7</label
-            >
-            <label
-              class="btn btn-warning btn-sm"
-              (click)="splitEl.gutterSize = 22"
-              [class.active]="splitEl?.gutterSize === 22"
+            <label class="btn btn-warning btn-sm" (click)="gutterSize = 7" [class.active]="gutterSize === 7">7</label>
+            <label class="btn btn-warning btn-sm" (click)="gutterSize = 22" [class.active]="gutterSize === 22"
               >22</label
             >
           </div>
@@ -122,7 +97,12 @@ export class AccessFromClassComponent extends AComponent implements AfterViewIni
   @HostBinding('class') class = 'split-example-page'
 
   @ViewChild(SplitComponent) splitEl: SplitComponent
-  @ViewChildren(SplitAreaDirective) areasEl: QueryList<SplitAreaDirective>
+  @ViewChildren(SplitAreaComponent) areasEl: QueryList<SplitAreaComponent>
+
+  direction: SplitDirection = 'horizontal'
+  disabled = false
+  dir: SplitDir = 'ltr'
+  gutterSize = 11
 
   ngAfterViewInit() {
     console.log('Area Components: ', this.areasEl)
