@@ -1,5 +1,5 @@
 import { Component, ViewChild, ViewChildren, QueryList, ChangeDetectionStrategy, HostBinding } from '@angular/core'
-import { SplitComponent, SplitAreaDirective } from 'angular-split'
+import { SplitComponent, SplitAreaComponent } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
 
@@ -55,20 +55,20 @@ import { AComponent } from '../../ui/components/AComponent'
       <br /><br />
       <div class="btns">
         <div>
-          <button class="btn btn-warning" style="margin-right: 10px" (click)="onClose1()">Collapse #1 to 0px</button>
-          <button class="btn btn-warning" (click)="onClose1(40)">Collapse #1 to 40px</button>
+          <button class="btn btn-warning" style="margin-right: 10px">Collapse #1 to 0px</button>
+          <button class="btn btn-warning">Collapse #1 to 40px</button>
         </div>
         <div>
-          <button class="btn btn-warning" style="margin-right: 10px" (click)="onClose3()">Collapse #3 to 0px</button>
-          <button class="btn btn-warning" (click)="onClose3(60)">Collapse #3 to 60px</button>
+          <button class="btn btn-warning" style="margin-right: 10px">Collapse #3 to 0px</button>
+          <button class="btn btn-warning">Collapse #3 to 60px</button>
         </div>
       </div>
       <div class="btns">
         <div>
-          <button class="btn btn-warning" style="margin-right: 10px" (click)="onExpand1()">Expand #1</button>
+          <button class="btn btn-warning" style="margin-right: 10px">Expand #1</button>
         </div>
         <div>
-          <button class="btn btn-warning" style="margin-right: 10px" (click)="onExpand3()">Expand #3</button>
+          <button class="btn btn-warning" style="margin-right: 10px">Expand #3</button>
         </div>
       </div>
     </div>
@@ -78,21 +78,5 @@ export class CollapseExpandComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'
 
   @ViewChild(SplitComponent) splitEl: SplitComponent
-  @ViewChildren(SplitAreaDirective) areasEl: QueryList<SplitAreaDirective>
-
-  onClose1(newSize = 0) {
-    this.areasEl.first.collapse(newSize)
-  }
-
-  onClose3(newSize = 0) {
-    this.areasEl.last.collapse(newSize, 'left')
-  }
-
-  onExpand1() {
-    this.areasEl.first.expand()
-  }
-
-  onExpand3() {
-    this.areasEl.last.expand()
-  }
+  @ViewChildren(SplitAreaComponent) areasEl: QueryList<SplitAreaComponent>
 }

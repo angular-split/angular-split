@@ -1,0 +1,20 @@
+:host {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  .as-horizontal > & {
+    height: 100%;
+  }
+
+  .as-vertical > & {
+    width: 100%;
+  }
+}
+
+.as-iframe-fix {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

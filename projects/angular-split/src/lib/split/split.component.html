@@ -1,0 +1,47 @@
+<ng-content></ng-content>
+@for (area of _areas(); track area) {
+  @if (!$last) {
+    <div
+      #gutter
+      class="as-split-gutter"
+      role="separator"
+      tabindex="0"
+      [attr.aria-label]="gutterAriaLabel()"
+      [attr.aria-orientation]="direction()"
+      [attr.aria-valuemin]="getAriaValue(area.minSize())"
+      [attr.aria-valuemax]="getAriaValue(area.maxSize())"
+      [attr.aria-valuenow]="getAriaValue(area._internalSize())"
+      [attr.aria-valuetext]="getAriaAreaSizeText(area)"
+      [ngStyle]="getGutterGridStyle($index + 1)"
+      [class.as-dragged]="draggedGutterIndex() === $index"
+      asSplitCustomEventsBehavior
+      [asSplitCustomMultiClickThreshold]="gutterDblClickDuration()"
+      [asSplitCustomClickDeltaInPx]="gutterClickDeltaPx()"
+      (asSplitCustomClick)="gutterClicked($index)"
+      (asSplitCustomDblClick)="gutterDoubleClicked($index)"
+      (asSplitCustomMouseDown)="gutterMouseDown($event, gutter, $index, $index, $index + 1)"
+      (asSplitCustomKeyDown)="gutterKeyDown($event, $index, $index, $index + 1)"
+    >
+      @if (customGutter()?.template) {
+        <ng-container *asSplitGutterDynamicInjector="$index + 1; let injector">
+          <ng-container
+            *ngTemplateOutlet="
+              customGutter().template;
+              context: {
+                areaBefore: area,
+                areaAfter: _areas()[$index + 1],
+                gutterNum: $index + 1,
+                first: $first,
+                last: $index === _areas().length - 2,
+                isDragged: draggedGutterIndex() === $index
+              };
+              injector: injector
+            "
+          ></ng-container>
+        </ng-container>
+      } @else {
+        <div class="as-split-gutter-icon"></div>
+      }
+    </div>
+  }
+}

@@ -242,16 +242,16 @@ context('Geek demo example page tests', () => {
     // SET gutterStep to 10px
     cy.get('.opts-prop').contains('Gutter step:').parent().contains('10').click()
 
-    // Move gutter 5px > no move
-    moveGutterByMouse('.split-example .as-split-gutter', 0, 5, 0)
+    // Move gutter 4px > no move
+    moveGutterByMouse('.split-example .as-split-gutter', 0, 4, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [268.484375, 522, 263.5])
 
     // Move gutter 6px > move 10px
     moveGutterByMouse('.split-example .as-split-gutter', 0, 6, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [278.5, 511.984375, 263.5])
 
-    // Move gutter 15px > move 10px
-    moveGutterByMouse('.split-example .as-split-gutter', 0, 15, 0)
+    // Move gutter 14px > move 10px
+    moveGutterByMouse('.split-example .as-split-gutter', 0, 14, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [288.515625, 501.984375, 263.5])
 
     // Move gutter 16px > move 20px
@@ -266,8 +266,8 @@ context('Geek demo example page tests', () => {
     moveGutterByMouse('.split-example .as-split-gutter', 0, 20, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [308.515625, 481.984375, 263.5])
 
-    // Move gutter 25px > nomove
-    moveGutterByMouse('.split-example .as-split-gutter', 0, 25, 0)
+    // Move gutter 24px > nomove
+    moveGutterByMouse('.split-example .as-split-gutter', 0, 24, 0)
     checkSplitDirAndSizes('.split-example > as-split', 'horizontal', W, H, GUTTER, [308.515625, 481.984375, 263.5])
 
     // Move gutter 26px > move 50px

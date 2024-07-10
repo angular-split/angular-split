@@ -7,7 +7,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core'
-import { IAreaSize, IOutputAreaSizes, IOutputData, SplitComponent } from 'angular-split'
+import { SplitAreaSize, SplitGutterInteractionEvent, SplitComponent } from 'angular-split'
 import { Subscription } from 'rxjs'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
@@ -67,7 +67,7 @@ import { formatDate } from '../../utils/format-date'
           (gutterDblClick)="log('gutterDblClick', $event)"
           (transitionEnd)="log('transitionEnd', $event)"
         >
-          <as-split-area *ngFor="let a of areas" [size]="a.size" [order]="a.order">
+          <as-split-area *ngFor="let a of areas" [size]="a.size">
             <p>{{ a.content }}</p>
           </as-split-area>
         </as-split>
@@ -120,7 +120,7 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
   useTransition = true
   dblClickTime = 0
   logMessages: Array<{ type: string; text: string }> = []
-  areas: { size: IAreaSize; order: number; content: string }[] = [
+  areas: { size: SplitAreaSize; order: number; content: string }[] = [
     { size: 25, order: 1, content: 'fg fdkjuh dfskhf dkujv fd vifdk hvdkuh fg' },
     { size: '*', order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg' },
     { size: 25, order: 3, content: 'sd jslfd ijgil dfhlt jkgvbnhj fl bhjgflh jfglhj fl h fg' },
@@ -143,8 +143,8 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
 
   log(
     ...[type, e]:
-      | [type: 'dragStart' | 'dragEnd' | 'gutterClick' | 'gutterDblClick', e: IOutputData]
-      | [type: 'transitionEnd', e: IOutputAreaSizes]
+      | [type: 'dragStart' | 'dragEnd' | 'gutterClick' | 'gutterDblClick', e: SplitGutterInteractionEvent]
+      | [type: 'transitionEnd', e: SplitAreaSize[]]
   ) {
     this.logMessages.push({ type, text: `${formatDate(new Date())} > ${type} event > ${JSON.stringify(e)}` })
 
@@ -163,7 +163,7 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
     }
   }
 
-  gutterClick(e: IOutputData) {
+  gutterClick(e: SplitGutterInteractionEvent) {
     if (e.gutterNum === 1) {
       if ((this.areas[0].size as number) > 0) {
         this.areas[0].size = 0

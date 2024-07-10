@@ -21,13 +21,13 @@ import { AComponent } from '../../ui/components/AComponent'
       <sp-example-title [type]="exampleEnum.TOGGLE"></sp-example-title>
       <div class="split-example ex1" style="height: 150px;">
         <as-split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
-          <as-split-area *ngIf="action.isPresentA" [visible]="action.isVisibleA" [order]="0">
+          <as-split-area *ngIf="action.isPresentA" [visible]="action.isVisibleA">
             <p>A</p>
           </as-split-area>
-          <as-split-area *ngIf="action.isPresentB" [visible]="action.isVisibleB" [order]="1">
+          <as-split-area *ngIf="action.isPresentB" [visible]="action.isVisibleB">
             <p>B</p>
           </as-split-area>
-          <as-split-area *ngIf="action.isPresentC" [visible]="action.isVisibleC" [order]="2">
+          <as-split-area *ngIf="action.isPresentC" [visible]="action.isVisibleC">
             <p>C</p>
           </as-split-area>
         </as-split>
