@@ -10,7 +10,7 @@ import {
   SplitAreaComponent,
   SplitGutterExcludeFromDragDirective,
 } from 'angular-split'
-import { NgIf } from '@angular/common'
+
 import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
@@ -83,12 +83,16 @@ import { ExampleTitleComponent } from '../../ui/components/exampleTitle.componen
             class="custom-collapse-gutter"
           >
             <div class="custom-collapse-gutter-header">
-              <div *ngIf="!last" asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
-                {{ direction === 'horizontal' ? '◀' : '🔼' }}
-              </div>
-              <div *ngIf="!first" asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
-                {{ direction === 'horizontal' ? '▶' : '🔽' }}
-              </div>
+              @if (!last) {
+                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
+                  {{ direction === 'horizontal' ? '◀' : '🔼' }}
+                </div>
+              }
+              @if (!first) {
+                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
+                  {{ direction === 'horizontal' ? '▶' : '🔽' }}
+                </div>
+              }
             </div>
             <div class="custom-collapse-gutter-icon"></div>
             <div class="custom-collapse-gutter-ghost"></div>
@@ -143,7 +147,6 @@ import { ExampleTitleComponent } from '../../ui/components/exampleTitle.componen
     SplitGutterDirective,
     SplitGutterDragHandleDirective,
     SplitAreaComponent,
-    NgIf,
     SplitGutterExcludeFromDragDirective,
   ],
 })

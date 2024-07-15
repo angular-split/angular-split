@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
 import { TooltipModule } from 'ngx-bootstrap/tooltip'
-import { NgFor, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
@@ -70,9 +70,11 @@ import { ExampleTitleComponent } from '../../ui/components/exampleTitle.componen
           (gutterDblClick)="log('gutterDblClick', $event)"
           (transitionEnd)="log('transitionEnd', $event)"
         >
-          <as-split-area *ngFor="let a of areas" [size]="a.size">
-            <p>{{ a.content }}</p>
-          </as-split-area>
+          @for (a of areas; track a) {
+            <as-split-area [size]="a.size">
+              <p>{{ a.content }}</p>
+            </as-split-area>
+          }
         </as-split>
       </div>
       <br />
@@ -110,13 +112,15 @@ import { ExampleTitleComponent } from '../../ui/components/exampleTitle.componen
       <div class="logs">
         <p>All <code>as-split</code> events emitted:</p>
         <ul #logs>
-          <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
+          @for (l of logMessages; track l) {
+            <li [ngClass]="l.type">{{ l.text }}</li>
+          }
         </ul>
       </div>
     </div>
   `,
   standalone: true,
-  imports: [ExampleTitleComponent, SplitComponent, NgFor, SplitAreaComponent, TooltipModule, NgClass],
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent, TooltipModule, NgClass],
 })
 export class GutterClickRollUnrollComponent extends AComponent implements AfterViewInit, OnDestroy {
   @HostBinding('class') class = 'split-example-page'
