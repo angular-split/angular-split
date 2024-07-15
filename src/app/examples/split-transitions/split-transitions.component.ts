@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, ChangeDetectionStrategy, HostBinding 
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
 import { SplitAreaSize, SplitComponent, SplitAreaComponent } from 'angular-split'
-import { NgFor, NgClass } from '@angular/common'
+import { NgClass } from '@angular/common'
 import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
@@ -156,7 +156,9 @@ import { ExampleTitleComponent } from '../../ui/components/exampleTitle.componen
       <div class="logs">
         <p>Events <code>(transitionEnd)</code>:</p>
         <ul #logs>
-          <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
+          @for (l of logMessages; track l) {
+            <li [ngClass]="l.type">{{ l.text }}</li>
+          }
         </ul>
       </div>
       <br />
@@ -237,7 +239,7 @@ import { ExampleTitleComponent } from '../../ui/components/exampleTitle.componen
     </div>
   `,
   standalone: true,
-  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent, NgFor, NgClass],
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent, NgClass],
 })
 export class SplitTransitionsComponent extends AComponent {
   action: {
