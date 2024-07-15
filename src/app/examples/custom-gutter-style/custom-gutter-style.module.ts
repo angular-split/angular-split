@@ -11,7 +11,7 @@ import { CustomGutterStyleComponent } from './custom-gutter-style.component'
     UiModule,
     RouterModule.forChild([{ path: '', component: CustomGutterStyleComponent }]),
     AngularSplitModule,
+    CustomGutterStyleComponent,
   ],
-  declarations: [CustomGutterStyleComponent],
 })
 export class CustomGutterStyleModule {}
