@@ -6,12 +6,12 @@ import { AngularSplitModule, provideAngularSplitOptions } from 'angular-split'
 import { UiModule } from '../../ui/ui.module'
 
 @NgModule({
-  declarations: [GlobalOptionsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([{ path: '', component: GlobalOptionsComponent }]),
     AngularSplitModule,
     UiModule,
+    GlobalOptionsComponent,
   ],
   providers: [
     provideAngularSplitOptions({

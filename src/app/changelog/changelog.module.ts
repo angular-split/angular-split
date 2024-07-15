@@ -5,8 +5,7 @@ import { ChangelogComponent } from './changelog.component'
 import { ChangelogService } from './changelog.service'
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild([{ path: '', component: ChangelogComponent }])],
-  declarations: [ChangelogComponent],
+  imports: [CommonModule, RouterModule.forChild([{ path: '', component: ChangelogComponent }]), ChangelogComponent],
   providers: [ChangelogService],
 })
 export class ChangelogModule {}

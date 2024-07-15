@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
-import { Router, NavigationEnd } from '@angular/router'
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router'
 import { filter } from 'rxjs/operators'
+import { TopbarComponent } from './ui/components/topbar.component'
 
 @Component({
   selector: 'sp-app-root',
@@ -24,6 +25,8 @@ import { filter } from 'rxjs/operators'
       <router-outlet></router-outlet>
     </div>
   `,
+  standalone: true,
+  imports: [TopbarComponent, RouterOutlet],
 })
 export class AppComponent {
   constructor(public router: Router) {

@@ -1,6 +1,9 @@
 import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 
 import { AComponent } from '../../ui/components/AComponent'
+import { NgIf } from '@angular/common'
+import { SplitComponent, SplitAreaComponent } from 'angular-split'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-toggling-dom-and-visible',
@@ -86,6 +89,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, NgIf, SplitAreaComponent],
 })
 export class TogglingDomAndVisibleComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

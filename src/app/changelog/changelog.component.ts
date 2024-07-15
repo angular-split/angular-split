@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 
 import { ChangelogService } from './changelog.service'
+import { AsyncPipe } from '@angular/common'
 
 @Component({
   selector: 'sp-ex-changelog',
@@ -19,6 +20,8 @@ import { ChangelogService } from './changelog.service'
       <div [innerHTML]="changelogHtml$ | async"></div>
     </div>
   `,
+  standalone: true,
+  imports: [AsyncPipe],
 })
 export class ChangelogComponent implements OnInit {
   changelogHtml$: Observable<string>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core'
+import { NgFor } from '@angular/common'
 
 @Component({
   selector: 'sp-doc',
@@ -30,6 +31,8 @@ import { Component } from '@angular/core'
     `,
   ],
   templateUrl: './documentation.component.html',
+  standalone: true,
+  imports: [NgFor],
 })
 export class DocumentationComponent {
   readonly splitDoc = {
