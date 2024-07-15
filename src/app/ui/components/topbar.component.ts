@@ -1,9 +1,12 @@
 import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
-import { Router, NavigationStart, Routes } from '@angular/router'
+import { Router, NavigationStart, Routes, RouterLink, RouterLinkActive } from '@angular/router'
 import { DomSanitizer } from '@angular/platform-browser'
 import { filter } from 'rxjs/operators'
 
 import { exampleRoutes } from '../../examples/examples.routes'
+import { NgFor } from '@angular/common'
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
+import { CollapseModule } from 'ngx-bootstrap/collapse'
 
 @Component({
   selector: 'sp-topbar',
@@ -81,6 +84,8 @@ import { exampleRoutes } from '../../examples/examples.routes'
       </ul>
     </div>
   `,
+  standalone: true,
+  imports: [RouterLink, CollapseModule, RouterLinkActive, BsDropdownModule, NgFor],
 })
 export class TopbarComponent {
   examples: Routes

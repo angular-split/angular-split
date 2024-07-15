@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
+import { SplitComponent, SplitAreaComponent } from 'angular-split'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-nested',
@@ -33,6 +35,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
 })
 export class IframesComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

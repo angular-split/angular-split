@@ -11,7 +11,7 @@ import { DirRtlComponent } from './dir-rtl.component'
     UiModule,
     RouterModule.forChild([{ path: '', component: DirRtlComponent }]),
     AngularSplitModule,
+    DirRtlComponent,
   ],
-  declarations: [DirRtlComponent],
 })
 export class DirRtlModule {}

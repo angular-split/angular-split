@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitDir, SplitDirection } from 'angular-split'
+import { SplitDir, SplitDirection, SplitComponent, SplitAreaComponent } from 'angular-split'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-dir-rtl',
@@ -69,6 +70,8 @@ import { SplitDir, SplitDirection } from 'angular-split'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
 })
 export class DirRtlComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

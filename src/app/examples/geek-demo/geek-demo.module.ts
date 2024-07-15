@@ -13,7 +13,7 @@ import { GeekDemoComponent } from './geek-demo.component'
     RouterModule.forChild([{ path: '', component: GeekDemoComponent }]),
     AngularSplitModule,
     FormsModule,
+    GeekDemoComponent,
   ],
-  declarations: [GeekDemoComponent],
 })
 export class GeekDemoModule {}

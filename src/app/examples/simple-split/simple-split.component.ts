@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, HostBinding } from '@angular/core'
 import { SplitComponent, SplitAreaComponent, SplitDirection } from 'angular-split'
 import { AComponent } from '../../ui/components/AComponent'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-simple',
@@ -159,6 +160,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
 })
 export class SimpleSplitComponent extends AComponent {
   @ViewChild('split') split: SplitComponent

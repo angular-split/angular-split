@@ -2,6 +2,7 @@ import { Component, ViewChild, ViewChildren, QueryList, ChangeDetectionStrategy,
 import { SplitComponent, SplitAreaComponent } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-class-collapse',
@@ -73,6 +74,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
 })
 export class CollapseExpandComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

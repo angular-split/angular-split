@@ -10,9 +10,10 @@ import {
   signal,
 } from '@angular/core'
 import { Subscription, merge } from 'rxjs'
-import { SplitAreaSize, SplitComponent } from 'angular-split'
+import { SplitAreaSize, SplitComponent, SplitAreaComponent } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-sync',
@@ -49,6 +50,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
 })
 export class SyncSplitComponent extends AComponent implements AfterViewInit, OnDestroy {
   private z = inject(ChangeDetectorRef)

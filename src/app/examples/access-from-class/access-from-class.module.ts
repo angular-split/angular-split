@@ -11,7 +11,7 @@ import { AccessFromClassComponent } from './access-from-class.component'
     RouterModule.forChild([{ path: '', component: AccessFromClassComponent }]),
     AngularSplitModule,
     UiModule,
+    AccessFromClassComponent,
   ],
-  declarations: [AccessFromClassComponent],
 })
 export class AccessFromClassModule {}

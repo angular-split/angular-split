@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 import { SplitComponent, SplitAreaComponent } from 'angular-split'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-global-options',
@@ -36,6 +37,8 @@ import { SplitComponent, SplitAreaComponent } from 'angular-split'
       <br />
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
 })
 export class GlobalOptionsComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

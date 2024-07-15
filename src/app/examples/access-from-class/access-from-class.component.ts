@@ -10,6 +10,7 @@ import {
 import { SplitComponent, SplitAreaComponent, SplitDirection, SplitDir } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-class-access',
@@ -92,6 +93,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
 })
 export class AccessFromClassComponent extends AComponent implements AfterViewInit {
   @HostBinding('class') class = 'split-example-page'

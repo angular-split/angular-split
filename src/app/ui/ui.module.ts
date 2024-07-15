@@ -20,8 +20,9 @@ import { TopbarComponent } from './components/topbar.component'
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
     AngularSplitModule,
+    ExampleTitleComponent,
+    TopbarComponent,
   ],
-  declarations: [ExampleTitleComponent, TopbarComponent],
   exports: [ExampleTitleComponent, TopbarComponent, ButtonsModule, SortableModule, TooltipModule],
 })
 export class UiModule {}

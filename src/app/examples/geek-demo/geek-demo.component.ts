@@ -1,7 +1,11 @@
 import { Component, ViewChild, ChangeDetectionStrategy, HostBinding } from '@angular/core'
-import { SortableComponent } from 'ngx-bootstrap/sortable'
+import { SortableComponent, SortableModule } from 'ngx-bootstrap/sortable'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitAreaSize, SplitDirection } from 'angular-split'
+import { SplitAreaSize, SplitDirection, SplitComponent, SplitAreaComponent } from 'angular-split'
+import { FormsModule } from '@angular/forms'
+import { ButtonsModule } from 'ngx-bootstrap/buttons'
+import { NgFor, NgIf } from '@angular/common'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-geek-demo',
@@ -177,6 +181,17 @@ import { SplitAreaSize, SplitDirection } from 'angular-split'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [
+    ExampleTitleComponent,
+    SplitComponent,
+    NgFor,
+    NgIf,
+    SplitAreaComponent,
+    ButtonsModule,
+    FormsModule,
+    SortableModule,
+  ],
 })
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent

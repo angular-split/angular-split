@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitAreaSize, SplitGutterInteractionEvent } from 'angular-split'
+import { SplitAreaSize, SplitGutterInteractionEvent, SplitComponent, SplitAreaComponent } from 'angular-split'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common'
 
 interface IConfig {
   columns: Array<{
@@ -127,6 +129,17 @@ const defaultConfig: IConfig = {
       </ng-template>
     </as-split>
   `,
+  standalone: true,
+  imports: [
+    NgIf,
+    SplitComponent,
+    NgFor,
+    SplitAreaComponent,
+    NgSwitch,
+    NgSwitchCase,
+    ExampleTitleComponent,
+    NgSwitchDefault,
+  ],
 })
 export class WorkspaceLocalstorageComponent extends AComponent implements OnInit {
   localStorageName = 'angular-split-ws'

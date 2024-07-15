@@ -11,7 +11,7 @@ import { NestedComponent } from './nested-split.component'
     AngularSplitModule,
     RouterModule.forChild([{ path: '', component: NestedComponent }]),
     UiModule,
+    NestedComponent,
   ],
-  declarations: [NestedComponent],
 })
 export class NestedSplitModule {}

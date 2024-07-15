@@ -11,7 +11,7 @@ import { SimpleSplitComponent } from './simple-split.component'
     RouterModule.forChild([{ path: '', component: SimpleSplitComponent }]),
     AngularSplitModule,
     UiModule,
+    SimpleSplitComponent,
   ],
-  declarations: [SimpleSplitComponent],
 })
 export class SimpleSplitModule {}
