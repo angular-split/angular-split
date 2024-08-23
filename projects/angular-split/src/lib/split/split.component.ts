@@ -518,15 +518,18 @@ export class SplitComponent {
     const tempAreasPixelSizes = [...dragStartContext.areasPixelSizes]
     // As we are going to shuffle the areas order for easier iterations we should work with area indices array
     // instead of actual area sizes array.
-    // We must also remove the invisible ones as we can't expand or shrink them.
-    const areasIndices = tempAreasPixelSizes.map((_, index) => index).filter((index) => this._areas()[index].visible())
+    const areasIndices = tempAreasPixelSizes.map((_, index) => index)
     // The two variables below are ordered for iterations with real area indices inside.
+    // We must also remove the invisible ones as we can't expand or shrink them.
     const areasIndicesBeforeGutter = this.restrictMove()
       ? [dragStartContext.areaBeforeGutterIndex]
-      : areasIndices.slice(0, dragStartContext.areaBeforeGutterIndex + 1).reverse()
+      : areasIndices
+          .slice(0, dragStartContext.areaBeforeGutterIndex + 1)
+          .filter((index) => this._areas()[index].visible())
+          .reverse()
     const areasIndicesAfterGutter = this.restrictMove()
       ? [dragStartContext.areaAfterGutterIndex]
-      : areasIndices.slice(dragStartContext.areaAfterGutterIndex)
+      : areasIndices.slice(dragStartContext.areaAfterGutterIndex).filter((index) => this._areas()[index].visible())
     // Based on direction we need to decide which areas are expanding and which are shrinking
     const potentialAreasIndicesArrToShrink = isDraggingForward ? areasIndicesAfterGutter : areasIndicesBeforeGutter
     const potentialAreasIndicesArrToExpand = isDraggingForward ? areasIndicesBeforeGutter : areasIndicesAfterGutter
