@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   HostBinding,
+  InjectionToken,
   NgZone,
   Renderer2,
   booleanAttribute,
@@ -17,7 +18,7 @@ import {
   untracked,
 } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { SplitAreaComponent } from '../split-area/split-area.component'
+import type { SplitAreaComponent } from '../split-area/split-area.component'
 import { Subject, filter, fromEvent, map, pairwise, skipWhile, startWith, switchMap, take, takeUntil, tap } from 'rxjs'
 import {
   ClientPoint,
@@ -61,6 +62,8 @@ interface DragStartContext {
   areaAfterGutterIndex: number
 }
 
+export const SPLIT_AREA_CONTRACT = new InjectionToken<SplitAreaComponent>('Split Area Contract')
+
 @Component({
   selector: 'as-split',
   standalone: true,
@@ -83,7 +86,7 @@ export class SplitComponent {
   /**
    * @internal
    */
-  readonly _areas = contentChildren(SplitAreaComponent)
+  readonly _areas = contentChildren(SPLIT_AREA_CONTRACT)
   protected readonly customGutter = contentChild(SplitGutterDirective)
   readonly gutterSize = input(this.defaultOptions.gutterSize, {
     transform: numberAttributeWithFallback(this.defaultOptions.gutterSize),
