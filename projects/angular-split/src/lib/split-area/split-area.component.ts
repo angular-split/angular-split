@@ -9,7 +9,7 @@ import {
   input,
   isDevMode,
 } from '@angular/core'
-import { SplitComponent } from '../split/split.component'
+import { SPLIT_AREA_CONTRACT, SplitComponent } from '../split/split.component'
 import { createClassesString, mirrorSignal } from '../utils'
 import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../models'
 
@@ -19,6 +19,12 @@ import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../
   exportAs: 'asSplitArea',
   templateUrl: './split-area.component.html',
   styleUrl: './split-area.component.css',
+  providers: [
+    {
+      provide: SPLIT_AREA_CONTRACT,
+      useExisting: SplitAreaComponent,
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SplitAreaComponent {
