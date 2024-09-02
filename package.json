@@ -1,6 +1,6 @@
 {
   "name": "angular-split-app",
-  "version": "0.0.0",
+  "version": "15.1.0",
   "engines": {
     "node": "^18 || ^20"
   },
