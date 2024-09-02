@@ -57,12 +57,10 @@ export function checkSplitDirAndCalcSizes(el, dir, w, h, gutter, sizes) {
 
 //////////////////////////////////////////
 
-export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
-  cy.log(`-- NEW SPLIT CHECK (${dir},${w},${h},${gutter})`)
+export function checkSplitDirAndSizes(el, dir, w, h, gutterOrGutters, sizes) {
+  const gutters = Array.isArray(gutterOrGutters) ? gutterOrGutters : new Array(sizes.length - 1).fill(gutterOrGutters)
 
-  // Before real test, check if values provided are ok !
-  const total = sizes.reduce((acc, v) => acc + v, 0) + gutter * (sizes.length - 1)
-  // expect(total).to.eq((dir === 'horizontal') ? w : h);
+  cy.log(`-- NEW SPLIT CHECK (${dir},${w},${h},[${gutters.join(',')}],[${sizes.join(',')}])`)
 
   const propGridDir = dir === 'vertical' ? 'grid-template-rows' : 'grid-template-columns'
   cy.get(el).should('have.css', propGridDir).should('include', ' ')
@@ -75,10 +73,10 @@ export function checkSplitDirAndSizes(el, dir, w, h, gutter, sizes) {
 
   cy.get(`${el} > .as-split-gutter`).should('have.length', sizes.length - 1)
 
-  cy.get(`${el} > .as-split-gutter`).then(($el) => {
+  cy.get(`${el} > .as-split-gutter`).each(($el, index) => {
     const rect = $el[0].getBoundingClientRect()
 
-    expect(rect[propSize]).to.be.eq(gutter)
+    expect(rect[propSize]).to.be.eq(gutters[index])
     expect(round(rect[propSize2])).to.be.eq(round(propValue2))
   })
 
