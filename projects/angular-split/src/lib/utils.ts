@@ -10,7 +10,10 @@ export interface ClientPoint {
  * Only supporting a single {@link TouchEvent} point
  */
 export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent): ClientPoint {
-  if (event instanceof TouchEvent) {
+  // NOTE: In firefox TouchEvent is only defined for touch capable devices
+  const isTouchEvent = (e: typeof event): e is TouchEvent => window.TouchEvent && event instanceof TouchEvent
+
+  if (isTouchEvent(event)) {
     if (event.changedTouches.length === 0) {
       return undefined
     }
