@@ -34,7 +34,7 @@
     "@angular/router": "^18.1.0",
     "bootstrap": "^5.3.1",
     "marked": "7.0.4",
-    "ngx-bootstrap": "^12.0.0",
+    "ngx-bootstrap": "^18.0.0",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.2"
   },
