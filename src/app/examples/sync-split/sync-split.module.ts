@@ -11,7 +11,7 @@ import { SyncSplitComponent } from './sync-split.component'
     UiModule,
     RouterModule.forChild([{ path: '', component: SyncSplitComponent }]),
     AngularSplitModule,
+    SyncSplitComponent,
   ],
-  declarations: [SyncSplitComponent],
 })
 export class SyncSplitModule {}

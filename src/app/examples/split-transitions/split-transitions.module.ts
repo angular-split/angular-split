@@ -11,7 +11,7 @@ import { SplitTransitionsComponent } from './split-transitions.component'
     UiModule,
     RouterModule.forChild([{ path: '', component: SplitTransitionsComponent }]),
     AngularSplitModule,
+    SplitTransitionsComponent,
   ],
-  declarations: [SplitTransitionsComponent],
 })
 export class SplitTransitionsModule {}

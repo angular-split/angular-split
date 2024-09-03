@@ -11,7 +11,7 @@ import { TogglingDomAndVisibleComponent } from './toggling-dom-and-visibility.co
     UiModule,
     RouterModule.forChild([{ path: '', component: TogglingDomAndVisibleComponent }]),
     AngularSplitModule,
+    TogglingDomAndVisibleComponent,
   ],
-  declarations: [TogglingDomAndVisibleComponent],
 })
 export class TogglingDomAndVisibilityModule {}

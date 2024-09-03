@@ -11,7 +11,7 @@ import { MinMaxSplitComponent } from './min-max-split.component'
     AngularSplitModule,
     RouterModule.forChild([{ path: '', component: MinMaxSplitComponent }]),
     UiModule,
+    MinMaxSplitComponent,
   ],
-  declarations: [MinMaxSplitComponent],
 })
 export class MinMaxSplitModule {}

@@ -7,10 +7,13 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core'
-import { SplitAreaSize, SplitGutterInteractionEvent, SplitComponent } from 'angular-split'
+import { SplitAreaSize, SplitGutterInteractionEvent, SplitComponent, SplitAreaComponent } from 'angular-split'
 import { Subscription } from 'rxjs'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
+import { TooltipModule } from 'ngx-bootstrap/tooltip'
+import { NgClass } from '@angular/common'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-gutter-click',
@@ -67,9 +70,11 @@ import { formatDate } from '../../utils/format-date'
           (gutterDblClick)="log('gutterDblClick', $event)"
           (transitionEnd)="log('transitionEnd', $event)"
         >
-          <as-split-area *ngFor="let a of areas" [size]="a.size">
-            <p>{{ a.content }}</p>
-          </as-split-area>
+          @for (a of areas; track a) {
+            <as-split-area [size]="a.size">
+              <p>{{ a.content }}</p>
+            </as-split-area>
+          }
         </as-split>
       </div>
       <br />
@@ -107,11 +112,15 @@ import { formatDate } from '../../utils/format-date'
       <div class="logs">
         <p>All <code>as-split</code> events emitted:</p>
         <ul #logs>
-          <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
+          @for (l of logMessages; track l) {
+            <li [ngClass]="l.type">{{ l.text }}</li>
+          }
         </ul>
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent, TooltipModule, NgClass],
 })
 export class GutterClickRollUnrollComponent extends AComponent implements AfterViewInit, OnDestroy {
   @HostBinding('class') class = 'split-example-page'

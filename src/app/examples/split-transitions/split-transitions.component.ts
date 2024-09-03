@@ -1,7 +1,9 @@
 import { Component, ViewChild, ElementRef, ChangeDetectionStrategy, HostBinding } from '@angular/core'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
-import { SplitAreaSize } from 'angular-split'
+import { SplitAreaSize, SplitComponent, SplitAreaComponent } from 'angular-split'
+import { NgClass } from '@angular/common'
+import { ExampleTitleComponent } from '../../ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-transitions',
@@ -154,7 +156,9 @@ import { SplitAreaSize } from 'angular-split'
       <div class="logs">
         <p>Events <code>(transitionEnd)</code>:</p>
         <ul #logs>
-          <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
+          @for (l of logMessages; track l) {
+            <li [ngClass]="l.type">{{ l.text }}</li>
+          }
         </ul>
       </div>
       <br />
@@ -234,6 +238,8 @@ import { SplitAreaSize } from 'angular-split'
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent, NgClass],
 })
 export class SplitTransitionsComponent extends AComponent {
   action: {
