@@ -122,8 +122,7 @@
     },
     "test_ci": {
       "dependencies": [
-        "cypress_run",
-        "cypress_serve"
+        "cypress_run"
       ]
     },
     "ng_serve": {
