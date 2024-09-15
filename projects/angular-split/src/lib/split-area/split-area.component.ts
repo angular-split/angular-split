@@ -43,13 +43,13 @@ export class SplitAreaComponent {
     // As size is an input and we can change the size without the outside
     // listening to the change we need an intermediate writeable signal
     computed((): SplitAreaSize => {
-      if (!this.visible()) {
+      const visibleIndex = this.split._visibleAreas().findIndex((area) => area === this)
+
+      if (visibleIndex === -1) {
         return 0
       }
 
-      const size = this.size()
-      // auto acts the same as * in all calculations
-      return size === 'auto' ? '*' : size
+      return this.split._alignedVisibleAreasSizes()[visibleIndex]
     }),
   )
   /**

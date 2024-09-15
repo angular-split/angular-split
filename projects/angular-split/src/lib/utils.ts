@@ -131,3 +131,7 @@ export function leaveNgZone<T>() {
 }
 
 export const numberAttributeWithFallback = (fallback: number) => (value: unknown) => numberAttribute(value, fallback)
+
+export const assertUnreachable = (value: never, name: string) => {
+  throw new Error(`as-split: unknown value "${value}" for "${name}"`)
+}
