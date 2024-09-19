@@ -127,13 +127,13 @@ export class SplitComponent {
     let visitedVisibleAreas = 0
 
     this._areas().forEach((area, index, areas) => {
+      const unit = this.unit()
+      const areaSize = area._internalSize()
+
       // Add area size column
       if (!area.visible()) {
-        columns.push('0fr')
+        columns.push(unit === 'percent' || areaSize === '*' ? '0fr' : '0px')
       } else {
-        const areaSize = area._internalSize()
-        const unit = this.unit()
-
         if (unit === 'pixel') {
           const columnValue = areaSize === '*' ? '1fr' : `${areaSize}px`
           columns.push(columnValue)
