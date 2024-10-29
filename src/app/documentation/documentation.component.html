@@ -8,7 +8,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>&#64;Input()</th>
+        <th>Inputs</th>
         <th>Type</th>
         <th>Default</th>
         <th>Details</th>
@@ -28,7 +28,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>&#64;Output()</th>
+        <th>Outputs</th>
         <th>Value</th>
         <th>Details</th>
       </tr>
@@ -65,7 +65,7 @@
 
   <h4>
     <b>SplitAreaDirective</b>&nbsp;<span class="sel"
-      >(selector: '<span class="selContent">as-split-area, [as-split-area]</span>' / exportAs: '<span class="selContent"
+      >(selector: '<span class="selContent">as-split-area</span>' / exportAs: '<span class="selContent"
         >asSplitArea</span
       >')</span
     >
@@ -97,11 +97,11 @@
       >(selector: '<span class="selContent">[asSplitGutter]</span> ')</span
     >
   </h4>
-  <p>Used as structural directive (*asSplitGutter) to customize the gutter.</p>
-  <p>Mostly requires width: 100% and height: 100% in order to fill the whole gutter.</p>
+  <p>Used as structural directive (<code>*asSplitGutter</code>) to customize the gutter.</p>
+  <p>Mostly requires <code>width: 100%</code> and <code>height: 100%</code> in order to fill the whole gutter.</p>
   <p>
-    If the custom gutter is wider than the declared gutter size (using gutterSize input) the areas will overflow too. So
-    attention is required to match the size of the gutter.
+    If the custom gutter is wider than the declared gutter size (using <code>gutterSize</code> input) the areas will
+    overflow too. So attention is required to match the size of the gutter.
   </p>
   <table class="table table-striped">
     <thead>
@@ -126,7 +126,7 @@
       >(selector: '<span class="selContent">[asSplitGutterDragHandle]</span> ')</span
     >
   </h4>
-  <p>Used to declare an area inside asSplitGutter to be a drag handle</p>
+  <p>Used to declare an area inside <code>asSplitGutter</code> to be a drag handle</p>
   <p>Can be declared on multiple elements which means all of them are drag handles.</p>
   <br /><br />
 
@@ -135,15 +135,15 @@
       >(selector: '<span class="selContent">[asSplitGutterExcludeFromDrag]</span> ')</span
     >
   </h4>
-  <p>Used to declare an area inside asSplitGutter to be excluded from drag</p>
+  <p>Used to declare an area inside <code>asSplitGutter</code> to be excluded from drag</p>
   <p>Can be declared on multiple elements which means all of them are excluded from drag.</p>
   <p>
-    asSplitGutterExcludeFromDrag inside asSplitGutterDragHandle works as expected (all of the element is a handle except
-    the excluded area)
+    <code>asSplitGutterExcludeFromDrag</code> inside <code>asSplitGutterDragHandle</code> works as expected (all of the
+    element is a handle except the excluded area)
   </p>
   <p>
-    asSplitGutterDragHandle inside asSplitGutterExcludeFromDrag is ignored and the whole element marked with exclude is
-    excluded.
+    <code>asSplitGutterDragHandle</code> inside <code>asSplitGutterExcludeFromDrag</code> is ignored and the whole
+    element marked with exclude is excluded.
   </p>
   <br /><br />
 

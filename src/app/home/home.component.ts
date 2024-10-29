@@ -56,7 +56,7 @@ import { Component, VERSION } from '@angular/core'
         <h5>Install npm module:</h5>
         <pre [innerText]="code1"></pre>
         <br />
-        <h5>Add angular module to your app:</h5>
+        <h5>Add to your app:</h5>
         <pre [innerText]="code2"></pre>
         <br />
         <h5>Define splits in your template:</h5>
@@ -64,6 +64,12 @@ import { Component, VERSION } from '@angular/core'
         <br />
         <h5>Add css theme in styles.css/scss for variables type hints (optional):</h5>
         <pre [innerText]="code4"></pre>
+        <br />
+        <h5>Override global options (optional):</h5>
+        Global options can be declared on any injector level (root or any other injector). The global options can be
+        partially overridden at a lower level. That means you can declare for root a set of options and override part of
+        them on a route provider keeping the other options the same as in root.
+        <pre [innerText]="code5"></pre>
         <br />
         <h5>Support:</h5>
         If you have an issue using the library, feel free to join our chat! We are part of the
@@ -97,7 +103,8 @@ export class HomeComponent {
   version = VERSION.full
   code1 = `npm install angular-split`
 
-  code2 = `import { AngularSplitModule } from 'angular-split';
+  code2 = `// For NgModule based apps:
+import { AngularSplitModule } from 'angular-split';
 
 @NgModule({
   imports: [
@@ -106,7 +113,14 @@ export class HomeComponent {
   ],
   ...
 })
-export class AppModule {}`
+export class AppModule {}
+
+
+// For standalone apps
+@Component({
+  ...
+  imports: [SplitComponent, SplitAreaComponent, ...] // Or use AngularSplitModule
+})`
 
   code3 = `<div style="width: 500px; height: 500px; background: yellow;">
   <as-split direction="horizontal">
@@ -119,4 +133,5 @@ export class AppModule {}`
   </as-split>
 </div>`
   code4 = `@use/@import 'angular-split/theme';`
+  code5 = `provideAngularSplitOptions({...})`
 }
