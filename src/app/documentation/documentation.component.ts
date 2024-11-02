@@ -36,14 +36,14 @@ export class DocumentationComponent {
     inputs: [
       {
         name: 'dir',
-        type: 'string',
+        type: 'SplitDir',
         default: '"ltr"',
         details:
           'Indicates the directionality of the areas: <code>"ltr"</code> (left to right) or <code>"rtl"</code> (right to left).',
       },
       {
         name: 'direction',
-        type: 'string',
+        type: 'SplitDirection',
         default: '"horizontal"',
         details: 'Select split direction: <code>"horizontal"</code> or <code>"vertical"</code>.',
       },
@@ -57,9 +57,10 @@ export class DocumentationComponent {
       {
         name: 'gutterAriaLabel',
         type: 'string',
-        default: 'null',
+        default: 'undefined',
         details: 'Aria label for the gutter.',
       },
+      // gutterClickDeltaPx
       {
         name: 'gutterDblClickDuration',
         type: 'number',
@@ -86,7 +87,7 @@ export class DocumentationComponent {
       },
       {
         name: 'unit',
-        type: 'string',
+        type: 'SplitUnit',
         default: '"percent"',
         details: `Selected unit you want to use: <code>"percent"</code> or <code>"pixel"</code> to specify area sizes.`,
       },
@@ -101,27 +102,27 @@ export class DocumentationComponent {
     outputs: [
       {
         name: 'dragEnd',
-        value: '{gutterNum: number, sizes: Array<number>}',
+        value: 'SplitGutterInteractionEvent',
         details: 'Emit when drag ends.',
       },
       {
         name: 'dragStart',
-        value: '{gutterNum: number, sizes: Array<number>}',
+        value: 'SplitGutterInteractionEvent',
         details: 'Emit when drag starts.',
       },
       {
         name: 'gutterDblClick',
-        value: '{gutterNum: number, sizes: Array<number>}',
+        value: 'SplitGutterInteractionEvent',
         details: 'Emit when user double clicks on a gutter. See <code>[gutterDblClickDuration]</code> input.',
       },
       {
         name: 'gutterClick',
-        value: '{gutterNum: number, sizes: Array<number>}',
+        value: 'SplitGutterInteractionEvent',
         details: 'Emit when user clicks on a gutter. See <code>[gutterDblClickDuration]</code> input.',
       },
       {
         name: 'transitionEnd',
-        value: 'Array<number>',
+        value: 'SplitAreaSize[]',
         details:
           'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code> changes).<br>Only if <code>[useTransition]="true"</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>',
       },
@@ -129,19 +130,8 @@ export class DocumentationComponent {
     class: [
       {
         name: 'dragProgress$',
-        type: 'Observable<{gutterNum: number, sizes: Array<number>}>',
-        details: `Emit when dragging. Replace old <code>(dragProgress)</code> template event for better flexibility about change detection mechanism.<br><u>Warning: Running outside zone by design, if you need to notify angular add</u> <code>this.splitEl.dragProgress$.subscribe(x => this.ngZone.run(() => this.x = x));</code>`,
-      },
-      {
-        name: 'getVisibleAreaSizes()',
-        type: '() => Array<number>',
-        details: 'Get all <b>visible</b> area sizes.',
-      },
-      {
-        name: 'setVisibleAreaSizes()',
-        type: '(Array<number>) => boolean',
-        details:
-          'Set all <b>visible</b> area sizes in one go, return a boolean to know if input values were correct. Useful when combined with <code>dragProgress$</code> to sync multiple splits.',
+        type: 'Observable<SplitGutterInteractionEvent>',
+        details: `Emits when dragging (mouse or keyboard).<br><u>Warning: Running outside zone by design.</u><br/>If you need to notify angular use <code>this.ngZone.run(() => ...));</code>`,
       },
     ],
   }
@@ -156,33 +146,27 @@ export class DocumentationComponent {
       },
       {
         name: 'maxSize',
-        type: 'number',
-        default: 'null',
+        type: 'SplitAreaSize',
+        default: '"*"',
         details: `Maximum pixel or percent size, should be equal to or larger than provided <code>[size]</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`,
       },
       {
         name: 'minSize',
-        type: 'number',
-        default: 'null',
+        type: 'SplitAreaSize',
+        default: '"*"',
         details: `Minimum pixel or percent size, should be equal to or smaller than provided <code>[size]</code>.<br><u>Not working when <code>[size]="'*'"</code></u>`,
       },
       {
-        name: 'order',
-        type: 'number',
-        default: 'null',
-        details: `Order of the area. Used to maintain the order of areas when toggling their visibility. Toggling area visibility without specifying an <code>order</code> leads to weird behavior`,
-      },
-      {
         name: 'size',
-        type: "number|'*'",
-        default: '-',
-        details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br><u>Percent mode:</u> All areas sizes should equal to 100, If not, all areas will have the same size.<br><u>Pixel mode:</u> An area with  wildcard size (<code>[size]="'*'"</code>) is mandatory (only one) and can't have <code>[visible]="false"</code> or <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code> properties.`,
+        type: "SplitAreaSize | 'auto'",
+        default: '"auto"',
+        details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br><u>Percent mode:</u> All areas sizes should equal to 100 or if there is a wildcard size (<code>[size]="'*'"</code>) should be less than 100. If no size input is declared on all areas - all areas will have the same size.<br><u>Pixel mode:</u> An area with  wildcard size (<code>[size]="'*'"</code>) is mandatory (only one) and can't have <code>[visible]="false"</code> or <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code> properties.`,
       },
       {
         name: 'visible',
         type: 'boolean',
         default: 'true',
-        details: `Hide area visually but still present in the DOM, use <code>ngIf</code> to completely remove it.<br><u>Not working when <code>[size]="'*'"</code></u>`,
+        details: `Hide area visually but still present in the DOM, use <code>ngIf/@if</code> to completely remove it.<br><u>Not working when <code>[size]="'*'"</code></u>`,
       },
     ],
   }
@@ -191,12 +175,12 @@ export class DocumentationComponent {
     templateContext: [
       {
         name: 'areaBefore',
-        type: 'IArea',
+        type: 'SplitAreaComponent',
         details: 'The area before the gutter. In RTL the right area and in LTR the left area',
       },
       {
         name: 'areaAfter',
-        type: 'IArea',
+        type: 'SplitAreaComponent',
         details: 'The area after the gutter. In RTL the left area and in LTR the right area',
       },
       {
@@ -225,7 +209,6 @@ export class DocumentationComponent {
 
   readonly cssClasses = {
     split: [
-      { name: 'as-init', details: 'Added after component initialization.' },
       {
         name: 'as-horizontal / as-vertical',
         details: 'Depends on <code>&lt;as-split [direction]="x"&gt;</code>.',

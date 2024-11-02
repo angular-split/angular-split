@@ -405,9 +405,11 @@ export class SplitComponent {
     this.ngZone.run(() => {
       this.dragStart.emit(this.createDragInteractionEvent(gutterIndex))
       this.draggedGutterIndex.set(gutterIndex)
+    })
 
-      this.dragMoveToPoint({ x: gutterMidPoint.x + xPointOffset, y: gutterMidPoint.y + yPointOffset }, dragStartContext)
+    this.dragMoveToPoint({ x: gutterMidPoint.x + xPointOffset, y: gutterMidPoint.y + yPointOffset }, dragStartContext)
 
+    this.ngZone.run(() => {
       this.dragEnd.emit(this.createDragInteractionEvent(gutterIndex))
       this.draggedGutterIndex.set(undefined)
     })
