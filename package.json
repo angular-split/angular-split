@@ -24,14 +24,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.1.0",
-    "@angular/common": "^17.1.0",
-    "@angular/compiler": "^17.1.0",
-    "@angular/core": "^17.1.0",
-    "@angular/forms": "^17.1.0",
-    "@angular/platform-browser": "^17.1.0",
-    "@angular/platform-browser-dynamic": "^17.1.0",
-    "@angular/router": "^17.1.0",
+    "@angular/animations": "^18.2.8",
+    "@angular/common": "^18.2.8",
+    "@angular/compiler": "^18.2.8",
+    "@angular/core": "^18.2.8",
+    "@angular/forms": "^18.2.8",
+    "@angular/platform-browser": "^18.2.8",
+    "@angular/platform-browser-dynamic": "^18.2.8",
+    "@angular/router": "^18.2.8",
     "bootstrap": "^5.3.1",
     "marked": "7.0.4",
     "ngx-bootstrap": "^12.0.0",
@@ -39,37 +39,37 @@
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "^0.1701.0",
-    "@angular-devkit/build-angular": "^17.1.0",
-    "@angular-devkit/core": "^17.1.0",
-    "@angular-devkit/schematics": "^17.1.0",
-    "@angular-eslint/builder": "17.2.1",
-    "@angular-eslint/eslint-plugin": "17.2.1",
-    "@angular-eslint/eslint-plugin-template": "17.2.1",
-    "@angular-eslint/schematics": "17.2.1",
-    "@angular-eslint/template-parser": "17.2.1",
-    "@angular/cli": "^17.1.0",
-    "@angular/compiler-cli": "^17.1.0",
-    "@angular/language-service": "^17.1.0",
+    "@angular-devkit/architect": "^0.1802.9",
+    "@angular-devkit/build-angular": "^18.2.9",
+    "@angular-devkit/core": "^18.2.9",
+    "@angular-devkit/schematics": "^18.2.9",
+    "@angular-eslint/builder": "18.3.1",
+    "@angular-eslint/eslint-plugin": "18.3.1",
+    "@angular-eslint/eslint-plugin-template": "18.3.1",
+    "@angular-eslint/schematics": "18.3.1",
+    "@angular-eslint/template-parser": "18.3.1",
+    "@angular/cli": "^18.2.9",
+    "@angular/compiler-cli": "^18.2.8",
+    "@angular/language-service": "^18.2.8",
     "@commitlint/cli": "^18.5.0",
     "@commitlint/config-angular": "^18.5.0",
     "@commitlint/config-conventional": "^18.5.0",
     "@types/marked": "^5.0.1",
     "@types/node": "20.5.4",
-    "@typescript-eslint/eslint-plugin": "6.19.0",
-    "@typescript-eslint/parser": "6.19.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
     "angular-cli-ghpages": "^2.0.0-beta.2",
     "cypress": "^13.10.0",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "ng-packagr": "^17.0.0",
+    "ng-packagr": "^18.2.1",
     "postcss": "8.4.28",
     "prettier": "^3.0.2",
     "serve": "^14.2.1",
     "ts-node": "10.9.1",
     "tslib": "^2.6.2",
-    "typescript": "5.2.2",
+    "typescript": "5.5.4",
     "webpack-bundle-analyzer": "4.9.0",
     "wireit": "^0.14.3"
   },
@@ -94,7 +94,7 @@
         "src/"
       ],
       "output": [
-        "dist/angular-split-app"
+        "dist/angular-split-app/browser"
       ]
     },
     "lint_app": {
@@ -122,8 +122,9 @@
     },
     "test_ci": {
       "dependencies": [
-        "cypress_run",
-        "cypress_serve"
+        "build",
+        "cypress_serve",
+        "cypress_run"
       ]
     },
     "ng_serve": {
@@ -152,7 +153,7 @@
       ]
     },
     "cypress_serve": {
-      "command": "serve -s -l 4242 ./dist/angular-split-app",
+      "command": "serve -s -l 4242 ./dist/angular-split-app/browser",
       "service": true,
       "dependencies": [
         "build"
