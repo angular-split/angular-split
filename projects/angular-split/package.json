@@ -1,6 +1,6 @@
 {
   "name": "angular-split",
-  "version": "18.0.0-beta.2",
+  "version": "18.0.0",
   "description": "Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.",
   "author": "beeman",
   "repository": {
