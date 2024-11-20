@@ -2,7 +2,7 @@
   "name": "angular-split-app",
   "version": "0.0.0",
   "engines": {
-    "node": "^18 || ^20"
+    "node": "^18 || ^20 || ^22"
   },
   "scripts": {
     "app_analyze": "npm run build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
