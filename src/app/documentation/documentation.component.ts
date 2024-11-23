@@ -95,8 +95,7 @@ export class DocumentationComponent {
         name: 'useTransition',
         type: 'boolean',
         default: 'false',
-        details:
-          'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code> changes.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>',
+        details: 'Add transition when toggling visibility using <code>[visible]</code> or <code>[size]</code> changes',
       },
     ],
     outputs: [
@@ -124,7 +123,7 @@ export class DocumentationComponent {
         name: 'transitionEnd',
         value: 'SplitAreaSize[]',
         details:
-          'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code> changes).<br>Only if <code>[useTransition]="true"</code>.<br><u>Warning: Transitions are not working for <a href="https://github.com/philipwalton/flexbugs#flexbug-16">IE/Edge/Safari</a></u>',
+          'Emit when transition ends (could be triggered from <code>[visible]</code> or <code>[size]</code> changes).<br>Only if <code>[useTransition]="true"</code>',
       },
     ],
     class: [
