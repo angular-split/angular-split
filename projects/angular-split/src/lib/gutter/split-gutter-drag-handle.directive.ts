@@ -1,4 +1,4 @@
-import { Directive, OnInit, OnDestroy, Inject, ElementRef } from '@angular/core'
+import { Directive, OnDestroy, ElementRef, inject } from '@angular/core'
 import { SplitGutterDirective } from './split-gutter.directive'
 import { GUTTER_NUM_TOKEN } from './gutter-num-token'
 
@@ -6,18 +6,16 @@ import { GUTTER_NUM_TOKEN } from './gutter-num-token'
   selector: '[asSplitGutterDragHandle]',
   standalone: true,
 })
-export class SplitGutterDragHandleDirective implements OnInit, OnDestroy {
-  constructor(
-    @Inject(GUTTER_NUM_TOKEN) private gutterNum: number,
-    private elementRef: ElementRef<HTMLElement>,
-    private gutterDir: SplitGutterDirective,
-  ) {}
+export class SplitGutterDragHandleDirective implements OnDestroy {
+  private readonly gutterNum = inject(GUTTER_NUM_TOKEN)
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
+  private readonly gutterDir = inject(SplitGutterDirective)
 
-  ngOnInit(): void {
-    this.gutterDir.addToMap(this.gutterDir.gutterToHandleElementMap, this.gutterNum, this.elementRef)
+  constructor() {
+    this.gutterDir._addToMap(this.gutterDir._gutterToHandleElementMap, this.gutterNum, this.elementRef)
   }
 
   ngOnDestroy(): void {
-    this.gutterDir.removedFromMap(this.gutterDir.gutterToHandleElementMap, this.gutterNum, this.elementRef)
+    this.gutterDir._removedFromMap(this.gutterDir._gutterToHandleElementMap, this.gutterNum, this.elementRef)
   }
 }

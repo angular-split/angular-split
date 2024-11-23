@@ -242,7 +242,10 @@ export class SplitComponent {
         filter(
           (context) =>
             !this.customGutter() ||
-            this.customGutter().canStartDragging(context.mouseDownEvent.target as HTMLElement, context.gutterIndex + 1),
+            this.customGutter()._canStartDragging(
+              context.mouseDownEvent.target as HTMLElement,
+              context.gutterIndex + 1,
+            ),
         ),
         switchMap((mouseDownContext) =>
           // As we have gutterClickDeltaPx we can't just start the drag but need to make sure

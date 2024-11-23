@@ -1,4 +1,4 @@
-import { Injector, Directive, Input, ViewContainerRef, TemplateRef } from '@angular/core'
+import { Injector, Directive, ViewContainerRef, TemplateRef, input, effect, inject } from '@angular/core'
 import { GUTTER_NUM_TOKEN } from './gutter-num-token'
 
 interface SplitGutterDynamicInjectorTemplateContext {
@@ -14,30 +14,31 @@ interface SplitGutterDynamicInjectorTemplateContext {
   standalone: true,
 })
 export class SplitGutterDynamicInjectorDirective {
-  @Input('asSplitGutterDynamicInjector')
-  set gutterNum(value: number) {
-    this.vcr.clear()
+  private readonly vcr = inject(ViewContainerRef)
+  private readonly templateRef = inject<TemplateRef<SplitGutterDynamicInjectorTemplateContext>>(TemplateRef)
 
-    const injector = Injector.create({
-      providers: [
-        {
-          provide: GUTTER_NUM_TOKEN,
-          useValue: value,
-        },
-      ],
-      parent: this.vcr.injector,
+  protected readonly gutterNum = input.required<number>({ alias: 'asSplitGutterDynamicInjector' })
+
+  constructor() {
+    effect(() => {
+      this.vcr.clear()
+
+      const injector = Injector.create({
+        providers: [
+          {
+            provide: GUTTER_NUM_TOKEN,
+            useValue: this.gutterNum(),
+          },
+        ],
+        parent: this.vcr.injector,
+      })
+
+      this.vcr.createEmbeddedView(this.templateRef, { $implicit: injector })
     })
-
-    this.vcr.createEmbeddedView(this.templateRef, { $implicit: injector })
   }
 
-  constructor(
-    private vcr: ViewContainerRef,
-    private templateRef: TemplateRef<SplitGutterDynamicInjectorTemplateContext>,
-  ) {}
-
   static ngTemplateContextGuard(
-    dir: SplitGutterDynamicInjectorDirective,
+    _dir: SplitGutterDynamicInjectorDirective,
     ctx: unknown,
   ): ctx is SplitGutterDynamicInjectorTemplateContext {
     return true
