@@ -1,4 +1,4 @@
-import { Directive, ElementRef, TemplateRef } from '@angular/core'
+import { Directive, ElementRef, inject, TemplateRef } from '@angular/core'
 import { SplitAreaComponent } from '../split-area/split-area.component'
 
 export interface SplitGutterTemplateContext {
@@ -38,22 +38,29 @@ export interface SplitGutterTemplateContext {
   standalone: true,
 })
 export class SplitGutterDirective {
+  readonly template = inject<TemplateRef<SplitGutterTemplateContext>>(TemplateRef)
+
   /**
    * The map holds reference to the drag handle elements inside instances
    * of the provided template.
+   *
+   * @internal
    */
-  gutterToHandleElementMap = new Map<number, ElementRef<HTMLElement>[]>()
+  readonly _gutterToHandleElementMap = new Map<number, ElementRef<HTMLElement>[]>()
   /**
    * The map holds reference to the excluded drag elements inside instances
    * of the provided template.
+   *
+   * @internal
    */
-  gutterToExcludeDragElementMap = new Map<number, ElementRef<HTMLElement>[]>()
+  readonly _gutterToExcludeDragElementMap = new Map<number, ElementRef<HTMLElement>[]>()
 
-  constructor(public template: TemplateRef<SplitGutterTemplateContext>) {}
-
-  canStartDragging(originElement: HTMLElement, gutterNum: number) {
-    if (this.gutterToExcludeDragElementMap.has(gutterNum)) {
-      const isInsideExclude = this.gutterToExcludeDragElementMap
+  /**
+   * @internal
+   */
+  _canStartDragging(originElement: HTMLElement, gutterNum: number) {
+    if (this._gutterToExcludeDragElementMap.has(gutterNum)) {
+      const isInsideExclude = this._gutterToExcludeDragElementMap
         .get(gutterNum)
         .some((gutterExcludeElement) => gutterExcludeElement.nativeElement.contains(originElement))
 
@@ -62,8 +69,8 @@ export class SplitGutterDirective {
       }
     }
 
-    if (this.gutterToHandleElementMap.has(gutterNum)) {
-      return this.gutterToHandleElementMap
+    if (this._gutterToHandleElementMap.has(gutterNum)) {
+      return this._gutterToHandleElementMap
         .get(gutterNum)
         .some((gutterHandleElement) => gutterHandleElement.nativeElement.contains(originElement))
     }
@@ -71,7 +78,10 @@ export class SplitGutterDirective {
     return true
   }
 
-  addToMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+  /**
+   * @internal
+   */
+  _addToMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
     if (map.has(gutterNum)) {
       map.get(gutterNum).push(elementRef)
     } else {
@@ -79,7 +89,10 @@ export class SplitGutterDirective {
     }
   }
 
-  removedFromMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+  /**
+   * @internal
+   */
+  _removedFromMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
     const elements = map.get(gutterNum)
     elements.splice(elements.indexOf(elementRef), 1)
 
@@ -88,7 +101,7 @@ export class SplitGutterDirective {
     }
   }
 
-  static ngTemplateContextGuard(dir: SplitGutterDirective, ctx: unknown): ctx is SplitGutterTemplateContext {
+  static ngTemplateContextGuard(_dir: SplitGutterDirective, ctx: unknown): ctx is SplitGutterTemplateContext {
     return true
   }
 }
