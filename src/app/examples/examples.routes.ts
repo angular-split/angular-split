@@ -84,15 +84,6 @@ export const exampleRoutes: Routes = [
   },
   {
     data: {
-      type: ExampleEnum.COLLAPSE,
-      label: 'Collapse/Expand a specific area',
-      srcUrl: `${srcUrlBaseApp}/collapse-expand/collapse-expand.component.ts`,
-    },
-    path: 'collapse-expand',
-    loadChildren: () => import('./collapse-expand/collapse-expand.module').then((m) => m.CollapseExpandModule),
-  },
-  {
-    data: {
       type: ExampleEnum.CLICK,
       label: 'Roll/unroll area on <code>(gutterClick)</code> event',
       srcUrl: `${srcUrlBaseApp}/gutter-click-roll-unroll/gutter-click-roll-unroll.component.ts`,

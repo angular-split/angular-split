@@ -32,7 +32,7 @@ import { Component, VERSION } from '@angular/core'
         <div class="text-center">
           <img src="/assets/logo.svg" height="100" class="m-auto" alt="" />
           <h1 class="mt-3">angular-split</h1>
-          <h4>Angular UI library to split views and allow dragging to resize areas using CSS flexbox layout.</h4>
+          <h4>Angular UI library to split views and allow dragging to resize areas using CSS grid layout.</h4>
           <h5 class="mt-3 text-muted">Running on Angular v{{ version }}.</h5>
           <a href="https://www.npmjs.com/package/angular-split"
             ><img
