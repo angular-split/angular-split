@@ -1,7 +1,6 @@
 export enum ExampleEnum {
   CLICK = 'click',
   CODE = 'code',
-  COLLAPSE = 'collapse',
   DIR = 'dir',
   GEEK = 'geek',
   IFRAME = 'iframe',
