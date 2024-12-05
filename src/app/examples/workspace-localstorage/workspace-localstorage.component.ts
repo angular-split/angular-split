@@ -127,6 +127,7 @@ const defaultConfig: IConfig = {
       </ng-template>
     </as-split>
   `,
+  
 })
 export class WorkspaceLocalstorageComponent extends AComponent implements OnInit {
   localStorageName = 'angular-split-ws'

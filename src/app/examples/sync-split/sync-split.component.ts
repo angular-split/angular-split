@@ -49,6 +49,7 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  
 })
 export class SyncSplitComponent extends AComponent implements AfterViewInit, OnDestroy {
   private z = inject(ChangeDetectorRef)

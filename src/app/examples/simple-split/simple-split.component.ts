@@ -159,6 +159,7 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  
 })
 export class SimpleSplitComponent extends AComponent {
   @ViewChild('split') split: SplitComponent

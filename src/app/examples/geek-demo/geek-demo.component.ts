@@ -177,6 +177,7 @@ import { SplitAreaSize, SplitDirection } from 'angular-split'
       </div>
     </div>
   `,
+  
 })
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent
