@@ -67,7 +67,6 @@ export const SPLIT_AREA_CONTRACT = new InjectionToken<SplitAreaComponent>('Split
 
 @Component({
   selector: 'as-split',
-  standalone: true,
   imports: [NgStyle, SplitCustomEventsBehaviorDirective, SplitGutterDynamicInjectorDirective, NgTemplateOutlet],
   exportAs: 'asSplit',
   templateUrl: './split.component.html',

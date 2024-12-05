@@ -23,6 +23,7 @@ import { exampleRoutes } from '../../examples/examples.routes'
     </h4>
     <hr />
   `,
+  
 })
 export class ExampleTitleComponent {
   exampleEnum = ExampleEnum

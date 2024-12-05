@@ -19,6 +19,7 @@ import { ChangelogService } from './changelog.service'
       <div [innerHTML]="changelogHtml$ | async"></div>
     </div>
   `,
+  
 })
 export class ChangelogComponent implements OnInit {
   changelogHtml$: Observable<string>

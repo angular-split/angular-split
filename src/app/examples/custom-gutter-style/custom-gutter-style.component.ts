@@ -125,6 +125,7 @@ import { SplitAreaSize, SplitGutterInteractionEvent, SplitDirection } from 'angu
       </div>
     </div>
   `,
+  
 })
 export class CustomGutterStyleComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

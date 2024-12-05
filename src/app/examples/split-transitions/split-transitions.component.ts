@@ -234,6 +234,7 @@ import { SplitAreaSize } from 'angular-split'
       </div>
     </div>
   `,
+  
 })
 export class SplitTransitionsComponent extends AComponent {
   action: {
