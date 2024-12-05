@@ -86,6 +86,7 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  
 })
 export class TogglingDomAndVisibleComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

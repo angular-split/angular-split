@@ -36,6 +36,7 @@ import { SplitComponent, SplitAreaComponent } from 'angular-split'
       <br />
     </div>
   `,
+  
 })
 export class GlobalOptionsComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

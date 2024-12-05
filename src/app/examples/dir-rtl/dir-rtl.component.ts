@@ -69,6 +69,7 @@ import { SplitDir, SplitDirection } from 'angular-split'
       </div>
     </div>
   `,
+  
 })
 export class DirRtlComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

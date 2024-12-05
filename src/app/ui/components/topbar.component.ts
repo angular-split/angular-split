@@ -81,6 +81,7 @@ import { exampleRoutes } from '../../examples/examples.routes'
       </ul>
     </div>
   `,
+  
 })
 export class TopbarComponent {
   examples: Routes

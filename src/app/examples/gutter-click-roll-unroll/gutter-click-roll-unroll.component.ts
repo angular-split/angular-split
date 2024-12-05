@@ -112,6 +112,7 @@ import { formatDate } from '../../utils/format-date'
       </div>
     </div>
   `,
+  
 })
 export class GutterClickRollUnrollComponent extends AComponent implements AfterViewInit, OnDestroy {
   @HostBinding('class') class = 'split-example-page'

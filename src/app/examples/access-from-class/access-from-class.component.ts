@@ -92,6 +92,7 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  
 })
 export class AccessFromClassComponent extends AComponent implements AfterViewInit {
   @HostBinding('class') class = 'split-example-page'

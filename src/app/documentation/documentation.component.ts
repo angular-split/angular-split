@@ -30,6 +30,7 @@ import { Component } from '@angular/core'
     `,
   ],
   templateUrl: './documentation.component.html',
+  
 })
 export class DocumentationComponent {
   readonly splitDoc = {

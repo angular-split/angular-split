@@ -129,6 +129,7 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
+  
 })
 export class MinMaxSplitComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'
