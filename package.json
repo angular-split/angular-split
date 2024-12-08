@@ -1,6 +1,6 @@
 {
   "name": "angular-split-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "engines": {
     "node": "^18 || ^20 || ^22"
   },
@@ -10,7 +10,7 @@
     "test_live": "wireit",
     "test_prod": "wireit",
     "test_ci": "wireit",
-    "deploy": "ng deploy angular-split-app --branch main --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git",
+    "deploy": "ng deploy angular-split-app --branch main --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git --dir dist/angular-split-app/browser",
     "format": "prettier --write '**/*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}'",
     "lib_pub_latest": "wireit",
     "lib_pub_next": "wireit",
@@ -20,7 +20,8 @@
     "lint": "wireit",
     "ng": "ng",
     "start": "wireit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "release": "npm run release --workspaces"
   },
   "private": true,
   "dependencies": {
@@ -36,6 +37,7 @@
     "marked": "7.0.4",
     "ngx-bootstrap": "^18.0.0",
     "rxjs": "~7.8.0",
+    "standard-version": "^9.5.0",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
@@ -54,6 +56,8 @@
     "@commitlint/cli": "^18.5.0",
     "@commitlint/config-angular": "^18.5.0",
     "@commitlint/config-conventional": "^18.5.0",
+    "@release-it/bumper": "^6.0.1",
+    "@release-it/conventional-changelog": "^9.0.3",
     "@types/marked": "^5.0.1",
     "@types/node": "20.5.4",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
@@ -202,6 +206,14 @@
       "dependencies": [
         "lib_build"
       ]
+    }
+  },
+  "workspaces": [
+    "projects/angular-split"
+  ],
+  "release-it": {
+    "git": {
+      "requireCleanWorkingDir": false
     }
   }
 }
