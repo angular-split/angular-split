@@ -1,6 +1,6 @@
 {
   "name": "angular-split-app",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "engines": {
     "node": "^18 || ^20 || ^22"
   },
@@ -215,5 +215,8 @@
     "git": {
       "requireCleanWorkingDir": false
     }
+  },
+  "hooks": {
+    "after:bump": "npm run build"
   }
 }

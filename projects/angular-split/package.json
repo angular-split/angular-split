@@ -4,7 +4,7 @@
   "description": "Angular UI library to split views and allow dragging to resize areas using CSS grid layout.",
   "author": "beeman",
   "scripts": {
-    "release": "release-it --dry-run"
+    "release": "release-it"
   },
   "release-it": {
     "requireCleanWorkingDir": false,
@@ -16,7 +16,7 @@
         "infile": "CHANGELOG.md"
       }
     },
-    "git": false,
+    "git": true,
     "github": {
       "release": true,
       "preRelease": true,
