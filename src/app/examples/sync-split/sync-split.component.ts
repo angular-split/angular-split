@@ -10,11 +10,10 @@ import {
   signal,
 } from '@angular/core'
 import { Subscription, merge } from 'rxjs'
-import { SplitAreaSize, SplitComponent } from 'angular-split'
+import { SplitAreaComponent, SplitAreaSize, SplitComponent } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
-import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
 
 @Component({
   selector: 'sp-ex-sync',

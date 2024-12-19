@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
 
-import { SplitAreaComponent } from 'angular-split'
-import { SplitComponent } from 'projects/angular-split/src/public_api'
+import { SplitAreaComponent, SplitComponent } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 

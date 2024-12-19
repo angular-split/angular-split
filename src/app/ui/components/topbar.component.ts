@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import { NavigationStart, Router, RouterLink, RouterLinkActive, Routes } from '@angular/router'
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
 import { CollapseDirective } from 'ngx-bootstrap/collapse'
 import { filter } from 'rxjs/operators'
 
@@ -9,7 +10,7 @@ import { exampleRoutes } from '../../examples/examples.routes'
 @Component({
   selector: 'sp-topbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive, CollapseDirective],
+  imports: [RouterLink, RouterLinkActive, CollapseDirective, BsDropdownModule],
   styles: [
     `
       :host {
