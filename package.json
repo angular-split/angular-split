@@ -212,11 +212,11 @@
     "projects/angular-split"
   ],
   "release-it": {
+    "hooks": {
+      "after:bump": "npm run build"
+    },
     "git": {
       "requireCleanWorkingDir": false
     }
-  },
-  "hooks": {
-    "after:bump": "npm run build"
   }
 }
