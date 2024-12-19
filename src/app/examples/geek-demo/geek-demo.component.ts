@@ -1,11 +1,23 @@
-import { Component, ViewChild, ChangeDetectionStrategy, HostBinding } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
+import { FormsModule } from '@angular/forms'
+import { SplitAreaSize, SplitComponent, SplitDirection } from 'angular-split'
+import { ButtonRadioDirective } from 'ngx-bootstrap/buttons'
 import { SortableComponent } from 'ngx-bootstrap/sortable'
+import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitAreaSize, SplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-geek-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    SortableComponent,
+    FormsModule,
+    ButtonRadioDirective,
+    SplitAreaComponent,
+    SplitComponent,
+    ExampleTitleComponent,
+  ],
   styles: [
     `
       .as-split-area {
@@ -85,15 +97,13 @@ import { SplitAreaSize, SplitDirection } from 'angular-split'
           gutterClickDeltaPx="0"
           style="background-color: #ffffff;"
         >
-          <ng-template ngFor let-area [ngForOf]="d.areas" [ngForTrackBy]="trackByFct" let-index="index">
-            <as-split-area
-              *ngIf="area.present"
-              [visible]="area.visible"
-              [size]="area.size"
-              [style.background-color]="area.color"
-              >{{ area.id }}</as-split-area
-            >
-          </ng-template>
+          @for (area of d.areas; track trackByFct(index, area); let index = $index) {
+            @if (area.present) {
+              <as-split-area [visible]="area.visible" [size]="area.size" [style.background-color]="area.color">{{
+                area.id
+              }}</as-split-area>
+            }
+          }
         </as-split>
       </div>
       <div class="opts-prop">
@@ -177,7 +187,6 @@ import { SplitAreaSize, SplitDirection } from 'angular-split'
       </div>
     </div>
   `,
-  
 })
 export class GeekDemoComponent extends AComponent {
   @ViewChild(SortableComponent) sortableComponent: SortableComponent

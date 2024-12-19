@@ -1,19 +1,21 @@
 import {
-  Component,
-  ViewChild,
-  ViewChildren,
-  QueryList,
   AfterViewInit,
   ChangeDetectionStrategy,
+  Component,
   HostBinding,
+  QueryList,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core'
-import { SplitComponent, SplitAreaComponent, SplitDirection, SplitDir } from 'angular-split'
+import { SplitAreaComponent, SplitComponent, SplitDir, SplitDirection } from 'angular-split'
 
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-class-access',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, SplitComponent, ExampleTitleComponent],
   styles: [
     `
       .btns {
@@ -92,7 +94,6 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
-  
 })
 export class AccessFromClassComponent extends AComponent implements AfterViewInit {
   @HostBinding('class') class = 'split-example-page'

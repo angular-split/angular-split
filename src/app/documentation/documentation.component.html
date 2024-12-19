@@ -15,14 +15,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let prop of splitDoc.inputs">
-        <td>{{ prop.name }}</td>
-        <td>{{ prop.type }}</td>
-        <td>
-          <code>{{ prop.default }}</code>
-        </td>
-        <td [innerHTML]="prop.details"></td>
-      </tr>
+      @for (prop of splitDoc.inputs; track prop) {
+        <tr>
+          <td>{{ prop.name }}</td>
+          <td>{{ prop.type }}</td>
+          <td>
+            <code>{{ prop.default }}</code>
+          </td>
+          <td [innerHTML]="prop.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
   <table class="table table-striped">
@@ -34,13 +36,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let event of splitDoc.outputs">
-        <td>{{ event.name }}</td>
-        <td>
-          <code>{{ event.value }}</code>
-        </td>
-        <td [innerHTML]="event.details"></td>
-      </tr>
+      @for (event of splitDoc.outputs; track event) {
+        <tr>
+          <td>{{ event.name }}</td>
+          <td>
+            <code>{{ event.value }}</code>
+          </td>
+          <td [innerHTML]="event.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
   <table class="table table-striped">
@@ -52,13 +56,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of splitDoc.class">
-        <td>{{ item.name }}</td>
-        <td>
-          <code>{{ item.type }}</code>
-        </td>
-        <td [innerHTML]="item.details"></td>
-      </tr>
+      @for (item of splitDoc.class; track item) {
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>
+            <code>{{ item.type }}</code>
+          </td>
+          <td [innerHTML]="item.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
   <br /><br />
@@ -80,14 +86,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let prop of splitAreaDoc.inputs">
-        <td>{{ prop.name }}</td>
-        <td>{{ prop.type }}</td>
-        <td>
-          <code>{{ prop.default }}</code>
-        </td>
-        <td [innerHTML]="prop.details"></td>
-      </tr>
+      @for (prop of splitAreaDoc.inputs; track prop) {
+        <tr>
+          <td>{{ prop.name }}</td>
+          <td>{{ prop.type }}</td>
+          <td>
+            <code>{{ prop.default }}</code>
+          </td>
+          <td [innerHTML]="prop.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
   <br /><br />
@@ -112,11 +120,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let prop of splitGutterDoc.templateContext">
-        <td>{{ prop.name }}</td>
-        <td>{{ prop.type }}</td>
-        <td [innerHTML]="prop.details"></td>
-      </tr>
+      @for (prop of splitGutterDoc.templateContext; track prop) {
+        <tr>
+          <td>{{ prop.name }}</td>
+          <td>{{ prop.type }}</td>
+          <td [innerHTML]="prop.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
   <br /><br />
@@ -156,12 +166,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let x of themeInfo">
-        <td>
-          <code>--as-{{ x.name }}</code>
-        </td>
-        <td [innerHTML]="x.details"></td>
-      </tr>
+      @for (x of themeInfo; track x) {
+        <tr>
+          <td>
+            <code>--as-{{ x.name }}</code>
+          </td>
+          <td [innerHTML]="x.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
 
@@ -174,12 +186,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let x of cssClasses.split">
-        <td>
-          <code>{{ x.name }}</code>
-        </td>
-        <td [innerHTML]="x.details"></td>
-      </tr>
+      @for (x of cssClasses.split; track x) {
+        <tr>
+          <td>
+            <code>{{ x.name }}</code>
+          </td>
+          <td [innerHTML]="x.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
   <table class="table table-striped">
@@ -190,12 +204,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let x of cssClasses.area">
-        <td>
-          <code>{{ x.name }}</code>
-        </td>
-        <td [innerHTML]="x.details"></td>
-      </tr>
+      @for (x of cssClasses.area; track x) {
+        <tr>
+          <td>
+            <code>{{ x.name }}</code>
+          </td>
+          <td [innerHTML]="x.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
   <table class="table table-striped">
@@ -206,12 +222,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let x of cssClasses.gutter">
-        <td>
-          <code>{{ x.name }}</code>
-        </td>
-        <td [innerHTML]="x.details"></td>
-      </tr>
+      @for (x of cssClasses.gutter; track x) {
+        <tr>
+          <td>
+            <code>{{ x.name }}</code>
+          </td>
+          <td [innerHTML]="x.details"></td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

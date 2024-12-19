@@ -1,11 +1,14 @@
-import { Component, ViewChild, ElementRef, ChangeDetectionStrategy, HostBinding } from '@angular/core'
+import { NgClass } from '@angular/common'
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, ViewChild } from '@angular/core'
+import { SplitAreaSize, SplitComponent } from 'angular-split'
+import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
-import { SplitAreaSize } from 'angular-split'
-
 @Component({
   selector: 'sp-ex-transitions',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, SplitComponent, NgClass, ExampleTitleComponent],
   styles: [
     `
       button {
@@ -154,7 +157,9 @@ import { SplitAreaSize } from 'angular-split'
       <div class="logs">
         <p>Events <code>(transitionEnd)</code>:</p>
         <ul #logs>
-          <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
+          @for (l of logMessages; track l) {
+            <li [ngClass]="l.type">{{ l.text }}</li>
+          }
         </ul>
       </div>
       <br />
@@ -234,7 +239,6 @@ import { SplitAreaSize } from 'angular-split'
       </div>
     </div>
   `,
-  
 })
 export class SplitTransitionsComponent extends AComponent {
   action: {

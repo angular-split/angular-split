@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
+import { SplitAreaComponent, SplitComponent } from 'angular-split'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitComponent, SplitAreaComponent } from 'angular-split'
 
 @Component({
   selector: 'sp-global-options',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, SplitComponent, ExampleTitleComponent],
+
   template: `
     {{ testChangeDetectorRun() }}
     <div class="container">
@@ -36,7 +39,6 @@ import { SplitComponent, SplitAreaComponent } from 'angular-split'
       <br />
     </div>
   `,
-  
 })
 export class GlobalOptionsComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'
