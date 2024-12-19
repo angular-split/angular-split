@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { SplitAreaSize, SplitComponent, SplitDirection } from 'angular-split'
+import { SplitAreaComponent, SplitAreaSize, SplitComponent, SplitDirection } from 'angular-split'
 import { ButtonRadioDirective } from 'ngx-bootstrap/buttons'
 import { SortableComponent } from 'ngx-bootstrap/sortable'
-import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 

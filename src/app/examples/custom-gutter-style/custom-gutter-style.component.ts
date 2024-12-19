@@ -4,7 +4,10 @@ import {
   SplitAreaSize,
   SplitComponent,
   SplitDirection,
+  SplitGutterDragHandleDirective,
   SplitGutterInteractionEvent,
+  SplitGutterDirective,
+  SplitGutterExcludeFromDragDirective,
 } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
@@ -12,7 +15,14 @@ import { AComponent } from '../../ui/components/AComponent'
 @Component({
   selector: 'sp-ex-custom-gutter-style',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SplitAreaComponent, SplitComponent, ExampleTitleComponent],
+  imports: [
+    SplitAreaComponent,
+    SplitComponent,
+    ExampleTitleComponent,
+    SplitGutterExcludeFromDragDirective,
+    SplitGutterDragHandleDirective,
+    SplitGutterDirective,
+  ],
   styleUrls: [`./custom-gutter-style.component.scss`],
   template: `
     {{ testChangeDetectorRun() }}

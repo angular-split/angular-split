@@ -8,11 +8,10 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core'
-import { SplitAreaSize, SplitComponent, SplitGutterInteractionEvent } from 'angular-split'
+import { SplitAreaSize, SplitComponent, SplitGutterInteractionEvent, SplitAreaComponent } from 'angular-split'
 import { Subscription } from 'rxjs'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
-import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 
 @Component({
