@@ -6,7 +6,7 @@ import {
   ElementRef,
   HostBinding,
   OnDestroy,
-  ViewChild,
+  viewChild,
 } from '@angular/core'
 import { SplitAreaSize, SplitComponent, SplitGutterInteractionEvent, SplitAreaComponent } from 'angular-split'
 import { Subscription } from 'rxjs'
@@ -134,11 +134,11 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
   ]
   sub: Subscription
 
-  @ViewChild('mySplit') mySplitEl: SplitComponent
-  @ViewChild('logs') logsEl: ElementRef
+  readonly mySplitEl = viewChild<SplitComponent>('mySplit')
+  readonly logsEl = viewChild<ElementRef>('logs')
 
   ngAfterViewInit() {
-    this.sub = this.mySplitEl.dragProgress$.subscribe((data) => {
+    this.sub = this.mySplitEl().dragProgress$.subscribe((data) => {
       console.log(
         `${formatDate(
           new Date(),
@@ -156,8 +156,9 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
     this.logMessages.push({ type, text: `${formatDate(new Date())} > ${type} event > ${JSON.stringify(e)}` })
 
     setTimeout(() => {
-      if (this.logsEl.nativeElement.scroll) {
-        (<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+      const logsEl = this.logsEl()
+      if (logsEl.nativeElement.scroll) {
+        (<HTMLElement>logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
 

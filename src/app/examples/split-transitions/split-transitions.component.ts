@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common'
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, ViewChild } from '@angular/core'
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, viewChild } from '@angular/core'
 import { SplitAreaSize, SplitComponent } from 'angular-split'
 import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
@@ -260,14 +260,15 @@ export class SplitTransitionsComponent extends AComponent {
   }
   logMessages: Array<{ type: string; text: string }> = []
 
-  @ViewChild('logs') logsEl: ElementRef
+  readonly logsEl = viewChild<ElementRef>('logs')
   @HostBinding('class') class = 'split-example-page'
 
   log(e) {
     this.logMessages.push({ type: 'transitionEnd', text: `${formatDate(new Date())} > transitionEnd event > ${e}` })
     setTimeout(() => {
-      if (this.logsEl.nativeElement.scroll) {
-        (<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+      const logsEl = this.logsEl()
+      if (logsEl.nativeElement.scroll) {
+        (<HTMLElement>logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding, viewChild } from '@angular/core'
 import { SplitAreaComponent, SplitComponent } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
@@ -43,17 +43,17 @@ import { AComponent } from '../../ui/components/AComponent'
 export class GlobalOptionsComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'
 
-  @ViewChild('split') split: SplitComponent
-  @ViewChild('area1') area1: SplitAreaComponent
-  @ViewChild('area2') area2: SplitAreaComponent
+  readonly split = viewChild<SplitComponent>('split')
+  readonly area1 = viewChild<SplitAreaComponent>('area1')
+  readonly area2 = viewChild<SplitAreaComponent>('area2')
 
   constructor() {
     super()
 
     setTimeout(() => {
-      console.log('>>> split > ', this.split)
-      console.log('>>> area1 > ', this.area1)
-      console.log('>>> area2 > ', this.area2)
+      console.log('>>> split > ', this.split())
+      console.log('>>> area1 > ', this.area1())
+      console.log('>>> area2 > ', this.area2())
     }, 1000)
   }
 }
