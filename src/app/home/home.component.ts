@@ -98,6 +98,7 @@ import { Component, VERSION } from '@angular/core'
       </div>
     </div>
   `,
+  
 })
 export class HomeComponent {
   version = VERSION.full

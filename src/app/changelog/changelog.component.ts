@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 
+import { AsyncPipe } from '@angular/common'
 import { ChangelogService } from './changelog.service'
 
 @Component({
   selector: 'sp-ex-changelog',
+  imports: [AsyncPipe],
   styles: [
     `
       :host {

@@ -1,10 +1,13 @@
-import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
 
+import { SplitAreaComponent, SplitComponent } from 'angular-split'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-toggling-dom-and-visible',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ExampleTitleComponent, SplitAreaComponent, SplitComponent],
   styles: [
     `
       .btns {
@@ -21,15 +24,21 @@ import { AComponent } from '../../ui/components/AComponent'
       <sp-example-title [type]="exampleEnum.TOGGLE"></sp-example-title>
       <div class="split-example ex1" style="height: 150px;">
         <as-split [gutterSize]="15" (dragEnd)="log('dragEnd', $event)">
-          <as-split-area *ngIf="action.isPresentA" [visible]="action.isVisibleA">
-            <p>A</p>
-          </as-split-area>
-          <as-split-area *ngIf="action.isPresentB" [visible]="action.isVisibleB">
-            <p>B</p>
-          </as-split-area>
-          <as-split-area *ngIf="action.isPresentC" [visible]="action.isVisibleC">
-            <p>C</p>
-          </as-split-area>
+          @if (action.isPresentA) {
+            <as-split-area [visible]="action.isVisibleA">
+              <p>A</p>
+            </as-split-area>
+          }
+          @if (action.isPresentB) {
+            <as-split-area [visible]="action.isVisibleB">
+              <p>B</p>
+            </as-split-area>
+          }
+          @if (action.isPresentC) {
+            <as-split-area [visible]="action.isVisibleC">
+              <p>C</p>
+            </as-split-area>
+          }
         </as-split>
       </div>
       <p>Toggle <code>[visible]="boolean"</code> properties:</p>

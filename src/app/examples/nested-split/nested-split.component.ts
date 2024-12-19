@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
 
+import { SplitAreaComponent, SplitComponent } from 'angular-split'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-nested',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitComponent, SplitAreaComponent, ExampleTitleComponent],
   template: `
     {{ testChangeDetectorRun() }}
     <div class="container">

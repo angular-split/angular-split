@@ -1,10 +1,14 @@
-import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
+import { SplitComponent, SplitDir, SplitDirection } from 'angular-split'
+import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitDir, SplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-dir-rtl',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, SplitComponent, ExampleTitleComponent],
+
   styles: [
     `
       .btns {
