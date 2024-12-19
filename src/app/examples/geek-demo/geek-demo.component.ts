@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding, viewChild } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { SplitAreaComponent, SplitAreaSize, SplitComponent, SplitDirection } from 'angular-split'
 import { ButtonRadioDirective } from 'ngx-bootstrap/buttons'
@@ -188,7 +188,7 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class GeekDemoComponent extends AComponent {
-  @ViewChild(SortableComponent) sortableComponent: SortableComponent
+  readonly sortableComponent = viewChild(SortableComponent)
   @HostBinding('class') class = 'split-example-page'
 
   d: {
@@ -229,14 +229,14 @@ export class GeekDemoComponent extends AComponent {
     })
     this.alignAreaSizes()
 
-    this.sortableComponent.writeValue(this.d.areas)
+    this.sortableComponent().writeValue(this.d.areas)
   }
 
   removeArea(area: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }) {
     this.d.areas.splice(this.d.areas.indexOf(area), 1)
     this.alignAreaSizes()
 
-    this.sortableComponent.writeValue(this.d.areas)
+    this.sortableComponent().writeValue(this.d.areas)
   }
 
   hideArea(area: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }) {
