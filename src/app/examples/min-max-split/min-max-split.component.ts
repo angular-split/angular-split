@@ -1,8 +1,12 @@
-import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
+import { SplitAreaComponent, SplitComponent } from 'angular-split'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, SplitComponent, ExampleTitleComponent],
+
   styles: [
     `
       .btns {
@@ -129,7 +133,6 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
-  
 })
 export class MinMaxSplitComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

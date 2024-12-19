@@ -1,10 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewChild, HostBinding } from '@angular/core'
-import { SplitComponent, SplitAreaComponent, SplitDirection } from 'angular-split'
+import { ChangeDetectionStrategy, Component, HostBinding, ViewChild } from '@angular/core'
+import { SplitAreaComponent, SplitComponent, SplitDirection } from 'angular-split'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-simple',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, ExampleTitleComponent, SplitComponent],
   styles: [
     `
       .btns {
@@ -159,7 +161,6 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
     </div>
   `,
-  
 })
 export class SimpleSplitComponent extends AComponent {
   @ViewChild('split') split: SplitComponent

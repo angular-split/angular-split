@@ -1,10 +1,18 @@
-import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
+import {
+  SplitAreaComponent,
+  SplitAreaSize,
+  SplitComponent,
+  SplitDirection,
+  SplitGutterInteractionEvent,
+} from 'angular-split'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitAreaSize, SplitGutterInteractionEvent, SplitDirection } from 'angular-split'
 
 @Component({
   selector: 'sp-ex-custom-gutter-style',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, SplitComponent, ExampleTitleComponent],
   styleUrls: [`./custom-gutter-style.component.scss`],
   template: `
     {{ testChangeDetectorRun() }}
@@ -72,12 +80,16 @@ import { SplitAreaSize, SplitGutterInteractionEvent, SplitDirection } from 'angu
             class="custom-collapse-gutter"
           >
             <div class="custom-collapse-gutter-header">
-              <div *ngIf="!last" asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
-                {{ direction === 'horizontal' ? '◀' : '🔼' }}
-              </div>
-              <div *ngIf="!first" asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
-                {{ direction === 'horizontal' ? '▶' : '🔽' }}
-              </div>
+              @if (!last) {
+                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
+                  {{ direction === 'horizontal' ? '◀' : '🔼' }}
+                </div>
+              }
+              @if (!first) {
+                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
+                  {{ direction === 'horizontal' ? '▶' : '🔽' }}
+                </div>
+              }
             </div>
             <div class="custom-collapse-gutter-icon"></div>
             <div class="custom-collapse-gutter-ghost"></div>
@@ -125,7 +137,6 @@ import { SplitAreaSize, SplitGutterInteractionEvent, SplitDirection } from 'angu
       </div>
     </div>
   `,
-  
 })
 export class CustomGutterStyleComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'

@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core'
+import { Component, inject, Input } from '@angular/core'
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser'
 import { ExampleEnum } from '../../examples/example-types'
 import { exampleRoutes } from '../../examples/examples.routes'
 
 @Component({
   selector: 'sp-example-title',
+  standalone: true,
   styles: [
     `
       h4 {
@@ -23,12 +24,12 @@ import { exampleRoutes } from '../../examples/examples.routes'
     </h4>
     <hr />
   `,
-  
 })
 export class ExampleTitleComponent {
   exampleEnum = ExampleEnum
   label: SafeHtml
   url: SafeResourceUrl
+  private sanitizer = inject(DomSanitizer)
 
   @Input() set type(v: ExampleEnum) {
     const ex = exampleRoutes.find((e) => e.data.type === v)
@@ -39,6 +40,4 @@ export class ExampleTitleComponent {
     this.label = this.sanitizer.bypassSecurityTrustHtml(ex.data.label)
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(ex.data.srcUrl)
   }
-
-  constructor(private sanitizer: DomSanitizer) {}
 }

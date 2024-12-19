@@ -13,7 +13,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/simple-split/simple-split.component.ts`,
     },
     path: 'simple-split',
-    loadChildren: () => import('./simple-split/simple-split.module').then((m) => m.SimpleSplitModule),
+    loadComponent: () => import('./simple-split/simple-split.component').then((m) => m.SimpleSplitComponent),
   },
   {
     data: {
@@ -22,7 +22,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/min-max-split/min-max-split.component.ts`,
     },
     path: 'min-max-split',
-    loadChildren: () => import('./min-max-split/min-max-split.module').then((m) => m.MinMaxSplitModule),
+    loadComponent: () => import('./min-max-split/min-max-split.component').then((m) => m.MinMaxSplitComponent),
   },
   {
     data: {
@@ -31,7 +31,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/nested-split/nested-split.component.ts`,
     },
     path: 'nested-split',
-    loadChildren: () => import('./nested-split/nested-split.module').then((m) => m.NestedSplitModule),
+    loadComponent: () => import('./nested-split/nested-split.component').then((m) => m.NestedComponent),
   },
   {
     data: {
@@ -40,7 +40,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/iframes/iframes.component.ts`,
     },
     path: 'iframes',
-    loadChildren: () => import('./iframes/iframes.module').then((m) => m.IframesModule),
+    loadComponent: () => import('./iframes/iframes.component').then((m) => m.IframesComponent),
   },
   {
     data: {
@@ -49,7 +49,8 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/split-transitions/split-transitions.component.ts`,
     },
     path: 'split-transitions',
-    loadChildren: () => import('./split-transitions/split-transitions.module').then((m) => m.SplitTransitionsModule),
+    loadComponent: () =>
+      import('./split-transitions/split-transitions.component').then((m) => m.SplitTransitionsComponent),
   },
   {
     data: {
@@ -58,7 +59,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/sync-split/sync-split.component.ts`,
     },
     path: 'sync-split',
-    loadChildren: () => import('./sync-split/sync-split.module').then((m) => m.SyncSplitModule),
+    loadComponent: () => import('./sync-split/sync-split.component').then((m) => m.SyncSplitComponent),
   },
   {
     data: {
@@ -67,8 +68,8 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/custom-gutter-style/custom-gutter-style.component.ts`,
     },
     path: 'custom-gutter-style',
-    loadChildren: () =>
-      import('./custom-gutter-style/custom-gutter-style.module').then((m) => m.CustomGutterStyleModule),
+    loadComponent: () =>
+      import('./custom-gutter-style/custom-gutter-style.component').then((m) => m.CustomGutterStyleComponent),
   },
   {
     data: {
@@ -77,9 +78,9 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/toggling-dom-and-visibility/toggling-dom-and-visibility.component.ts`,
     },
     path: 'toggling-dom-and-visibility',
-    loadChildren: () =>
-      import('./toggling-dom-and-visibility/toggling-dom-and-visibility.module').then(
-        (m) => m.TogglingDomAndVisibilityModule,
+    loadComponent: () =>
+      import('./toggling-dom-and-visibility/toggling-dom-and-visibility.component').then(
+        (m) => m.TogglingDomAndVisibleComponent,
       ),
   },
   {
@@ -89,8 +90,10 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/gutter-click-roll-unroll/gutter-click-roll-unroll.component.ts`,
     },
     path: 'gutter-click-roll-unroll',
-    loadChildren: () =>
-      import('./gutter-click-roll-unroll/gutter-click-roll-unroll.module').then((m) => m.GutterClickRollUnrollModule),
+    loadComponent: () =>
+      import('./gutter-click-roll-unroll/gutter-click-roll-unroll.component').then(
+        (m) => m.GutterClickRollUnrollComponent,
+      ),
   },
   {
     data: {
@@ -99,7 +102,8 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/access-from-class/access-from-class.component.ts`,
     },
     path: 'access-from-class',
-    loadChildren: () => import('./access-from-class/access-from-class.module').then((m) => m.AccessFromClassModule),
+    loadComponent: () =>
+      import('./access-from-class/access-from-class.component').then((m) => m.AccessFromClassComponent),
   },
   {
     data: {
@@ -108,7 +112,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/geek-demo/geek-demo.component.ts`,
     },
     path: 'geek-demo',
-    loadChildren: () => import('./geek-demo/geek-demo.module').then((m) => m.GeekDemoModule),
+    loadComponent: () => import('./geek-demo/geek-demo.component').then((m) => m.GeekDemoComponent),
   },
   {
     data: {
@@ -117,7 +121,7 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/dir-rtl/dir-rtl.component.ts`,
     },
     path: 'dir-rtl',
-    loadChildren: () => import('./dir-rtl/dir-rtl.module').then((m) => m.DirRtlModule),
+    loadComponent: () => import('./dir-rtl/dir-rtl.component').then((m) => m.DirRtlComponent),
   },
   {
     data: {
@@ -126,8 +130,8 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/workspace-localstorage/workspace-localstorage.component.ts`,
     },
     path: 'workspace-localstorage',
-    loadChildren: () =>
-      import('./workspace-localstorage/workspace-localstorage.module').then((m) => m.WorkspaceLocalstorageModule),
+    loadComponent: () =>
+      import('./workspace-localstorage/workspace-localstorage.component').then((m) => m.WorkspaceLocalstorageComponent),
   },
   {
     data: {
@@ -136,6 +140,6 @@ export const exampleRoutes: Routes = [
       srcUrl: `${srcUrlBaseApp}/global-options/global-options.component.ts`,
     },
     path: 'global-options',
-    loadChildren: () => import('./global-options/global-options.module').then((m) => m.GlobalOptionsModule),
+    loadComponent: () => import('./global-options/global-options.component').then((m) => m.GlobalOptionsComponent),
   },
 ]

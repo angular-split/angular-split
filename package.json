@@ -110,8 +110,8 @@
     },
     "build": {
       "dependencies": [
-        "app_build",
-        "lib_build"
+        "lib_build",
+        "app_build"
       ]
     },
     "lint": {
