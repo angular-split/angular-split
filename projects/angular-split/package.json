@@ -8,7 +8,7 @@
   },
   "release-it": {
     "hooks": {
-      "after:bump": "cp CHANGELOG.md ../CHANGELOG.md"
+      "after:bump": "mv CHANGELOG.md ../CHANGELOG.md"
     },
     "requireCleanWorkingDir": false,
     "plugins": {
@@ -19,10 +19,10 @@
         "infile": "CHANGELOG.md"
       }
     },
-    "git": false,
+    "git": true,
     "github": {
-      "release": false,
-      "preRelease": false,
+      "release": true,
+      "preRelease": true,
       "releaseName": "${version}",
       "draft": false,
       "tokenRef": "GITHUB_TOKEN"
