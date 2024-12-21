@@ -3,6 +3,34 @@
   "version": "18.0.0",
   "description": "Angular UI library to split views and allow dragging to resize areas using CSS grid layout.",
   "author": "beeman",
+  "scripts": {
+    "release": "release-it"
+  },
+  "release-it": {
+    "hooks": {
+      "after:bump": "mv CHANGELOG.md ../CHANGELOG.md"
+    },
+    "requireCleanWorkingDir": false,
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "angular"
+        },
+        "infile": "CHANGELOG.md"
+      }
+    },
+    "git": true,
+    "github": {
+      "release": true,
+      "preRelease": true,
+      "releaseName": "${version}",
+      "draft": false,
+      "tokenRef": "GITHUB_TOKEN"
+    },
+    "npm": {
+      "publish": false
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/angular-split/angular-split.git"
