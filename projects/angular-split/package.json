@@ -1,14 +1,14 @@
 {
   "name": "angular-split",
-  "version": "19.0.0",
+  "version": "19.0.0-beta.0",
   "description": "Angular UI library to split views and allow dragging to resize areas using CSS grid layout.",
   "author": "beeman",
   "scripts": {
-    "release": "release-it"
+    "release": "release-it major --preRelease=beta"
   },
   "release-it": {
     "hooks": {
-      "after:bump": "cp CHANGELOG.md ../CHANGELOG.md"
+      "after:bump": "cp ./CHANGELOG.md ../../CHANGELOG.md"
     },
     "requireCleanWorkingDir": false,
     "plugins": {
@@ -19,7 +19,7 @@
         "infile": "CHANGELOG.md"
       }
     },
-    "git": true,
+    "git": false,
     "github": {
       "release": true,
       "preRelease": true,
