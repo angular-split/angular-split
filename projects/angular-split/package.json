@@ -8,7 +8,7 @@
   },
   "release-it": {
     "hooks": {
-      "after:bump": "mv CHANGELOG.md ../CHANGELOG.md"
+      "after:bump": "cp CHANGELOG.md ../CHANGELOG.md"
     },
     "requireCleanWorkingDir": false,
     "plugins": {
