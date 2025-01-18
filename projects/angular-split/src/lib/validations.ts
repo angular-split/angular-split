@@ -1,17 +1,21 @@
-import { isDevMode } from '@angular/core'
-import { SplitUnit } from './models'
+import { SplitAreaSize, SplitUnit } from './models'
 import { SplitAreaComponent } from './split-area/split-area.component'
 import { sum } from './utils'
 
-export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitUnit): boolean {
+export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitUnit, logWarnings: boolean): boolean {
   if (areas.length === 0) {
     return true
   }
 
-  const wildcardAreas = areas.filter((area) => area._internalSize() === '*')
+  const areaSizes = areas.map((area): SplitAreaSize => {
+    const size = area.size()
+    return size === 'auto' ? '*' : size
+  })
+
+  const wildcardAreas = areaSizes.filter((areaSize) => areaSize === '*')
 
   if (wildcardAreas.length > 1) {
-    if (isDevMode()) {
+    if (logWarnings) {
       console.warn('as-split: Maximum one * area is allowed')
     }
 
@@ -23,17 +27,14 @@ export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitU
       return true
     }
 
-    if (isDevMode()) {
+    if (logWarnings) {
       console.warn('as-split: Pixel mode must have exactly one * area')
     }
 
     return false
   }
 
-  const sumPercent = sum(areas, (area) => {
-    const size = area._internalSize()
-    return size === '*' ? 0 : size
-  })
+  const sumPercent = sum(areaSizes, (areaSize) => (areaSize === '*' ? 0 : areaSize))
 
   // As percent calculation isn't perfect we allow for a small margin of error
   if (wildcardAreas.length === 1) {
@@ -41,7 +42,7 @@ export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitU
       return true
     }
 
-    if (isDevMode()) {
+    if (logWarnings) {
       console.warn(`as-split: Percent areas must total 100%`)
     }
 
@@ -49,7 +50,7 @@ export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitU
   }
 
   if (sumPercent < 99.9 || sumPercent > 100.1) {
-    if (isDevMode()) {
+    if (logWarnings) {
       console.warn('as-split: Percent areas must total 100%')
     }
 

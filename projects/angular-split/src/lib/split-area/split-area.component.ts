@@ -47,9 +47,9 @@ export class SplitAreaComponent {
         return 0
       }
 
-      const size = this.size()
-      // auto acts the same as * in all calculations
-      return size === 'auto' ? '*' : size
+      const visibleIndex = this.split._visibleAreas().findIndex((area) => area === this)
+
+      return this.split._alignedVisibleAreasSizes()[visibleIndex]
     }),
   )
   /**
