@@ -13,9 +13,9 @@ import {
   effect,
   inject,
   input,
+  isDevMode,
   output,
   signal,
-  untracked,
 } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import type { SplitAreaComponent } from '../split-area/split-area.component'
@@ -31,6 +31,7 @@ import {
   numberAttributeWithFallback,
   sum,
   toRecord,
+  assertUnreachable,
 } from '../utils'
 import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common'
 import { SplitGutterInteractionEvent, SplitAreaSize } from '../models'
@@ -115,56 +116,11 @@ export class SplitComponent {
 
   readonly dragProgress$ = this.dragProgressSubject.asObservable()
 
-  private readonly visibleAreas = computed(() => this._areas().filter((area) => area.visible()))
-  private readonly gridTemplateColumnsStyle = computed(() => {
-    const columns: string[] = []
-    const sumNonWildcardSizes = sum(this.visibleAreas(), (area) => {
-      const size = area._internalSize()
-      return size === '*' ? 0 : size
-    })
-    const visibleAreasCount = this.visibleAreas().length
-
-    let visitedVisibleAreas = 0
-
-    this._areas().forEach((area, index, areas) => {
-      const unit = this.unit()
-      const areaSize = area._internalSize()
-
-      // Add area size column
-      if (!area.visible()) {
-        columns.push(unit === 'percent' || areaSize === '*' ? '0fr' : '0px')
-      } else {
-        if (unit === 'pixel') {
-          const columnValue = areaSize === '*' ? '1fr' : `${areaSize}px`
-          columns.push(columnValue)
-        } else {
-          const percentSize = areaSize === '*' ? 100 - sumNonWildcardSizes : areaSize
-          const columnValue = `${percentSize}fr`
-          columns.push(columnValue)
-        }
-
-        visitedVisibleAreas++
-      }
-
-      const isLastArea = index === areas.length - 1
-
-      if (isLastArea) {
-        return
-      }
-
-      const remainingVisibleAreas = visibleAreasCount - visitedVisibleAreas
-
-      // Only add gutter with size if this area is visible and there are more visible areas after this one
-      // to avoid ghost gutters
-      if (area.visible() && remainingVisibleAreas > 0) {
-        columns.push(`${this.gutterSize()}px`)
-      } else {
-        columns.push('0px')
-      }
-    })
-
-    return this.direction() === 'horizontal' ? `1fr / ${columns.join(' ')}` : `${columns.join(' ')} / 1fr`
-  })
+  /**
+   * @internal
+   */
+  readonly _visibleAreas = computed(() => this._areas().filter((area) => area.visible()))
+  private readonly gridTemplateColumnsStyle = computed(() => this.createGridTemplateColumnsStyle())
   private readonly hostClasses = computed(() =>
     createClassesString({
       [`as-${this.direction()}`]: true,
@@ -179,6 +135,11 @@ export class SplitComponent {
    * @internal
    */
   readonly _isDragging = computed(() => this.draggedGutterIndex() !== undefined)
+  /**
+   * @internal
+   * Should only be used by {@link SplitAreaComponent._internalSize}
+   */
+  readonly _alignedVisibleAreasSizes = computed(() => this.createAlignedVisibleAreasSize())
 
   @HostBinding('class') protected get hostClassesBinding() {
     return this.hostClasses()
@@ -189,45 +150,17 @@ export class SplitComponent {
   }
 
   constructor() {
-    effect(
-      () => {
-        const visibleAreas = this.visibleAreas()
-        const unit = this.unit()
-        const isInAutoMode = visibleAreas.every((area) => area.size() === 'auto')
+    if (isDevMode()) {
+      // Logs warnings to console when the provided areas sizes are invalid
+      effect(() => {
+        // Special mode when no size input was declared which is a valid mode
+        if (this.unit() === 'percent' && this._visibleAreas().every((area) => area.size() === 'auto')) {
+          return
+        }
 
-        untracked(() => {
-          // Special mode when no size input was declared which is a valid mode
-          if (unit === 'percent' && visibleAreas.length > 1 && isInAutoMode) {
-            visibleAreas.forEach((area) => area._internalSize.set(100 / visibleAreas.length))
-            return
-          }
-
-          visibleAreas.forEach((area) => area._internalSize.reset())
-
-          const isValid = areAreasValid(visibleAreas, unit)
-
-          if (isValid) {
-            return
-          }
-
-          if (unit === 'percent') {
-            // Distribute sizes equally
-            const defaultSize = 100 / visibleAreas.length
-            visibleAreas.forEach((area) => area._internalSize.set(defaultSize))
-          } else if (unit === 'pixel') {
-            const wildcardAreas = visibleAreas.filter((area) => area._internalSize() === '*')
-
-            // Make sure only one wildcard area
-            if (wildcardAreas.length === 0) {
-              visibleAreas[0]._internalSize.set('*')
-            } else if (wildcardAreas.length > 1) {
-              wildcardAreas.filter((_, i) => i !== 0).forEach((area) => area._internalSize.set(100))
-            }
-          }
-        })
-      },
-      { allowSignalWrites: true },
-    )
+        areAreasValid(this._visibleAreas(), this.unit(), true)
+      })
+    }
 
     // Responsible for updating grid template style. Must be this way and not based on HostBinding
     // as change detection for host binding is bound to the parent component and this style
@@ -450,7 +383,7 @@ export class SplitComponent {
   }
 
   private createAreaSizes() {
-    return this.visibleAreas().map((area) => area._internalSize())
+    return this._visibleAreas().map((area) => area._internalSize())
   }
 
   private createDragStartContext(
@@ -460,7 +393,7 @@ export class SplitComponent {
   ): DragStartContext {
     const splitBoundingRect = this.elementRef.nativeElement.getBoundingClientRect()
     const splitSize = this.direction() === 'horizontal' ? splitBoundingRect.width : splitBoundingRect.height
-    const totalAreasPixelSize = splitSize - (this.visibleAreas().length - 1) * this.gutterSize()
+    const totalAreasPixelSize = splitSize - (this._visibleAreas().length - 1) * this.gutterSize()
     // Use the internal size and split size to calculate the pixel size from wildcard and percent areas
     const areaPixelSizesWithWildcard = this._areas().map((area) => {
       if (this.unit() === 'pixel') {
@@ -597,5 +530,93 @@ export class SplitComponent {
     })
 
     this.dragProgressSubject.next(this.createDragInteractionEvent(this.draggedGutterIndex()))
+  }
+
+  private createGridTemplateColumnsStyle(): string {
+    const columns: string[] = []
+    const sumNonWildcardSizes = sum(this._visibleAreas(), (area) => {
+      const size = area._internalSize()
+      return size === '*' ? 0 : size
+    })
+    const visibleAreasCount = this._visibleAreas().length
+
+    let visitedVisibleAreas = 0
+
+    this._areas().forEach((area, index, areas) => {
+      const unit = this.unit()
+      const areaSize = area._internalSize()
+
+      // Add area size column
+      if (!area.visible()) {
+        columns.push(unit === 'percent' || areaSize === '*' ? '0fr' : '0px')
+      } else {
+        if (unit === 'pixel') {
+          const columnValue = areaSize === '*' ? '1fr' : `${areaSize}px`
+          columns.push(columnValue)
+        } else {
+          const percentSize = areaSize === '*' ? 100 - sumNonWildcardSizes : areaSize
+          const columnValue = `${percentSize}fr`
+          columns.push(columnValue)
+        }
+
+        visitedVisibleAreas++
+      }
+
+      const isLastArea = index === areas.length - 1
+
+      if (isLastArea) {
+        return
+      }
+
+      const remainingVisibleAreas = visibleAreasCount - visitedVisibleAreas
+
+      // Only add gutter with size if this area is visible and there are more visible areas after this one
+      // to avoid ghost gutters
+      if (area.visible() && remainingVisibleAreas > 0) {
+        columns.push(`${this.gutterSize()}px`)
+      } else {
+        columns.push('0px')
+      }
+    })
+
+    return this.direction() === 'horizontal' ? `1fr / ${columns.join(' ')}` : `${columns.join(' ')} / 1fr`
+  }
+
+  private createAlignedVisibleAreasSize(): SplitAreaSize[] {
+    const visibleAreasSizes = this._visibleAreas().map((area): SplitAreaSize => {
+      const size = area.size()
+      return size === 'auto' ? '*' : size
+    })
+    const isValid = areAreasValid(this._visibleAreas(), this.unit(), false)
+
+    if (isValid) {
+      return visibleAreasSizes
+    }
+
+    const unit = this.unit()
+
+    if (unit === 'percent') {
+      // Distribute sizes equally
+      const defaultPercentSize = 100 / visibleAreasSizes.length
+      return visibleAreasSizes.map(() => defaultPercentSize)
+    }
+
+    if (unit === 'pixel') {
+      // Make sure only one wildcard area
+      const wildcardAreas = visibleAreasSizes.filter((areaSize) => areaSize === '*')
+
+      if (wildcardAreas.length === 0) {
+        return ['*', ...visibleAreasSizes.slice(1)]
+      } else {
+        const firstWildcardIndex = visibleAreasSizes.findIndex((areaSize) => areaSize === '*')
+        const defaultPxSize = 100
+
+        return visibleAreasSizes.map((areaSize, index) =>
+          index === firstWildcardIndex || areaSize !== '*' ? areaSize : defaultPxSize,
+        )
+      }
+    }
+
+    return assertUnreachable(unit, 'SplitUnit')
   }
 }
