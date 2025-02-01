@@ -1,22 +1,24 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ViewChild,
   AfterViewInit,
   OnDestroy,
   HostBinding,
   inject,
   ChangeDetectorRef,
   signal,
+  viewChild,
 } from '@angular/core'
 import { Subscription, merge } from 'rxjs'
-import { SplitAreaSize, SplitComponent } from 'angular-split'
+import { SplitAreaComponent, SplitAreaSize, SplitComponent } from 'angular-split'
 
 import { AComponent } from '../../ui/components/AComponent'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-sync',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ExampleTitleComponent, SplitComponent, SplitAreaComponent],
   template: `
     {{ testChangeDetectorRun() }}
     <div class="container">
@@ -52,9 +54,9 @@ import { AComponent } from '../../ui/components/AComponent'
 })
 export class SyncSplitComponent extends AComponent implements AfterViewInit, OnDestroy {
   private z = inject(ChangeDetectorRef)
-  @ViewChild('mySplitA') mySplitAEl: SplitComponent
-  @ViewChild('mySplitB') mySplitBEl: SplitComponent
-  @ViewChild('mySplitC') mySplitCEl: SplitComponent
+  readonly mySplitAEl = viewChild<SplitComponent>('mySplitA')
+  readonly mySplitBEl = viewChild<SplitComponent>('mySplitB')
+  readonly mySplitCEl = viewChild<SplitComponent>('mySplitC')
   @HostBinding('class') class = 'split-example-page'
 
   sizes = signal<SplitAreaSize[]>([25, 75])
@@ -62,9 +64,9 @@ export class SyncSplitComponent extends AComponent implements AfterViewInit, OnD
 
   ngAfterViewInit() {
     this.sub = merge(
-      this.mySplitAEl.dragProgress$,
-      this.mySplitBEl.dragProgress$,
-      this.mySplitCEl.dragProgress$,
+      this.mySplitAEl().dragProgress$,
+      this.mySplitBEl().dragProgress$,
+      this.mySplitCEl().dragProgress$,
     ).subscribe((t) => {
       this.sizes.set(t.sizes)
     })

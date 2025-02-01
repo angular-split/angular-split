@@ -1,19 +1,13 @@
-import {
-  Component,
-  ViewChild,
-  ViewChildren,
-  QueryList,
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  HostBinding,
-} from '@angular/core'
-import { SplitComponent, SplitAreaComponent, SplitDirection, SplitDir } from 'angular-split'
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostBinding, viewChild, viewChildren } from '@angular/core'
+import { SplitAreaComponent, SplitComponent, SplitDir, SplitDirection } from 'angular-split'
 
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
 @Component({
   selector: 'sp-ex-class-access',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SplitAreaComponent, SplitComponent, ExampleTitleComponent],
   styles: [
     `
       .btns {
@@ -96,8 +90,8 @@ import { AComponent } from '../../ui/components/AComponent'
 export class AccessFromClassComponent extends AComponent implements AfterViewInit {
   @HostBinding('class') class = 'split-example-page'
 
-  @ViewChild(SplitComponent) splitEl: SplitComponent
-  @ViewChildren(SplitAreaComponent) areasEl: QueryList<SplitAreaComponent>
+  readonly splitEl = viewChild(SplitComponent)
+  readonly areasEl = viewChildren(SplitAreaComponent)
 
   direction: SplitDirection = 'horizontal'
   disabled = false
@@ -105,6 +99,6 @@ export class AccessFromClassComponent extends AComponent implements AfterViewIni
   gutterSize = 11
 
   ngAfterViewInit() {
-    console.log('Area Components: ', this.areasEl)
+    console.log('Area Components: ', this.areasEl())
   }
 }

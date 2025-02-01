@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common'
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -5,16 +6,18 @@ import {
   ElementRef,
   HostBinding,
   OnDestroy,
-  ViewChild,
+  viewChild,
 } from '@angular/core'
-import { SplitAreaSize, SplitGutterInteractionEvent, SplitComponent } from 'angular-split'
+import { SplitAreaSize, SplitComponent, SplitGutterInteractionEvent, SplitAreaComponent } from 'angular-split'
 import { Subscription } from 'rxjs'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
+import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 
 @Component({
   selector: 'sp-ex-gutter-click',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, SplitAreaComponent, SplitComponent, ExampleTitleComponent],
   styles: [
     `
       as-split {
@@ -67,9 +70,11 @@ import { formatDate } from '../../utils/format-date'
           (gutterDblClick)="log('gutterDblClick', $event)"
           (transitionEnd)="log('transitionEnd', $event)"
         >
-          <as-split-area *ngFor="let a of areas" [size]="a.size">
-            <p>{{ a.content }}</p>
-          </as-split-area>
+          @for (a of areas; track a) {
+            <as-split-area [size]="a.size">
+              <p>{{ a.content }}</p>
+            </as-split-area>
+          }
         </as-split>
       </div>
       <br />
@@ -107,7 +112,9 @@ import { formatDate } from '../../utils/format-date'
       <div class="logs">
         <p>All <code>as-split</code> events emitted:</p>
         <ul #logs>
-          <li *ngFor="let l of logMessages" [ngClass]="l.type">{{ l.text }}</li>
+          @for (l of logMessages; track l) {
+            <li [ngClass]="l.type">{{ l.text }}</li>
+          }
         </ul>
       </div>
     </div>
@@ -127,11 +134,11 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
   ]
   sub: Subscription
 
-  @ViewChild('mySplit') mySplitEl: SplitComponent
-  @ViewChild('logs') logsEl: ElementRef
+  readonly mySplitEl = viewChild<SplitComponent>('mySplit')
+  readonly logsEl = viewChild<ElementRef>('logs')
 
   ngAfterViewInit() {
-    this.sub = this.mySplitEl.dragProgress$.subscribe((data) => {
+    this.sub = this.mySplitEl().dragProgress$.subscribe((data) => {
       console.log(
         `${formatDate(
           new Date(),
@@ -149,8 +156,9 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
     this.logMessages.push({ type, text: `${formatDate(new Date())} > ${type} event > ${JSON.stringify(e)}` })
 
     setTimeout(() => {
-      if (this.logsEl.nativeElement.scroll) {
-        (<HTMLElement>this.logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+      const logsEl = this.logsEl()
+      if (logsEl.nativeElement.scroll) {
+        (<HTMLElement>logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
 

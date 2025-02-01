@@ -1,6 +1,8 @@
-import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core'
-import { Router, NavigationStart, Routes } from '@angular/router'
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
+import { NavigationStart, Router, RouterLink, RouterLinkActive, Routes } from '@angular/router'
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
+import { CollapseDirective } from 'ngx-bootstrap/collapse'
 import { filter } from 'rxjs/operators'
 
 import { exampleRoutes } from '../../examples/examples.routes'
@@ -8,6 +10,7 @@ import { exampleRoutes } from '../../examples/examples.routes'
 @Component({
   selector: 'sp-topbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink, RouterLinkActive, CollapseDirective, BsDropdownModule],
   styles: [
     `
       :host {
@@ -69,13 +72,15 @@ import { exampleRoutes } from '../../examples/examples.routes'
         <li class="nav-item dropdown" dropdown routerLinkActive="active">
           <a class="nav-link dropdown-toggle" dropdownToggle>Examples <span class="caret"></span></a>
           <ul *dropdownMenu class="dropdown-menu" role="menu">
-            <li *ngFor="let ex of examples" routerLinkActive="active">
-              <a
-                class="dropdown-item"
-                [routerLink]="['/examples', ex.path]"
-                [innerHTML]="transform(ex?.data?.label)"
-              ></a>
-            </li>
+            @for (ex of examples; track ex) {
+              <li routerLinkActive="active">
+                <a
+                  class="dropdown-item"
+                  [routerLink]="['/examples', ex.path]"
+                  [innerHTML]="transform(ex?.data?.label)"
+                ></a>
+              </li>
+            }
           </ul>
         </li>
       </ul>

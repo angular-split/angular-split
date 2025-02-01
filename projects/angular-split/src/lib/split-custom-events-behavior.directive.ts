@@ -1,3 +1,6 @@
+/* eslint-disable @angular-eslint/no-output-native */
+/* eslint-disable @angular-eslint/no-output-rename */
+/* eslint-disable @angular-eslint/no-input-rename */
 import { Directive, ElementRef, inject, input, output } from '@angular/core'
 import {
   gutterEventsEqualWithDelta,
