@@ -1,3 +1,19 @@
+## 19.0.0-beta.0 (2024-12-22)
+
+- refactor: move more to signals ([1fc7fea](https://github.com/angular-split/angular-split/commit/1fc7fea))
+- refactor: remove all modules ([a338686](https://github.com/angular-split/angular-split/commit/a338686))
+- refactor: update to latest 19 ([0daf010](https://github.com/angular-split/angular-split/commit/0daf010))
+- ci: run workdlows on 22 node ([9f6eaef](https://github.com/angular-split/angular-split/commit/9f6eaef))
+- ci: test fixing ([bb3de48](https://github.com/angular-split/angular-split/commit/bb3de48))
+- ci: use npm instead of yarn (#471) ([4f5b26c](https://github.com/angular-split/angular-split/commit/4f5b26c)), closes [#471](https://github.com/angular-split/angular-split/issues/471)
+- fix: docs and site fixes (#478) ([0e1ea19](https://github.com/angular-split/angular-split/commit/0e1ea19)), closes [#478](https://github.com/angular-split/angular-split/issues/478)
+- fix: npm ci should be using legacy peer deps ([0014dc1](https://github.com/angular-split/angular-split/commit/0014dc1))
+- fix: update to release-it and update changelog (#484) ([490eff7](https://github.com/angular-split/angular-split/commit/490eff7)), closes [#484](https://github.com/angular-split/angular-split/issues/484)
+- fix: update to release-it and update changelog (#484) (#485) ([b0c5ca8](https://github.com/angular-split/angular-split/commit/b0c5ca8)), closes [#484](https://github.com/angular-split/angular-split/issues/484) [#485](https://github.com/angular-split/angular-split/issues/485)
+- feat: support node v22 (#470) ([52ee663](https://github.com/angular-split/angular-split/commit/52ee663)), closes [#470](https://github.com/angular-split/angular-split/issues/470)
+- feat: update package file to support 19 ([980cd79](https://github.com/angular-split/angular-split/commit/980cd79))
+- feat: update to angular 19 ([ae0e7cf](https://github.com/angular-split/angular-split/commit/ae0e7cf))
+
 ## 18.1.0 (2024-12-19)
 
 - ci: remove some parts and updated settings ([97cecbc](https://github.com/angular-split/angular-split/commit/97cecbc))
