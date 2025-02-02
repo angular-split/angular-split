@@ -52,6 +52,7 @@ Documentation and examples:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kmmccafferty96"><img src="https://avatars.githubusercontent.com/u/10471269?v=4?s=100" width="100px;" alt="Keegan McCafferty"/><br /><sub><b>Keegan McCafferty</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=kmmccafferty96" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/aszechlicki"><img src="https://avatars.githubusercontent.com/u/9299507?v=4?s=100" width="100px;" alt="aszechlicki"/><br /><sub><b>aszechlicki</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=aszechlicki" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Gwe-n"><img src="https://avatars.githubusercontent.com/u/66947157?v=4?s=100" width="100px;" alt="Gwen"/><br /><sub><b>Gwen</b></sub></a><br /><a href="https://github.com/angular-split/angular-split/commits?author=gwe-n" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://visualon.de"><img src="https://avatars.githubusercontent.com/u/1798109?v=4?s=100" width="100px;" alt="Michael Kriese"/><br /><sub><b>Michael Kriese</b></sub></a><br /><a href="#infra-viceice" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     </tr>
   </tbody>
 </table>
