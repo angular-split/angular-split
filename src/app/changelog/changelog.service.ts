@@ -6,14 +6,14 @@ import { catchError, map } from 'rxjs/operators'
 
 @Injectable()
 export class ChangelogService {
-  private readonly url = 'https://raw.githubusercontent.com/angular-split/angular-split/refs/heads/main/projects/CHANGELOG.md'
+  private readonly url =
+    'https://raw.githubusercontent.com/angular-split/angular-split/refs/heads/main/projects/angular-split/CHANGELOG.md'
   private cachedHtml = ''
 
   constructor(private http: HttpClient) {
     marked.setOptions({})
   }
 
-  
   getHtml(): Observable<string> {
     if (this.cachedHtml !== '') {
       return of(this.cachedHtml)
