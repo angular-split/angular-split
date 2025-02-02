@@ -241,6 +241,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "connorsmith-pf",
+      "name": "Connor Smith",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80120827?v=4",
+      "profile": "https://github.com/ConnorSmith-pf",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
