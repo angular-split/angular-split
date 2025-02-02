@@ -8,9 +8,10 @@ import {
   inject,
   input,
   isDevMode,
+  linkedSignal,
 } from '@angular/core'
 import { SPLIT_AREA_CONTRACT, SplitComponent } from '../split/split.component'
-import { createClassesString, mirrorSignal } from '../utils'
+import { createClassesString } from '../utils'
 import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../models'
 
 @Component({
@@ -39,19 +40,15 @@ export class SplitAreaComponent {
   /**
    * @internal
    */
-  readonly _internalSize = mirrorSignal(
-    // As size is an input and we can change the size without the outside
-    // listening to the change we need an intermediate writeable signal
-    computed((): SplitAreaSize => {
-      if (!this.visible()) {
-        return 0
-      }
+  readonly _internalSize = linkedSignal((): SplitAreaSize => {
+    if (!this.visible()) {
+      return 0
+    }
 
-      const visibleIndex = this.split._visibleAreas().findIndex((area) => area === this)
+    const visibleIndex = this.split._visibleAreas().findIndex((area) => area === this)
 
-      return this.split._alignedVisibleAreasSizes()[visibleIndex]
-    }),
-  )
+    return this.split._alignedVisibleAreasSizes()[visibleIndex]
+  })
   /**
    * @internal
    */

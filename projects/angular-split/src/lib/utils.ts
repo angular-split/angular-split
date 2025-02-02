@@ -1,4 +1,4 @@
-import { NgZone, Signal, computed, inject, numberAttribute, signal, untracked } from '@angular/core'
+import { NgZone, inject, numberAttribute } from '@angular/core'
 import { Observable, filter, fromEvent, merge } from 'rxjs'
 
 export interface ClientPoint {
@@ -104,25 +104,6 @@ export function createClassesString(classesRecord: Record<string, boolean>) {
     .filter(([, value]) => value)
     .map(([key]) => key)
     .join(' ')
-}
-
-export interface MirrorSignal<T> {
-  (): T
-  set(value: T): void
-  reset(): void
-}
-
-/**
- * Creates a semi signal which allows writes but is based on an existing signal
- * Whenever the original signal changes the mirror signal gets aligned
- * overriding the current value inside.
- */
-export function mirrorSignal<T>(outer: Signal<T>): MirrorSignal<T> {
-  const inner = computed(() => signal(outer()))
-  const mirror: MirrorSignal<T> = () => inner()()
-  mirror.set = (value: T) => untracked(inner).set(value)
-  mirror.reset = () => untracked(() => inner().set(outer()))
-  return mirror
 }
 
 export function leaveNgZone<T>() {
