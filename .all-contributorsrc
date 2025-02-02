@@ -240,6 +240,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "viceice",
+      "name": "Michael Kriese",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1798109?v=4",
+      "profile": "https://visualon.de",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "commitType": "docs",
