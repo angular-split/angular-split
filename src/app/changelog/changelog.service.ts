@@ -4,7 +4,7 @@ import { marked } from 'marked'
 import { merge, Observable, of } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ChangelogService {
   private readonly url =
     'https://raw.githubusercontent.com/angular-split/angular-split/refs/heads/main/projects/angular-split/CHANGELOG.md'
