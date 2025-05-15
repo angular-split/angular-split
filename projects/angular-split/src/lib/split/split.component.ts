@@ -14,6 +14,7 @@ import {
   inject,
   input,
   isDevMode,
+  model,
   output,
   signal,
 } from '@angular/core'
@@ -100,7 +101,7 @@ export class SplitComponent {
   })
   readonly direction = input(this.defaultOptions.direction)
   readonly dir = input(this.defaultOptions.dir)
-  readonly unit = input(this.defaultOptions.unit)
+  readonly unit = model(this.defaultOptions.unit)
   readonly gutterAriaLabel = input<string>()
   readonly restrictMove = input(this.defaultOptions.restrictMove, { transform: booleanAttribute })
   readonly useTransition = input(this.defaultOptions.useTransition, { transform: booleanAttribute })
@@ -153,7 +154,7 @@ export class SplitComponent {
       // Logs warnings to console when the provided areas sizes are invalid
       effect(() => {
         // Special mode when no size input was declared which is a valid mode
-        if (this.unit() === 'percent' && this._visibleAreas().every((area) => area.size() === 'auto')) {
+        if (this.unit() === 'percent' && this._visibleAreas().every((area) => area._normalizedSize() === '*')) {
           return
         }
 
@@ -197,7 +198,7 @@ export class SplitComponent {
               ),
             ),
             take(1),
-            takeUntil(fromMouseUpEvent(this.document, true)),
+            takeUntil(fromMouseUpEvent(this.document, true)), // Maybe we should include page blur event too
             tap(() => {
               this.ngZone.run(() => {
                 this.dragStart.emit(this.createDragInteractionEvent(mouseDownContext.gutterIndex))
@@ -582,10 +583,7 @@ export class SplitComponent {
   }
 
   private createAlignedVisibleAreasSize(): SplitAreaSize[] {
-    const visibleAreasSizes = this._visibleAreas().map((area): SplitAreaSize => {
-      const size = area.size()
-      return size === 'auto' ? '*' : size
-    })
+    const visibleAreasSizes = this._visibleAreas().map((area): SplitAreaSize => area._normalizedSize())
     const isValid = areAreasValid(this._visibleAreas(), this.unit(), false)
 
     if (isValid) {

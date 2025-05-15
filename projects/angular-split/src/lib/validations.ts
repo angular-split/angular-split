@@ -7,10 +7,7 @@ export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitU
     return true
   }
 
-  const areaSizes = areas.map((area): SplitAreaSize => {
-    const size = area.size()
-    return size === 'auto' ? '*' : size
-  })
+  const areaSizes = areas.map((area): SplitAreaSize => area._normalizedSize())
 
   const wildcardAreas = areaSizes.filter((areaSize) => areaSize === '*')
 

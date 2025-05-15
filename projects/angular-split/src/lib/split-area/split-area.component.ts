@@ -9,10 +9,11 @@ import {
   input,
   isDevMode,
   linkedSignal,
+  model,
 } from '@angular/core'
 import { SPLIT_AREA_CONTRACT, SplitComponent } from '../split/split.component'
 import { createClassesString } from '../utils'
-import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../models'
+import { SplitAreaSize, SplitAreaSizeInput, areaSizeTransform, boundaryAreaSizeTransform } from '../models'
 
 @Component({
   selector: 'as-split-area',
@@ -31,7 +32,12 @@ import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../
 export class SplitAreaComponent {
   protected readonly split = inject(SplitComponent)
 
-  readonly size = input('auto', { transform: areaSizeTransform })
+  readonly size = model<SplitAreaSizeInput | '*'>('*')
+  /**
+   * @internal
+   * The size converted to a number or '*' for easier calculations.
+   */
+  readonly _normalizedSize = computed(() => areaSizeTransform(this.size()))
   readonly minSize = input('*', { transform: boundaryAreaSizeTransform })
   readonly maxSize = input('*', { transform: boundaryAreaSizeTransform })
   readonly lockSize = input(false, { transform: booleanAttribute })
@@ -89,9 +95,9 @@ export class SplitAreaComponent {
     }
 
     const minSize = this.normalizeSizeBoundary(this.minSize, defaultMinSize)
-    const size = this.size()
+    const size = this._normalizedSize()
 
-    if (size !== '*' && size !== 'auto' && size < minSize) {
+    if (size !== '*' && size < minSize) {
       if (isDevMode()) {
         console.warn('as-split: size cannot be smaller than minSize')
       }
@@ -110,9 +116,9 @@ export class SplitAreaComponent {
     }
 
     const maxSize = this.normalizeSizeBoundary(this.maxSize, defaultMaxSize)
-    const size = this.size()
+    const size = this._normalizedSize()
 
-    if (size !== '*' && size !== 'auto' && size > maxSize) {
+    if (size !== '*' && size > maxSize) {
       if (isDevMode()) {
         console.warn('as-split: size cannot be larger than maxSize')
       }
@@ -124,7 +130,7 @@ export class SplitAreaComponent {
   }
 
   private normalizeSizeBoundary(sizeBoundarySignal: Signal<SplitAreaSize>, defaultBoundarySize: number): number {
-    const size = this.size()
+    const size = this._normalizedSize()
     const lockSize = this.lockSize()
     const boundarySize = sizeBoundarySignal()
 
@@ -133,7 +139,7 @@ export class SplitAreaComponent {
         console.warn('as-split: lockSize overwrites maxSize/minSize')
       }
 
-      if (size === '*' || size === 'auto') {
+      if (size === '*') {
         if (isDevMode()) {
           console.warn(`as-split: lockSize isn't supported on area with * size or without size`)
         }
@@ -148,7 +154,7 @@ export class SplitAreaComponent {
       return defaultBoundarySize
     }
 
-    if (size === '*' || size === 'auto') {
+    if (size === '*') {
       if (isDevMode()) {
         console.warn('as-split: maxSize/minSize not allowed on * or without size')
       }

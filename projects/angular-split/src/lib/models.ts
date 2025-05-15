@@ -5,8 +5,7 @@ export type SplitAreaSizeInput = SplitAreaSize | `${number}` | undefined | null
 const internalAreaSizeTransform = (areaSize: SplitAreaSizeInput): SplitAreaSize =>
   areaSize === undefined || areaSize === null || areaSize === '*' ? '*' : +areaSize
 
-export const areaSizeTransform = (areaSize: SplitAreaSizeInput): SplitAreaSize | 'auto' =>
-  internalAreaSizeTransform(areaSize)
+export const areaSizeTransform = (areaSize: SplitAreaSizeInput): SplitAreaSize => internalAreaSizeTransform(areaSize)
 
 export const boundaryAreaSizeTransform = (areaSize: SplitAreaSizeInput): SplitAreaSize =>
   internalAreaSizeTransform(areaSize)
