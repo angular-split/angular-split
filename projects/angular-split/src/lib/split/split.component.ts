@@ -19,7 +19,20 @@ import {
 } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import type { SplitAreaComponent } from '../split-area/split-area.component'
-import { Subject, filter, fromEvent, map, pairwise, skipWhile, startWith, switchMap, take, takeUntil, tap } from 'rxjs'
+import {
+  Subject,
+  filter,
+  fromEvent,
+  map,
+  merge,
+  pairwise,
+  skipWhile,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs'
 import {
   ClientPoint,
   createClassesString,
@@ -197,7 +210,7 @@ export class SplitComponent {
               ),
             ),
             take(1),
-            takeUntil(fromMouseUpEvent(this.document, true)),
+            takeUntil(merge(fromMouseUpEvent(this.document, true), fromEvent(this.document, 'blur'))),
             tap(() => {
               this.ngZone.run(() => {
                 this.dragStart.emit(this.createDragInteractionEvent(mouseDownContext.gutterIndex))
