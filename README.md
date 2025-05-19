@@ -12,12 +12,13 @@ Documentation and examples:
 ### Maintained by: (As of 2024)
 
 - [Jeffrey Bosch](https://jefiozie.github.io)
-  [Sander Elias](https://github.com/SanderElias)
+- [Sander Elias](https://github.com/SanderElias)
+- [harpush](https://github.com/Harpush)
 
 #### Previously
 
-- maintained by: [Bram Borggreve](https://github.com/beeman) (As of 2020)
-- build and maintained [Bertrand Gaillard](https://github.com/bertrandg) (2016 to 2019)
+- Maintained by: [Bram Borggreve](https://github.com/beeman) (2020 to 2024)
+- Build and maintained [Bertrand Gaillard](https://github.com/bertrandg) (2016 to 2019)
 
 ## Contributors
 
