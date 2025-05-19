@@ -5,13 +5,20 @@ Angular UI library to split views and allow dragging to resize areas using CSS g
 Documentation and examples:
 [https://angular-split.github.io](https://angular-split.github.io)
 
-### Credits
+## Credits
 
-#### Built by [Bertrand Gaillard](https://github.com/bertrandg)
+### Built by [Bertrand Gaillard](https://github.com/bertrandg)
 
-#### Maintained by: [Bram Borggreve](https://github.com/beeman) (As of 2020)
+### Maintained by: (As of 2024)
 
-#### Previously: [Bertrand Gaillard](https://github.com/bertrandg) (2016 to 2019)
+- [Jeffrey Bosch](https://jefiozie.github.io)
+- [Sander Elias](https://github.com/SanderElias)
+- [harpush](https://github.com/Harpush)
+
+#### Previously
+
+- Maintained by: [Bram Borggreve](https://github.com/beeman) (2020 to 2024)
+- Build and maintained [Bertrand Gaillard](https://github.com/bertrandg) (2016 to 2019)
 
 ## Contributors
 
