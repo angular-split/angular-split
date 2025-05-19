@@ -244,6 +244,15 @@
       ]
     },
     {
+      "login": "github-actions[bot]",
+      "name": "github-actions[bot]",
+      "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+      "profile": "https://github.com/apps/github-actions",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
       "login": "viceice",
       "name": "Michael Kriese",
       "avatar_url": "https://avatars.githubusercontent.com/u/1798109?v=4",
