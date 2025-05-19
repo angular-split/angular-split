@@ -40,7 +40,7 @@ export function provideAngularSplitOptions(options: Partial<AngularSplitDefaultO
   return {
     provide: ANGULAR_SPLIT_DEFAULT_OPTIONS,
     useFactory: (): AngularSplitDefaultOptions => ({
-      ...inject(ANGULAR_SPLIT_DEFAULT_OPTIONS, { skipSelf: true }),
+      ...(inject(ANGULAR_SPLIT_DEFAULT_OPTIONS, { skipSelf: true, optional: true }) ?? defaultOptions),
       ...options,
     }),
   }

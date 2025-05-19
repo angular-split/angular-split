@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
-import { SplitAreaComponent, SplitAreaSize, SplitGutterInteractionEvent } from 'angular-split'
+import { SplitAreaComponent, SplitAreaSize, SplitComponent, SplitGutterInteractionEvent } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
-import { SplitComponent } from 'projects/angular-split/src/public_api'
 
 interface IConfig {
   columns: Array<{
