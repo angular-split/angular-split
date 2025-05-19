@@ -4,12 +4,41 @@ We would love for you to contribute to angular-split and help make it even bette
 than it is today! As a contributor, here are the guidelines we would like you
 to follow:
 
-- [Code of Conduct](#coc)
-- [Issues and Bugs](#issue)
-- [Feature Requests](#feature)
-- [Submission Guidelines](#submit)
-- [Coding Rules](#rules)
-- [Commit Message Guidelines](#commit)
+- [Contributing to angular-split](#contributing-to-angular-split)
+  - [ Setting up your Environment](#-setting-up-your-environment)
+  - [ Code of Conduct](#-code-of-conduct)
+  - [ Got a Question or Problem?](#-got-a-question-or-problem)
+  - [ Found an Issue?](#-found-an-issue)
+  - [ Want a Feature?](#-want-a-feature)
+  - [ Submission Guidelines](#-submission-guidelines)
+    - [ Submitting an Issue](#-submitting-an-issue)
+    - [ Submitting a Pull Request (PR)](#-submitting-a-pull-request-pr)
+      - [After your pull request is merged](#after-your-pull-request-is-merged)
+  - [ Coding Rules](#-coding-rules)
+  - [ Commit Message Guidelines](#-commit-message-guidelines)
+    - [Commit Message Format](#commit-message-format)
+    - [Revert](#revert)
+    - [Type](#type)
+    - [Scope](#scope)
+  - [TODO](#todo)
+    - [Subject](#subject)
+    - [Body](#body)
+    - [Footer](#footer)
+
+## <a name="setup"></a> Setting up your Environment
+
+To set up your environment to work on angular-split, follow these steps:
+
+1. **Fork the repository** on GitHub to your own account.
+2. **Clone the repository** to your local machine
+3. **Install the dependencies**: `npm install`
+
+   > Note: If you are using a version of Node.js that is not supported by angular-split, you might need to use `nvm` (Node Version Manager) to switch to a compatible version. The recommended version is Node.js 22.x LTS or later.
+
+4. **build and run the project by**: `npm run start --watch`
+
+For windows users, we expect you to use the WSL, as we set up the project to work with github actions. Make sure to check out the project and run the commands in the WSL terminal.
+It might work outside the WSL when you delete the `package-lock.json` file, but we cannot guarantee that it will work. (also, make sure you don't commit that `package-lock.json`, as it will break the build for other users).
 
 ## <a name="coc"></a> Code of Conduct
 
@@ -190,7 +219,7 @@ Must be one of the following:
 The scope should be the name of the module affected as perceived by the person reading changelog generated from the commit messages.
 
 The following is the list of supported scopes (there might be more added in the fututre):
- 
+
 ## TODO
 
 There are currently a few exceptions to the "use package name" rule:
