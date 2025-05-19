@@ -37,7 +37,8 @@
       "profile": "https://github.com/SanderElias",
       "contributions": [
         "code",
-        "maintenance"
+        "maintenance",
+        "test"
       ]
     },
     {
@@ -48,7 +49,8 @@
       "contributions": [
         "doc",
         "infra",
-        "maintenance"
+        "maintenance",
+        "code"
       ]
     },
     {
@@ -246,6 +248,23 @@
       "name": "github-actions[bot]",
       "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
       "profile": "https://github.com/apps/github-actions",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "viceice",
+      "name": "Michael Kriese",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1798109?v=4",
+      "profile": "https://visualon.de",
+      "contributions": [
+        "infra"
+        ]
+    },
+      "login": "connorsmith-pf",
+      "name": "Connor Smith",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80120827?v=4",
+      "profile": "https://github.com/ConnorSmith-pf",
       "contributions": [
         "code"
       ]
