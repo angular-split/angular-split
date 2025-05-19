@@ -254,12 +254,12 @@ export class SplitComponent {
     areaBeforeGutterIndex: number,
     areaAfterGutterIndex: number,
   ) {
+    e.preventDefault()
+    e.stopPropagation()
+
     if (this.disabled()) {
       return
     }
-
-    e.preventDefault()
-    e.stopPropagation()
 
     this.gutterMouseDownSubject.next({
       mouseDownEvent: e,

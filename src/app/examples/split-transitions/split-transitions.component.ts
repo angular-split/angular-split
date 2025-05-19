@@ -1,7 +1,6 @@
 import { NgClass } from '@angular/common'
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, viewChild } from '@angular/core'
-import { SplitAreaSize, SplitComponent } from 'angular-split'
-import { SplitAreaComponent } from 'projects/angular-split/src/public_api'
+import { SplitAreaComponent, SplitAreaSize, SplitComponent } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 import { formatDate } from '../../utils/format-date'
@@ -268,7 +267,7 @@ export class SplitTransitionsComponent extends AComponent {
     setTimeout(() => {
       const logsEl = this.logsEl()
       if (logsEl.nativeElement.scroll) {
-        (<HTMLElement>logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+        ;(<HTMLElement>logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
   }
