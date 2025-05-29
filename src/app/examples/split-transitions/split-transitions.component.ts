@@ -267,7 +267,7 @@ export class SplitTransitionsComponent extends AComponent {
     setTimeout(() => {
       const logsEl = this.logsEl()
       if (logsEl.nativeElement.scroll) {
-        ;(<HTMLElement>logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
+        (<HTMLElement>logsEl.nativeElement).scroll({ top: this.logMessages.length * 30 })
       }
     })
   }

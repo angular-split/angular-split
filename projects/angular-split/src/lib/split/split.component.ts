@@ -165,13 +165,15 @@ export class SplitComponent {
   constructor() {
     if (isDevMode()) {
       // Logs warnings to console when the provided areas sizes are invalid
-      afterRenderEffect(() => {
-        // Special mode when no size input was declared which is a valid mode
-        if (this.unit() === 'percent' && this._visibleAreas().every((area) => area.size() === 'auto')) {
-          return
-        }
+      afterRenderEffect({
+        read: () => {
+          // Special mode when no size input was declared which is a valid mode
+          if (this.unit() === 'percent' && this._visibleAreas().every((area) => area.size() === 'auto')) {
+            return
+          }
 
-        areAreasValid(this._visibleAreas(), this.unit(), true)
+          areAreasValid(this._visibleAreas(), this.unit(), true)
+        },
       })
     }
 
