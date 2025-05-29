@@ -1,3 +1,4 @@
+import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,12 +6,11 @@ import {
   HostBinding,
   InjectionToken,
   NgZone,
-  Renderer2,
+  afterRenderEffect,
   booleanAttribute,
   computed,
   contentChild,
   contentChildren,
-  effect,
   inject,
   input,
   isDevMode,
@@ -18,7 +18,6 @@ import {
   signal,
 } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import type { SplitAreaComponent } from '../split-area/split-area.component'
 import {
   Subject,
   filter,
@@ -33,26 +32,26 @@ import {
   takeUntil,
   tap,
 } from 'rxjs'
+import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
+import { SplitGutterDynamicInjectorDirective } from '../gutter/split-gutter-dynamic-injector.directive'
+import { SplitGutterDirective } from '../gutter/split-gutter.directive'
+import { SplitAreaSize, SplitGutterInteractionEvent } from '../models'
+import type { SplitAreaComponent } from '../split-area/split-area.component'
+import { SplitCustomEventsBehaviorDirective } from '../split-custom-events-behavior.directive'
 import {
   ClientPoint,
+  assertUnreachable,
   createClassesString,
-  gutterEventsEqualWithDelta,
   fromMouseMoveEvent,
   fromMouseUpEvent,
   getPointFromEvent,
+  gutterEventsEqualWithDelta,
   leaveNgZone,
   numberAttributeWithFallback,
   sum,
   toRecord,
-  assertUnreachable,
 } from '../utils'
-import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common'
-import { SplitGutterInteractionEvent, SplitAreaSize } from '../models'
-import { SplitCustomEventsBehaviorDirective } from '../split-custom-events-behavior.directive'
 import { areAreasValid } from '../validations'
-import { SplitGutterDirective } from '../gutter/split-gutter.directive'
-import { SplitGutterDynamicInjectorDirective } from '../gutter/split-gutter-dynamic-injector.directive'
-import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
 
 interface MouseDownContext {
   mouseDownEvent: MouseEvent | TouchEvent
@@ -85,10 +84,12 @@ export const SPLIT_AREA_CONTRACT = new InjectionToken<SplitAreaComponent>('Split
   templateUrl: './split.component.html',
   styleUrl: './split.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[style.gridTemplate]': 'gridTemplateColumnsStyle()',
+  },
 })
 export class SplitComponent {
   private readonly document = inject(DOCUMENT)
-  private readonly renderer = inject(Renderer2)
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly ngZone = inject(NgZone)
   private readonly defaultOptions = inject(ANGULAR_SPLIT_DEFAULT_OPTIONS)
@@ -164,7 +165,7 @@ export class SplitComponent {
   constructor() {
     if (isDevMode()) {
       // Logs warnings to console when the provided areas sizes are invalid
-      effect(() => {
+      afterRenderEffect(() => {
         // Special mode when no size input was declared which is a valid mode
         if (this.unit() === 'percent' && this._visibleAreas().every((area) => area.size() === 'auto')) {
           return
@@ -173,14 +174,6 @@ export class SplitComponent {
         areAreasValid(this._visibleAreas(), this.unit(), true)
       })
     }
-
-    // Responsible for updating grid template style. Must be this way and not based on HostBinding
-    // as change detection for host binding is bound to the parent component and this style
-    // is updated on every mouse move. Doing it this way will prevent change detection cycles in parent.
-    effect(() => {
-      const gridTemplateColumnsStyle = this.gridTemplateColumnsStyle()
-      this.renderer.setStyle(this.elementRef.nativeElement, 'grid-template', gridTemplateColumnsStyle)
-    })
 
     this.gutterMouseDownSubject
       .pipe(
