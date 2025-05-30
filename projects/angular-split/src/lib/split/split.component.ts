@@ -177,10 +177,12 @@ export class SplitComponent {
       })
     }
 
+    // we are running this after Angular has completed its CD loop
+    // as we are updating the style of the host, and we don't want to re-trigger the CD loop
+    // doing this in the host of the component would retrigger the CD too many times
     afterRenderEffect({
       read: () => {
-        const gridTemplate = this.gridTemplateColumnsStyle()
-        this.elementRef.nativeElement.style.gridTemplate = gridTemplate
+        this.elementRef.nativeElement.style.gridTemplate = this.gridTemplateColumnsStyle()
       },
     })
 
