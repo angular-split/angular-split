@@ -84,9 +84,9 @@ export const SPLIT_AREA_CONTRACT = new InjectionToken<SplitAreaComponent>('Split
   templateUrl: './split.component.html',
   styleUrl: './split.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[style.gridTemplate]': 'gridTemplateColumnsStyle()',
-  },
+  // host: {
+  //   '[style.gridTemplate]': 'gridTemplateColumnsStyle()',
+  // },
 })
 export class SplitComponent {
   private readonly document = inject(DOCUMENT)
@@ -176,6 +176,13 @@ export class SplitComponent {
         },
       })
     }
+
+    afterRenderEffect({
+      read: () => {
+        const gridTemplate = this.gridTemplateColumnsStyle()
+        this.elementRef.nativeElement.style.gridTemplate = gridTemplate
+      },
+    })
 
     this.gutterMouseDownSubject
       .pipe(
