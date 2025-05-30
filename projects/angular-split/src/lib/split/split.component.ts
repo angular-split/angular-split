@@ -84,9 +84,6 @@ export const SPLIT_AREA_CONTRACT = new InjectionToken<SplitAreaComponent>('Split
   templateUrl: './split.component.html',
   styleUrl: './split.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  // host: {
-  //   '[style.gridTemplate]': 'gridTemplateColumnsStyle()',
-  // },
 })
 export class SplitComponent {
   private readonly document = inject(DOCUMENT)
