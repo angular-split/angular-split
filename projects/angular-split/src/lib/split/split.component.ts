@@ -166,6 +166,9 @@ export class SplitComponent {
     if (isDevMode()) {
       // Logs warnings to console when the provided areas sizes are invalid
       afterRenderEffect({
+        // we use the afterRender read phase here,
+        //  because we want to run this after all processing is done.
+        //  and we are not updating anything in the DOM
         read: () => {
           // Special mode when no size input was declared which is a valid mode
           if (this.unit() === 'percent' && this._visibleAreas().every((area) => area.size() === 'auto')) {
@@ -181,7 +184,7 @@ export class SplitComponent {
     // as we are updating the style of the host, and we don't want to re-trigger the CD loop
     // doing this in the host of the component would retrigger the CD too many times
     afterRenderEffect({
-      read: () => {
+      write: () => {
         this.elementRef.nativeElement.style.gridTemplate = this.gridTemplateColumnsStyle()
       },
     })
