@@ -88,7 +88,7 @@ import { Component, VERSION } from '@angular/core'
         <h5>Bug report:</h5>
         <p>
           If you find a bug, open an issue with a
-          <a href="https://stackblitz.com/fork/angular-split-demo" target="_blank">StackBlitz</a> demo showing it.
+          <a href="https://stackblitz.com/fork/angular-split-demo-v19" target="_blank">StackBlitz</a> demo showing it.
         </p>
         <h5>Credits:</h5>
         <p>
@@ -98,7 +98,6 @@ import { Component, VERSION } from '@angular/core'
       </div>
     </div>
   `,
-  
 })
 export class HomeComponent {
   version = VERSION.full
