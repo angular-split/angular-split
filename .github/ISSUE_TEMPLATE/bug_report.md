@@ -12,4 +12,4 @@ Please specify library version.
 
 **To Reproduce**
 Create a Stackblitz demoing the bug/issue:
-https://stackblitz.com/
+<https://stackblitz.com/fork/angular-split-demo-v19>
