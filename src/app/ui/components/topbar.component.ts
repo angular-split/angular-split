@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostBinding, inject } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 import { NavigationStart, Router, RouterLink, RouterLinkActive, Routes } from '@angular/router'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'
@@ -88,14 +88,15 @@ import { exampleRoutes } from '../../examples/examples.routes'
   `,
 })
 export class TopbarComponent {
+  private readonly sanitizer = inject(DomSanitizer)
+  private readonly router = inject(Router)
+
   examples: Routes
   isCollapsed = true
 
   @HostBinding('class') class = 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark'
-  constructor(
-    private readonly sanitizer: DomSanitizer,
-    private readonly router: Router,
-  ) {
+
+  constructor() {
     this.examples = exampleRoutes
 
     this.router.events.pipe(filter((e) => e instanceof NavigationStart)).subscribe(() => {

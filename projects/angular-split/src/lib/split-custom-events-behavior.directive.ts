@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/no-output-native */
 /* eslint-disable @angular-eslint/no-output-rename */
 /* eslint-disable @angular-eslint/no-input-rename */
-import { Directive, ElementRef, inject, input, output } from '@angular/core'
+import { Directive, ElementRef, inject, input, output, DOCUMENT } from '@angular/core'
 import {
   gutterEventsEqualWithDelta,
   fromMouseDownEvent,
@@ -25,7 +25,6 @@ import {
   timeInterval,
 } from 'rxjs'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { DOCUMENT } from '@angular/common'
 
 /**
  * Emits mousedown, click, double click and keydown out of zone
