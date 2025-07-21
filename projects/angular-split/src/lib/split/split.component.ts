@@ -98,7 +98,7 @@ export class SplitComponent {
    * @internal
    */
   readonly _areas = contentChildren(SPLIT_AREA_CONTRACT)
-  protected readonly customGutter = contentChild(SplitGutterDirective)
+  protected readonly customGutter = contentChild(SplitGutterDirective, { descendants: false })
   readonly gutterSize = input(this.defaultOptions.gutterSize, {
     transform: numberAttributeWithFallback(this.defaultOptions.gutterSize),
   })
