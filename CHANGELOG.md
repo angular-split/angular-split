@@ -1,3 +1,17 @@
+## 19.0.0 (2025-02-01)
+
+- feat: support node v22 (#470) ([52ee663](https://github.com/angular-split/angular-split/commit/52ee663)), closes [#470](https://github.com/angular-split/angular-split/issues/470)
+- feat: update to angular 19 ([222ebcf](https://github.com/angular-split/angular-split/commit/222ebcf))
+- refactor: change gutter directives to modern angular (#479) ([e3227ae](https://github.com/angular-split/angular-split/commit/e3227ae)), closes [#479](https://github.com/angular-split/angular-split/issues/479)
+- refactor: drop signal writes effect (#455) ([f2219e8](https://github.com/angular-split/angular-split/commit/f2219e8)), closes [#455](https://github.com/angular-split/angular-split/issues/455)
+- fix: docs and site fixes (#478) ([0e1ea19](https://github.com/angular-split/angular-split/commit/0e1ea19)), closes [#478](https://github.com/angular-split/angular-split/issues/478)
+- fix: update to release-it and update changelog (#484) ([490eff7](https://github.com/angular-split/angular-split/commit/490eff7)), closes [#484](https://github.com/angular-split/angular-split/issues/484)
+- fix: update to release-it and update changelog (#484) (#485) ([b0c5ca8](https://github.com/angular-split/angular-split/commit/b0c5ca8)), closes [#484](https://github.com/angular-split/angular-split/issues/484) [#485](https://github.com/angular-split/angular-split/issues/485)
+- fix: update to use latest token. closes #472 (#486) ([53bf2e7](https://github.com/angular-split/angular-split/commit/53bf2e7)), closes [#472](https://github.com/angular-split/angular-split/issues/472) [#486](https://github.com/angular-split/angular-split/issues/486)
+- fix(docs): update changelog path (#488) ([f695830](https://github.com/angular-split/angular-split/commit/f695830)), closes [#488](https://github.com/angular-split/angular-split/issues/488)
+- docs: update license copyright year(s) (#487) ([12d12a0](https://github.com/angular-split/angular-split/commit/12d12a0)), closes [#487](https://github.com/angular-split/angular-split/issues/487)
+- ci: use npm instead of yarn (#471) ([4f5b26c](https://github.com/angular-split/angular-split/commit/4f5b26c)), closes [#471](https://github.com/angular-split/angular-split/issues/471)
+
 ## 19.0.0-beta.0 (2024-12-22)
 
 - refactor: move more to signals ([1fc7fea](https://github.com/angular-split/angular-split/commit/1fc7fea))
