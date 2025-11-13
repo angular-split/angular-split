@@ -42,6 +42,7 @@ import { DOCUMENT } from '@angular/common'
 export class SplitCustomEventsBehaviorDirective {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly document = inject(DOCUMENT)
+  private destroyRef = inject(DestroyRef)
 
   readonly multiClickThreshold = input.required<number>({ alias: 'asSplitCustomMultiClickThreshold' })
   readonly deltaInPx = input.required<number>({ alias: 'asSplitCustomClickDeltaInPx' })
@@ -52,7 +53,7 @@ export class SplitCustomEventsBehaviorDirective {
 
   constructor() {
     fromEvent<KeyboardEvent>(this.elementRef.nativeElement, 'keydown')
-      .pipe(leaveNgZone(), takeUntilDestroyed())
+      .pipe(leaveNgZone(), takeUntilDestroyed(this.destroyRef))
       .subscribe((e) => this.keyDown.emit(e))
 
     // We just need to know when drag start to cancel all click related interactions
@@ -99,7 +100,7 @@ export class SplitCustomEventsBehaviorDirective {
         takeUntil(dragStarted$),
         repeat(),
         leaveNgZone(),
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((amount) => {
         if (amount === 1) {
