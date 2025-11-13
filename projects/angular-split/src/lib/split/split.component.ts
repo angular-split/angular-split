@@ -90,6 +90,7 @@ export class SplitComponent {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly ngZone = inject(NgZone)
   private readonly defaultOptions = inject(ANGULAR_SPLIT_DEFAULT_OPTIONS)
+  private destroyRef = inject(DestroyRef)
 
   private readonly gutterMouseDownSubject = new Subject<MouseDownContext>()
   private readonly dragProgressSubject = new Subject<SplitGutterInteractionEvent>()
@@ -243,7 +244,7 @@ export class SplitComponent {
             ),
           ),
         ),
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe()
 
@@ -251,7 +252,7 @@ export class SplitComponent {
       .pipe(
         filter((e) => e.propertyName.startsWith('grid-template')),
         leaveNgZone(),
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.ngZone.run(() => this.transitionEnd.emit(this.createAreaSizes())))
   }
