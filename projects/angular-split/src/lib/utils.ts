@@ -1,5 +1,6 @@
 import { NgZone, inject, numberAttribute } from '@angular/core'
-import { Observable, filter, fromEvent, merge } from 'rxjs'
+import { Observable, fromEvent, merge } from 'rxjs'
+import { filter } from 'rxjs/operators'
 
 export interface ClientPoint {
   x: number

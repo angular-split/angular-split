@@ -18,12 +18,10 @@ import {
   signal,
 } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { Subject, fromEvent, merge } from 'rxjs'
 import {
-  Subject,
   filter,
-  fromEvent,
   map,
-  merge,
   pairwise,
   skipWhile,
   startWith,
@@ -31,7 +29,7 @@ import {
   take,
   takeUntil,
   tap,
-} from 'rxjs'
+} from 'rxjs/operators'
 import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
 import { SplitGutterDynamicInjectorDirective } from '../gutter/split-gutter-dynamic-injector.directive'
 import { SplitGutterDirective } from '../gutter/split-gutter.directive'

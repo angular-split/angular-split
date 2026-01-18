@@ -9,13 +9,12 @@ import {
   fromMouseUpEvent,
   leaveNgZone,
 } from './utils'
+import { fromEvent, of } from 'rxjs'
 import {
   delay,
   filter,
-  fromEvent,
   map,
   mergeMap,
-  of,
   repeat,
   scan,
   switchMap,
@@ -23,7 +22,7 @@ import {
   takeUntil,
   tap,
   timeInterval,
-} from 'rxjs'
+} from 'rxjs/operators'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { DOCUMENT } from '@angular/common'
 
