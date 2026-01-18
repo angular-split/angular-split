@@ -12,7 +12,7 @@ import {
 } from '@angular/core'
 import { SPLIT_AREA_CONTRACT, SplitComponent } from '../split/split.component'
 import { createClassesString } from '../utils'
-import { SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../models'
+import { type SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../models'
 
 @Component({
   selector: 'as-split-area',

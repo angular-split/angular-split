@@ -35,11 +35,11 @@ import {
 import { ANGULAR_SPLIT_DEFAULT_OPTIONS } from '../angular-split-config.token'
 import { SplitGutterDynamicInjectorDirective } from '../gutter/split-gutter-dynamic-injector.directive'
 import { SplitGutterDirective } from '../gutter/split-gutter.directive'
-import { SplitAreaSize, SplitGutterInteractionEvent } from '../models'
+import type { SplitAreaSize, SplitGutterInteractionEvent } from '../models'
 import type { SplitAreaComponent } from '../split-area/split-area.component'
 import { SplitCustomEventsBehaviorDirective } from '../split-custom-events-behavior.directive'
 import {
-  ClientPoint,
+  type ClientPoint,
   assertUnreachable,
   createClassesString,
   fromMouseMoveEvent,
