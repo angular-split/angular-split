@@ -6,12 +6,14 @@
   },
   "scripts": {
     "app_analyze": "npm run build && ng build --configuration production --stats-json && webpack-bundle-analyzer dist/angular-split-app/stats.json",
+    "app_build": "wireit",
     "build": "wireit",
     "test_live": "wireit",
     "test_prod": "wireit",
     "test_ci": "wireit",
     "deploy": "ng deploy angular-split-app --branch main --base-href 'https://angular-split.github.io/' --repo https://github.com/angular-split/angular-split.github.io.git --dir dist/angular-split-app/browser",
     "format": "prettier --write '**/*.{js,json,css,scss,less,md,ts,tsx,html,component.html,graphql}'",
+    "lib_build": "wireit",
     "lib_pub_latest": "wireit",
     "lib_pub_next": "wireit",
     "lib_tgz": "wireit",
@@ -163,7 +165,7 @@
       ]
     },
     "lib_build": {
-      "command": "ng build angular-split && cp ./LICENSE ./README.md ./dist/angular-split",
+      "command": "ng build angular-split",
       "files": [
         "projects/angular-split/"
       ],
