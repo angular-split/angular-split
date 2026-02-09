@@ -1,3 +1,10 @@
+## 21.0.0 (2026-02-09)
+
+- feat: update to angular 21
+- feat: update to angular 20
+- feat: update ngx-bootstrap to v21
+- refactor: migrate to inject() function
+
 ## 19.0.0 (2025-02-01)
 
 - feat: support node v22 (#470) ([52ee663](https://github.com/angular-split/angular-split/commit/52ee663)), closes [#470](https://github.com/angular-split/angular-split/issues/470)
