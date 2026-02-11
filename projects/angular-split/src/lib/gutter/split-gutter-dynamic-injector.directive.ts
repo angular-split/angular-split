@@ -17,7 +17,7 @@ export class SplitGutterDynamicInjectorDirective {
   private readonly vcr = inject(ViewContainerRef)
   private readonly templateRef = inject<TemplateRef<SplitGutterDynamicInjectorTemplateContext>>(TemplateRef)
 
-  protected readonly gutterNum = input.required<number>({ alias: 'asSplitGutterDynamicInjector' })
+  readonly gutterNum = input.required<number>({ alias: 'asSplitGutterDynamicInjector' })
 
   constructor() {
     effect(() => {
