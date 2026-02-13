@@ -37,7 +37,6 @@ import { DOCUMENT } from '@angular/common'
  */
 @Directive({
   selector: '[asSplitCustomEventsBehavior]',
-  standalone: true,
 })
 export class SplitCustomEventsBehaviorDirective {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
