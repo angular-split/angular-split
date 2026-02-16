@@ -35,7 +35,6 @@ export interface SplitGutterTemplateContext {
 
 @Directive({
   selector: '[asSplitGutter]',
-  standalone: true,
 })
 export class SplitGutterDirective {
   readonly template = inject<TemplateRef<SplitGutterTemplateContext>>(TemplateRef)

@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostBinding,
   InjectionToken,
   NgZone,
   afterRenderEffect,
@@ -84,6 +83,10 @@ export const SPLIT_AREA_CONTRACT = new InjectionToken<SplitAreaComponent>('Split
   templateUrl: './split.component.html',
   styleUrl: './split.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class]': 'hostClasses()',
+    '[dir]': 'dir()',
+  },
 })
 export class SplitComponent {
   private readonly document = inject(DOCUMENT)
@@ -131,7 +134,7 @@ export class SplitComponent {
    */
   readonly _visibleAreas = computed(() => this._areas().filter((area) => area.visible()))
   private readonly gridTemplateColumnsStyle = computed(() => this.createGridTemplateColumnsStyle())
-  private readonly hostClasses = computed(() =>
+  protected readonly hostClasses = computed(() =>
     createClassesString({
       [`as-${this.direction()}`]: true,
       [`as-${this.unit()}`]: true,
@@ -150,14 +153,6 @@ export class SplitComponent {
    * Should only be used by {@link SplitAreaComponent._internalSize}
    */
   readonly _alignedVisibleAreasSizes = computed(() => this.createAlignedVisibleAreasSize())
-
-  @HostBinding('class') protected get hostClassesBinding() {
-    return this.hostClasses()
-  }
-
-  @HostBinding('dir') protected get hostDirBinding() {
-    return this.dir()
-  }
 
   constructor() {
     if (isDevMode()) {
