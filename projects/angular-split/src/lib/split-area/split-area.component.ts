@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  HostBinding,
   Signal,
   booleanAttribute,
   computed,
@@ -16,7 +15,6 @@ import { type SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from
 
 @Component({
   selector: 'as-split-area',
-  standalone: true,
   exportAs: 'asSplitArea',
   templateUrl: './split-area.component.html',
   styleUrl: './split-area.component.css',
@@ -27,6 +25,12 @@ import { type SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from
     },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class]': 'hostClasses()',
+    '[style.grid-column]': 'hostGridColumnStyle()',
+    '[style.grid-row]': 'hostGridRowStyle()',
+    '[style.position]': 'hostPositionStyle()',
+  },
 })
 export class SplitAreaComponent {
   protected readonly split = inject(SplitComponent)
@@ -58,8 +62,8 @@ export class SplitAreaComponent {
    */
   readonly _normalizedMaxSize = computed(() => this.normalizeMaxSize())
   private readonly index = computed(() => this.split._areas().findIndex((area) => area === this))
-  private readonly gridAreaNum = computed(() => this.index() * 2 + 1)
-  private readonly hostClasses = computed(() =>
+  protected readonly gridAreaNum = computed(() => this.index() * 2 + 1)
+  protected readonly hostClasses = computed(() =>
     createClassesString({
       ['as-split-area']: true,
       ['as-min']: this.visible() && this._internalSize() === this._normalizedMinSize(),
@@ -67,19 +71,13 @@ export class SplitAreaComponent {
       ['as-hidden']: !this.visible(),
     }),
   )
-
-  @HostBinding('class') protected get hostClassesBinding() {
-    return this.hostClasses()
-  }
-  @HostBinding('style.grid-column') protected get hostGridColumnStyleBinding() {
-    return this.split.direction() === 'horizontal' ? `${this.gridAreaNum()} / ${this.gridAreaNum()}` : undefined
-  }
-  @HostBinding('style.grid-row') protected get hostGridRowStyleBinding() {
-    return this.split.direction() === 'vertical' ? `${this.gridAreaNum()} / ${this.gridAreaNum()}` : undefined
-  }
-  @HostBinding('style.position') protected get hostPositionStyleBinding() {
-    return this.split._isDragging() ? 'relative' : undefined
-  }
+  protected readonly hostGridColumnStyle = computed(() =>
+    this.split.direction() === 'horizontal' ? `${this.gridAreaNum()} / ${this.gridAreaNum()}` : undefined,
+  )
+  protected readonly hostGridRowStyle = computed(() =>
+    this.split.direction() === 'vertical' ? `${this.gridAreaNum()} / ${this.gridAreaNum()}` : undefined,
+  )
+  protected readonly hostPositionStyle = computed(() => (this.split._isDragging() ? 'relative' : undefined))
 
   private normalizeMinSize() {
     const defaultMinSize = 0
