@@ -1,5 +1,5 @@
 import { Directive, ElementRef, inject, TemplateRef } from '@angular/core'
-import { SplitAreaComponent } from '../split-area/split-area.component'
+import type { SplitAreaComponent } from '../split-area/split-area.component'
 
 export interface SplitGutterTemplateContext {
   /**
