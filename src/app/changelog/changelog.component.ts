@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, inject } from '@angular/core'
 import { Observable } from 'rxjs'
 
 import { AsyncPipe } from '@angular/common'
@@ -23,9 +23,9 @@ import { ChangelogService } from './changelog.service'
   `,
 })
 export class ChangelogComponent implements OnInit {
-  changelogHtml$: Observable<string>
+  private changelogService = inject(ChangelogService)
 
-  constructor(private changelogService: ChangelogService) {}
+  changelogHtml$: Observable<string>
 
   ngOnInit() {
     this.changelogHtml$ = this.changelogService.getHtml()
