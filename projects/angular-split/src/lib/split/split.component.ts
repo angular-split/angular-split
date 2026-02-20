@@ -1,4 +1,4 @@
-import { DOCUMENT, NgStyle, NgTemplateOutlet } from '@angular/common'
+import { NgStyle, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +15,7 @@ import {
   isDevMode,
   output,
   signal,
+  DOCUMENT,
 } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import {
