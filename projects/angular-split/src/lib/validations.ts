@@ -1,5 +1,5 @@
-import type { SplitAreaSize, SplitUnit } from './models'
-import type { SplitAreaComponent } from './split-area/split-area.component'
+import { SplitAreaSize, SplitUnit } from './models'
+import { SplitAreaComponent } from './split-area/split-area.component'
 import { sum } from './utils'
 
 export function areAreasValid(areas: readonly SplitAreaComponent[], unit: SplitUnit, logWarnings: boolean): boolean {
