@@ -1,5 +1,5 @@
 import { InjectionToken, Provider, inject } from '@angular/core'
-import { SplitDir, SplitDirection, SplitUnit } from './models'
+import type { SplitDir, SplitDirection, SplitUnit } from './models'
 
 export interface AngularSplitDefaultOptions {
   dir: SplitDir
