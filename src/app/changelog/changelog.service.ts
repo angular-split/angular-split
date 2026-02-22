@@ -25,7 +25,7 @@ export class ChangelogService {
       of('Loading..'),
       this.http.get(this.url, { responseType: 'text' }).pipe(
         map((md) => {
-          this.cachedHtml = marked(md)
+          this.cachedHtml = marked.parse(md) as string
           return this.cachedHtml
         }),
         catchError(() =>
