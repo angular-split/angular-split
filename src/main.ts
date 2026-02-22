@@ -24,7 +24,8 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),importProvidersFrom(BrowserModule, FormsModule),
+    provideZoneChangeDetection(),
+    importProvidersFrom(BrowserModule, FormsModule),
     provideAnimations(),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),

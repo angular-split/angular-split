@@ -1,7 +1,6 @@
 ## 21.0.0 (2026-02-09)
 
 - feat: update to angular 21
-- feat: update to angular 20
 - feat: update ngx-bootstrap to v21
 - refactor: migrate to inject() function
 
