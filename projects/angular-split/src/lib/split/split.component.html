@@ -22,22 +22,24 @@
       (asSplitCustomMouseDown)="gutterMouseDown($event, gutter, $index, $index, $index + 1)"
       (asSplitCustomKeyDown)="gutterKeyDown($event, $index, $index, $index + 1)"
     >
-      @if (customGutter()?.template) {
+      @if (customGutter()?.template || defaultOptions.gutterComponent) {
+        @let context =
+          {
+            areaBefore: area,
+            areaAfter: _areas()[$index + 1],
+            gutterNum: $index + 1,
+            first: $first,
+            last: $index === _areas().length - 2,
+            isDragged: draggedGutterIndex() === $index,
+          };
         <ng-container *asSplitGutterDynamicInjector="$index + 1; let injector">
-          <ng-container
-            *ngTemplateOutlet="
-              customGutter().template;
-              context: {
-                areaBefore: area,
-                areaAfter: _areas()[$index + 1],
-                gutterNum: $index + 1,
-                first: $first,
-                last: $index === _areas().length - 2,
-                isDragged: draggedGutterIndex() === $index
-              };
-              injector: injector
-            "
-          ></ng-container>
+          @if (customGutter()?.template; as tpl) {
+            <ng-container *ngTemplateOutlet="tpl; context: context; injector: injector"></ng-container>
+          } @else {
+            <ng-container
+              *ngComponentOutlet="defaultOptions.gutterComponent; inputs: { context }; injector: injector"
+            ></ng-container>
+          }
         </ng-container>
       } @else {
         <div class="as-split-gutter-icon"></div>

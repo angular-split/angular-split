@@ -1,4 +1,4 @@
-import { NgStyle, NgTemplateOutlet } from '@angular/common'
+import { NgComponentOutlet, NgStyle, NgTemplateOutlet } from '@angular/common'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -52,6 +52,7 @@ import {
   toRecord,
 } from '../utils'
 import { areAreasValid } from '../validations'
+import { SplitGuttersManagerService } from '../gutter/split-gutters-manager.service'
 
 interface MouseDownContext {
   mouseDownEvent: MouseEvent | TouchEvent
@@ -79,11 +80,18 @@ export const SPLIT_AREA_CONTRACT = new InjectionToken<SplitAreaComponent>('Split
 
 @Component({
   selector: 'as-split',
-  imports: [NgStyle, SplitCustomEventsBehaviorDirective, SplitGutterDynamicInjectorDirective, NgTemplateOutlet],
+  imports: [
+    NgStyle,
+    SplitCustomEventsBehaviorDirective,
+    SplitGutterDynamicInjectorDirective,
+    NgTemplateOutlet,
+    NgComponentOutlet,
+  ],
   exportAs: 'asSplit',
   templateUrl: './split.component.html',
   styleUrl: './split.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SplitGuttersManagerService],
   host: {
     '[class]': 'hostClasses()',
     '[dir]': 'dir()',
@@ -93,7 +101,8 @@ export class SplitComponent {
   private readonly document = inject(DOCUMENT)
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly ngZone = inject(NgZone)
-  private readonly defaultOptions = inject(ANGULAR_SPLIT_DEFAULT_OPTIONS)
+  protected readonly defaultOptions = inject(ANGULAR_SPLIT_DEFAULT_OPTIONS)
+  private readonly guttersManager = inject(SplitGuttersManagerService)
 
   private readonly gutterMouseDownSubject = new Subject<MouseDownContext>()
   private readonly dragProgressSubject = new Subject<SplitGutterInteractionEvent>()
@@ -184,13 +193,8 @@ export class SplitComponent {
 
     this.gutterMouseDownSubject
       .pipe(
-        filter(
-          (context) =>
-            !this.customGutter() ||
-            this.customGutter()._canStartDragging(
-              context.mouseDownEvent.target as HTMLElement,
-              context.gutterIndex + 1,
-            ),
+        filter((context) =>
+          this.guttersManager.canStartDragging(context.mouseDownEvent.target as HTMLElement, context.gutterIndex + 1),
         ),
         switchMap((mouseDownContext) =>
           // As we have gutterClickDeltaPx we can't just start the drag but need to make sure

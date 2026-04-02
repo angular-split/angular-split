@@ -7,6 +7,8 @@ export { SplitGutterDragHandleDirective } from './lib/gutter/split-gutter-drag-h
 export { SplitGutterExcludeFromDragDirective } from './lib/gutter/split-gutter-exclude-from-drag.directive'
 export { SplitGutterDirective } from './lib/gutter/split-gutter.directive'
 export type { SplitGutterTemplateContext } from './lib/gutter/split-gutter.directive'
+export type { SplitGutterComponent } from './lib/gutter/split-gutter-component'
+export type { SplitGutterContext } from './lib/gutter/split-gutter-context'
 export type {
   SplitAreaSize,
   SplitAreaSizeInput,
