@@ -21,7 +21,8 @@
     "ng": "ng",
     "start": "wireit",
     "prepare": "husky install",
-    "release": "npm run release --workspaces"
+    "release": "npm run release --workspaces",
+    "prettier": "prettier --write ."
   },
   "private": true,
   "dependencies": {
@@ -68,7 +69,7 @@
     "lint-staged": "^14.0.1",
     "ng-packagr": "^20.1.0",
     "postcss": "8.4.28",
-    "prettier": "^3.0.2",
+    "prettier": "^3.8.1",
     "serve": "^14.2.1",
     "ts-node": "10.9.1",
     "tslib": "^2.6.2",
