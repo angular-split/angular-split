@@ -1,9 +1,11 @@
 <ng-content></ng-content>
 @for (area of _areas(); track area) {
   @if (!$last) {
+    @let gutterNum = $index + 1;
     <div
       #gutter
       class="as-split-gutter"
+      [class.with-handles]="guttersManager.hasDragHandles(gutterNum)"
       role="separator"
       tabindex="0"
       [attr.aria-label]="gutterAriaLabel()"
@@ -27,7 +29,7 @@
           {
             areaBefore: area,
             areaAfter: _areas()[$index + 1],
-            gutterNum: $index + 1,
+            gutterNum,
             first: $first,
             last: $index === _areas().length - 2,
             isDragged: draggedGutterIndex() === $index,

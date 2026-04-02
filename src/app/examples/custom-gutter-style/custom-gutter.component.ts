@@ -3,7 +3,7 @@ import { SplitComponent, SplitGutterComponent, SplitGutterContext, SplitGutterDr
 
 @Component({
   selector: 'sp-ex-custom-gutter',
-  template: '<div asSplitGutterDragHandle class="custom-hand-gutter-icon"></div>',
+  template: '<div asSplitGutterDragHandle suppressDefaultCursor class="custom-hand-gutter-icon"></div>',
   styles: `
     :host {
       width: 100%;

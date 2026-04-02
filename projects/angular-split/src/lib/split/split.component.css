@@ -37,13 +37,19 @@
   touch-action: none;
 
   :host(.as-horizontal) > & {
-    cursor: col-resize;
     height: 100%;
+
+    &:not(.with-handles) {
+      cursor: col-resize;
+    }
   }
 
   :host(.as-vertical) > & {
-    cursor: row-resize;
     width: 100%;
+
+    &:not(.with-handles) {
+      cursor: row-resize;
+    }
   }
 
   :host(.as-disabled) > & {

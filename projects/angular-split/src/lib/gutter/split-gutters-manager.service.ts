@@ -1,4 +1,4 @@
-import { ElementRef, Injectable } from '@angular/core'
+import { ElementRef, Injectable, signal } from '@angular/core'
 
 @Injectable()
 export class SplitGuttersManagerService {
@@ -6,16 +6,20 @@ export class SplitGuttersManagerService {
    * The map holds reference to the drag handle elements inside instances
    * of the provided template.
    */
-  readonly gutterToHandleElementMap = new Map<number, ElementRef<HTMLElement>[]>()
+  private readonly gutterToHandleElementMap = signal(new Map<number, ElementRef<HTMLElement>[]>(), {
+    equal: () => false,
+  })
   /**
    * The map holds reference to the excluded drag elements inside instances
    * of the provided template.
    */
-  readonly gutterToExcludeDragElementMap = new Map<number, ElementRef<HTMLElement>[]>()
+  private readonly gutterToExcludeDragElementMap = signal(new Map<number, ElementRef<HTMLElement>[]>(), {
+    equal: () => false,
+  })
 
   canStartDragging(originElement: HTMLElement, gutterNum: number) {
-    if (this.gutterToExcludeDragElementMap.has(gutterNum)) {
-      const isInsideExclude = this.gutterToExcludeDragElementMap
+    if (this.gutterToExcludeDragElementMap().has(gutterNum)) {
+      const isInsideExclude = this.gutterToExcludeDragElementMap()
         .get(gutterNum)
         .some((gutterExcludeElement) => gutterExcludeElement.nativeElement.contains(originElement))
 
@@ -24,8 +28,8 @@ export class SplitGuttersManagerService {
       }
     }
 
-    if (this.gutterToHandleElementMap.has(gutterNum)) {
-      return this.gutterToHandleElementMap
+    if (this.gutterToHandleElementMap().has(gutterNum)) {
+      return this.gutterToHandleElementMap()
         .get(gutterNum)
         .some((gutterHandleElement) => gutterHandleElement.nativeElement.contains(originElement))
     }
@@ -33,7 +37,39 @@ export class SplitGuttersManagerService {
     return true
   }
 
-  addToMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+  hasDragHandles(gutterNum: number) {
+    return this.gutterToHandleElementMap().has(gutterNum)
+  }
+
+  addDragHandle(gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+    const map = this.gutterToHandleElementMap()
+    this.addToMap(map, gutterNum, elementRef)
+    this.gutterToHandleElementMap.set(map)
+  }
+
+  removeDragHandle(gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+    const map = this.gutterToHandleElementMap()
+    this.removeFromMap(map, gutterNum, elementRef)
+    this.gutterToHandleElementMap.set(map)
+  }
+
+  addExcludeDrag(gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+    const map = this.gutterToExcludeDragElementMap()
+    this.addToMap(map, gutterNum, elementRef)
+    this.gutterToExcludeDragElementMap.set(map)
+  }
+
+  removeExcludeDrag(gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+    const map = this.gutterToExcludeDragElementMap()
+    this.removeFromMap(map, gutterNum, elementRef)
+    this.gutterToExcludeDragElementMap.set(map)
+  }
+
+  private addToMap(
+    map: Map<number, ElementRef<HTMLElement>[]>,
+    gutterNum: number,
+    elementRef: ElementRef<HTMLElement>,
+  ) {
     if (map.has(gutterNum)) {
       map.get(gutterNum).push(elementRef)
     } else {
@@ -41,7 +77,11 @@ export class SplitGuttersManagerService {
     }
   }
 
-  removeFromMap(map: Map<number, ElementRef<HTMLElement>[]>, gutterNum: number, elementRef: ElementRef<HTMLElement>) {
+  private removeFromMap(
+    map: Map<number, ElementRef<HTMLElement>[]>,
+    gutterNum: number,
+    elementRef: ElementRef<HTMLElement>,
+  ) {
     const elements = map.get(gutterNum)
     elements.splice(elements.indexOf(elementRef), 1)
 

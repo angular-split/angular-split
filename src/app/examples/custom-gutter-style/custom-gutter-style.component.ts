@@ -89,12 +89,20 @@ import { CustomGutterComponent } from './custom-gutter.component'
           >
             <div class="custom-collapse-gutter-header">
               @if (!last) {
-                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
+                <div
+                  asSplitGutterExcludeFromDrag
+                  suppressDefaultCursor
+                  (click)="collapseExampleCArea(gutterNum - 1, 'before')"
+                >
                   {{ direction === 'horizontal' ? '◀' : '🔼' }}
                 </div>
               }
               @if (!first) {
-                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
+                <div
+                  asSplitGutterExcludeFromDrag
+                  suppressDefaultCursor
+                  (click)="collapseExampleCArea(gutterNum, 'after')"
+                >
                   {{ direction === 'horizontal' ? '▶' : '🔽' }}
                 </div>
               }

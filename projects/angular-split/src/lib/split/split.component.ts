@@ -102,7 +102,7 @@ export class SplitComponent {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly ngZone = inject(NgZone)
   protected readonly defaultOptions = inject(ANGULAR_SPLIT_DEFAULT_OPTIONS)
-  private readonly guttersManager = inject(SplitGuttersManagerService)
+  protected readonly guttersManager = inject(SplitGuttersManagerService)
 
   private readonly gutterMouseDownSubject = new Subject<MouseDownContext>()
   private readonly dragProgressSubject = new Subject<SplitGutterInteractionEvent>()
