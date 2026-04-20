@@ -39,8 +39,9 @@ export class SplitGutterDynamicInjectorDirective {
 
   static ngTemplateContextGuard(
     _dir: SplitGutterDynamicInjectorDirective,
-    ctx: unknown,
-  ): ctx is SplitGutterDynamicInjectorTemplateContext {
+    _ctx: unknown,
+  ): _ctx is SplitGutterDynamicInjectorTemplateContext {
+    void _ctx
     return true
   }
 }
