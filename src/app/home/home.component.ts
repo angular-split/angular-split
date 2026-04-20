@@ -88,13 +88,15 @@ import { Component, VERSION } from '@angular/core'
         <h5>Bug report:</h5>
         <p>
           If you find a bug, open an issue with a
-          <a href="https://stackblitz.com/fork/angular-split-demo-v19" target="_blank">StackBlitz</a> demo showing it.
+          <a href="https://stackblitz.com/fork/angular-split-demo-v20" target="_blank">StackBlitz</a> demo showing it.
         </p>
         <h5>Credits:</h5>
         <p>
-          This library is built by <a href="https://github.com/bertrandg">Bertrand Gaillard</a> and maintained by
-          <a href="https://github.com/beeman">Bram Borggreve</a>.
+          Maintained by (as of 2024): <a href="https://jefiozie.github.io">Jeffrey Bosch</a>,
+          <a href="https://github.com/SanderElias">Sander Elias</a> and <a href="https://github.com/Harpush">Harpush</a>
         </p>
+        <p>Previously maintained by <a href="https://github.com/beeman">Bram Borggreve</a>.</p>
+        <p>Built by <a href="https://github.com/bertrandg">Bertrand Gaillard</a></p>
       </div>
     </div>
   `,

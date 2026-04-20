@@ -29,7 +29,6 @@ import { TopbarComponent } from './ui/components/topbar.component'
 })
 export class AppComponent {
   router = inject(Router)
-
   constructor() {
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
       window.scrollTo(0, 0)
