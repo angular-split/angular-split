@@ -36,6 +36,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
  */
 @Directive({
   selector: '[asSplitCustomEventsBehavior]',
+  standalone: true,
 })
 export class SplitCustomEventsBehaviorDirective {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)

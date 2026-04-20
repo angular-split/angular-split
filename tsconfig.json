@@ -7,13 +7,12 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
-    "module": "es2020",
+    "module": "preserve",
     "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "ES2022",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
     "paths": {
       "angular-split": ["dist/angular-split"],
       "angular-split/*": ["dist/angular-split/*"]
@@ -21,6 +20,11 @@
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
-    "strictTemplates": true
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true,
+    "preserveSymlinks": true
   }
 }

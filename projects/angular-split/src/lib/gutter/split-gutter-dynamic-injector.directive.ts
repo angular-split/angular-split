@@ -11,12 +11,13 @@ interface SplitGutterDynamicInjectorTemplateContext {
  */
 @Directive({
   selector: '[asSplitGutterDynamicInjector]',
+  standalone: true,
 })
 export class SplitGutterDynamicInjectorDirective {
   private readonly vcr = inject(ViewContainerRef)
   private readonly templateRef = inject<TemplateRef<SplitGutterDynamicInjectorTemplateContext>>(TemplateRef)
 
-  protected readonly gutterNum = input.required<number>({ alias: 'asSplitGutterDynamicInjector' })
+  readonly gutterNum = input.required<number>({ alias: 'asSplitGutterDynamicInjector' })
 
   constructor() {
     effect(() => {
@@ -38,8 +39,9 @@ export class SplitGutterDynamicInjectorDirective {
 
   static ngTemplateContextGuard(
     _dir: SplitGutterDynamicInjectorDirective,
-    ctx: unknown,
-  ): ctx is SplitGutterDynamicInjectorTemplateContext {
+    _ctx: unknown,
+  ): _ctx is SplitGutterDynamicInjectorTemplateContext {
+    void _ctx
     return true
   }
 }

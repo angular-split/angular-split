@@ -27,8 +27,6 @@ export class ChangelogComponent implements OnInit {
 
   changelogHtml$: Observable<string>
 
-  constructor() {}
-
   ngOnInit() {
     this.changelogHtml$ = this.changelogService.getHtml()
   }

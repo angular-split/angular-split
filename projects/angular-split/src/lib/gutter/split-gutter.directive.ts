@@ -1,5 +1,5 @@
 import { Directive, ElementRef, inject, TemplateRef } from '@angular/core'
-import type { SplitAreaComponent } from '../split-area/split-area.component'
+import { SplitAreaComponent } from '../split-area/split-area.component'
 
 export interface SplitGutterTemplateContext {
   /**
@@ -35,6 +35,7 @@ export interface SplitGutterTemplateContext {
 
 @Directive({
   selector: '[asSplitGutter]',
+  standalone: true,
 })
 export class SplitGutterDirective {
   readonly template = inject<TemplateRef<SplitGutterTemplateContext>>(TemplateRef)
@@ -100,7 +101,8 @@ export class SplitGutterDirective {
     }
   }
 
-  static ngTemplateContextGuard(_dir: SplitGutterDirective, ctx: unknown): ctx is SplitGutterTemplateContext {
+  static ngTemplateContextGuard(_dir: SplitGutterDirective, _ctx: unknown): _ctx is SplitGutterTemplateContext {
+    void _ctx
     return true
   }
 }
