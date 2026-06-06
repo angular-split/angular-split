@@ -4,13 +4,14 @@ import {
   SplitAreaSize,
   SplitComponent,
   SplitDirection,
-  SplitGutterDragHandleDirective,
   SplitGutterInteractionEvent,
   SplitGutterDirective,
   SplitGutterExcludeFromDragDirective,
+  provideAngularSplitOptions,
 } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
+import { CustomGutterComponent } from './custom-gutter.component'
 
 @Component({
   selector: 'sp-ex-custom-gutter-style',
@@ -20,9 +21,9 @@ import { AComponent } from '../../ui/components/AComponent'
     SplitComponent,
     ExampleTitleComponent,
     SplitGutterExcludeFromDragDirective,
-    SplitGutterDragHandleDirective,
     SplitGutterDirective,
   ],
+  providers: [provideAngularSplitOptions({ gutterComponent: CustomGutterComponent })],
   styleUrls: [`./custom-gutter-style.component.scss`],
   template: `
     {{ testChangeDetectorRun() }}
@@ -30,9 +31,6 @@ import { AComponent } from '../../ui/components/AComponent'
       <sp-example-title [type]="exampleEnum.STYLE"></sp-example-title>
       <div class="split-example ex-a">
         <as-split [direction]="direction" gutterSize="35">
-          <div *asSplitGutter class="custom-hand-gutter">
-            <div asSplitGutterDragHandle class="custom-hand-gutter-icon"></div>
-          </div>
           <as-split-area [size]="30">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tiam, quis nostrud exercitation
@@ -91,12 +89,20 @@ import { AComponent } from '../../ui/components/AComponent'
           >
             <div class="custom-collapse-gutter-header">
               @if (!last) {
-                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum - 1, 'before')">
+                <div
+                  asSplitGutterExcludeFromDrag
+                  suppressDefaultCursor
+                  (click)="collapseExampleCArea(gutterNum - 1, 'before')"
+                >
                   {{ direction === 'horizontal' ? '◀' : '🔼' }}
                 </div>
               }
               @if (!first) {
-                <div asSplitGutterExcludeFromDrag (click)="collapseExampleCArea(gutterNum, 'after')">
+                <div
+                  asSplitGutterExcludeFromDrag
+                  suppressDefaultCursor
+                  (click)="collapseExampleCArea(gutterNum, 'after')"
+                >
                   {{ direction === 'horizontal' ? '▶' : '🔽' }}
                 </div>
               }

@@ -1,20 +1,27 @@
-import { Directive, OnDestroy, ElementRef, inject } from '@angular/core'
-import { SplitGutterDirective } from './split-gutter.directive'
+import { Directive, OnDestroy, ElementRef, inject, input, booleanAttribute, computed } from '@angular/core'
 import { GUTTER_NUM_TOKEN } from './gutter-num-token'
+import { SplitGuttersManagerService } from './split-gutters-manager.service'
 
 @Directive({
   selector: '[asSplitGutterExcludeFromDrag]',
+  host: {
+    '[style.cursor]': `cursor()`,
+  },
 })
 export class SplitGutterExcludeFromDragDirective implements OnDestroy {
   private readonly gutterNum = inject(GUTTER_NUM_TOKEN)
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
-  private readonly gutterDir = inject(SplitGutterDirective)
+  private readonly guttersManager = inject(SplitGuttersManagerService)
+
+  readonly suppressDefaultCursor = input(false, { transform: booleanAttribute })
+
+  cursor = computed(() => (this.suppressDefaultCursor() ? undefined : 'default'))
 
   constructor() {
-    this.gutterDir._addToMap(this.gutterDir._gutterToExcludeDragElementMap, this.gutterNum, this.elementRef)
+    this.guttersManager.addExcludeDrag(this.gutterNum, this.elementRef)
   }
 
   ngOnDestroy(): void {
-    this.gutterDir._removedFromMap(this.gutterDir._gutterToExcludeDragElementMap, this.gutterNum, this.elementRef)
+    this.guttersManager.removeExcludeDrag(this.gutterNum, this.elementRef)
   }
 }

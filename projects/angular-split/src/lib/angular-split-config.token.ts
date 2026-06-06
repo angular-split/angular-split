@@ -1,5 +1,6 @@
-import { InjectionToken, Provider, inject } from '@angular/core'
+import { InjectionToken, type Provider, type Type, inject } from '@angular/core'
 import type { SplitDir, SplitDirection, SplitUnit } from './models'
+import type { SplitGutterComponent } from './gutter/split-gutter-component'
 
 export interface AngularSplitDefaultOptions {
   dir: SplitDir
@@ -12,6 +13,7 @@ export interface AngularSplitDefaultOptions {
   restrictMove: boolean
   unit: SplitUnit
   useTransition: boolean
+  gutterComponent: Type<SplitGutterComponent> | undefined
 }
 
 const defaultOptions: AngularSplitDefaultOptions = {
@@ -25,6 +27,7 @@ const defaultOptions: AngularSplitDefaultOptions = {
   restrictMove: false,
   unit: 'percent',
   useTransition: false,
+  gutterComponent: undefined,
 }
 
 export const ANGULAR_SPLIT_DEFAULT_OPTIONS = new InjectionToken<AngularSplitDefaultOptions>(
