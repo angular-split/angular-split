@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "ignoreDeprecations": "6.0",
     "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "esModuleInterop": true,
@@ -13,10 +13,10 @@
     "experimentalDecorators": true,
     "target": "ES2022",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
     "paths": {
-      "angular-split": ["dist/angular-split"],
-      "angular-split/*": ["dist/angular-split/*"]
+      "angular-split": ["./dist/angular-split"],
+      "angular-split/*": ["./dist/angular-split/*"],
+      "src/*": ["./src/*"]
     },
     "useDefineForClassFields": false
   },

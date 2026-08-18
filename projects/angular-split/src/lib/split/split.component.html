@@ -39,7 +39,7 @@
             <ng-container *ngTemplateOutlet="tpl; context: context; injector: injector"></ng-container>
           } @else {
             <ng-container
-              *ngComponentOutlet="defaultOptions.gutterComponent; inputs: { context }; injector: injector"
+              *ngComponentOutlet="defaultOptions.gutterComponent ?? null; inputs: { context }; injector: injector"
             ></ng-container>
           }
         </ng-container>

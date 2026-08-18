@@ -18,20 +18,22 @@ export class SplitGuttersManagerService {
   })
 
   canStartDragging(originElement: HTMLElement, gutterNum: number) {
-    if (this.gutterToExcludeDragElementMap().has(gutterNum)) {
-      const isInsideExclude = this.gutterToExcludeDragElementMap()
-        .get(gutterNum)
-        .some((gutterExcludeElement) => gutterExcludeElement.nativeElement.contains(originElement))
+    const excludeElements = this.gutterToExcludeDragElementMap().get(gutterNum)
+
+    if (excludeElements) {
+      const isInsideExclude = excludeElements.some((gutterExcludeElement) =>
+        gutterExcludeElement.nativeElement.contains(originElement),
+      )
 
       if (isInsideExclude) {
         return false
       }
     }
 
-    if (this.gutterToHandleElementMap().has(gutterNum)) {
-      return this.gutterToHandleElementMap()
-        .get(gutterNum)
-        .some((gutterHandleElement) => gutterHandleElement.nativeElement.contains(originElement))
+    const handleElements = this.gutterToHandleElementMap().get(gutterNum)
+
+    if (handleElements) {
+      return handleElements.some((gutterHandleElement) => gutterHandleElement.nativeElement.contains(originElement))
     }
 
     return true
@@ -70,8 +72,10 @@ export class SplitGuttersManagerService {
     gutterNum: number,
     elementRef: ElementRef<HTMLElement>,
   ) {
-    if (map.has(gutterNum)) {
-      map.get(gutterNum).push(elementRef)
+    const elements = map.get(gutterNum)
+
+    if (elements) {
+      elements.push(elementRef)
     } else {
       map.set(gutterNum, [elementRef])
     }
@@ -83,6 +87,11 @@ export class SplitGuttersManagerService {
     elementRef: ElementRef<HTMLElement>,
   ) {
     const elements = map.get(gutterNum)
+
+    if (!elements) {
+      return
+    }
+
     elements.splice(elements.indexOf(elementRef), 1)
 
     if (elements.length === 0) {

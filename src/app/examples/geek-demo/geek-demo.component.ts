@@ -188,7 +188,7 @@ import { AComponent } from '../../ui/components/AComponent'
   `,
 })
 export class GeekDemoComponent extends AComponent {
-  readonly sortableComponent = viewChild(SortableComponent)
+  readonly sortableComponent = viewChild.required(SortableComponent)
   @HostBinding('class') class = 'split-example-page'
 
   d: {
@@ -215,7 +215,7 @@ export class GeekDemoComponent extends AComponent {
     ],
   }
 
-  trackByFct(index, area) {
+  trackByFct(index: number, area: { id: number }) {
     return area.id
   }
 
@@ -240,12 +240,20 @@ export class GeekDemoComponent extends AComponent {
   }
 
   hideArea(area: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }) {
-    this.d.areas.find((a) => a === area).visible = false
+    const found = this.d.areas.find((a) => a === area)
+
+    if (found) {
+      found.visible = false
+    }
     this.alignAreaSizes()
   }
 
   showArea(area: { id: number; color: string; size: SplitAreaSize; present: boolean; visible: boolean }) {
-    this.d.areas.find((a) => a === area).visible = true
+    const found = this.d.areas.find((a) => a === area)
+
+    if (found) {
+      found.visible = true
+    }
     this.alignAreaSizes()
   }
 

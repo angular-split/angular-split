@@ -54,13 +54,13 @@ import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.compon
 })
 export class SyncSplitComponent extends AComponent implements AfterViewInit, OnDestroy {
   private z = inject(ChangeDetectorRef)
-  readonly mySplitAEl = viewChild<SplitComponent>('mySplitA')
-  readonly mySplitBEl = viewChild<SplitComponent>('mySplitB')
-  readonly mySplitCEl = viewChild<SplitComponent>('mySplitC')
+  readonly mySplitAEl = viewChild.required<SplitComponent>('mySplitA')
+  readonly mySplitBEl = viewChild.required<SplitComponent>('mySplitB')
+  readonly mySplitCEl = viewChild.required<SplitComponent>('mySplitC')
   @HostBinding('class') class = 'split-example-page'
 
   sizes = signal<SplitAreaSize[]>([25, 75])
-  sub: Subscription
+  sub!: Subscription
 
   ngAfterViewInit() {
     this.sub = merge(

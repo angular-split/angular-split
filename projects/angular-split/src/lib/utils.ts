@@ -9,7 +9,9 @@ export interface ClientPoint {
 /**
  * Only supporting a single {@link TouchEvent} point
  */
-export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent): ClientPoint {
+export function getPointFromEvent(event: MouseEvent | KeyboardEvent): ClientPoint
+export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent): ClientPoint | undefined
+export function getPointFromEvent(event: MouseEvent | TouchEvent | KeyboardEvent): ClientPoint | undefined {
   // NOTE: In firefox TouchEvent is only defined for touch capable devices
   const isTouchEvent = (e: typeof event): e is TouchEvent => window.TouchEvent && event instanceof TouchEvent
 
@@ -57,6 +59,10 @@ export function gutterEventsEqualWithDelta(
 
   const startPoint = getPointFromEvent(startEvent)
   const endPoint = getPointFromEvent(endEvent)
+
+  if (!startPoint || !endPoint) {
+    return false
+  }
 
   return Math.abs(endPoint.x - startPoint.x) <= deltaInPx && Math.abs(endPoint.y - startPoint.y) <= deltaInPx
 }

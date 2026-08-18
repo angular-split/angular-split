@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ChangeDetectionStrategy } from '@angular/core'
 
 @Component({
   selector: 'sp-doc',
@@ -29,6 +29,7 @@ import { Component } from '@angular/core'
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './documentation.component.html',
 })
 export class DocumentationComponent {

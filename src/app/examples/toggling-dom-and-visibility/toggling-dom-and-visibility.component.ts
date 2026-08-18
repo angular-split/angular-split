@@ -109,7 +109,7 @@ export class TogglingDomAndVisibleComponent extends AComponent {
     logs: '',
   }
 
-  log(eventName, e) {
+  log(eventName: string, e: unknown) {
     this.action.logs = `${new Date()}: ${eventName} > ${e}\n${this.action.logs}`
   }
 }

@@ -1,5 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostBinding, viewChild } from '@angular/core'
-import { SplitAreaComponent, SplitComponent, SplitDirection } from 'angular-split'
+import {
+  SplitAreaComponent,
+  SplitAreaSize,
+  SplitComponent,
+  SplitDirection,
+  SplitGutterInteractionEvent,
+} from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
@@ -169,7 +175,11 @@ export class SimpleSplitComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'
 
   direction: SplitDirection = 'horizontal'
-  sizes = {
+  sizes: {
+    percentWithoutWildcards: { area1: SplitAreaSize; area2: SplitAreaSize }
+    percentWithWildcards: { area1: SplitAreaSize; area2: SplitAreaSize; area3: SplitAreaSize }
+    pixel: { area1: SplitAreaSize; area2: SplitAreaSize; area3: SplitAreaSize }
+  } = {
     percentWithoutWildcards: {
       area1: 30,
       area2: 70,
@@ -196,18 +206,18 @@ export class SimpleSplitComponent extends AComponent {
     }, 1000)
   }
 
-  dragEndPercentWithoutWildcards({ sizes }) {
+  dragEndPercentWithoutWildcards({ sizes }: SplitGutterInteractionEvent) {
     this.sizes.percentWithoutWildcards.area1 = sizes[0]
     this.sizes.percentWithoutWildcards.area2 = sizes[1]
   }
 
-  dragEndPercentWithWildcards({ sizes }) {
+  dragEndPercentWithWildcards({ sizes }: SplitGutterInteractionEvent) {
     this.sizes.percentWithWildcards.area1 = sizes[0]
     this.sizes.percentWithWildcards.area2 = sizes[1]
     this.sizes.percentWithWildcards.area3 = sizes[2]
   }
 
-  dragEndPixel({ sizes }) {
+  dragEndPixel({ sizes }: SplitGutterInteractionEvent) {
     this.sizes.pixel.area1 = sizes[0]
     this.sizes.pixel.area2 = sizes[1]
     this.sizes.pixel.area3 = sizes[2]
