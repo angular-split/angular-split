@@ -69,6 +69,7 @@ interface AreaBoundary {
 
 interface DragStartContext {
   startEvent: MouseEvent | TouchEvent | KeyboardEvent
+  gutterIndex: number
   areasPixelSizes: number[]
   totalAreasPixelSize: number
   areaIndexToBoundaries: Record<number, AreaBoundary>
@@ -153,7 +154,7 @@ export class SplitComponent {
       ['as-transition']: this.useTransition() && !this._isDragging(),
     }),
   )
-  protected readonly draggedGutterIndex = signal<number>(undefined)
+  protected readonly draggedGutterIndex = signal<number | undefined>(undefined)
   /**
    * @internal
    */
@@ -224,6 +225,7 @@ export class SplitComponent {
             map(([prevMouseEvent]) =>
               this.createDragStartContext(
                 prevMouseEvent,
+                mouseDownContext.gutterIndex,
                 mouseDownContext.areaBeforeGutterIndex,
                 mouseDownContext.areaAfterGutterIndex,
               ),
@@ -235,7 +237,7 @@ export class SplitComponent {
                 tap({
                   complete: () =>
                     this.ngZone.run(() => {
-                      this.dragEnd.emit(this.createDragInteractionEvent(this.draggedGutterIndex()))
+                      this.dragEnd.emit(this.createDragInteractionEvent(mouseDownContext.gutterIndex))
                       this.draggedGutterIndex.set(undefined)
                     }),
                 }),
@@ -352,7 +354,7 @@ export class SplitComponent {
     e.stopPropagation()
 
     const gutterMidPoint = getPointFromEvent(e)
-    const dragStartContext = this.createDragStartContext(e, areaBeforeGutterIndex, areaAfterGutterIndex)
+    const dragStartContext = this.createDragStartContext(e, gutterIndex, areaBeforeGutterIndex, areaAfterGutterIndex)
 
     this.ngZone.run(() => {
       this.dragStart.emit(this.createDragInteractionEvent(gutterIndex))
@@ -377,7 +379,7 @@ export class SplitComponent {
     }
   }
 
-  protected getAriaAreaSizeText(area: SplitAreaComponent): string {
+  protected getAriaAreaSizeText(area: SplitAreaComponent): string | undefined {
     const size = area._internalSize()
 
     if (size === '*') {
@@ -404,6 +406,7 @@ export class SplitComponent {
 
   private createDragStartContext(
     startEvent: MouseEvent | TouchEvent | KeyboardEvent,
+    gutterIndex: number,
     areaBeforeGutterIndex: number,
     areaAfterGutterIndex: number,
   ): DragStartContext {
@@ -432,6 +435,7 @@ export class SplitComponent {
 
     return {
       startEvent,
+      gutterIndex,
       areaBeforeGutterIndex,
       areaAfterGutterIndex,
       areasPixelSizes,
@@ -461,11 +465,20 @@ export class SplitComponent {
 
     const endPoint = getPointFromEvent(moveEvent)
 
+    if (!endPoint) {
+      return
+    }
+
     this.dragMoveToPoint(endPoint, dragStartContext)
   }
 
   private dragMoveToPoint(endPoint: ClientPoint, dragStartContext: DragStartContext) {
     const startPoint = getPointFromEvent(dragStartContext.startEvent)
+
+    if (!startPoint) {
+      return
+    }
+
     const preDirOffset = this.direction() === 'horizontal' ? endPoint.x - startPoint.x : endPoint.y - startPoint.y
     const offset = this.direction() === 'horizontal' && this.dir() === 'rtl' ? -preDirOffset : preDirOffset
     const isDraggingForward = offset > 0
@@ -545,7 +558,7 @@ export class SplitComponent {
       }
     })
 
-    this.dragProgressSubject.next(this.createDragInteractionEvent(this.draggedGutterIndex()))
+    this.dragProgressSubject.next(this.createDragInteractionEvent(dragStartContext.gutterIndex))
   }
 
   private createGridTemplateColumnsStyle(): string {

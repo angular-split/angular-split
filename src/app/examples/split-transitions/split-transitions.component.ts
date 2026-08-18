@@ -259,10 +259,10 @@ export class SplitTransitionsComponent extends AComponent {
   }
   logMessages: Array<{ type: string; text: string }> = []
 
-  readonly logsEl = viewChild<ElementRef>('logs')
+  readonly logsEl = viewChild.required<ElementRef>('logs')
   @HostBinding('class') class = 'split-example-page'
 
-  log(e) {
+  log(e: SplitAreaSize[]) {
     this.logMessages.push({ type: 'transitionEnd', text: `${formatDate(new Date())} > transitionEnd event > ${e}` })
     setTimeout(() => {
       const logsEl = this.logsEl()

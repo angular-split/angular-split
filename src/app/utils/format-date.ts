@@ -1,4 +1,4 @@
-export function formatDate(date) {
+export function formatDate(date: Date) {
   const hour = date.getHours()
   const minute = date.getMinutes()
   const second = date.getSeconds()

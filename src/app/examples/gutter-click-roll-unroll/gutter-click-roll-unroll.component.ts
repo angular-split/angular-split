@@ -132,10 +132,10 @@ export class GutterClickRollUnrollComponent extends AComponent implements AfterV
     { size: '*', order: 2, content: 'sd h vdshhf deuyf gduyeg hudeg hudfg  fd vifdk hvdkuh fg' },
     { size: 25, order: 3, content: 'sd jslfd ijgil dfhlt jkgvbnhj fl bhjgflh jfglhj fl h fg' },
   ]
-  sub: Subscription
+  sub!: Subscription
 
-  readonly mySplitEl = viewChild<SplitComponent>('mySplit')
-  readonly logsEl = viewChild<ElementRef>('logs')
+  readonly mySplitEl = viewChild.required<SplitComponent>('mySplit')
+  readonly logsEl = viewChild.required<ElementRef>('logs')
 
   ngAfterViewInit() {
     this.sub = this.mySplitEl().dragProgress$.subscribe((data) => {

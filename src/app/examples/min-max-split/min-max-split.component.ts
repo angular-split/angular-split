@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core'
-import { SplitAreaComponent, SplitComponent } from 'angular-split'
+import { SplitAreaComponent, SplitComponent, SplitGutterInteractionEvent } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
@@ -139,12 +139,12 @@ export class MinMaxSplitComponent extends AComponent {
 
   restrictMove = false
 
-  log(x) {
+  log(x: SplitGutterInteractionEvent) {
     console.log(
       'dragEnd ',
       x.sizes,
       ' total > ',
-      x.sizes.reduce((t, s) => t + s, 0),
+      x.sizes.reduce((t: number, s) => t + (s === '*' ? 0 : s), 0),
     )
   }
 }

@@ -150,11 +150,13 @@ const defaultConfig: IConfig = {
 })
 export class WorkspaceLocalstorageComponent extends AComponent implements OnInit {
   localStorageName = 'angular-split-ws'
-  config: IConfig = null
+  config!: IConfig
 
   ngOnInit() {
-    if (localStorage.getItem(this.localStorageName)) {
-      this.config = JSON.parse(localStorage.getItem(this.localStorageName))
+    const savedConfig = localStorage.getItem(this.localStorageName)
+
+    if (savedConfig) {
+      this.config = JSON.parse(savedConfig)
     } else {
       this.resetConfig()
     }

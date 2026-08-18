@@ -26,7 +26,7 @@ import { ChangelogService } from './changelog.service'
 export class ChangelogComponent implements OnInit {
   private changelogService = inject(ChangelogService)
 
-  changelogHtml$: Observable<string>
+  changelogHtml$!: Observable<string>
 
   constructor() {}
 

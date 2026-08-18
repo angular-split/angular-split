@@ -96,7 +96,7 @@ export class AccessFromClassComponent extends AComponent implements AfterViewIni
   direction: SplitDirection = 'horizontal'
   disabled = false
   dir: SplitDir = 'ltr'
-  gutterSize = 11
+  gutterSize: number | null = 11
 
   ngAfterViewInit() {
     console.log('Area Components: ', this.areasEl())

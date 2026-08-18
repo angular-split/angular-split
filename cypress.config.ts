@@ -1,5 +1,4 @@
 import { defineConfig } from 'cypress'
-import { trimEnd } from 'cypress/types/lodash'
 
 export default defineConfig({
   viewportWidth: 1200,

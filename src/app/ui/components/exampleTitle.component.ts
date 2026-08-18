@@ -28,13 +28,13 @@ import { exampleRoutes } from '../../examples/examples.routes'
 })
 export class ExampleTitleComponent {
   exampleEnum = ExampleEnum
-  label: SafeHtml
-  url: SafeResourceUrl
+  label!: SafeHtml
+  url!: SafeResourceUrl
   private sanitizer = inject(DomSanitizer)
 
   @Input() set type(v: ExampleEnum) {
-    const ex = exampleRoutes.find((e) => e.data.type === v)
-    if (!ex) {
+    const ex = exampleRoutes.find((e) => e.data?.type === v)
+    if (!ex?.data) {
       return
     }
 
