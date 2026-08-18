@@ -77,7 +77,7 @@ import { exampleRoutes } from '../../examples/examples.routes'
                 <a
                   class="dropdown-item"
                   [routerLink]="['/examples', ex.path]"
-                  [innerHTML]="transform(ex?.data?.label)"
+                  [innerHTML]="transform($safeNavigationMigration(ex?.data?.label))"
                 ></a>
               </li>
             }

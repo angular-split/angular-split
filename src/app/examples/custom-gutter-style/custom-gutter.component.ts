@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core'
+import { Component, computed, inject, input, ChangeDetectionStrategy } from '@angular/core'
 import { SplitComponent, SplitGutterComponent, SplitGutterContext, SplitGutterDragHandleDirective } from 'angular-split'
 
 @Component({
@@ -47,6 +47,7 @@ import { SplitComponent, SplitGutterComponent, SplitGutterContext, SplitGutterDr
     }
   `,
   imports: [SplitGutterDragHandleDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     '[class]': 'splitComponent.direction()',
     '[style.background-color]': 'bgColor()',

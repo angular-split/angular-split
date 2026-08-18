@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core'
+import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core'
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser'
 import { ExampleEnum } from '../../examples/example-types'
 import { exampleRoutes } from '../../examples/examples.routes'
@@ -17,6 +17,7 @@ import { exampleRoutes } from '../../examples/examples.routes'
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <h4>
       <div [innerHTML]="label"></div>

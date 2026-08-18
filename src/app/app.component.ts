@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core'
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router'
 import { filter } from 'rxjs/operators'
 import { TopbarComponent } from './ui/components/topbar.component'
@@ -20,6 +20,7 @@ import { TopbarComponent } from './ui/components/topbar.component'
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <sp-topbar></sp-topbar>
     <div>

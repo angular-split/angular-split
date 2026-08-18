@@ -1,4 +1,4 @@
-import { Component, VERSION } from '@angular/core'
+import { Component, VERSION, ChangeDetectionStrategy } from '@angular/core'
 
 @Component({
   selector: 'sp-home',
@@ -26,6 +26,7 @@ import { Component, VERSION } from '@angular/core'
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="container">
       <div class="jumbotron">

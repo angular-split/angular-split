@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core'
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core'
 import { Observable } from 'rxjs'
 
 import { AsyncPipe } from '@angular/common'
@@ -16,6 +16,7 @@ import { ChangelogService } from './changelog.service'
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="container">
       <div [innerHTML]="changelogHtml$ | async"></div>
