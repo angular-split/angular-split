@@ -22,5 +22,6 @@
   },
   "angularCompilerOptions": {
     "strictTemplates": true
-  }
+  },
+  "exclude": ["cypress", "cypress.config.ts"]
 }

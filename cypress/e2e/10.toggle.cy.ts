@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 import { moveGutterByMouse, checkSplitDirAndSizes } from '../support/splitUtils'
 
@@ -49,6 +49,6 @@ context('Toggling DOM and visibility example page tests', () => {
   })
 })
 
-function getVisibilityButton(index) {
+function getVisibilityButton(index: number): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get('.btn-group:first').find('> .btn').eq(index)
 }

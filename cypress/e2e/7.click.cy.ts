@@ -1,8 +1,22 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 import { moveGutterByMouse, checkSplitDirAndSizes } from '../support/splitUtils'
 
-function checkEventCount({ dragStartCount, dragEndCount, gutterClickCount, gutterDblClickCount, transitionEndCount }) {
+interface GutterEventCounts {
+  dragStartCount?: number
+  dragEndCount?: number
+  gutterClickCount?: number
+  gutterDblClickCount?: number
+  transitionEndCount?: number
+}
+
+function checkEventCount({
+  dragStartCount,
+  dragEndCount,
+  gutterClickCount,
+  gutterDblClickCount,
+  transitionEndCount,
+}: GutterEventCounts): void {
   if (dragStartCount !== undefined) {
     cy.get('.logs ul li').filter('.dragStart').should('have.length', dragStartCount)
   }

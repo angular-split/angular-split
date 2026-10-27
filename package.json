@@ -18,6 +18,7 @@
     "lint_lib": "wireit",
     "lint_app": "wireit",
     "lint": "wireit",
+    "cypress_typecheck": "wireit",
     "ng": "ng",
     "start": "wireit",
     "prepare": "husky install",
@@ -127,9 +128,20 @@
     "test_ci": {
       "dependencies": [
         "build",
+        "cypress_typecheck",
         "cypress_serve",
         "cypress_run"
       ]
+    },
+    "cypress_typecheck": {
+      "command": "tsc -p cypress/tsconfig.json --noEmit --pretty false",
+      "files": [
+        "cypress/**/*.ts",
+        "cypress/tsconfig.json",
+        "cypress.config.ts",
+        "tsconfig.json"
+      ],
+      "output": []
     },
     "ng_serve": {
       "command": "ng serve --port 4242",

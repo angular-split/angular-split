@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 import { moveGutterByMouse, checkSplitDirAndSizes } from '../support/splitUtils'
 
@@ -276,14 +276,14 @@ context('Geek demo example page tests', () => {
   })
 })
 
-function checkAreaOrder() {
+function checkAreaOrder(): void {
   // Retrieve all as-split-area displayed in order
-  cy.get('.as-split-area').then(($splitAreas) => {
-    const splitAreasNum = $splitAreas.map((i, $el) => $el.textContent)
+  cy.get('.as-split-area').then(($splitAreas: JQuery<HTMLElement>) => {
+    const splitAreasNum = $splitAreas.map((_i, $el) => $el.textContent)
 
     // Retrieve all listed areas displayed in order
-    cy.get('.opts-area div[draggable="true"] .num').then(($controlAreas) => {
-      const controlAreasNum = $controlAreas.map((i, $el) => $el.textContent)
+    cy.get('.opts-area div[draggable="true"] .num').then(($controlAreas: JQuery<HTMLElement>) => {
+      const controlAreasNum = $controlAreas.map((_i, $el) => $el.textContent)
 
       // Compare 2 lists > should be the same
       expect(splitAreasNum.get()).to.deep.eq(controlAreasNum.get())
@@ -291,7 +291,7 @@ function checkAreaOrder() {
   })
 }
 
-function moveArea(numArea, gap) {
+function moveArea(numArea: number, gap: number): void {
   cy.get('.opts-area div[draggable="true"]')
     .eq(numArea)
     .as('movedItem')

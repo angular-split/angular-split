@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress" />
 
 import {
   moveGutterByMouse,
@@ -255,15 +255,20 @@ context('Min & max splits example page tests', () => {
   })
 })
 
-function checkAreasClasses(sel, all) {
-  cy.get(sel).then(($areas) => {
+interface AreaClassExpectation {
+  haveTo: string[]
+  notHaveTo: string[]
+}
+
+function checkAreasClasses(sel: string, all: AreaClassExpectation[]): void {
+  cy.get(sel).then(($areas: JQuery<HTMLElement>) => {
     all.forEach((item, index) => {
       checkAreaClasses($areas.eq(index), item.haveTo, item.notHaveTo)
     })
   })
 }
 
-function checkAreaClasses($area, haveTo, notHaveTo) {
+function checkAreaClasses($area: JQuery<HTMLElement>, haveTo: string[], notHaveTo: string[]): void {
   console.log('$area, haveTo, notHaveTo', $area, haveTo, notHaveTo)
   haveTo.forEach((cl) => cy.wrap($area).should('have.class', cl))
   notHaveTo.forEach((cl) => cy.wrap($area).should('not.have.class', cl))
