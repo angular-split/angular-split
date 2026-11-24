@@ -5,6 +5,84 @@ Angular UI library to split views and allow dragging to resize areas using CSS g
 Documentation and examples:
 [https://angular-split.github.io](https://angular-split.github.io)
 
+## Requirements
+
+For angular-split 20, use an existing application with Angular 19 or later and RxJS 7 or later. These are the library's
+[peer dependencies](projects/angular-split/package.json). If your application uses an older Angular version, choose a
+compatible angular-split release instead.
+
+## Installation
+
+From your Angular application's directory, install the library:
+
+```shell
+npm install angular-split
+```
+
+## Basic usage
+
+Import `SplitComponent` and `SplitAreaComponent` in the standalone component where you want to display the split view:
+
+```typescript
+import { Component } from '@angular/core'
+import { SplitAreaComponent, SplitComponent } from 'angular-split'
+
+@Component({
+  selector: 'app-split-example',
+  standalone: true,
+  imports: [SplitComponent, SplitAreaComponent],
+  template: `
+    <div class="split-example">
+      <as-split direction="horizontal" gutterAriaLabel="Resize navigation and content">
+        <as-split-area [size]="30">
+          <p>Navigation</p>
+        </as-split-area>
+        <as-split-area [size]="70">
+          <p>Content</p>
+        </as-split-area>
+      </as-split>
+    </div>
+  `,
+  styles: `
+    .split-example {
+      width: 100%;
+      height: 300px;
+    }
+  `,
+})
+export class SplitExampleComponent {}
+```
+
+Use `<app-split-example />` in a parent component's template and add `SplitExampleComponent` to that parent's `imports`.
+The two areas start at 30% and 70% of the available space. Drag the divider between them to resize the areas.
+
+The split view fills its container, so give the container a height as shown above. Set `direction="vertical"` to stack the
+areas from top to bottom instead of side by side.
+
+For an NgModule-based application, import `AngularSplitModule` in the module that declares the component using the split
+view:
+
+```typescript
+import { NgModule } from '@angular/core'
+import { AngularSplitModule } from 'angular-split'
+
+@NgModule({
+  imports: [AngularSplitModule],
+})
+export class AppModule {}
+```
+
+See the [documentation and examples](https://angular-split.github.io) for nested layouts, minimum and maximum area sizes,
+and custom gutters.
+
+## Contributing
+
+Read the [contributing guide](CONTRIBUTING.md) for development setup, coding conventions, and pull request instructions.
+
+## License
+
+Licensed under the [Apache License 2.0](LICENSE).
+
 ## Credits
 
 ### Built by [Bertrand Gaillard](https://github.com/bertrandg)
