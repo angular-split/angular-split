@@ -13,6 +13,7 @@ import {
   inject,
   input,
   isDevMode,
+  linkedSignal,
   output,
   signal,
   DOCUMENT,
@@ -106,6 +107,8 @@ export class SplitComponent {
 
   private readonly gutterMouseDownSubject = new Subject<MouseDownContext>()
   private readonly dragProgressSubject = new Subject<SplitGutterInteractionEvent>()
+  private resizedAreaSizes = new WeakMap<SplitAreaComponent, SplitAreaSize>()
+  private isInputSizeFeedback = false
 
   /**
    * @internal
@@ -162,7 +165,35 @@ export class SplitComponent {
    * @internal
    * Should only be used by {@link SplitAreaComponent._internalSize}
    */
-  readonly _alignedVisibleAreasSizes = computed(() => this.createAlignedVisibleAreasSize())
+  readonly _alignedVisibleAreasSizes = linkedSignal({
+    source: () => ({
+      areas: this._visibleAreas(),
+      sizes: this._visibleAreas().map((area) => area.size()),
+      unit: this.unit(),
+    }),
+    computation: (source, previous) => {
+      // A two-way binding writes emitted sizes back into the inputs. Keep the
+      // current layout when those are the only changes, even if only some areas
+      // are bound and the input sizes no longer add up to 100%.
+      this.isInputSizeFeedback =
+        previous !== undefined &&
+        source.unit === previous.source.unit &&
+        source.areas.length === previous.source.areas.length &&
+        source.areas.every(
+          (area, index) =>
+            area === previous.source.areas[index] &&
+            (Object.is(source.sizes[index], previous.source.sizes[index]) ||
+              source.sizes[index] === this.resizedAreaSizes.get(area)),
+        )
+
+      if (this.isInputSizeFeedback) {
+        return previous.value
+      }
+
+      this.resizedAreaSizes = new WeakMap()
+      return this.createAlignedVisibleAreasSize()
+    },
+  })
 
   constructor() {
     if (isDevMode()) {
@@ -172,6 +203,11 @@ export class SplitComponent {
         //  because we want to run this after all processing is done.
         //  and we are not updating anything in the DOM
         read: () => {
+          this._alignedVisibleAreasSizes()
+          if (this.isInputSizeFeedback) {
+            return
+          }
+
           // Special mode when no size input was declared which is a valid mode
           if (this.unit() === 'percent' && this._visibleAreas().every((area) => area.size() === 'auto')) {
             return
@@ -530,12 +566,14 @@ export class SplitComponent {
       }
     }
 
+    const changedAreas: { area: SplitAreaComponent; size: SplitAreaSize }[] = []
     this._areas().forEach((area, index) => {
       // No need to update wildcard size
-      if (area._internalSize() === '*') {
+      if (!area.visible() || area._internalSize() === '*') {
         return
       }
 
+      const previousSize = area._internalSize()
       if (this.unit() === 'pixel') {
         area._internalSize.set(tempAreasPixelSizes[index])
       } else {
@@ -543,7 +581,17 @@ export class SplitComponent {
         // Fix javascript only working with float numbers which are inaccurate compared to decimals
         area._internalSize.set(parseFloat(percentSize.toFixed(10)))
       }
+
+      const size = area._internalSize()
+      if (size !== previousSize) {
+        changedAreas.push({ area, size })
+      }
     })
+
+    // Capture the complete resize before notifying consumers. A subscriber may
+    // synchronously trigger change detection or update another area's input.
+    changedAreas.forEach(({ area, size }) => this.resizedAreaSizes.set(area, size))
+    changedAreas.forEach(({ area, size }) => area._emitSizeChange(size))
 
     this.dragProgressSubject.next(this.createDragInteractionEvent(this.draggedGutterIndex()))
   }

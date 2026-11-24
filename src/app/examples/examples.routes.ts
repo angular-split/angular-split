@@ -17,6 +17,15 @@ export const exampleRoutes: Routes = [
   },
   {
     data: {
+      type: ExampleEnum.SIZE_BINDING,
+      label: 'Two-way size binding',
+      srcUrl: `${srcUrlBaseApp}/size-binding/size-binding.component.ts`,
+    },
+    path: 'size-binding',
+    loadComponent: () => import('./size-binding/size-binding.component').then((m) => m.SizeBindingComponent),
+  },
+  {
+    data: {
       type: ExampleEnum.MINMAX,
       label: 'Split with minSize & maxSize',
       srcUrl: `${srcUrlBaseApp}/min-max-split/min-max-split.component.ts`,

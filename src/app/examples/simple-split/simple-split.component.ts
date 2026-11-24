@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, viewChild } from '@angular/core'
-import { SplitAreaComponent, SplitComponent, SplitDirection } from 'angular-split'
+import { SplitAreaComponent, SplitComponent, SplitDirection, SplitAreaSize } from 'angular-split'
 import { ExampleTitleComponent } from 'src/app/ui/components/exampleTitle.component'
 import { AComponent } from '../../ui/components/AComponent'
 
@@ -27,10 +27,9 @@ import { AComponent } from '../../ui/components/AComponent'
           unit="percent"
           [direction]="direction"
           gutterAriaLabel="adjustable divider between two views"
-          (dragEnd)="dragEndPercentWithoutWildcards($event)"
           #split="asSplit"
         >
-          <as-split-area size="30" #area1="asSplitArea">
+          <as-split-area [(size)]="sizes.percentWithoutWildcards.area1" #area1="asSplitArea">
             <h5>Initial size: <b>30%</b></h5>
             <h5>
               Current size: <b>{{ sizes.percentWithoutWildcards.area1 }}%</b>
@@ -41,7 +40,7 @@ import { AComponent } from '../../ui/components/AComponent'
               voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             </p>
           </as-split-area>
-          <as-split-area size="70" #area2="asSplitArea">
+          <as-split-area [(size)]="sizes.percentWithoutWildcards.area2" #area2="asSplitArea">
             <h5>Initial size: <b>70%</b></h5>
             <h5>
               Current size: <b>{{ sizes.percentWithoutWildcards.area2 }}%</b>
@@ -61,13 +60,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
       <h5>Percent mode (With wildcards):</h5>
       <div class="split-example ex-percent-wc">
-        <as-split
-          unit="percent"
-          [direction]="direction"
-          gutterAriaLabel="adjustable divider between two views"
-          (dragEnd)="dragEndPercentWithWildcards($event)"
-        >
-          <as-split-area size="*">
+        <as-split unit="percent" [direction]="direction" gutterAriaLabel="adjustable divider between two views">
+          <as-split-area [(size)]="sizes.percentWithWildcards.area1">
             <h5>Initial size: <b>*</b></h5>
             <h5>
               Current size: <b>{{ sizes.percentWithWildcards.area1 }}</b>
@@ -78,7 +72,7 @@ import { AComponent } from '../../ui/components/AComponent'
               voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             </p>
           </as-split-area>
-          <as-split-area size="20">
+          <as-split-area [(size)]="sizes.percentWithWildcards.area2">
             <h5>Initial size: <b>20%</b></h5>
             <h5>
               Current size: <b>{{ sizes.percentWithWildcards.area2 }}%</b>
@@ -94,7 +88,7 @@ import { AComponent } from '../../ui/components/AComponent'
               illum qui dolorem eum fugiat quo voluptas nulla pariatur?
             </p>
           </as-split-area>
-          <as-split-area size="10">
+          <as-split-area [(size)]="sizes.percentWithWildcards.area3">
             <h5>Initial size: <b>10%</b></h5>
             <h5>
               Current size: <b>{{ sizes.percentWithWildcards.area3 }}%</b>
@@ -114,8 +108,8 @@ import { AComponent } from '../../ui/components/AComponent'
       </div>
       <h5>Pixel mode:</h5>
       <div class="split-example ex-pixel">
-        <as-split unit="pixel" [direction]="direction" (dragEnd)="dragEndPixel($event)">
-          <as-split-area size="120">
+        <as-split unit="pixel" [direction]="direction">
+          <as-split-area [(size)]="sizes.pixel.area1">
             <h5>Initial size: <b>120px</b></h5>
             <h5>
               Current size: <b>{{ sizes.pixel.area1 }}px</b>
@@ -125,7 +119,7 @@ import { AComponent } from '../../ui/components/AComponent'
               voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             </p>
           </as-split-area>
-          <as-split-area size="*">
+          <as-split-area [(size)]="sizes.pixel.area2">
             <h5>Initial size: <b>*</b></h5>
             <h5>
               Current size: <b>{{ sizes.pixel.area2 }}</b>
@@ -141,7 +135,7 @@ import { AComponent } from '../../ui/components/AComponent'
               illum qui dolorem eum fugiat quo voluptas nulla pariatur?
             </p>
           </as-split-area>
-          <as-split-area size="160">
+          <as-split-area [(size)]="sizes.pixel.area3">
             <h5>Initial size: <b>160px</b></h5>
             <h5>
               Current size: <b>{{ sizes.pixel.area3 }}px</b>
@@ -169,7 +163,11 @@ export class SimpleSplitComponent extends AComponent {
   @HostBinding('class') class = 'split-example-page'
 
   direction: SplitDirection = 'horizontal'
-  sizes = {
+  sizes: {
+    percentWithoutWildcards: Record<'area1' | 'area2', SplitAreaSize>
+    percentWithWildcards: Record<'area1' | 'area2' | 'area3', SplitAreaSize>
+    pixel: Record<'area1' | 'area2' | 'area3', SplitAreaSize>
+  } = {
     percentWithoutWildcards: {
       area1: 30,
       area2: 70,
@@ -194,22 +192,5 @@ export class SimpleSplitComponent extends AComponent {
       console.log('>>> area1 > ', this.area1())
       console.log('>>> area2 > ', this.area2())
     }, 1000)
-  }
-
-  dragEndPercentWithoutWildcards({ sizes }) {
-    this.sizes.percentWithoutWildcards.area1 = sizes[0]
-    this.sizes.percentWithoutWildcards.area2 = sizes[1]
-  }
-
-  dragEndPercentWithWildcards({ sizes }) {
-    this.sizes.percentWithWildcards.area1 = sizes[0]
-    this.sizes.percentWithWildcards.area2 = sizes[1]
-    this.sizes.percentWithWildcards.area3 = sizes[2]
-  }
-
-  dragEndPixel({ sizes }) {
-    this.sizes.pixel.area1 = sizes[0]
-    this.sizes.pixel.area2 = sizes[1]
-    this.sizes.pixel.area3 = sizes[2]
   }
 }

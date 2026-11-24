@@ -7,6 +7,7 @@ export enum ExampleEnum {
   MINMAX = 'minmax',
   NESTED = 'nested',
   SIMPLE = 'simple',
+  SIZE_BINDING = 'size-binding',
   STYLE = 'style',
   SYNC = 'sync',
   TOGGLE = 'toggle',
