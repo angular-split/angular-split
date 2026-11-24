@@ -98,6 +98,26 @@
       }
     </tbody>
   </table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Outputs</th>
+        <th>Value</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (event of splitAreaOutputs; track event) {
+        <tr>
+          <td>{{ event.name }}</td>
+          <td>
+            <code>{{ event.value }}</code>
+          </td>
+          <td [innerHTML]="event.details"></td>
+        </tr>
+      }
+    </tbody>
+  </table>
   <br /><br />
 
   <h4>

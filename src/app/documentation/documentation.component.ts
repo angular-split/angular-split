@@ -159,7 +159,7 @@ export class DocumentationComponent {
         name: 'size',
         type: "SplitAreaSize | 'auto'",
         default: '"auto"',
-        details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>).<br><u>Percent mode:</u> All areas sizes should equal to 100 or if there is a wildcard size (<code>[size]="'*'"</code>) should be less than 100. If no size input is declared on all areas - all areas will have the same size.<br><u>Pixel mode:</u> An area with  wildcard size (<code>[size]="'*'"</code>) is mandatory (only one) and can't have <code>[visible]="false"</code> or <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code> properties.`,
+        details: `Size of the area in selected unit (<code>percent</code>/<code>pixel</code>). Supports two-way binding with <code>[(size)]="areaSize"</code>.<br><u>Percent mode:</u> All areas sizes should equal to 100 or if there is a wildcard size (<code>[size]="'*'"</code>) should be less than 100. If no size input is declared on all areas - all areas will have the same size.<br><u>Pixel mode:</u> An area with  wildcard size (<code>[size]="'*'"</code>) is mandatory (only one) and can't have <code>[visible]="false"</code> or <code>minSize</code>/<code>maxSize</code>/<code>lockSize</code> properties.`,
       },
       {
         name: 'visible',
@@ -169,6 +169,15 @@ export class DocumentationComponent {
       },
     ],
   }
+
+  readonly splitAreaOutputs = [
+    {
+      name: 'sizeChange',
+      value: 'SplitAreaSize',
+      details:
+        'Emits the updated size during mouse, touch or keyboard resizing, inside the Angular zone. Supports <code>[(size)]</code> with a property or writable signal. Does not emit for parent input changes, unchanged or hidden areas, or wildcard tracks (which remain <code>*</code>).',
+    },
+  ]
 
   readonly splitGutterDoc = {
     templateContext: [

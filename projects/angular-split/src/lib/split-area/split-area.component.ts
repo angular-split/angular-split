@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  NgZone,
   Signal,
   booleanAttribute,
   computed,
@@ -9,6 +10,8 @@ import {
   isDevMode,
   linkedSignal,
 } from '@angular/core'
+import { outputFromObservable } from '@angular/core/rxjs-interop'
+import { Observable, Subject } from 'rxjs'
 import { SPLIT_AREA_CONTRACT, SplitComponent } from '../split/split.component'
 import { createClassesString } from '../utils'
 import { type SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from '../models'
@@ -34,8 +37,17 @@ import { type SplitAreaSize, areaSizeTransform, boundaryAreaSizeTransform } from
 })
 export class SplitAreaComponent {
   protected readonly split = inject(SplitComponent)
+  private readonly ngZone = inject(NgZone)
+  private readonly sizeChangeSubject = new Subject<SplitAreaSize>()
 
   readonly size = input('auto', { transform: areaSizeTransform })
+  readonly sizeChange = outputFromObservable(
+    // Enter the zone only when there is a subscriber. Splits using one-way
+    // inputs should keep resizing outside Angular's change detection.
+    new Observable<SplitAreaSize>((subscriber) =>
+      this.sizeChangeSubject.subscribe((size) => this.ngZone.run(() => subscriber.next(size))),
+    ),
+  )
   readonly minSize = input('*', { transform: boundaryAreaSizeTransform })
   readonly maxSize = input('*', { transform: boundaryAreaSizeTransform })
   readonly lockSize = input(false, { transform: booleanAttribute })
@@ -78,6 +90,13 @@ export class SplitAreaComponent {
     this.split.direction() === 'vertical' ? `${this.gridAreaNum()} / ${this.gridAreaNum()}` : undefined,
   )
   protected readonly hostPositionStyle = computed(() => (this.split._isDragging() ? 'relative' : undefined))
+
+  /**
+   * @internal
+   */
+  _emitSizeChange(size: SplitAreaSize) {
+    this.sizeChangeSubject.next(size)
+  }
 
   private normalizeMinSize() {
     const defaultMinSize = 0
